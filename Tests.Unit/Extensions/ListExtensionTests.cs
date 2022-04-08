@@ -59,5 +59,25 @@ namespace Tests.Unit.Extensions
             list.Count.Should().Be(1);
             list[0].Should().Be(1);
         }
+
+        [Fact]
+        public void AnyNotNull_Should_Return_True()
+        {
+            var list = new List<int?>() {1};
+            list.AnyNotNull().Should().Be(true);
+        }
+        
+        [Fact]
+        public void AnyNotNull_Should_Return_False_Because_Empty()
+        {
+            var list = new List<int?>();
+            list.AnyNotNull().Should().Be(false);
+        }
+        
+        [Fact]
+        public void AnyNotNull_Should_Return_False_Because_Null()
+        {
+            ((List<int?>) null).AnyNotNull().Should().Be(false);
+        }
     }
 }

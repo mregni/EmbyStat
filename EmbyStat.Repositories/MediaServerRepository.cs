@@ -88,7 +88,7 @@ public class MediaServerRepository : IMediaServerRepository
     #endregion
 
     #region MediaServer Users
-    public async Task DeleteAndInsertUsers(IEnumerable<MediaServerUser> users)
+    public async Task DeleteAndInsertUsers(IEnumerable<Common.Models.Entities.Users.MediaServerUser> users)
     {
         _context.MediaServerUsers.RemoveRange(_context.MediaServerUsers);
         await _context.MediaServerUsers.AddRangeAsync(users);
@@ -112,9 +112,12 @@ public class MediaServerRepository : IMediaServerRepository
             .ToListAsync();
     }
 
-    public EmbyUser GetUserById(string id)
+    public Task<MediaServerUser> GetUserById(string id)
     {
-        throw new System.NotImplementedException();
+        return _context.MediaServerUsers
+            .Include(x => x.Configuration)
+            .Include(x => x.Policy)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task DeleteAllUsers()

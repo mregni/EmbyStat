@@ -36,7 +36,6 @@ using EmbyStat.Services.Models.Stat;
 using MediaBrowser.Model.Querying;
 using MediaBrowser.Model.System;
 using TMDbLib.Objects.Search;
-using LogFile = EmbyStat.Services.Models.Logs.LogFile;
 
 namespace EmbyStat.Controllers
 {
@@ -113,9 +112,7 @@ namespace EmbyStat.Controllers
             
             CreateMap<Services.Models.About.About, AboutViewModel>();
             CreateMap<SuspiciousMovie, SuspiciousMovieViewModel>();
-            CreateMap<EmbyUser, UserIdViewModel>();
-            CreateMap<EmbyUser, UserOverviewViewModel>();
-            CreateMap<EmbyUser, UserFullViewModel>();
+
             CreateMap<UserMediaView, UserMediaViewViewModel>();
 
             CreateMap(typeof(ListContainer<>), typeof(ListContainer<>));

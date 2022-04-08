@@ -1,6 +1,7 @@
 ﻿using System;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Users;
+using MediaServerUser = EmbyStat.Common.Models.Entities.Users.MediaServerUser;
 
 namespace Tests.Unit.Builders;
 

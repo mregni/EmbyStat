@@ -6,6 +6,7 @@ using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.Net;
 using MediaBrowser.Model.Querying;
 using Refit;
+using MediaServerUser = EmbyStat.Common.Models.Entities.Users.MediaServerUser;
 
 namespace EmbyStat.Clients.Base.Api
 {
@@ -110,7 +111,7 @@ namespace EmbyStat.Clients.Base.Api
         /// </summary>
         /// <param name="apiKey">Server API key</param>
         /// <param name="authorization">Fixed authentication string</param>
-        /// <returns><see cref="List{T}"/> where T is of type <see cref="MediaServerUser"/></returns>
+        /// <returns><see cref="List{T}"/> where T is of type <see cref="Common.Models.Entities.Users.MediaServerUser"/></returns>
         [Get("/Users")]
         Task<List<MediaServerUser>> GetUsers(
             [Header("X-Emby-Token")] string apiKey,

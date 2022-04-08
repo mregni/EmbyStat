@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using FluentAssertions;
@@ -46,6 +47,37 @@ namespace Tests.Unit.Extensions
         {
             var result = input.ToLibraryType();
             result.Should().Be(output);
+        }
+
+        [Fact]
+        public void GetLocalPath_Should_Return_Path()
+        {
+            var localPath = "/show";
+            var fullPath = localPath.GetLocalPath();
+
+            fullPath.Should().NotBeNull();
+            fullPath.Should().Be(Path.Combine(Directory.GetCurrentDirectory(), localPath));
+        }
+
+        [Fact]
+        public void FirstCharToUpper_Should_Work()
+        {
+            var text = "movies";
+            var result = text.FirstCharToUpper();
+
+            result.Should().Be("Movies");
+        }
+        
+        [Theory]
+        [InlineData("")]
+        [InlineData((string)null)]
+        public void FirstCharToUpper_Should_Throw_Exception(string value)
+        {
+            value
+                .FirstCharToUpper()
+                .Should()
+                .Throw;
+            
         }
     }
 }

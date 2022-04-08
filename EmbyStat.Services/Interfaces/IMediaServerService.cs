@@ -35,7 +35,7 @@ namespace EmbyStat.Services.Interfaces
 
         Task<List<MediaServerUser>> GetAllUsers();
         Task<List<MediaServerUser>> GetAllAdministrators();
-        EmbyUser GetUserById(string id);
+        Task<MediaServerUser> GetUserById(string id);
         Card<int> GetViewedEpisodeCountByUserId(string id);
         Card<int> GetViewedMovieCountByUserId(string id);
         IEnumerable<UserMediaView> GetUserViewPageByUserId(string id, int page, int size);

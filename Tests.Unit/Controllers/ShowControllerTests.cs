@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -39,7 +40,7 @@ namespace Tests.Unit.Controllers
             };
 
             var statistics = new ShowStatistics();
-            var showPage = new Page<Show>(new []
+            var showPage = new Page<Show>(new[]
             {
                 new ShowBuilder("1").Build()
             });
@@ -53,11 +54,14 @@ namespace Tests.Unit.Controllers
                 .Setup(x => x.GetStatistics())
                 .ReturnsAsync(statistics);
             _showServiceMock
-                .Setup(x => x.GetShowPage(It.IsAny<int>(), It.IsAny<int>(), 
-                        It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Filter[]>(), 
-                        It.IsAny<bool>()))
+                .Setup(x => x.GetShowPage(It.IsAny<int>(), It.IsAny<int>(),
+                    It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Filter[]>(),
+                    It.IsAny<bool>()))
                 .ReturnsAsync(showPage);
             _showServiceMock.Setup(x => x.GetShow(It.IsAny<string>())).ReturnsAsync(_show);
+            _showServiceMock.Setup(x => x.GetShowPage(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(),
+                    It.IsAny<string>(), It.IsAny<Filter[]>(), It.IsAny<bool>()))
+                .ReturnsAsync(new Page<Show>(new[] {new ShowBuilder("1").Build()}));
 
             _subject = new ShowController(_showServiceMock.Object, mapper);
         }
@@ -89,6 +93,53 @@ namespace Tests.Unit.Controllers
         }
 
         [Fact]
+        public async Task Should_Update_Libraries()
+        {
+            var list = new[] {"1", "2"};
+            var result = await _subject.UpdateLibraries(list);
+            result.Should().BeOfType<OkResult>();
+
+            _showServiceMock.Verify(x => x.SetLibraryAsSynced(list));
+            _showServiceMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task Should_Return_Show_Page_Without_Filters()
+        {
+            var result = await _subject.GetShowPageList(0, 1, "Name", "asc", false, null);
+            var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
+            var page = resultObject.Should().BeOfType<PageViewModel<ShowRowViewModel>>().Subject;
+
+            page.Should().NotBeNull();
+            page.TotalCount.Should().Be(0);
+            var data = page.Data.ToList();
+            data.Count.Should().Be(1);
+            data[0].Id = "1";
+
+            _showServiceMock.Verify(x => x.GetShowPage(0, 1, "Name", "asc", Array.Empty<Filter>(), false));
+            _showServiceMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task Should_Return_Show_Page_With_Filters()
+        {
+            const string filters = "[{\"Value\":\"Lord\",\"Operation\":\"==\",\"Field\":\"name\"}]";
+            var result = await _subject.GetShowPageList(0, 1, "Name", "asc", false, filters);
+            var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
+            var page = resultObject.Should().BeOfType<PageViewModel<ShowRowViewModel>>().Subject;
+
+            page.Should().NotBeNull();
+            page.TotalCount.Should().Be(0);
+            var data = page.Data.ToList();
+            data.Count.Should().Be(1);
+            data[0].Id = "1";
+
+            _showServiceMock.Verify(x => x.GetShowPage(0, 1, "Name", "asc", It.Is<Filter[]>(
+                y => y.Length == 1 && y[0].Field == "name"), false));
+            _showServiceMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
         public async Task GetShow_Should_Return_NotFound()
         {
             var mapper = CreateMapper();
@@ -101,7 +152,7 @@ namespace Tests.Unit.Controllers
             var id = resultObject.Should().BeOfType<string>().Subject;
 
             id.Should().Be("1");
-            
+
             serviceMock.Verify(x => x.GetShow("1"), Times.Once);
             serviceMock.VerifyNoOtherCalls();
         }
@@ -134,7 +185,7 @@ namespace Tests.Unit.Controllers
             showDetails.SpecialEpisodeCount.Should().Be(2);
             showDetails.Status.Should().Be(_show.Status);
             showDetails.SeasonCount.Should().Be(_show.Seasons.Count);
-            
+
             _showServiceMock.Verify(x => x.GetShow("1"), Times.Once);
             _showServiceMock.VerifyNoOtherCalls();
         }

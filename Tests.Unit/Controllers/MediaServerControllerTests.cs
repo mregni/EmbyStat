@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Tests.Unit.Builders;
 using Xunit;
+using MediaServerUser = EmbyStat.Common.Models.Entities.Users.MediaServerUser;
 
 namespace Tests.Unit.Controllers
 {

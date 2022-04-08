@@ -23,7 +23,7 @@ namespace EmbyStat.Controllers.Movie
         public string OriginalTitle { get; set; }
         public string Container { get; set; }
         public string MediaType { get; set; }
-        public float? CommunityRating { get; set; }
+        public decimal? CommunityRating { get; set; }
         public string IMDB { get; set; }
         public int? TMDB { get; set; }
         public string TVDB { get; set; }

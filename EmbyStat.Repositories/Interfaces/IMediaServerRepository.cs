@@ -31,7 +31,7 @@ namespace EmbyStat.Repositories.Interfaces
         Task DeleteAndInsertUsers(IEnumerable<MediaServerUser> users);
         Task<List<MediaServerUser>>  GetAllUsers();
         Task<List<MediaServerUser>>  GetAllAdministrators();
-        EmbyUser GetUserById(string id);
+        Task<MediaServerUser> GetUserById(string id);
         Task DeleteAllUsers();
         #endregion
 

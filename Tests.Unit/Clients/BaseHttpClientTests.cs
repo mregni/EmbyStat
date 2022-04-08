@@ -23,6 +23,7 @@ using Newtonsoft.Json.Linq;
 using Refit;
 using Tests.Unit.Builders;
 using Xunit;
+using MediaServerUser = EmbyStat.Common.Models.Entities.Users.MediaServerUser;
 
 namespace Tests.Unit.Clients
 {

@@ -1,34 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.Net;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;
+using MediaBrowser.Model.Extensions;
 using Moq;
 using Xunit;
+using MediaServerUser = EmbyStat.Common.Models.Entities.Users.MediaServerUser;
 
 namespace Tests.Unit.Services
 {
     public class MediaServerServiceTests
     {
-        private Mock<IMovieRepository> _movieRepositoryMock;
-        private Mock<IShowRepository> _showRepositoryMock;
-        private Mock<IMediaServerRepository> _embyRepositoryMock;
-        private Mock<ISessionService> _sessionServiceMock;
+        private readonly Mock<IMovieRepository> _movieRepositoryMock;
+        private readonly Mock<IShowRepository> _showRepositoryMock;
+        private readonly Mock<IMediaServerRepository> _mediaServerRepositoryMock;
+        private readonly Mock<ISessionService> _sessionServiceMock;
         private readonly Mock<ISettingsService> _settingsServiceMock;
-        private Mock<IBaseHttpClient> _httpClientMock;
+        private readonly Mock<IBaseHttpClient> _httpClientMock;
 
         public MediaServerServiceTests()
         {
+            _httpClientMock = new Mock<IBaseHttpClient>();
+            _mediaServerRepositoryMock = new Mock<IMediaServerRepository>();
+            _movieRepositoryMock = new Mock<IMovieRepository>();
+            _showRepositoryMock = new Mock<IShowRepository>();
+            _mediaServerRepositoryMock = new Mock<IMediaServerRepository>();
+            _sessionServiceMock = new Mock<ISessionService>();
             _settingsServiceMock = new Mock<ISettingsService>();
             _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(new UserSettings
             {
@@ -48,15 +59,8 @@ namespace Tests.Unit.Services
         [Fact]
         public async Task GetServerInfo_Should_Return_Emby_Server_Info()
         {
-            _httpClientMock = new Mock<IBaseHttpClient>();
-            _embyRepositoryMock = new Mock<IMediaServerRepository>();
-            _movieRepositoryMock = new Mock<IMovieRepository>();
-            _showRepositoryMock = new Mock<IShowRepository>();
-            _embyRepositoryMock = new Mock<IMediaServerRepository>();
-            _sessionServiceMock = new Mock<ISessionService>();
-
             var serverInfo = new MediaServerInfo {Id = "1234"};
-            _embyRepositoryMock
+            _mediaServerRepositoryMock
                 .Setup(x => x.GetServerInfo())
                 .ReturnsAsync(serverInfo);
 
@@ -65,7 +69,7 @@ namespace Tests.Unit.Services
 
             var mapperMock = new Mock<IMapper>();
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object,
+            var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
                 _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object,
                 mapperMock.Object);
             var result = await service.GetServerInfo(false);
@@ -73,21 +77,43 @@ namespace Tests.Unit.Services
             result.Should().NotBeNull();
             result.Id.Should().Be(serverInfo.Id);
 
-            _embyRepositoryMock.Verify(x => x.GetServerInfo(), Times.Once);
+            _mediaServerRepositoryMock.Verify(x => x.GetServerInfo(), Times.Once);
+        }
+
+        [Fact]
+        public async Task Get_ServerInfo_Forced_Should_Return_Emby_Server_Info()
+        {
+            var serverInfo = new MediaServerInfo {Id = "1234"};
+            _httpClientMock
+                .Setup(x => x.GetServerInfo())
+                .ReturnsAsync(serverInfo);
+
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+
+            var mapperMock = new Mock<IMapper>();
+
+            var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
+                _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object,
+                mapperMock.Object);
+            var result = await service.GetServerInfo(true);
+
+            result.Should().NotBeNull();
+            result.Id.Should().Be(serverInfo.Id);
+
+            _httpClientMock.Verify(x => x.GetServerInfo());
+            _httpClientMock.Verify(x => x.SetDeviceInfo(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
+                It.IsAny<string>(), It.IsAny<string>()));
+            _httpClientMock.VerifyNoOtherCalls();
+            _mediaServerRepositoryMock.Verify(x => x.DeleteAndInsertServerInfo(serverInfo));
+            _mediaServerRepositoryMock.VerifyNoOtherCalls();
         }
 
         [Fact]
         public async Task GetServerInfo_Should_Return_Emby_Server_Info_And_Fetch_It_From_Emby()
         {
-            _httpClientMock = new Mock<IBaseHttpClient>();
-            _embyRepositoryMock = new Mock<IMediaServerRepository>();
-            _movieRepositoryMock = new Mock<IMovieRepository>();
-            _showRepositoryMock = new Mock<IShowRepository>();
-            _embyRepositoryMock = new Mock<IMediaServerRepository>();
-            _sessionServiceMock = new Mock<ISessionService>();
-
-            _embyRepositoryMock.Setup(x => x.GetServerInfo()).ReturnsAsync((MediaServerInfo) null);
-            _embyRepositoryMock.Setup(x => x.DeleteAndInsertServerInfo(It.IsAny<MediaServerInfo>()));
+            _mediaServerRepositoryMock.Setup(x => x.GetServerInfo()).ReturnsAsync((MediaServerInfo) null);
+            _mediaServerRepositoryMock.Setup(x => x.DeleteAndInsertServerInfo(It.IsAny<MediaServerInfo>()));
 
             var serverInfo = new MediaServerInfo {Id = Guid.NewGuid().ToString()};
             _httpClientMock.Setup(x => x.GetServerInfo()).ReturnsAsync(serverInfo);
@@ -96,7 +122,7 @@ namespace Tests.Unit.Services
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
             var mapperMock = new Mock<IMapper>();
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object,
+            var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
                 _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object,
                 mapperMock.Object);
             var result = await service.GetServerInfo(false);
@@ -104,29 +130,25 @@ namespace Tests.Unit.Services
             result.Should().NotBeNull();
             result.Id.Should().Be(serverInfo.Id);
 
-            _embyRepositoryMock.Verify(x => x.GetServerInfo(), Times.Once);
-            _embyRepositoryMock.Verify(x => x.DeleteAndInsertServerInfo(It.IsAny<MediaServerInfo>()), Times.Once);
+            _mediaServerRepositoryMock.Verify(x => x.GetServerInfo(), Times.Once);
+            _mediaServerRepositoryMock.Verify(x => x.DeleteAndInsertServerInfo(It.IsAny<MediaServerInfo>()),
+                Times.Once);
             _httpClientMock.Verify(x => x.GetServerInfo(), Times.Once);
         }
 
         [Fact]
         public async Task GetEmbyStatus_Should_Return_Emby_Status_Object()
         {
-            _httpClientMock = new Mock<IBaseHttpClient>();
-            _embyRepositoryMock = new Mock<IMediaServerRepository>();
-            _movieRepositoryMock = new Mock<IMovieRepository>();
-            _showRepositoryMock = new Mock<IShowRepository>();
-            _embyRepositoryMock = new Mock<IMediaServerRepository>();
-            _sessionServiceMock = new Mock<ISessionService>();
-
             var embyStatus = new MediaServerStatus() {Id = Guid.NewGuid()};
-            _embyRepositoryMock.Setup(x => x.GetEmbyStatus()).ReturnsAsync(embyStatus);
+            _mediaServerRepositoryMock
+                .Setup(x => x.GetEmbyStatus())
+                .ReturnsAsync(embyStatus);
 
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
             var mapperMock = new Mock<IMapper>();
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object,
+            var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
                 _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object,
                 mapperMock.Object);
             var result = await service.GetMediaServerStatus();
@@ -134,74 +156,182 @@ namespace Tests.Unit.Services
             result.Should().NotBeNull();
             result.Id.Should().Be(embyStatus.Id);
 
-            _embyRepositoryMock.Verify(x => x.GetEmbyStatus(), Times.Once);
+            _mediaServerRepositoryMock.Verify(x => x.GetEmbyStatus(), Times.Once);
         }
 
         [Fact]
         public async Task ResetMissedPings_Should_Return_Reset_Missed_Pings()
         {
-            _httpClientMock = new Mock<IBaseHttpClient>();
-            _embyRepositoryMock = new Mock<IMediaServerRepository>();
-            _movieRepositoryMock = new Mock<IMovieRepository>();
-            _showRepositoryMock = new Mock<IShowRepository>();
-            _embyRepositoryMock = new Mock<IMediaServerRepository>();
-            _sessionServiceMock = new Mock<ISessionService>();
-
-            _embyRepositoryMock.Setup(x => x.ResetMissedPings());
+            _mediaServerRepositoryMock.Setup(x => x.ResetMissedPings());
 
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
             var mapperMock = new Mock<IMapper>();
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object,
+            var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
                 _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object,
                 mapperMock.Object);
             await service.ResetMissedPings();
 
-            _embyRepositoryMock.Verify(x => x.ResetMissedPings(), Times.Once);
+            _mediaServerRepositoryMock.Verify(x => x.ResetMissedPings(), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetAllUsers_Should_Return_Users()
+        {
+            var users = new List<MediaServerUser>
+            {
+                new() {Id = "1"}
+            };
+            _mediaServerRepositoryMock
+                .Setup(x => x.GetAllUsers())
+                .ReturnsAsync(users);
+
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+            var mapperMock = new Mock<IMapper>();
+
+            var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
+                _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object,
+                mapperMock.Object);
+            var result = await service.GetAllUsers();
+
+            result.Should().NotBeNull();
+            result.Count.Should().Be(1);
+            result[0].Id.Should().Be(users[0].Id);
+
+            _mediaServerRepositoryMock.Verify(x => x.GetAllUsers());
+            _mediaServerRepositoryMock.VerifyNoOtherCalls();
+        }
+        
+        [Fact]
+        public async Task GetUserById_Should_Return_User()
+        {
+            var user = new MediaServerUser {Id = "1"};
+            _mediaServerRepositoryMock
+                .Setup(x => x.GetUserById(It.IsAny<string>()))
+                .ReturnsAsync(user); 
+
+            var embyStatus = new MediaServerStatus() {Id = Guid.NewGuid()};
+            _mediaServerRepositoryMock
+                .Setup(x => x.GetEmbyStatus())
+                .ReturnsAsync(embyStatus);
+            
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+            var mapperMock = new Mock<IMapper>();
+
+            var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
+                _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object,
+                mapperMock.Object);
+            var result = await service.GetUserById("1");
+
+            result.Should().NotBeNull();
+            result.Id.Should().Be("1");
+
+            _mediaServerRepositoryMock.Verify(x => x.GetUserById("1"));
+            _mediaServerRepositoryMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task GetAllAdministrators_Should_Return_Existing_Users()
+        {
+            var users = new List<MediaServerUser>
+            {
+                new() {Id = "1"}
+            };
+            _mediaServerRepositoryMock
+                .Setup(x => x.GetAllAdministrators())
+                .ReturnsAsync(users);
+
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+            var mapperMock = new Mock<IMapper>();
+
+            var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
+                _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object,
+                mapperMock.Object);
+            var result = await service.GetAllAdministrators();
+
+            result.Should().NotBeNull();
+            result.Count.Should().Be(1);
+            result[0].Id.Should().Be(users[0].Id);
+
+            _mediaServerRepositoryMock.Verify(x => x.GetAllAdministrators());
+            _mediaServerRepositoryMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task GetAllAdministrators_Should_Return_Fetch_New_Users()
+        {
+            var users = new List<MediaServerUser>();
+            var newUsers = new List<MediaServerUser>
+            {
+                new() {Id = "1"}
+            };
+            _mediaServerRepositoryMock
+                .SetupSequence(x => x.GetAllAdministrators())
+                .ReturnsAsync(users)
+                .ReturnsAsync(newUsers);
+
+            _mediaServerRepositoryMock
+                .Setup(x => x.GetAllUsers())
+                .ReturnsAsync(newUsers);
+
+            _httpClientMock
+                .Setup(x => x.GetUsers())
+                .ReturnsAsync(newUsers);
+
+            var strategy = new Mock<IClientStrategy>();
+            strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+            var mapperMock = new Mock<IMapper>();
+
+            var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
+                _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object,
+                mapperMock.Object);
+            var result = await service.GetAllAdministrators();
+
+            result.Should().NotBeNull();
+            result.Count.Should().Be(1);
+            result[0].Id.Should().Be(newUsers[0].Id);
+
+            _mediaServerRepositoryMock.Verify(x => x.GetAllAdministrators(), Times.Exactly(2));
+            _mediaServerRepositoryMock.Verify(x => x.DeleteAndInsertUsers(newUsers));
+            _mediaServerRepositoryMock.VerifyNoOtherCalls();
+
+            _httpClientMock.Verify(x => x.GetUsers());
+            _httpClientMock.Verify(x => x.SetDeviceInfo(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
+                It.IsAny<string>(), It.IsAny<string>()));
+            _httpClientMock.VerifyNoOtherCalls();
         }
 
         [Fact]
         public async Task IncreaseMissedPings_Should_Return_Increased_Missed_Pings()
         {
-            _httpClientMock = new Mock<IBaseHttpClient>();
-            _embyRepositoryMock = new Mock<IMediaServerRepository>();
-            _movieRepositoryMock = new Mock<IMovieRepository>();
-            _showRepositoryMock = new Mock<IShowRepository>();
-            _embyRepositoryMock = new Mock<IMediaServerRepository>();
-            _sessionServiceMock = new Mock<ISessionService>();
-
-            _embyRepositoryMock.Setup(x => x.ResetMissedPings());
+            _mediaServerRepositoryMock.Setup(x => x.ResetMissedPings());
 
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
             var mapperMock = new Mock<IMapper>();
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object,
+            var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
                 _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object,
                 mapperMock.Object);
             await service.IncreaseMissedPings();
 
-            _embyRepositoryMock.Verify(x => x.IncreaseMissedPings(), Times.Once);
+            _mediaServerRepositoryMock.Verify(x => x.IncreaseMissedPings(), Times.Once);
         }
 
         [Fact]
         public async Task PingEmby_Should_Ping_Emby_Server()
         {
-            _httpClientMock = new Mock<IBaseHttpClient>();
-            _embyRepositoryMock = new Mock<IMediaServerRepository>();
-            _movieRepositoryMock = new Mock<IMovieRepository>();
-            _showRepositoryMock = new Mock<IShowRepository>();
-            _embyRepositoryMock = new Mock<IMediaServerRepository>();
-            _sessionServiceMock = new Mock<ISessionService>();
-
             _httpClientMock.Setup(x => x.Ping()).ReturnsAsync(true);
 
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
             var mapperMock = new Mock<IMapper>();
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object,
+            var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
                 _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object,
                 mapperMock.Object);
             var result = await service.PingMediaServer("localhost:9000");
@@ -213,13 +343,6 @@ namespace Tests.Unit.Services
         [Fact]
         public async Task TestNewApiKey_Should_Return_True()
         {
-            _httpClientMock = new Mock<IBaseHttpClient>();
-            _embyRepositoryMock = new Mock<IMediaServerRepository>();
-            _movieRepositoryMock = new Mock<IMovieRepository>();
-            _showRepositoryMock = new Mock<IShowRepository>();
-            _embyRepositoryMock = new Mock<IMediaServerRepository>();
-            _sessionServiceMock = new Mock<ISessionService>();
-
             _httpClientMock.Setup(x => x.GetServerInfo()).ReturnsAsync(new MediaServerInfo());
             _httpClientMock.SetupSet(x => x.ApiKey = "1234").Verifiable();
             _httpClientMock.SetupSet(x => x.BaseUrl = "localhost:9000").Verifiable();
@@ -231,7 +354,7 @@ namespace Tests.Unit.Services
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
             var mapperMock = new Mock<IMapper>();
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object,
+            var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
                 _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object,
                 mapperMock.Object);
             var result = await service.TestNewApiKey("localhost:9000", "1234", ServerType.Emby);
@@ -250,13 +373,6 @@ namespace Tests.Unit.Services
         [Fact]
         public async Task TestNewApiKey_Should_Return_False()
         {
-            _httpClientMock = new Mock<IBaseHttpClient>();
-            _embyRepositoryMock = new Mock<IMediaServerRepository>();
-            _movieRepositoryMock = new Mock<IMovieRepository>();
-            _showRepositoryMock = new Mock<IShowRepository>();
-            _embyRepositoryMock = new Mock<IMediaServerRepository>();
-            _sessionServiceMock = new Mock<ISessionService>();
-
             _httpClientMock.Setup(x => x.GetServerInfo()).ReturnsAsync((MediaServerInfo) null);
             _httpClientMock.SetupSet(x => x.ApiKey = "1234").Verifiable();
             _httpClientMock.SetupSet(x => x.BaseUrl = "localhost:9000").Verifiable();
@@ -270,7 +386,7 @@ namespace Tests.Unit.Services
                 .Returns(_httpClientMock.Object);
             var mapperMock = new Mock<IMapper>();
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object,
+            var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
                 _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object,
                 mapperMock.Object);
             var result = await service.TestNewApiKey("localhost:9000", "1234", ServerType.Emby);
@@ -292,21 +408,14 @@ namespace Tests.Unit.Services
         [Fact]
         public async Task GetAllPlugins_Should_Return_List_Of_Plugins()
         {
-            _httpClientMock = new Mock<IBaseHttpClient>();
-            _embyRepositoryMock = new Mock<IMediaServerRepository>();
-            _movieRepositoryMock = new Mock<IMovieRepository>();
-            _showRepositoryMock = new Mock<IShowRepository>();
-            _embyRepositoryMock = new Mock<IMediaServerRepository>();
-            _sessionServiceMock = new Mock<ISessionService>();
-
             var plugins = new List<PluginInfo> {new() {Id = "123"}, new() {Id = "234"}};
-            _embyRepositoryMock.Setup(x => x.GetAllPlugins()).ReturnsAsync(plugins);
+            _mediaServerRepositoryMock.Setup(x => x.GetAllPlugins()).ReturnsAsync(plugins);
 
             var strategy = new Mock<IClientStrategy>();
             strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
             var mapperMock = new Mock<IMapper>();
 
-            var service = new MediaServerService(strategy.Object, _embyRepositoryMock.Object,
+            var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
                 _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object,
                 mapperMock.Object);
             var result = await service.GetAllPlugins();
@@ -314,7 +423,149 @@ namespace Tests.Unit.Services
             result.Should().NotContainNulls();
             result.Count.Should().Be(2);
 
-            _embyRepositoryMock.Verify(x => x.GetAllPlugins(), Times.Once);
+            _mediaServerRepositoryMock.Verify(x => x.GetAllPlugins(), Times.Once);
+        }
+
+        [Fact]
+        public async Task SearchMediaServer_Should_Succeed()
+        {
+            var strategy = new Mock<IClientStrategy>();
+
+            _httpClientMock
+                .Setup(x => x.SearchServer())
+                .ReturnsAsync(new[] {new MediaServerUdpBroadcast() {Id = "1"}});
+            strategy
+                .Setup(x => x.CreateHttpClient(It.IsAny<ServerType>()))
+                .Returns(_httpClientMock.Object);
+            var mapperMock = new Mock<IMapper>();
+
+            var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
+                _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object,
+                mapperMock.Object);
+            var result = await service.SearchMediaServer(ServerType.Emby);
+            var list = result.ToList();
+            list.Count.Should().Be(1);
+
+            list[0].Id.Should().Be("1");
+
+            _httpClientMock.Verify(x => x.SearchServer());
+            _httpClientMock.Verify(x => x.SetDeviceInfo(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
+                It.IsAny<string>(), It.IsAny<string>()));
+            _httpClientMock.VerifyNoOtherCalls();
+            _settingsServiceMock.Verify(x => x.SaveUserSettingsAsync(It.IsAny<UserSettings>()));
+            _settingsServiceMock.Verify(x => x.GetAppSettings());
+            _settingsServiceMock.Verify(x => x.GetUserSettings());
+            _settingsServiceMock.VerifyNoOtherCalls();
+            strategy.Verify(x => x.CreateHttpClient(ServerType.Emby));
+            strategy.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task GetAndProcessPluginInfo_Should_Process_Plugins()
+        {
+            var plugins = new List<PluginInfo>
+            {
+                new() {Id = "1"}
+            };
+
+            var strategy = new Mock<IClientStrategy>();
+            _httpClientMock.Setup(x => x.GetInstalledPlugins())
+                .ReturnsAsync(plugins);
+            strategy
+                .Setup(x => x.CreateHttpClient(It.IsAny<ServerType>()))
+                .Returns(_httpClientMock.Object);
+            var mapperMock = new Mock<IMapper>();
+            var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
+                _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object,
+                mapperMock.Object);
+
+            await service.GetAndProcessPluginInfo();
+
+            _mediaServerRepositoryMock.Verify(x => x.DeleteAllPlugins());
+            _mediaServerRepositoryMock.Verify(x => x.InsertPlugins(plugins));
+            _mediaServerRepositoryMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task GetAndProcessUsers_Should_Process_Users()
+        {
+            var users = new List<MediaServerUser>
+            {
+                new() {Id = "1"}
+            };
+
+            var strategy = new Mock<IClientStrategy>();
+            _httpClientMock.Setup(x => x.GetUsers())
+                .ReturnsAsync(users);
+            strategy
+                .Setup(x => x.CreateHttpClient(It.IsAny<ServerType>()))
+                .Returns(_httpClientMock.Object);
+            var mapperMock = new Mock<IMapper>();
+            var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
+                _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object,
+                mapperMock.Object);
+
+            await service.GetAndProcessUsers();
+
+            _mediaServerRepositoryMock.Verify(x => x.DeleteAndInsertUsers(users));
+            _mediaServerRepositoryMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task GetAndProcessDevices_Should_Process_Devices()
+        {
+            var devices = new List<Device>
+            {
+                new() {Id = "1"}
+            };
+
+            var strategy = new Mock<IClientStrategy>();
+            _httpClientMock.Setup(x => x.GetDevices())
+                .ReturnsAsync(devices);
+            strategy
+                .Setup(x => x.CreateHttpClient(It.IsAny<ServerType>()))
+                .Returns(_httpClientMock.Object);
+            var mapperMock = new Mock<IMapper>();
+            var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
+                _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object,
+                mapperMock.Object);
+
+            await service.GetAndProcessDevices();
+
+            _mediaServerRepositoryMock.Verify(x => x.DeleteAndInsertDevices(devices));
+            _mediaServerRepositoryMock.VerifyNoOtherCalls();
+        }
+
+
+        [Fact]
+        public async Task GetAndProcessLibraries_Should_Process_Libraries()
+        {
+            var libraries = new List<Library>
+            {
+                new() {Id = "1", Sync = true},
+                new() {Id = "2"}
+            }.ToArray();
+
+            _mediaServerRepositoryMock
+                .Setup(x => x.GetAllLibraries())
+                .ReturnsAsync(new List<Library> {new() {Id = "1", Sync = true}});
+
+            var strategy = new Mock<IClientStrategy>();
+            _httpClientMock.Setup(x => x.GetLibraries())
+                .ReturnsAsync(libraries);
+            strategy
+                .Setup(x => x.CreateHttpClient(It.IsAny<ServerType>()))
+                .Returns(_httpClientMock.Object);
+            var mapperMock = new Mock<IMapper>();
+            var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
+                _sessionServiceMock.Object, _settingsServiceMock.Object, _movieRepositoryMock.Object,
+                mapperMock.Object);
+
+            await service.GetAndProcessLibraries();
+
+            _mediaServerRepositoryMock.Verify(x => x.GetAllLibraries());
+            _mediaServerRepositoryMock.Verify(x => x.DeleteAndInsertLibraries(libraries));
+            _mediaServerRepositoryMock.VerifyNoOtherCalls();
         }
 
         //TODO: fix testing after user implementation

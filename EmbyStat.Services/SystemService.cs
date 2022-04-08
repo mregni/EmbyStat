@@ -38,14 +38,15 @@ public class SystemService : ISystemService
     public async Task ResetEmbyStatTables()
     {
         await _hub.BroadcastResetLogLine("Deleting statistics");
-        _statisticsRepository.DeleteStatistics();
+        await _statisticsRepository.DeleteStatistics();
 
         await _hub.BroadcastResetLogLine("Deleting server info");
         await _mediaServerRepository.DeleteAllPlugins();
         await _mediaServerRepository.DeleteAllDevices();
-        await _mediaServerRepository.DeleteAllUsers();
         await _mediaServerRepository.DeleteServerInfo();
-
+        await _mediaServerRepository.DeleteAllUsers();
+        await _mediaServerRepository.DeleteAllLibraries();
+        
         await _hub.BroadcastResetLogLine("Deleting show data");
         await _showRepository.DeleteAll();
 
@@ -57,18 +58,6 @@ public class SystemService : ISystemService
 
         await _hub.BroadcastResetLogLine("Deleting people");
         await _personRepository.DeleteAll();
-
-        await _hub.BroadcastResetLogLine("Deleting libraries");
-        await _mediaServerRepository.DeleteAllLibraries();
-        
-        await _hub.BroadcastResetLogLine("Deleting devices");
-        await _mediaServerRepository.DeleteAllDevices();
-        
-        await _hub.BroadcastResetLogLine("Deleting plugins");
-        await _mediaServerRepository.DeleteAllPlugins();
-        
-        await _hub.BroadcastResetLogLine("Deleting users");
-        await _mediaServerRepository.DeleteAllUsers();
 
         await _hub.BroadcastResetLogLine("Deleting filters");
         await _filterRepository.DeleteAll();

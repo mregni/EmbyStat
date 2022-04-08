@@ -168,7 +168,7 @@ namespace EmbyStat.Services
             return await _mediaServerRepository.GetAllAdministrators();
         }
 
-        public EmbyUser GetUserById(string id)
+        public Task<MediaServerUser> GetUserById(string id)
         {
             return _mediaServerRepository.GetUserById(id);
         }
