@@ -19,40 +19,6 @@ namespace Tests.Unit.Builders
             };
         }
 
-        public VideoStreamBuilder AddWidth(int? width)
-        {
-            _stream.Width = width;
-            return this;
-        }
-        public VideoStreamBuilder AddCodec(string codec)
-        {
-            _stream.Codec = codec;
-            return this;
-        }
-        public VideoStreamBuilder AddVideoRange(string videoRange)
-        {
-            _stream.VideoRange = videoRange;
-            return this;
-        }
-
-        public VideoStreamBuilder AddHeight(int? height)
-        {
-            _stream.Height = height;
-            return this;
-        }
-
-        public VideoStreamBuilder AddBitDepth(int? depth)
-        {
-            _stream.BitDepth = depth;
-            return this;
-        }
-
-        public VideoStreamBuilder AddAverageFrameRate(float? frameRate)
-        {
-            _stream.AverageFrameRate = frameRate;
-            return this;
-        }
-
         public VideoStream Build()
         {
             return _stream;

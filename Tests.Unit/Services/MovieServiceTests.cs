@@ -156,12 +156,6 @@ namespace Tests.Unit.Services
                 .Setup(x => x.GetTotalRuntime())
                 .Returns(movies.Sum(x => x.RunTimeTicks ?? 0));
             _movieRepositoryMock
-                .Setup(x => x.GetMoviesWithoutImdbId())
-                .Returns(movies.Where(x => string.IsNullOrEmpty(x.IMDB)).ToList);
-            _movieRepositoryMock
-                .Setup(x => x.GetMoviesWithoutPrimaryImage())
-                .Returns(movies.Where(x => string.IsNullOrEmpty(x.Primary)).ToList);
-            _movieRepositoryMock
                 .Setup(x => x.GetToShortMovieList(10))
                 .Returns(movies.Where(x => x.RunTimeTicks < new TimeSpan(0, 0, 10, 0).Ticks).ToList);
             _movieRepositoryMock

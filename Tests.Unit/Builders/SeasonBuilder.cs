@@ -43,27 +43,5 @@ namespace Tests.Unit.Builders
         {
             return _season;
         }
-
-        public BaseItemDto BuildBaseItemDto()
-        {
-            return new BaseItemDto
-            {
-                Id = _season.Id,
-                DateCreated = _season.DateCreated,
-                Path = _season.Path,
-                SortName = _season.SortName,
-                IndexNumber = _season.IndexNumber,
-                IndexNumberEnd = _season.IndexNumberEnd,
-                PremiereDate = _season.PremiereDate,
-                ProductionYear = _season.ProductionYear,
-                ImageTags = new Dictionary<ImageType, string>
-                {
-                    {ImageType.Primary, _season.Primary},
-                    {ImageType.Thumb, _season.Thumb},
-                    {ImageType.Logo, _season.Logo},
-                    {ImageType.Banner, _season.Banner}
-                }
-            };
-        }
     }
 }

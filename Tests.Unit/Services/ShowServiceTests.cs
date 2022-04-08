@@ -604,7 +604,7 @@ namespace Tests.Unit.Services
         #endregion
 
         [Fact]
-        public async Task TypeIsPresent_Should_Return_True()
+        public void TypeIsPresent_Should_Return_True()
         {
             var result = _subject.TypeIsPresent();
             result.Should().BeTrue();

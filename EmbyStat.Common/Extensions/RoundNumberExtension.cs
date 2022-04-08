@@ -2,7 +2,7 @@
 
 namespace EmbyStat.Common.Extensions
 {
-    public static class RoundExtension
+    public static class RoundExtensions
     {
         public static int? RoundToFiveYear(this DateTime? date)
         {

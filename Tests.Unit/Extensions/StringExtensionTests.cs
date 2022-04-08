@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
@@ -68,16 +69,48 @@ namespace Tests.Unit.Extensions
             result.Should().Be("Movies");
         }
         
-        [Theory]
-        [InlineData("")]
-        [InlineData((string)null)]
-        public void FirstCharToUpper_Should_Throw_Exception(string value)
+        [Fact]
+        public void FirstCharToUpper_Should_Throw_Exception_When_Null()
         {
-            value
-                .FirstCharToUpper()
-                .Should()
-                .Throw;
-            
+            var action = () => ((string)null).FirstCharToUpper();
+            action.Should().Throw<ArgumentNullException>();
+        }
+        
+        [Fact]
+        public void FirstCharToUpper_Should_Throw_Exception_When_Empty()
+        {
+            var action = () => ((string)null).FirstCharToUpper();
+            action.Should().Throw<ArgumentException>();
+        }
+
+        [Theory]
+        [InlineData("3,2|0,5", "0.5", "3.2")]
+        [InlineData("0,5|3,2", "0.5", "3.2")]
+        [InlineData("3.2|0.5", "0.5", "3.2")]
+        [InlineData("0.5|3.2", "0.5", "3.2")]
+        public void FormatInputValue_Should_Format_Input(string input, string left, string right)
+        {
+            var value = input;
+            var result = value.FormatInputValue();
+
+            result.Should().NotBeNull();
+            result.Length.Should().Be(2);
+            result[0].Should().Be(left);
+            result[1].Should().Be(right);
+        }
+        
+        [Theory]
+        [InlineData("3,2", "3.2", 1)]
+        [InlineData("3,2", "6.4", 2)]
+        [InlineData("", "0", 1)]
+        public void FormatInputValue_Should_Return_Single_Value(string input, string resultValue, int multiplier)
+        {
+            var value = input;
+            var result = value.FormatInputValue(multiplier);
+
+            result.Should().NotBeNull();
+            result.Length.Should().Be(1);
+            result[0].Should().Be(resultValue);
         }
     }
 }

@@ -102,18 +102,6 @@ namespace Tests.Unit.Builders
             return this;
         }
 
-        public ShowBuilder ReplacePersons(MediaPerson person)
-        {
-            _show.People = new[] {person};
-            return this;
-        }
-
-        public ShowBuilder AddSeason(string id)
-        {
-            _show.Seasons.Add(new SeasonBuilder(id, _show.Id).Build());
-            return this;
-        }
-
         public ShowBuilder AddEpisode(Episode episode)
         {
             var season = _show.Seasons.FirstOrDefault(x => x.Id == episode.SeasonId);
@@ -158,42 +146,6 @@ namespace Tests.Unit.Builders
         public Show Build()
         {
             return _show;
-        }
-
-        public BaseItemDto BuildBaseItemDto()
-        {
-            return new BaseItemDto
-            {
-                Id = _show.Id,
-                CommunityRating = _show.CommunityRating,
-                DateCreated = _show.DateCreated,
-                Path = _show.Path,
-                SortName = _show.SortName,
-                RunTimeTicks = _show.RunTimeTicks,
-                OfficialRating = _show.OfficialRating,
-                PremiereDate = _show.PremiereDate,
-                ProductionYear = _show.ProductionYear,
-                ImageTags = new Dictionary<ImageType, string>
-                {
-                    {ImageType.Primary, _show.Primary},
-                    {ImageType.Thumb, _show.Primary},
-                    {ImageType.Logo, _show.Primary},
-                    {ImageType.Banner, _show.Primary}
-                },
-                ProviderIds = new Dictionary<string, string>
-                {
-                    {"Imdb", _show.IMDB},
-                    {"Tmdb", _show.TMDB.ToString()},
-                    {"Tvdb", _show.TVDB}
-                },
-                Genres = _show.Genres.Select(x => x.Name).ToArray(),
-                People = _show.People.Select(x => new BaseItemPerson
-                {
-                    Id = x.Id.ToString(),
-                    Name = x.Person.Name,
-                    Type = x.Type
-                }).ToArray()
-            };
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace EmbyStat.Common.Extensions
 {
-    public static class ListExtension
+    public static class ListExtensions
     {
         public static bool AreListEqual<T>(this IEnumerable<T> listA, IEnumerable<T> listB)
         {

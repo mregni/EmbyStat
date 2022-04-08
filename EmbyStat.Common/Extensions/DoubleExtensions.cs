@@ -2,10 +2,12 @@
 
 namespace EmbyStat.Common.Extensions;
 
-public static class DoubleExtension
+public static class DoubleExtensions
 {
     public static string FormatToDotDecimalString(this double value)
     {
-        return value.ToString(CultureInfo.CurrentCulture).Replace(",", ".");
+        return value
+            .ToString(CultureInfo.CurrentCulture)
+            .Replace(",", ".");
     }
 }

@@ -60,7 +60,7 @@ WHERE 1=1
 
         private static string AddMovieFilters(Filter filter)
         {
-            return $"AND {GenerateFilterString(filter)}\n";
+            return $"AND {GenerateFilterString(filter)} ";
         }
 
         private static string GenerateFilterString(Filter filter)
