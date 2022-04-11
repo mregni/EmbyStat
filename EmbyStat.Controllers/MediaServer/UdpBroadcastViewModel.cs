@@ -1,13 +1,12 @@
-﻿namespace EmbyStat.Controllers.MediaServer
+﻿namespace EmbyStat.Controllers.MediaServer;
+
+public class UdpBroadcastViewModel
 {
-    public class UdpBroadcastViewModel
-    {
-	    public string Address { get; set; }
-	    public string Id { get; set; }
-	    public string Name { get; set; }
-        public int Port { get; set; }
-        public int Protocol { get; set; }
-        public int Type { get; set; }
-        public string BaseUrl { get; set; }
-    }
+	public string Address { get; set; }
+	public string Id { get; set; }
+	public string Name { get; set; }
+	public int Port { get; set; }
+	public int Protocol { get; set; }
+	public int Type { get; set; }
+	public string BaseUrl { get; set; }
 }

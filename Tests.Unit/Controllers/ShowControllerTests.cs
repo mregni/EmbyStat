@@ -19,192 +19,191 @@ using Moq;
 using Tests.Unit.Builders;
 using Xunit;
 
-namespace Tests.Unit.Controllers
+namespace Tests.Unit.Controllers;
+
+public class ShowControllerTests
 {
-    public class ShowControllerTests
+    private readonly ShowController _subject;
+    private readonly Mock<IShowService> _showServiceMock;
+    private readonly List<Library> _collections;
+    private readonly Show _show;
+
+    public ShowControllerTests()
     {
-        private readonly ShowController _subject;
-        private readonly Mock<IShowService> _showServiceMock;
-        private readonly List<Library> _collections;
-        private readonly Show _show;
+        var mapper = CreateMapper();
 
-        public ShowControllerTests()
+        _collections = new List<Library>
         {
-            var mapper = CreateMapper();
+            new LibraryBuilder(1, LibraryType.TvShow).Build(),
+            new LibraryBuilder(2, LibraryType.TvShow).Build()
+        };
 
-            _collections = new List<Library>
-            {
-                new LibraryBuilder(1, LibraryType.TvShow).Build(),
-                new LibraryBuilder(2, LibraryType.TvShow).Build()
-            };
-
-            var statistics = new ShowStatistics();
-            var showPage = new Page<Show>(new[]
-            {
-                new ShowBuilder("1").Build()
-            });
-
-            _show = new ShowBuilder("1").Build();
-
-            _showServiceMock = new Mock<IShowService>();
-            _showServiceMock.Setup(x => x.GetShowLibraries()).ReturnsAsync(_collections);
-            _showServiceMock.Setup(x => x.TypeIsPresent()).Returns(true);
-            _showServiceMock
-                .Setup(x => x.GetStatistics())
-                .ReturnsAsync(statistics);
-            _showServiceMock
-                .Setup(x => x.GetShowPage(It.IsAny<int>(), It.IsAny<int>(),
-                    It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Filter[]>(),
-                    It.IsAny<bool>()))
-                .ReturnsAsync(showPage);
-            _showServiceMock.Setup(x => x.GetShow(It.IsAny<string>())).ReturnsAsync(_show);
-            _showServiceMock.Setup(x => x.GetShowPage(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(),
-                    It.IsAny<string>(), It.IsAny<Filter[]>(), It.IsAny<bool>()))
-                .ReturnsAsync(new Page<Show>(new[] {new ShowBuilder("1").Build()}));
-
-            _subject = new ShowController(_showServiceMock.Object, mapper);
-        }
-
-        [Fact]
-        public async Task Are_Show_Collections_Returned()
+        var statistics = new ShowStatistics();
+        var showPage = new Page<Show>(new[]
         {
-            var result = await _subject.GetLibraries();
-            var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
-            var list = resultObject.Should().BeOfType<List<LibraryViewModel>>().Subject;
+            new ShowBuilder("1").Build()
+        });
 
-            list.Count.Should().Be(2);
-            list[0].Name.Should().Be(_collections[0].Name);
-            list[1].Name.Should().Be(_collections[1].Name);
-            _showServiceMock.Verify(x => x.GetShowLibraries(), Times.Once);
-            _showServiceMock.VerifyNoOtherCalls();
-        }
+        _show = new ShowBuilder("1").Build();
 
-        [Fact]
-        public async Task Should_Return_Statistics()
-        {
-            var result = await _subject.GetStatistics();
-            var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
-            var statistics = resultObject.Should().BeOfType<ShowStatisticsViewModel>().Subject;
+        _showServiceMock = new Mock<IShowService>();
+        _showServiceMock.Setup(x => x.GetShowLibraries()).ReturnsAsync(_collections);
+        _showServiceMock.Setup(x => x.TypeIsPresent()).Returns(true);
+        _showServiceMock
+            .Setup(x => x.GetStatistics())
+            .ReturnsAsync(statistics);
+        _showServiceMock
+            .Setup(x => x.GetShowPage(It.IsAny<int>(), It.IsAny<int>(),
+                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Filter[]>(),
+                It.IsAny<bool>()))
+            .ReturnsAsync(showPage);
+        _showServiceMock.Setup(x => x.GetShow(It.IsAny<string>())).ReturnsAsync(_show);
+        _showServiceMock.Setup(x => x.GetShowPage(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(),
+                It.IsAny<string>(), It.IsAny<Filter[]>(), It.IsAny<bool>()))
+            .ReturnsAsync(new Page<Show>(new[] {new ShowBuilder("1").Build()}));
 
-            statistics.Should().NotBeNull();
-            _showServiceMock.Verify(x => x.GetStatistics(), Times.Once);
-            _showServiceMock.VerifyNoOtherCalls();
-        }
+        _subject = new ShowController(_showServiceMock.Object, mapper);
+    }
 
-        [Fact]
-        public async Task Should_Update_Libraries()
-        {
-            var list = new[] {"1", "2"};
-            var result = await _subject.UpdateLibraries(list);
-            result.Should().BeOfType<OkResult>();
+    [Fact]
+    public async Task Are_Show_Collections_Returned()
+    {
+        var result = await _subject.GetLibraries();
+        var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
+        var list = resultObject.Should().BeOfType<List<LibraryViewModel>>().Subject;
 
-            _showServiceMock.Verify(x => x.SetLibraryAsSynced(list));
-            _showServiceMock.VerifyNoOtherCalls();
-        }
+        list.Count.Should().Be(2);
+        list[0].Name.Should().Be(_collections[0].Name);
+        list[1].Name.Should().Be(_collections[1].Name);
+        _showServiceMock.Verify(x => x.GetShowLibraries(), Times.Once);
+        _showServiceMock.VerifyNoOtherCalls();
+    }
 
-        [Fact]
-        public async Task Should_Return_Show_Page_Without_Filters()
-        {
-            var result = await _subject.GetShowPageList(0, 1, "Name", "asc", false, null);
-            var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
-            var page = resultObject.Should().BeOfType<PageViewModel<ShowRowViewModel>>().Subject;
+    [Fact]
+    public async Task Should_Return_Statistics()
+    {
+        var result = await _subject.GetStatistics();
+        var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
+        var statistics = resultObject.Should().BeOfType<ShowStatisticsViewModel>().Subject;
 
-            page.Should().NotBeNull();
-            page.TotalCount.Should().Be(0);
-            var data = page.Data.ToList();
-            data.Count.Should().Be(1);
-            data[0].Id = "1";
+        statistics.Should().NotBeNull();
+        _showServiceMock.Verify(x => x.GetStatistics(), Times.Once);
+        _showServiceMock.VerifyNoOtherCalls();
+    }
 
-            _showServiceMock.Verify(x => x.GetShowPage(0, 1, "Name", "asc", Array.Empty<Filter>(), false));
-            _showServiceMock.VerifyNoOtherCalls();
-        }
+    [Fact]
+    public async Task Should_Update_Libraries()
+    {
+        var list = new[] {"1", "2"};
+        var result = await _subject.UpdateLibraries(list);
+        result.Should().BeOfType<OkResult>();
 
-        [Fact]
-        public async Task Should_Return_Show_Page_With_Filters()
-        {
-            const string filters = "[{\"Value\":\"Lord\",\"Operation\":\"==\",\"Field\":\"name\"}]";
-            var result = await _subject.GetShowPageList(0, 1, "Name", "asc", false, filters);
-            var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
-            var page = resultObject.Should().BeOfType<PageViewModel<ShowRowViewModel>>().Subject;
+        _showServiceMock.Verify(x => x.SetLibraryAsSynced(list));
+        _showServiceMock.VerifyNoOtherCalls();
+    }
 
-            page.Should().NotBeNull();
-            page.TotalCount.Should().Be(0);
-            var data = page.Data.ToList();
-            data.Count.Should().Be(1);
-            data[0].Id = "1";
+    [Fact]
+    public async Task Should_Return_Show_Page_Without_Filters()
+    {
+        var result = await _subject.GetShowPageList(0, 1, "Name", "asc", false, null);
+        var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
+        var page = resultObject.Should().BeOfType<PageViewModel<ShowRowViewModel>>().Subject;
 
-            _showServiceMock.Verify(x => x.GetShowPage(0, 1, "Name", "asc", It.Is<Filter[]>(
-                y => y.Length == 1 && y[0].Field == "name"), false));
-            _showServiceMock.VerifyNoOtherCalls();
-        }
+        page.Should().NotBeNull();
+        page.TotalCount.Should().Be(0);
+        var data = page.Data.ToList();
+        data.Count.Should().Be(1);
+        data[0].Id = "1";
 
-        [Fact]
-        public async Task GetShow_Should_Return_NotFound()
-        {
-            var mapper = CreateMapper();
-            var serviceMock = new Mock<IShowService>();
-            serviceMock.Setup(x => x.GetShow(It.IsAny<string>())).ReturnsAsync((Show) null);
+        _showServiceMock.Verify(x => x.GetShowPage(0, 1, "Name", "asc", Array.Empty<Filter>(), false));
+        _showServiceMock.VerifyNoOtherCalls();
+    }
 
-            var subject = new ShowController(serviceMock.Object, mapper);
-            var result = await subject.GetShow("1");
-            var resultObject = result.Should().BeOfType<NotFoundObjectResult>().Subject.Value;
-            var id = resultObject.Should().BeOfType<string>().Subject;
+    [Fact]
+    public async Task Should_Return_Show_Page_With_Filters()
+    {
+        const string filters = "[{\"Value\":\"Lord\",\"Operation\":\"==\",\"Field\":\"name\"}]";
+        var result = await _subject.GetShowPageList(0, 1, "Name", "asc", false, filters);
+        var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
+        var page = resultObject.Should().BeOfType<PageViewModel<ShowRowViewModel>>().Subject;
 
-            id.Should().Be("1");
+        page.Should().NotBeNull();
+        page.TotalCount.Should().Be(0);
+        var data = page.Data.ToList();
+        data.Count.Should().Be(1);
+        data[0].Id = "1";
 
-            serviceMock.Verify(x => x.GetShow("1"), Times.Once);
-            serviceMock.VerifyNoOtherCalls();
-        }
+        _showServiceMock.Verify(x => x.GetShowPage(0, 1, "Name", "asc", It.Is<Filter[]>(
+            y => y.Length == 1 && y[0].Field == "name"), false));
+        _showServiceMock.VerifyNoOtherCalls();
+    }
 
-        [Fact]
-        public async Task GetShow_Should_Return_ShowDetails()
-        {
-            var result = await _subject.GetShow("1");
-            var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
-            var showDetails = resultObject.Should().BeOfType<ShowDetailViewModel>().Subject;
+    [Fact]
+    public async Task GetShow_Should_Return_NotFound()
+    {
+        var mapper = CreateMapper();
+        var serviceMock = new Mock<IShowService>();
+        serviceMock.Setup(x => x.GetShow(It.IsAny<string>())).ReturnsAsync((Show) null);
 
-            showDetails.Should().NotBeNull();
-            showDetails.Id.Should().Be(_show.Id);
-            showDetails.CumulativeRunTime.Should().Be(32334L);
-            showDetails.Banner.Should().Be(_show.Banner);
-            showDetails.Primary.Should().Be(_show.Primary);
-            showDetails.SizeInMb.Should().Be(_show.SizeInMb);
-            showDetails.Tmdb.Should().Be(_show.TMDB);
-            showDetails.Name.Should().Be(_show.Name);
-            showDetails.PremiereDate.Should().Be(_show.PremiereDate);
-            showDetails.CommunityRating.Should().Be(_show.CommunityRating);
-            showDetails.Genres.Length.Should().Be(_show.Genres.Count);
-            showDetails.Imdb.Should().Be(_show.IMDB);
-            showDetails.Tvdb.Should().Be(_show.TVDB);
-            showDetails.Logo.Should().Be(_show.Logo);
-            showDetails.Thumb.Should().Be(_show.Thumb);
-            showDetails.Path.Should().Be(_show.Path);
-            showDetails.ProductionYear.Should().Be(_show.ProductionYear);
-            showDetails.RunTime.Should().Be(2L);
-            showDetails.SpecialEpisodeCount.Should().Be(2);
-            showDetails.Status.Should().Be(_show.Status);
-            showDetails.SeasonCount.Should().Be(_show.Seasons.Count);
+        var subject = new ShowController(serviceMock.Object, mapper);
+        var result = await subject.GetShow("1");
+        var resultObject = result.Should().BeOfType<NotFoundObjectResult>().Subject.Value;
+        var id = resultObject.Should().BeOfType<string>().Subject;
 
-            _showServiceMock.Verify(x => x.GetShow("1"), Times.Once);
-            _showServiceMock.VerifyNoOtherCalls();
-        }
+        id.Should().Be("1");
 
-        [Fact]
-        public void Is_Show_Type_Present()
-        {
-            var result = _subject.ShowTypeIsPresent();
-            var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
-            var isPresent = resultObject.Should().BeOfType<bool>().Subject;
+        serviceMock.Verify(x => x.GetShow("1"), Times.Once);
+        serviceMock.VerifyNoOtherCalls();
+    }
 
-            isPresent.Should().BeTrue();
-            _showServiceMock.Verify(x => x.TypeIsPresent(), Times.Once);
-        }
+    [Fact]
+    public async Task GetShow_Should_Return_ShowDetails()
+    {
+        var result = await _subject.GetShow("1");
+        var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
+        var showDetails = resultObject.Should().BeOfType<ShowDetailViewModel>().Subject;
 
-        private Mapper CreateMapper()
-        {
-            var profiles = new MapProfiles();
-            var configuration = new MapperConfiguration(cfg => cfg.AddProfile(profiles));
-            return new Mapper(configuration);
-        }
+        showDetails.Should().NotBeNull();
+        showDetails.Id.Should().Be(_show.Id);
+        showDetails.CumulativeRunTime.Should().Be(32334L);
+        showDetails.Banner.Should().Be(_show.Banner);
+        showDetails.Primary.Should().Be(_show.Primary);
+        showDetails.SizeInMb.Should().Be(_show.SizeInMb);
+        showDetails.Tmdb.Should().Be(_show.TMDB);
+        showDetails.Name.Should().Be(_show.Name);
+        showDetails.PremiereDate.Should().Be(_show.PremiereDate);
+        showDetails.CommunityRating.Should().Be(_show.CommunityRating);
+        showDetails.Genres.Length.Should().Be(_show.Genres.Count);
+        showDetails.Imdb.Should().Be(_show.IMDB);
+        showDetails.Tvdb.Should().Be(_show.TVDB);
+        showDetails.Logo.Should().Be(_show.Logo);
+        showDetails.Thumb.Should().Be(_show.Thumb);
+        showDetails.Path.Should().Be(_show.Path);
+        showDetails.ProductionYear.Should().Be(_show.ProductionYear);
+        showDetails.RunTime.Should().Be(2L);
+        showDetails.SpecialEpisodeCount.Should().Be(2);
+        showDetails.Status.Should().Be(_show.Status);
+        showDetails.SeasonCount.Should().Be(_show.Seasons.Count);
+
+        _showServiceMock.Verify(x => x.GetShow("1"), Times.Once);
+        _showServiceMock.VerifyNoOtherCalls();
+    }
+
+    [Fact]
+    public void Is_Show_Type_Present()
+    {
+        var result = _subject.ShowTypeIsPresent();
+        var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
+        var isPresent = resultObject.Should().BeOfType<bool>().Subject;
+
+        isPresent.Should().BeTrue();
+        _showServiceMock.Verify(x => x.TypeIsPresent(), Times.Once);
+    }
+
+    private Mapper CreateMapper()
+    {
+        var profiles = new MapProfiles();
+        var configuration = new MapperConfiguration(cfg => cfg.AddProfile(profiles));
+        return new Mapper(configuration);
     }
 }

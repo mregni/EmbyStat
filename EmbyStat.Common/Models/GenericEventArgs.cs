@@ -1,18 +1,17 @@
 ﻿using System;
 
-namespace EmbyStat.Common.Models
+namespace EmbyStat.Common.Models;
+
+public class GenericEventArgs<T> : EventArgs
 {
-    public class GenericEventArgs<T> : EventArgs
+    public T Argument { get; set; }
+
+    public GenericEventArgs(T arg)
     {
-        public T Argument { get; set; }
+        Argument = arg;
+    }
 
-        public GenericEventArgs(T arg)
-        {
-            Argument = arg;
-        }
-
-        public GenericEventArgs()
-        {
-        }
+    public GenericEventArgs()
+    {
     }
 }

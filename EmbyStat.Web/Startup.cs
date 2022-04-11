@@ -41,319 +41,318 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Refit;
 
-namespace EmbyStat.Web
+namespace EmbyStat.Web;
+
+public class Startup
 {
-    public class Startup
+    public IConfiguration Configuration { get; }
+    public IWebHostEnvironment WebHostEnvironment { get; }
+    public IApplicationBuilder ApplicationBuilder { get; set; }
+
+    public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
     {
-        public IConfiguration Configuration { get; }
-        public IWebHostEnvironment WebHostEnvironment { get; }
-        public IApplicationBuilder ApplicationBuilder { get; set; }
+        WebHostEnvironment = webHostEnvironment;
+        Configuration = configuration;
+    }
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddOptions();
+        services.Configure<AppSettings>(Configuration);
+        var appSettings = Configuration.Get<AppSettings>();
+        services.RegisterApplicationDependencies();
+
+        RollbarLocator.RollbarInstance.Configure(new RollbarConfig(appSettings.Rollbar.AccessToken));
+
+        services.AddRollbarLogger(loggerOptions =>
         {
-            WebHostEnvironment = webHostEnvironment;
-            Configuration = configuration;
-        }
+            loggerOptions.Filter = (_, logLevel) => logLevel >= (LogLevel)Enum.Parse(typeof(LogLevel), appSettings.Rollbar.LogLevel);
+        });
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddOptions();
-            services.Configure<AppSettings>(Configuration);
-            var appSettings = Configuration.Get<AppSettings>();
-            services.RegisterApplicationDependencies();
-
-            RollbarLocator.RollbarInstance.Configure(new RollbarConfig(appSettings.Rollbar.AccessToken));
-
-            services.AddRollbarLogger(loggerOptions =>
-            {
-                loggerOptions.Filter = (loggerName, logLevel) => logLevel >= (LogLevel)Enum.Parse(typeof(LogLevel), appSettings.Rollbar.LogLevel);
-            });
-
-            services.AddCors(b => b.AddPolicy("default"
-                , builder => {
+        services.AddCors(b => b.AddPolicy("default"
+            , builder => {
                 builder
                     .AllowAnyMethod()
                     .AllowAnyHeader()
-                    .SetIsOriginAllowed(origin => true)
+                    .SetIsOriginAllowed(_ => true)
                     .AllowCredentials();
-        }));
+            }));
 
-            services
-                .AddMvcCore(options => {
-                    options.Filters.Add(new BusinessExceptionFilterAttribute());
-                    options.EnableEndpointRouting = false;
-                })
-                .AddApplicationPart(Assembly.Load(new AssemblyName("EmbyStat.Controllers")))
-                .AddApiExplorer()
-                .AddAuthorization();
+        services
+            .AddMvcCore(options => {
+                options.Filters.Add(new BusinessExceptionFilterAttribute());
+                options.EnableEndpointRouting = false;
+            })
+            .AddApplicationPart(Assembly.Load(new AssemblyName("EmbyStat.Controllers")))
+            .AddApiExplorer()
+            .AddAuthorization();
 
-            services.AddHangfire(x =>
+        services.AddHangfire(x =>
+        {
+            x.UseMemoryStorage();
+            x.UseRecurringJob();
+        });
+
+        SetupDirectories(appSettings);
+
+        services.AddAutoMapper(typeof(MapProfiles));
+        services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "EmbyStat API", Version = "1.0"});
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
-                x.UseMemoryStorage();
-                x.UseRecurringJob();
+                Type = SecuritySchemeType.Http,
+                BearerFormat = "JWT",
+                In = ParameterLocation.Header,
+                Scheme = "bearer",
+                Description = "Please insert JWT token into field"
             });
 
-            SetupDirectories(appSettings);
-
-            services.AddAutoMapper(typeof(MapProfiles));
-            services.AddSwaggerGen(c =>
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "EmbyStat API", Version = "1.0"});
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Type = SecuritySchemeType.Http,
-                    BearerFormat = "JWT",
-                    In = ParameterLocation.Header,
-                    Scheme = "bearer",
-                    Description = "Please insert JWT token into field"
-                });
-
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
+                    new OpenApiSecurityScheme
                     {
-                        new OpenApiSecurityScheme
+                        Reference = new OpenApiReference
                         {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        new string[] { }
-                    }
-                });
-            });
-
-            services.AddRefitClient<IMediaServerApi>();
-
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "dist";
-            });
-
-            services.AddSignalR();
-            services.AddDbContext<EsDbContext>();
-
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("ApiUser", policy => policy.RequireRole(Constants.Roles.User));
-                options.AddPolicy("ApiAdmin", policy => policy.RequireRole(Constants.Roles.Admin));
-            });
-            
-            services.AddIdentity<EmbyStatUser, IdentityRole>(options => {
-                    options.Password.RequireDigit = false;
-                    options.Password.RequireUppercase = false;
-                    options.Password.RequireLowercase = false;
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequiredLength = 6;
-                    options.Lockout.MaxFailedAccessAttempts = 5;
-                    options.SignIn.RequireConfirmedEmail = false;
-                    options.SignIn.RequireConfirmedPhoneNumber = false;
-                    options.SignIn.RequireConfirmedAccount = false;
-                    options.User.RequireUniqueEmail = false;
-                })
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<EsDbContext>()
-                .AddDefaultTokenProviders();
-            
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-            services.AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(x =>
-                {
-                    x.ClaimsIssuer = appSettings.Jwt.Issuer;
-                    x.RequireHttpsMetadata = false;
-                    x.SaveToken = true;
-                    x.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(appSettings.Jwt.Key)),
-
-                        ValidateIssuer = true,
-                        ValidIssuer = appSettings.Jwt.Issuer,
-
-                        ValidateAudience = true,
-                        ValidAudience = appSettings.Jwt.Audience,
-
-                        ValidateLifetime = true,
-                        ClockSkew = TimeSpan.Zero
-                    };
-                    x.Events = new JwtBearerEvents
-                    {
-                        OnAuthenticationFailed = context =>
-                        {
-                            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                            {
-                                context.Response.Headers.Add("AccessToken-Expired", "true");
-                            }
-
-                            return Task.CompletedTask;
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
                         }
-                    };
-                });
-            
-            services.AddHttpContextAccessor();
+                    },
+                    new string[] { }
+                }
+            });
+        });
 
-            //services.AddHostedService<WebSocketService>();
-            services.AddJsonMigrator(typeof(CreateUserSettings).Assembly);
-        }
+        services.AddRefitClient<IMediaServerApi>();
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
+        services.AddSpaStaticFiles(configuration =>
         {
-            ApplicationBuilder = app;
+            configuration.RootPath = "dist";
+        });
 
-            lifetime.ApplicationStarted.Register(PerformPostStartupFunctions);
-            lifetime.ApplicationStopping.Register(PerformPreShutdownFunctions);
+        services.AddSignalR();
+        services.AddDbContext<EsDbContext>();
 
-            if (env.IsDevelopment())
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("ApiUser", policy => policy.RequireRole(Constants.Roles.User));
+            options.AddPolicy("ApiAdmin", policy => policy.RequireRole(Constants.Roles.Admin));
+        });
+            
+        services.AddIdentity<EmbyStatUser, IdentityRole>(options => {
+                options.Password.RequireDigit = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 6;
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.SignIn.RequireConfirmedEmail = false;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
+                options.SignIn.RequireConfirmedAccount = false;
+                options.User.RequireUniqueEmail = false;
+            })
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<EsDbContext>()
+            .AddDefaultTokenProviders();
+            
+        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+        services.AddAuthentication(options =>
             {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
             {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
+                x.ClaimsIssuer = appSettings.Jwt.Issuer;
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(appSettings.Jwt.Key)),
 
-            //app.UseRollbarMiddleware();
+                    ValidateIssuer = true,
+                    ValidIssuer = appSettings.Jwt.Issuer,
 
-            app.UseHangfireServer(new BackgroundJobServerOptions
-            {
-                WorkerCount = 1,
-                SchedulePollingInterval = new TimeSpan(0, 0, 5),
-                ServerTimeout = TimeSpan.FromDays(1),
-                ShutdownTimeout = TimeSpan.FromDays(1),
-                ServerName = "Main server",
-                Queues = new[] { "main" }
-            });
+                    ValidateAudience = true,
+                    ValidAudience = appSettings.Jwt.Audience,
 
-            GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 2 });
-
-            if (env.IsDevelopment())
-            {
-                app.UseHangfireDashboard("/hangfire",
-                    new DashboardOptions
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+                x.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
                     {
-                        Authorization = new[] { new LocalRequestsOnlyAuthorizationFilter() }
-                    });
-            }
+                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        {
+                            context.Response.Headers.Add("AccessToken-Expired", "true");
+                        }
+
+                        return Task.CompletedTask;
+                    }
+                };
+            });
             
-            app.UseCors("default");
-            app.UseRouting();
+        services.AddHttpContextAccessor();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+        //services.AddHostedService<WebSocketService>();
+        services.AddJsonMigrator(typeof(CreateUserSettings).Assembly);
+    }
 
-            app.UseEndpoints(routes =>
-            {
-                routes.MapHub<EmbyStatHub>("/hub");
-            });
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
+    {
+        ApplicationBuilder = app;
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
+        lifetime.ApplicationStarted.Register(PerformPostStartupFunctions);
+        lifetime.ApplicationStopping.Register(PerformPreShutdownFunctions);
 
-            app.UseStaticFiles();
-            app.UseSpaStaticFiles();
-
-            app.UseMvc();
-
-            app.UseSpa(spa =>
-            {
-                if (env.IsDevelopment())
-                {
-                    spa.Options.SourcePath = "ClientApp";
-                    spa.UseReactDevelopmentServer("start");
-                }
-                else
-                {
-                    spa.Options.SourcePath = "dist";
-                }
-            });
-
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
         }
 
-        private static void SetupDirectories(AppSettings settings)
+        app.UseForwardedHeaders(new ForwardedHeadersOptions
         {
-            if (Directory.Exists(settings.Dirs.TempUpdate.GetLocalPath()))
+            ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+        });
+
+        //app.UseRollbarMiddleware();
+
+        app.UseHangfireServer(new BackgroundJobServerOptions
+        {
+            WorkerCount = 1,
+            SchedulePollingInterval = new TimeSpan(0, 0, 5),
+            ServerTimeout = TimeSpan.FromDays(1),
+            ShutdownTimeout = TimeSpan.FromDays(1),
+            ServerName = "Main server",
+            Queues = new[] { "main" }
+        });
+
+        GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 2 });
+
+        if (env.IsDevelopment())
+        {
+            app.UseHangfireDashboard("/hangfire",
+                new DashboardOptions
+                {
+                    Authorization = new[] { new LocalRequestsOnlyAuthorizationFilter() }
+                });
+        }
+            
+        app.UseCors("default");
+        app.UseRouting();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.UseEndpoints(routes =>
+        {
+            routes.MapHub<EmbyStatHub>("/hub");
+        });
+
+        app.UseSwagger();
+        app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
+
+        app.UseStaticFiles();
+        app.UseSpaStaticFiles();
+
+        app.UseMvc();
+
+        app.UseSpa(spa =>
+        {
+            if (env.IsDevelopment())
             {
-                Directory.Delete(settings.Dirs.TempUpdate.GetLocalPath(), true);
+                spa.Options.SourcePath = "ClientApp";
+                spa.UseReactDevelopmentServer("start");
             }
-        }
+            else
+            {
+                spa.Options.SourcePath = "dist";
+            }
+        });
 
-        private void PerformPostStartupFunctions()
+    }
+
+    private static void SetupDirectories(AppSettings settings)
+    {
+        if (Directory.Exists(settings.Dirs.TempUpdate.GetLocalPath()))
         {
-            using var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope();
-            var migrationRunner = serviceScope.ServiceProvider.GetService<IMigrationRunner>();
-            migrationRunner.Migrate();
+            Directory.Delete(settings.Dirs.TempUpdate.GetLocalPath(), true);
+        }
+    }
+
+    private void PerformPostStartupFunctions()
+    {
+        using var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope();
+        var migrationRunner = serviceScope.ServiceProvider.GetService<IMigrationRunner>();
+        migrationRunner.Migrate();
                 
-            var settingsService = serviceScope.ServiceProvider.GetService<ISettingsService>();
-            var accountService = serviceScope.ServiceProvider.GetService<IAccountService>();
-            var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
-            var clientStrategy = serviceScope.ServiceProvider.GetService<IClientStrategy>();
-            var jobInitializer = serviceScope.ServiceProvider.GetService<IJobInitializer>();
+        var settingsService = serviceScope.ServiceProvider.GetService<ISettingsService>();
+        var accountService = serviceScope.ServiceProvider.GetService<IAccountService>();
+        var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
+        var clientStrategy = serviceScope.ServiceProvider.GetService<IClientStrategy>();
+        var jobInitializer = serviceScope.ServiceProvider.GetService<IJobInitializer>();
 
-            var settings = settingsService.GetAppSettings();
+        var settings = settingsService.GetAppSettings();
 
-            accountService.CreateRoles();
-            settingsService.LoadUserSettingsFromFile();
-            settingsService.CreateRollbarLogger();
-            AddDeviceIdToConfig(settingsService);
-            RemoveVersionFiles();
-            jobService.ResetAllJobs();
-            SetEmbyClientConfiguration(settingsService, clientStrategy);
-            jobInitializer.Setup(settings.NoUpdates);
-        }
+        accountService.CreateRoles();
+        settingsService.LoadUserSettingsFromFile();
+        settingsService.CreateRollbarLogger();
+        AddDeviceIdToConfig(settingsService);
+        RemoveVersionFiles();
+        jobService.ResetAllJobs();
+        SetEmbyClientConfiguration(settingsService, clientStrategy);
+        jobInitializer.Setup(settings.NoUpdates);
+    }
 
-        private void PerformPreShutdownFunctions()
+    private void PerformPreShutdownFunctions()
+    {
+        using var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope();
+        var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
+        jobService.ResetAllJobs();
+    }
+
+    private void RemoveVersionFiles()
+    {
+        foreach (var file in Directory.GetFiles(WebHostEnvironment.ContentRootPath, "*.ver"))
         {
-            using var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope();
-            var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
-            jobService.ResetAllJobs();
+            File.Delete(file);
         }
+    }
 
-        private void RemoveVersionFiles()
+    private void AddDeviceIdToConfig(ISettingsService settingsService)
+    {
+        var userSettings = settingsService.GetUserSettings();
+
+        if (userSettings.Id == null)
         {
-            foreach (var file in Directory.GetFiles(WebHostEnvironment.ContentRootPath, "*.ver"))
-            {
-                File.Delete(file);
-            }
+            userSettings.Id = Guid.NewGuid();
+            settingsService.SaveUserSettingsAsync(userSettings);
         }
+    }
 
-        private void AddDeviceIdToConfig(ISettingsService settingsService)
+    private void SetEmbyClientConfiguration(ISettingsService settingsService, IClientStrategy clientStrategy)
+    {
+        settingsService.SetUpdateInProgressSettingAsync(false);
+        var settings = settingsService.GetUserSettings();
+
+        var mediaServerType = settings.MediaServer?.Type ?? ServerType.Emby;
+        var mediaServerClient = clientStrategy.CreateHttpClient(mediaServerType);
+
+        mediaServerClient.SetDeviceInfo(
+            settings.AppName, 
+            settings.MediaServer?.AuthorizationScheme ?? string.Empty, 
+            settingsService.GetAppSettings().Version.ToCleanVersionString(), 
+            settings.Id.ToString(),
+            settings.MediaServer?.UserId ?? string.Empty);
+
+        if (!string.IsNullOrWhiteSpace(settings.MediaServer?.ApiKey))
         {
-            var userSettings = settingsService.GetUserSettings();
-
-            if (userSettings.Id == null)
-            {
-                userSettings.Id = Guid.NewGuid();
-                settingsService.SaveUserSettingsAsync(userSettings);
-            }
-        }
-
-        private void SetEmbyClientConfiguration(ISettingsService settingsService, IClientStrategy clientStrategy)
-        {
-            settingsService.SetUpdateInProgressSettingAsync(false);
-            var settings = settingsService.GetUserSettings();
-
-            var mediaServerType = settings.MediaServer?.Type ?? ServerType.Emby;
-            var mediaServerClient = clientStrategy.CreateHttpClient(mediaServerType);
-
-            mediaServerClient.SetDeviceInfo(
-                settings.AppName, 
-                settings.MediaServer?.AuthorizationScheme ?? string.Empty, 
-                settingsService.GetAppSettings().Version.ToCleanVersionString(), 
-                settings.Id.ToString(),
-                settings.MediaServer?.UserId ?? string.Empty);
-
-            if (!string.IsNullOrWhiteSpace(settings.MediaServer?.ApiKey))
-            {
-                mediaServerClient.BaseUrl = settings.MediaServer.Address;
-                mediaServerClient.ApiKey = settings.MediaServer.ApiKey;
-            }
+            mediaServerClient.BaseUrl = settings.MediaServer.Address;
+            mediaServerClient.ApiKey = settings.MediaServer.ApiKey;
         }
     }
 }

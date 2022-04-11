@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace EmbyStat.Common.Models.Entities.Helpers
+namespace EmbyStat.Common.Models.Entities.Helpers;
+
+public interface ILinkedMedia
 {
-    public interface ILinkedMedia
-    {
-        ICollection<MediaPerson> People { get; set; }
-        ICollection<Genre> Genres { get; set; }
-        Library Library { get; set; }
-    }
+    ICollection<MediaPerson> People { get; set; }
+    ICollection<Genre> Genres { get; set; }
+    Library Library { get; set; }
 }

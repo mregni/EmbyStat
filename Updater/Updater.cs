@@ -108,7 +108,7 @@ namespace Updater
                 proc.Start();
             }
 
-            _logger.Info($"EmbyStat started, now exiting");
+            _logger.Info("EmbyStat started, now exiting");
             _logger.Info($"Working dir: {_options.ApplicationPath} (Application Path)");
             _logger.Info($"Filename: {Path.Combine(_options.ApplicationPath, processName)}");
 

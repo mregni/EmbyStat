@@ -10,88 +10,87 @@ using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using MoreLinq;
 
-namespace EmbyStat.Services
+namespace EmbyStat.Services;
+
+public class FilterService : IFilterService
 {
-    public class FilterService : IFilterService
+    private readonly IFilterRepository _filterRepository;
+    private readonly IMovieRepository _movieRepository;
+    private readonly IShowRepository _showRepository;
+
+    public FilterService(IFilterRepository filterRepository, IMovieRepository movieRepository,
+        IShowRepository showRepository)
     {
-        private readonly IFilterRepository _filterRepository;
-        private readonly IMovieRepository _movieRepository;
-        private readonly IShowRepository _showRepository;
+        _filterRepository = filterRepository;
+        _movieRepository = movieRepository;
+        _showRepository = showRepository;
+    }
 
-        public FilterService(IFilterRepository filterRepository, IMovieRepository movieRepository,
-            IShowRepository showRepository)
+    public async Task<FilterValues> GetFilterValues(LibraryType type, string field)
+    {
+        var values = await _filterRepository.Get(type, field);
+        return values ?? CalculateFilterValues(type, field);
+    }
+
+    public FilterValues CalculateFilterValues(LibraryType type, string field)
+    {
+        var values = new FilterValues
         {
-            _filterRepository = filterRepository;
-            _movieRepository = movieRepository;
-            _showRepository = showRepository;
-        }
+            Field = field,
+            Type = type
+        };
 
-        public async Task<FilterValues> GetFilterValues(LibraryType type, string field)
+        LabelValuePair[] filterValues;
+        switch (type)
         {
-            var values = await _filterRepository.Get(type, field);
-            return values ?? CalculateFilterValues(type, field);
-        }
-
-        public FilterValues CalculateFilterValues(LibraryType type, string field)
-        {
-            var values = new FilterValues
-            {
-                Field = field,
-                Type = type
-            };
-
-            LabelValuePair[] filterValues;
-            switch (type)
-            {
-                case LibraryType.Movies:
-                    filterValues = CalculateMovieFilterValues(field).ToArray();
-                    break;
-                case LibraryType.TvShow:
-                    filterValues = CalculateShowFilterValues(field).ToArray();
-                    break;
-                default:
-                    return null;
-            }
-
-            if (!filterValues.Any())
-            {
+            case LibraryType.Movies:
+                filterValues = CalculateMovieFilterValues(field).ToArray();
+                break;
+            case LibraryType.TvShow:
+                filterValues = CalculateShowFilterValues(field).ToArray();
+                break;
+            default:
                 return null;
-            }
-
-            values.Values = filterValues;
-
-            _filterRepository.Insert(values);
-            return values;
         }
 
-        private IEnumerable<LabelValuePair> CalculateShowFilterValues(string field)
+        if (!filterValues.Any())
         {
-            return field.ToLowerInvariant() switch
-            {
-                "genre" => _showRepository.CalculateGenreFilterValues(),
-                _ => Array.Empty<LabelValuePair>()
-            };
+            return null;
         }
 
-        private IEnumerable<LabelValuePair> CalculateMovieFilterValues(string field)
+        values.Values = filterValues;
+
+        _filterRepository.Insert(values);
+        return values;
+    }
+
+    private IEnumerable<LabelValuePair> CalculateShowFilterValues(string field)
+    {
+        return field.ToLowerInvariant() switch
         {
-            switch (field.ToLowerInvariant())
-            {
-                case "subtitle":
-                    var re = new Regex(@"\ \([0-9a-zA-Z -_]*\)$");
-                    var values = _movieRepository.CalculateSubtitleFilterValues().ToArray();
-                    values.ForEach(x => re.Replace(x.Label, string.Empty));
-                    return values;
-                case "genre":
-                    return _movieRepository.CalculateGenreFilterValues().ToArray();
-                case "container":
-                    return _movieRepository.CalculateContainerFilterValues().ToArray();
-                case "codec":
-                    return _movieRepository.CalculateCodecFilterValues().ToArray();
-                case "videorange":
-                    return _movieRepository.CalculateVideoRangeFilterValues().ToArray();
-                default: return Array.Empty<LabelValuePair>();
-            }
+            "genre" => _showRepository.CalculateGenreFilterValues(),
+            _ => Array.Empty<LabelValuePair>()
+        };
+    }
+
+    private IEnumerable<LabelValuePair> CalculateMovieFilterValues(string field)
+    {
+        switch (field.ToLowerInvariant())
+        {
+            case "subtitle":
+                var re = new Regex(@"\ \([0-9a-zA-Z -_]*\)$");
+                var values = _movieRepository.CalculateSubtitleFilterValues().ToArray();
+                values.ForEach(x => re.Replace(x.Label, string.Empty));
+                return values;
+            case "genre":
+                return _movieRepository.CalculateGenreFilterValues().ToArray();
+            case "container":
+                return _movieRepository.CalculateContainerFilterValues().ToArray();
+            case "codec":
+                return _movieRepository.CalculateCodecFilterValues().ToArray();
+            case "videorange":
+                return _movieRepository.CalculateVideoRangeFilterValues().ToArray();
+            default: return Array.Empty<LabelValuePair>();
         }
     }
 }

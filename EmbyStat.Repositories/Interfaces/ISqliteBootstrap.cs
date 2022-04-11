@@ -1,9 +1,8 @@
 ﻿using Microsoft.Data.Sqlite;
 
-namespace EmbyStat.Repositories.Interfaces
+namespace EmbyStat.Repositories.Interfaces;
+
+public interface ISqliteBootstrap
 {
-    public interface ISqliteBootstrap
-    {
-        SqliteConnection CreateConnection();
-    }
+    SqliteConnection CreateConnection();
 }

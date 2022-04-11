@@ -7,56 +7,55 @@ using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.Stat;
 
-namespace EmbyStat.Services.Interfaces
+namespace EmbyStat.Services.Interfaces;
+
+public interface IMediaServerService
 {
-    public interface IMediaServerService
-    {
-        #region Server
+    #region Server
 
-        Task<IEnumerable<MediaServerUdpBroadcast>> SearchMediaServer(ServerType type);
-        Task<MediaServerInfo> GetServerInfo(bool forceReSync);
-        Task<bool> TestNewApiKey(string url, string apiKey, ServerType type);
-        Task<MediaServerStatus> GetMediaServerStatus();
-        Task<bool> PingMediaServer(string url);
-        Task<bool> PingMediaServer();
-        Task ResetMissedPings();
-        Task IncreaseMissedPings();
-        Task<Library[]> GetMediaServerLibraries();
+    Task<IEnumerable<MediaServerUdpBroadcast>> SearchMediaServer(ServerType type);
+    Task<MediaServerInfo> GetServerInfo(bool forceReSync);
+    Task<bool> TestNewApiKey(string url, string apiKey, ServerType type);
+    Task<MediaServerStatus> GetMediaServerStatus();
+    Task<bool> PingMediaServer(string url);
+    Task<bool> PingMediaServer();
+    Task ResetMissedPings();
+    Task IncreaseMissedPings();
+    Task<Library[]> GetMediaServerLibraries();
 
-        #endregion
+    #endregion
 
-        #region Plugins
+    #region Plugins
 
-        Task<List<PluginInfo>> GetAllPlugins();
+    Task<List<PluginInfo>> GetAllPlugins();
 
-        #endregion
+    #endregion
 
-        #region Users
+    #region Users
 
-        Task<List<MediaServerUser>> GetAllUsers();
-        Task<List<MediaServerUser>> GetAllAdministrators();
-        Task<MediaServerUser> GetUserById(string id);
-        Card<int> GetViewedEpisodeCountByUserId(string id);
-        Card<int> GetViewedMovieCountByUserId(string id);
-        IEnumerable<UserMediaView> GetUserViewPageByUserId(string id, int page, int size);
-        int GetUserViewCount(string id);
+    Task<List<MediaServerUser>> GetAllUsers();
+    Task<List<MediaServerUser>> GetAllAdministrators();
+    Task<MediaServerUser> GetUserById(string id);
+    Card<int> GetViewedEpisodeCountByUserId(string id);
+    Card<int> GetViewedMovieCountByUserId(string id);
+    IEnumerable<UserMediaView> GetUserViewPageByUserId(string id, int page, int size);
+    int GetUserViewCount(string id);
 
-        #endregion
+    #endregion
 
-        #region Devices
+    #region Devices
 
-        Task<List<Device>> GetAllDevices();
+    Task<List<Device>> GetAllDevices();
 
-        #endregion
+    #endregion
 
-        #region JobHelpers
+    #region JobHelpers
 
-        Task<MediaServerInfo> GetAndProcessServerInfo();
-        Task GetAndProcessPluginInfo();
-        Task GetAndProcessUsers();
-        Task GetAndProcessDevices();
-        Task GetAndProcessLibraries();
+    Task<MediaServerInfo> GetAndProcessServerInfo();
+    Task GetAndProcessPluginInfo();
+    Task GetAndProcessUsers();
+    Task GetAndProcessDevices();
+    Task GetAndProcessLibraries();
 
-        #endregion
-    }
+    #endregion
 }

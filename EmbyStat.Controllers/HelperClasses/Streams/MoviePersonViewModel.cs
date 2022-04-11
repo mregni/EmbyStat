@@ -1,6 +1,5 @@
-﻿namespace EmbyStat.Controllers.HelperClasses.Streams
+﻿namespace EmbyStat.Controllers.HelperClasses.Streams;
+
+class MoviePersonViewModel
 {
-    class MoviePersonViewModel
-    {
-    }
 }

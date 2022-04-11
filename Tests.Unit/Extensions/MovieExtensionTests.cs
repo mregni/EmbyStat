@@ -1,4 +1,5 @@
-﻿using EmbyStat.Common.Extensions;
+﻿using System;
+using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Repositories;
 using FluentAssertions;
@@ -12,13 +13,9 @@ public class MovieExtensionTests
     [Fact]
     public void GenerateFullMovieQuery_Without_Filters_Should_Return_Query()
     {
-        var context = new EsDbContext();
-        var filters = new Filter[0];
-        // {
-        //     new FilterBuilder("Name", "==", "Lord").Build(),
-        // };
+        var filters = Array.Empty<Filter>();
         
-        var result = context.Movies.GenerateFullMovieQuery(filters, "Name", "asc");
+        var result = MovieExtensions.GenerateFullMovieQuery(filters, "Name", "asc");
         result.Should().Be(@"
 SELECT m.*, g.*, aus.*, vis.*, sus.*, mes.*
 FROM Movies as m
@@ -34,13 +31,12 @@ WHERE 1=1 ORDER BY Name ASC ");
     [Fact]
     public void GenerateFullMovieQuery_With_Filters_Should_Return_Query()
     {
-        var context = new EsDbContext();
         var filters = new []
         {
             new FilterBuilder("Name", "==", "Lord").Build(),
         };
         
-        var result = context.Movies.GenerateFullMovieQuery(filters, "Name", "asc");
+        var result = MovieExtensions.GenerateFullMovieQuery(filters, "Name", "asc");
         result.Should().Be(@"
 SELECT m.*, g.*, aus.*, vis.*, sus.*, mes.*
 FROM Movies as m

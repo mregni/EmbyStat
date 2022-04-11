@@ -1,6 +1,5 @@
-﻿namespace EmbyStat.Jobs.Jobs.Interfaces
+﻿namespace EmbyStat.Jobs.Jobs.Interfaces;
+
+public interface IDatabaseCleanupJob : IBaseJob
 {
-    public interface IDatabaseCleanupJob : IBaseJob
-    {
-    }
 }

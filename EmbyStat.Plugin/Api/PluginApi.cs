@@ -1,6 +1,5 @@
-﻿namespace EmbyStat.Plugin.Api
+﻿namespace EmbyStat.Plugin.Api;
+
+public class PluginApi
 {
-    public class PluginApi
-    {
-    }
 }

@@ -1,14 +1,13 @@
-﻿namespace EmbyStat.Common.Enums
+﻿namespace EmbyStat.Common.Enums;
+
+public enum MediaProtocol
 {
-    public enum MediaProtocol
-    {
-        File,
-        Http,
-        Rtmp,
-        Rtsp,
-        Udp,
-        Rtp,
-        Ftp,
-        Mms,
-    }
+    File,
+    Http,
+    Rtmp,
+    Rtsp,
+    Udp,
+    Rtp,
+    Ftp,
+    Mms,
 }

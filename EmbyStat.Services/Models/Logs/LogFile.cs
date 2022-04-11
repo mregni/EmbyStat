@@ -1,8 +1,7 @@
-﻿namespace EmbyStat.Services.Models.Logs
+﻿namespace EmbyStat.Services.Models.Logs;
+
+public class LogFile
 {
-    public class LogFile
-    {
-        public string FileName { get; set; }
-        public long Size { get; set; }
-    }
+    public string FileName { get; set; }
+    public long Size { get; set; }
 }

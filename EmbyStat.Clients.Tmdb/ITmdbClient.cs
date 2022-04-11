@@ -2,10 +2,9 @@
 using System.Threading.Tasks;
 using EmbyStat.Common.Models.Show;
 
-namespace EmbyStat.Clients.Tmdb
+namespace EmbyStat.Clients.Tmdb;
+
+public interface ITmdbClient
 {
-    public interface ITmdbClient
-    {
-        Task<IEnumerable<VirtualEpisode>> GetEpisodesAsync(int? tmdbShowId);
-    }
+    Task<IEnumerable<VirtualEpisode>> GetEpisodesAsync(int? tmdbShowId);
 }

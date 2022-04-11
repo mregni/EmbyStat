@@ -1,9 +1,8 @@
-﻿namespace EmbyStat.Common.Enums
+﻿namespace EmbyStat.Common.Enums;
+
+public enum UpdateLevel
 {
-    public enum UpdateLevel
-    {
-        Release,
-        Beta,
-        Dev
-    }
+    Release,
+    Beta,
+    Dev
 }

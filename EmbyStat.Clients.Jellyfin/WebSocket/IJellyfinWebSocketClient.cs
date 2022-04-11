@@ -1,6 +1,5 @@
-﻿namespace EmbyStat.Clients.Jellyfin.WebSocket
+﻿namespace EmbyStat.Clients.Jellyfin.WebSocket;
+
+public interface IJellyfinWebSocketClient
 {
-    public interface IJellyfinWebSocketClient
-    {
-    }
 }

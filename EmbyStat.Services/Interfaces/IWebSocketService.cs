@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.Hosting;
 
-namespace EmbyStat.Services.Interfaces
+namespace EmbyStat.Services.Interfaces;
+
+public interface IWebSocketService : IHostedService
 {
-    public interface IWebSocketService : IHostedService
-    {
         
-    }
 }

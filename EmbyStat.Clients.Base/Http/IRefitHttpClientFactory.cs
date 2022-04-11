@@ -1,7 +1,6 @@
-﻿namespace EmbyStat.Clients.Base.Http
+﻿namespace EmbyStat.Clients.Base.Http;
+
+public interface IRefitHttpClientFactory<out T>
 {
-    public interface IRefitHttpClientFactory<T>
-    {
-        T CreateClient(string baseAddressKey);
-    }
+    T CreateClient(string baseAddressKey);
 }

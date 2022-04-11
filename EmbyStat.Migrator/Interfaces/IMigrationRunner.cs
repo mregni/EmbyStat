@@ -1,7 +1,6 @@
-﻿namespace EmbyStat.Migrator.Interfaces
+﻿namespace EmbyStat.Migrator.Interfaces;
+
+public interface IMigrationRunner
 {
-    public interface IMigrationRunner
-    {
-        void Migrate();
-    }
+    void Migrate();
 }

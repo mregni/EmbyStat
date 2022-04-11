@@ -1,9 +1,8 @@
-﻿namespace EmbyStat.Common.Enums
+﻿namespace EmbyStat.Common.Enums;
+
+public enum PlayMethod
 {
-    public enum PlayMethod
-    {
-        Transcode = 0,
-        DirectStream = 1,
-        DirectPlay = 2,
-    }
+    Transcode = 0,
+    DirectStream = 1,
+    DirectPlay = 2,
 }

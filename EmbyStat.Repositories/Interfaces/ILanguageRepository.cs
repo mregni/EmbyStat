@@ -2,10 +2,9 @@
 using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
 
-namespace EmbyStat.Repositories.Interfaces
+namespace EmbyStat.Repositories.Interfaces;
+
+public interface ILanguageRepository
 {
-    public interface ILanguageRepository
-    {
-        Task<List<Language>> GetLanguages();
-    }
+    Task<List<Language>> GetLanguages();
 }

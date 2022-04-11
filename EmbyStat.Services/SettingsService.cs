@@ -11,90 +11,89 @@ using Newtonsoft.Json;
 using Rollbar;
 using Formatting = Newtonsoft.Json.Formatting;
 
-namespace EmbyStat.Services
+namespace EmbyStat.Services;
+
+public class SettingsService : ISettingsService
 {
-    public class SettingsService : ISettingsService
+    private readonly AppSettings _appSettings;
+    private UserSettings _userSettings;
+    public event EventHandler<GenericEventArgs<UserSettings>> OnUserSettingsChanged;
+
+    public SettingsService(IOptions<AppSettings> appSettings)
     {
-        private readonly AppSettings _appSettings;
-        private UserSettings _userSettings;
-        public event EventHandler<GenericEventArgs<UserSettings>> OnUserSettingsChanged;
+        _appSettings = appSettings.Value;
+    }
 
-        public SettingsService(IOptions<AppSettings> appSettings)
+    public AppSettings GetAppSettings()
+    {
+        return _appSettings;
+    }
+
+    public UserSettings GetUserSettings()
+    {
+        return _userSettings;
+    }
+
+    public Task<UserSettings> SaveUserSettingsAsync(UserSettings userSettings)
+    {
+        return SaveUserSettingsAsync(userSettings, _userSettings.Version);
+    }
+
+    public async Task<UserSettings> SaveUserSettingsAsync(UserSettings userSettings, long version)
+    {
+        _userSettings = userSettings;
+        _userSettings.Version = version;
+
+        var strJson = JsonConvert.SerializeObject(_userSettings, Formatting.Indented);
+        var dir = Path.Combine(_appSettings.Dirs.Config, "usersettings.json");
+        await File.WriteAllTextAsync(dir, strJson);
+
+        CreateRollbarLogger();
+
+        OnUserSettingsChanged?.Invoke(this, new GenericEventArgs<UserSettings>(_userSettings));
+        return _userSettings;
+    }
+
+    public void CreateRollbarLogger()
+    {
+        var rollbarConfig = new RollbarConfig(_appSettings.Rollbar.AccessToken)
         {
-            _appSettings = appSettings.Value;
-        }
-
-        public AppSettings GetAppSettings()
-        {
-            return _appSettings;
-        }
-
-        public UserSettings GetUserSettings()
-        {
-            return _userSettings;
-        }
-
-        public Task<UserSettings> SaveUserSettingsAsync(UserSettings userSettings)
-        {
-            return SaveUserSettingsAsync(userSettings, _userSettings.Version);
-        }
-
-        public async Task<UserSettings> SaveUserSettingsAsync(UserSettings userSettings, long version)
-        {
-            _userSettings = userSettings;
-            _userSettings.Version = version;
-
-            var strJson = JsonConvert.SerializeObject(_userSettings, Formatting.Indented);
-            var dir = Path.Combine(_appSettings.Dirs.Config, "usersettings.json");
-            await File.WriteAllTextAsync(dir, strJson);
-
-            CreateRollbarLogger();
-
-            OnUserSettingsChanged?.Invoke(this, new GenericEventArgs<UserSettings>(_userSettings));
-            return _userSettings;
-        }
-
-        public void CreateRollbarLogger()
-        {
-            var rollbarConfig = new RollbarConfig(_appSettings.Rollbar.AccessToken)
+            Environment = _appSettings.Rollbar.Environment,
+            MaxReportsPerMinute = _appSettings.Rollbar.MaxReportsPerMinute,
+            ReportingQueueDepth = _appSettings.Rollbar.ReportingQueueDepth,
+            Enabled = _userSettings.EnableRollbarLogging,
+            Transform = payload =>
             {
-                Environment = _appSettings.Rollbar.Environment,
-                MaxReportsPerMinute = _appSettings.Rollbar.MaxReportsPerMinute,
-                ReportingQueueDepth = _appSettings.Rollbar.ReportingQueueDepth,
-                Enabled = _userSettings.EnableRollbarLogging,
-                Transform = payload =>
+                payload.Data.CodeVersion = _appSettings.Version;
+                payload.Data.Custom = new Dictionary<string, object>
                 {
-                    payload.Data.CodeVersion = _appSettings.Version;
-                    payload.Data.Custom = new Dictionary<string, object>
-                    {
-                        {"Framework", RuntimeInformation.FrameworkDescription},
-                        {"OS", RuntimeInformation.OSDescription}
-                    };
-                }
-            };
-
-            RollbarLocator.RollbarInstance.Configure(rollbarConfig);
-        }
-
-        public long GetUserSettingsVersion()
-        {
-            return _userSettings?.Version ?? 0;
-        }
-
-        public Task SetUpdateInProgressSettingAsync(bool value)
-        {
-            _userSettings.UpdateInProgress = value;
-            return SaveUserSettingsAsync(_userSettings);
-        }
-
-        public void LoadUserSettingsFromFile()
-        {
-            var dir = Path.Combine(_appSettings.Dirs.Config, "usersettings.json");
-            if (File.Exists(dir))
-            {
-                _userSettings = JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(dir));
-                OnUserSettingsChanged?.Invoke(this, new GenericEventArgs<UserSettings>(_userSettings));
+                    {"Framework", RuntimeInformation.FrameworkDescription},
+                    {"OS", RuntimeInformation.OSDescription}
+                };
             }
+        };
+
+        RollbarLocator.RollbarInstance.Configure(rollbarConfig);
+    }
+
+    public long GetUserSettingsVersion()
+    {
+        return _userSettings?.Version ?? 0;
+    }
+
+    public Task SetUpdateInProgressSettingAsync(bool value)
+    {
+        _userSettings.UpdateInProgress = value;
+        return SaveUserSettingsAsync(_userSettings);
+    }
+
+    public void LoadUserSettingsFromFile()
+    {
+        var dir = Path.Combine(_appSettings.Dirs.Config, "usersettings.json");
+        if (File.Exists(dir))
+        {
+            _userSettings = JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(dir));
+            OnUserSettingsChanged?.Invoke(this, new GenericEventArgs<UserSettings>(_userSettings));
         }
     }
 }

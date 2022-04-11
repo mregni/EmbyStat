@@ -1,9 +1,8 @@
-﻿namespace EmbyStat.Services.Models.Charts
+﻿namespace EmbyStat.Services.Models.Charts;
+
+public class Chart
 {
-    public class Chart
-    {
-        public string Title { get; set; }
-        public SimpleChartData[] DataSets { get; set; }
-        public int SeriesCount { get; set; }
-    }
+    public string Title { get; set; }
+    public SimpleChartData[] DataSets { get; set; }
+    public int SeriesCount { get; set; }
 }

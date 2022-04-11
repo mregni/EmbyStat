@@ -1,20 +1,19 @@
 ﻿using EmbyStat.Repositories.Interfaces;
 using Microsoft.Data.Sqlite;
 
-namespace EmbyStat.Repositories
+namespace EmbyStat.Repositories;
+
+public class SqliteBootstrap : ISqliteBootstrap
 {
-    public class SqliteBootstrap : ISqliteBootstrap
+    private readonly string _connectionString;
+    public SqliteBootstrap()
     {
-        private readonly string _connectionString;
-        public SqliteBootstrap()
-        {
-            _connectionString = "Data Source=SqliteData.db";
-        }
+        _connectionString = "Data Source=SqliteData.db";
+    }
 
 
-        public SqliteConnection CreateConnection()
-        {
-            return new SqliteConnection(_connectionString);
-        }
+    public SqliteConnection CreateConnection()
+    {
+        return new SqliteConnection(_connectionString);
     }
 }

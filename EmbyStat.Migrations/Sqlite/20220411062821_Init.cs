@@ -457,7 +457,7 @@ namespace EmbyStat.Migrations.Sqlite
                 });
 
             migrationBuilder.CreateTable(
-                name: "Seasons",
+                name: "Season",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
@@ -478,9 +478,9 @@ namespace EmbyStat.Migrations.Sqlite
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Seasons", x => x.Id);
+                    table.PrimaryKey("PK_Season", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Seasons_Shows_ShowId",
+                        name: "FK_Season_Shows_ShowId",
                         column: x => x.ShowId,
                         principalTable: "Shows",
                         principalColumn: "Id",
@@ -521,15 +521,15 @@ namespace EmbyStat.Migrations.Sqlite
                 {
                     table.PrimaryKey("PK_Episodes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Episodes_Seasons_SeasonId",
+                        name: "FK_Episodes_Season_SeasonId",
                         column: x => x.SeasonId,
-                        principalTable: "Seasons",
+                        principalTable: "Season",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AudioStreams",
+                name: "AudioStream",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
@@ -545,15 +545,15 @@ namespace EmbyStat.Migrations.Sqlite
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AudioStreams", x => x.Id);
+                    table.PrimaryKey("PK_AudioStream", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AudioStreams_Episodes_EpisodeId",
+                        name: "FK_AudioStream_Episodes_EpisodeId",
                         column: x => x.EpisodeId,
                         principalTable: "Episodes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AudioStreams_Movies_MovieId",
+                        name: "FK_AudioStream_Movies_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movies",
                         principalColumn: "Id",
@@ -561,7 +561,7 @@ namespace EmbyStat.Migrations.Sqlite
                 });
 
             migrationBuilder.CreateTable(
-                name: "MediaSources",
+                name: "MediaSource",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
@@ -576,15 +576,15 @@ namespace EmbyStat.Migrations.Sqlite
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MediaSources", x => x.Id);
+                    table.PrimaryKey("PK_MediaSource", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MediaSources_Episodes_EpisodeId",
+                        name: "FK_MediaSource_Episodes_EpisodeId",
                         column: x => x.EpisodeId,
                         principalTable: "Episodes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_MediaSources_Movies_MovieId",
+                        name: "FK_MediaSource_Movies_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movies",
                         principalColumn: "Id",
@@ -592,7 +592,7 @@ namespace EmbyStat.Migrations.Sqlite
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubtitleStreams",
+                name: "SubtitleStream",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
@@ -605,15 +605,15 @@ namespace EmbyStat.Migrations.Sqlite
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SubtitleStreams", x => x.Id);
+                    table.PrimaryKey("PK_SubtitleStream", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SubtitleStreams_Episodes_EpisodeId",
+                        name: "FK_SubtitleStream_Episodes_EpisodeId",
                         column: x => x.EpisodeId,
                         principalTable: "Episodes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SubtitleStreams_Movies_MovieId",
+                        name: "FK_SubtitleStream_Movies_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movies",
                         principalColumn: "Id",
@@ -621,7 +621,7 @@ namespace EmbyStat.Migrations.Sqlite
                 });
 
             migrationBuilder.CreateTable(
-                name: "VideoStreams",
+                name: "VideoStream",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
@@ -641,15 +641,15 @@ namespace EmbyStat.Migrations.Sqlite
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VideoStreams", x => x.Id);
+                    table.PrimaryKey("PK_VideoStream", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_VideoStreams_Episodes_EpisodeId",
+                        name: "FK_VideoStream_Episodes_EpisodeId",
                         column: x => x.EpisodeId,
                         principalTable: "Episodes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_VideoStreams_Movies_MovieId",
+                        name: "FK_VideoStream_Movies_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movies",
                         principalColumn: "Id",
@@ -657,7 +657,7 @@ namespace EmbyStat.Migrations.Sqlite
                 });
 
             migrationBuilder.CreateTable(
-                name: "MediaServerUserConfigurations",
+                name: "MediaServerUserConfiguration",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
@@ -674,11 +674,11 @@ namespace EmbyStat.Migrations.Sqlite
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MediaServerUserConfigurations", x => x.Id);
+                    table.PrimaryKey("PK_MediaServerUserConfiguration", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "MediaServerUserPolicies",
+                name: "MediaServerUserPolicy",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
@@ -716,7 +716,7 @@ namespace EmbyStat.Migrations.Sqlite
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MediaServerUserPolicies", x => x.Id);
+                    table.PrimaryKey("PK_MediaServerUserPolicy", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -729,6 +729,7 @@ namespace EmbyStat.Migrations.Sqlite
                     HasPassword = table.Column<bool>(type: "INTEGER", nullable: false),
                     HasConfiguredPassword = table.Column<bool>(type: "INTEGER", nullable: false),
                     HasConfiguredEasyPassword = table.Column<bool>(type: "INTEGER", nullable: false),
+                    PrimaryImageTag = table.Column<string>(type: "TEXT", nullable: true),
                     LastLoginDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
                     LastActivityDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
                     ConfigurationId = table.Column<Guid>(type: "TEXT", nullable: false),
@@ -738,15 +739,15 @@ namespace EmbyStat.Migrations.Sqlite
                 {
                     table.PrimaryKey("PK_MediaServerUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MediaServerUsers_MediaServerUserConfigurations_ConfigurationId",
+                        name: "FK_MediaServerUsers_MediaServerUserConfiguration_ConfigurationId",
                         column: x => x.ConfigurationId,
-                        principalTable: "MediaServerUserConfigurations",
+                        principalTable: "MediaServerUserConfiguration",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_MediaServerUsers_MediaServerUserPolicies_PolicyId",
+                        name: "FK_MediaServerUsers_MediaServerUserPolicy_PolicyId",
                         column: x => x.PolicyId,
-                        principalTable: "MediaServerUserPolicies",
+                        principalTable: "MediaServerUserPolicy",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -872,13 +873,13 @@ namespace EmbyStat.Migrations.Sqlite
                 values: new object[] { new Guid("e55668a1-6a81-47ba-882d-738347e7e9cd"), 0 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AudioStreams_EpisodeId",
-                table: "AudioStreams",
+                name: "IX_AudioStream_EpisodeId",
+                table: "AudioStream",
                 column: "EpisodeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AudioStreams_MovieId",
-                table: "AudioStreams",
+                name: "IX_AudioStream_MovieId",
+                table: "AudioStream",
                 column: "MovieId");
 
             migrationBuilder.CreateIndex(
@@ -917,14 +918,14 @@ namespace EmbyStat.Migrations.Sqlite
                 column: "ShowId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MediaServerUserConfigurations_UserId",
-                table: "MediaServerUserConfigurations",
+                name: "IX_MediaServerUserConfiguration_UserId",
+                table: "MediaServerUserConfiguration",
                 column: "UserId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_MediaServerUserPolicies_UserId",
-                table: "MediaServerUserPolicies",
+                name: "IX_MediaServerUserPolicy_UserId",
+                table: "MediaServerUserPolicy",
                 column: "UserId",
                 unique: true);
 
@@ -939,18 +940,18 @@ namespace EmbyStat.Migrations.Sqlite
                 column: "PolicyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MediaSources_EpisodeId",
-                table: "MediaSources",
+                name: "IX_MediaSource_EpisodeId",
+                table: "MediaSource",
                 column: "EpisodeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MediaSources_MovieId",
-                table: "MediaSources",
+                name: "IX_MediaSource_MovieId",
+                table: "MediaSource",
                 column: "MovieId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MediaSources_SizeInMb",
-                table: "MediaSources",
+                name: "IX_MediaSource_SizeInMb",
+                table: "MediaSource",
                 column: "SizeInMb");
 
             migrationBuilder.CreateIndex(
@@ -989,8 +990,8 @@ namespace EmbyStat.Migrations.Sqlite
                 column: "SortName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Seasons_ShowId",
-                table: "Seasons",
+                name: "IX_Season_ShowId",
+                table: "Season",
                 column: "ShowId");
 
             migrationBuilder.CreateIndex(
@@ -1029,71 +1030,71 @@ namespace EmbyStat.Migrations.Sqlite
                 column: "SortName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubtitleStreams_EpisodeId",
-                table: "SubtitleStreams",
+                name: "IX_SubtitleStream_EpisodeId",
+                table: "SubtitleStream",
                 column: "EpisodeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubtitleStreams_Language",
-                table: "SubtitleStreams",
+                name: "IX_SubtitleStream_Language",
+                table: "SubtitleStream",
                 column: "Language");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubtitleStreams_MovieId",
-                table: "SubtitleStreams",
+                name: "IX_SubtitleStream_MovieId",
+                table: "SubtitleStream",
                 column: "MovieId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_VideoStreams_AverageFrameRate",
-                table: "VideoStreams",
+                name: "IX_VideoStream_AverageFrameRate",
+                table: "VideoStream",
                 column: "AverageFrameRate");
 
             migrationBuilder.CreateIndex(
-                name: "IX_VideoStreams_BitDepth",
-                table: "VideoStreams",
+                name: "IX_VideoStream_BitDepth",
+                table: "VideoStream",
                 column: "BitDepth");
 
             migrationBuilder.CreateIndex(
-                name: "IX_VideoStreams_Codec",
-                table: "VideoStreams",
+                name: "IX_VideoStream_Codec",
+                table: "VideoStream",
                 column: "Codec");
 
             migrationBuilder.CreateIndex(
-                name: "IX_VideoStreams_EpisodeId",
-                table: "VideoStreams",
+                name: "IX_VideoStream_EpisodeId",
+                table: "VideoStream",
                 column: "EpisodeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_VideoStreams_Height",
-                table: "VideoStreams",
+                name: "IX_VideoStream_Height",
+                table: "VideoStream",
                 column: "Height");
 
             migrationBuilder.CreateIndex(
-                name: "IX_VideoStreams_MovieId",
-                table: "VideoStreams",
+                name: "IX_VideoStream_MovieId",
+                table: "VideoStream",
                 column: "MovieId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_VideoStreams_VideoRange",
-                table: "VideoStreams",
+                name: "IX_VideoStream_VideoRange",
+                table: "VideoStream",
                 column: "VideoRange");
 
             migrationBuilder.CreateIndex(
-                name: "IX_VideoStreams_Width",
-                table: "VideoStreams",
+                name: "IX_VideoStream_Width",
+                table: "VideoStream",
                 column: "Width");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_MediaServerUserConfigurations_MediaServerUsers_UserId",
-                table: "MediaServerUserConfigurations",
+                name: "FK_MediaServerUserConfiguration_MediaServerUsers_UserId",
+                table: "MediaServerUserConfiguration",
                 column: "UserId",
                 principalTable: "MediaServerUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_MediaServerUserPolicies_MediaServerUsers_UserId",
-                table: "MediaServerUserPolicies",
+                name: "FK_MediaServerUserPolicy_MediaServerUsers_UserId",
+                table: "MediaServerUserPolicy",
                 column: "UserId",
                 principalTable: "MediaServerUsers",
                 principalColumn: "Id",
@@ -1103,15 +1104,15 @@ namespace EmbyStat.Migrations.Sqlite
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_MediaServerUserConfigurations_MediaServerUsers_UserId",
-                table: "MediaServerUserConfigurations");
+                name: "FK_MediaServerUserConfiguration_MediaServerUsers_UserId",
+                table: "MediaServerUserConfiguration");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_MediaServerUserPolicies_MediaServerUsers_UserId",
-                table: "MediaServerUserPolicies");
+                name: "FK_MediaServerUserPolicy_MediaServerUsers_UserId",
+                table: "MediaServerUserPolicy");
 
             migrationBuilder.DropTable(
-                name: "AudioStreams");
+                name: "AudioStream");
 
             migrationBuilder.DropTable(
                 name: "Devices");
@@ -1141,7 +1142,7 @@ namespace EmbyStat.Migrations.Sqlite
                 name: "MediaServerStatus");
 
             migrationBuilder.DropTable(
-                name: "MediaSources");
+                name: "MediaSource");
 
             migrationBuilder.DropTable(
                 name: "Plugins");
@@ -1156,7 +1157,7 @@ namespace EmbyStat.Migrations.Sqlite
                 name: "Statistics");
 
             migrationBuilder.DropTable(
-                name: "SubtitleStreams");
+                name: "SubtitleStream");
 
             migrationBuilder.DropTable(
                 name: "UserClaims");
@@ -1174,7 +1175,7 @@ namespace EmbyStat.Migrations.Sqlite
                 name: "UserTokens");
 
             migrationBuilder.DropTable(
-                name: "VideoStreams");
+                name: "VideoStream");
 
             migrationBuilder.DropTable(
                 name: "Genres");
@@ -1189,7 +1190,7 @@ namespace EmbyStat.Migrations.Sqlite
                 name: "Movies");
 
             migrationBuilder.DropTable(
-                name: "Seasons");
+                name: "Season");
 
             migrationBuilder.DropTable(
                 name: "Shows");
@@ -1201,10 +1202,10 @@ namespace EmbyStat.Migrations.Sqlite
                 name: "MediaServerUsers");
 
             migrationBuilder.DropTable(
-                name: "MediaServerUserConfigurations");
+                name: "MediaServerUserConfiguration");
 
             migrationBuilder.DropTable(
-                name: "MediaServerUserPolicies");
+                name: "MediaServerUserPolicy");
         }
     }
 }

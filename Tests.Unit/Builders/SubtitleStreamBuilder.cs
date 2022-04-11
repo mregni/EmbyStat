@@ -1,26 +1,25 @@
 ﻿using System;
 using EmbyStat.Common.Models.Entities.Streams;
 
-namespace Tests.Unit.Builders
-{
-    public class SubtitleStreamBuilder
-    {
-        private readonly SubtitleStream _stream;
+namespace Tests.Unit.Builders;
 
-        public SubtitleStreamBuilder(string language)
+public class SubtitleStreamBuilder
+{
+    private readonly SubtitleStream _stream;
+
+    public SubtitleStreamBuilder(string language)
+    {
+        _stream = new SubtitleStream
         {
-            _stream = new SubtitleStream
-            {
-                Language = language,
-                Codec = "codec",
-                DisplayTitle = language,
-                Id = Guid.NewGuid().ToString(),
-                IsDefault = false
-            };
-        }
-        public SubtitleStream Build()
-        {
-            return _stream;
-        }
+            Language = language,
+            Codec = "codec",
+            DisplayTitle = language,
+            Id = Guid.NewGuid().ToString(),
+            IsDefault = false
+        };
+    }
+    public SubtitleStream Build()
+    {
+        return _stream;
     }
 }

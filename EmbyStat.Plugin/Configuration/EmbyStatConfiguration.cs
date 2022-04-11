@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace EmbyStat.Plugin.Configuration
+namespace EmbyStat.Plugin.Configuration;
+
+public class EmbyStatConfiguration
 {
-    public class EmbyStatConfiguration
-    {
-        public string EmbyStatUrl { get; set; }
-        public List<string> LibraryTypesToScan { get; set; }
-    }
+    public string EmbyStatUrl { get; set; }
+    public List<string> LibraryTypesToScan { get; set; }
 }

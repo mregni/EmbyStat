@@ -3,6 +3,7 @@ using System;
 using EmbyStat.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmbyStat.Migrations.Sqlite
 {
     [DbContext(typeof(EsDbContext))]
-    partial class DbContextModelSnapshot : ModelSnapshot
+    [Migration("20220411064416_RenamingToken")]
+    partial class RenamingToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.3");
@@ -765,7 +767,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasIndex("ShowId");
 
-                    b.ToTable("Seasons");
+                    b.ToTable("Season");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Shows.Show", b =>
@@ -916,7 +918,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("AudioStreams");
+                    b.ToTable("AudioStream");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Streams.MediaSource", b =>
@@ -956,10 +958,44 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasIndex("SizeInMb");
 
-                    b.ToTable("MediaSources");
+                    b.ToTable("MediaSource");
                 });
 
-            modelBuilder.Entity("EmbyStat.Common.Models.Entities.Streams.SqlVideoStream", b =>
+            modelBuilder.Entity("EmbyStat.Common.Models.Entities.Streams.SubtitleStream", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Codec")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DisplayTitle")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EpisodeId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Language")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MovieId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EpisodeId");
+
+                    b.HasIndex("Language");
+
+                    b.HasIndex("MovieId");
+
+                    b.ToTable("SubtitleStream");
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.Models.Entities.Streams.VideoStream", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
@@ -1021,41 +1057,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasIndex("Width");
 
-                    b.ToTable("VideoStreams");
-                });
-
-            modelBuilder.Entity("EmbyStat.Common.Models.Entities.Streams.SubtitleStream", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Codec")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("DisplayTitle")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("EpisodeId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsDefault")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Language")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MovieId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EpisodeId");
-
-                    b.HasIndex("Language");
-
-                    b.HasIndex("MovieId");
-
-                    b.ToTable("SubtitleStreams");
+                    b.ToTable("VideoStream");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Users.MediaServerUser", b =>
@@ -1143,7 +1145,7 @@ namespace EmbyStat.Migrations.Sqlite
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("MediaServerUserConfigurations");
+                    b.ToTable("MediaServerUserConfiguration");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Users.MediaServerUserPolicy", b =>
@@ -1250,7 +1252,7 @@ namespace EmbyStat.Migrations.Sqlite
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("MediaServerUserPolicies");
+                    b.ToTable("MediaServerUserPolicy");
                 });
 
             modelBuilder.Entity("GenreMovie", b =>
@@ -1494,23 +1496,6 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Navigation("Movie");
                 });
 
-            modelBuilder.Entity("EmbyStat.Common.Models.Entities.Streams.SqlVideoStream", b =>
-                {
-                    b.HasOne("EmbyStat.Common.Models.Entities.Shows.Episode", "Episode")
-                        .WithMany("VideoStreams")
-                        .HasForeignKey("EpisodeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("EmbyStat.Common.Models.Entities.Movies.Movie", "Movie")
-                        .WithMany("VideoStreams")
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Episode");
-
-                    b.Navigation("Movie");
-                });
-
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Streams.SubtitleStream", b =>
                 {
                     b.HasOne("EmbyStat.Common.Models.Entities.Shows.Episode", "Episode")
@@ -1520,6 +1505,23 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasOne("EmbyStat.Common.Models.Entities.Movies.Movie", "Movie")
                         .WithMany("SubtitleStreams")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Episode");
+
+                    b.Navigation("Movie");
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.Models.Entities.Streams.VideoStream", b =>
+                {
+                    b.HasOne("EmbyStat.Common.Models.Entities.Shows.Episode", "Episode")
+                        .WithMany("VideoStreams")
+                        .HasForeignKey("EpisodeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("EmbyStat.Common.Models.Entities.Movies.Movie", "Movie")
+                        .WithMany("VideoStreams")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade);
 

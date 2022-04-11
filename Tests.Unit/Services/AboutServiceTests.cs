@@ -6,38 +6,37 @@ using Microsoft.Extensions.Options;
 using Moq;
 using Xunit;
 
-namespace Tests.Unit.Services
+namespace Tests.Unit.Services;
+
+public class AboutServiceTests
 {
-    public class AboutServiceTests
+    private readonly Mock<IOptions<AppSettings>> _appSettingsMock;
+    private readonly AboutService _aboutService;
+
+    public AboutServiceTests()
     {
-        private readonly Mock<IOptions<AppSettings>> _appSettingsMock;
-        private readonly AboutService _aboutService;
-
-        public AboutServiceTests()
+        var appSettings = new AppSettings
         {
-            var appSettings = new AppSettings
-            {
-                Version = "0.0.1.0"
-            };
+            Version = "0.0.1.0"
+        };
 
-            _appSettingsMock = new Mock<IOptions<AppSettings>>();
-            _appSettingsMock.Setup(x => x.Value).Returns(appSettings);
+        _appSettingsMock = new Mock<IOptions<AppSettings>>();
+        _appSettingsMock.Setup(x => x.Value).Returns(appSettings);
 
-            _aboutService = new AboutService(_appSettingsMock.Object);
-        }
+        _aboutService = new AboutService(_appSettingsMock.Object);
+    }
 
-        [Fact]
-        public void GetAboutInfo()
-        {
-            var about = _aboutService.GetAbout();
+    [Fact]
+    public void GetAboutInfo()
+    {
+        var about = _aboutService.GetAbout();
 
-            about.Should().NotBeNull();
-            about.Version.Should().Be("0.0.1.0");
-            about.Architecture.Should().Be(RuntimeEnvironment.RuntimeArchitecture);
-            about.OperatingSystem.Should().Be(RuntimeEnvironment.OperatingSystem);
-            about.OperatingSystemVersion.Should().Be(RuntimeEnvironment.OperatingSystemVersion);
+        about.Should().NotBeNull();
+        about.Version.Should().Be("0.0.1.0");
+        about.Architecture.Should().Be(RuntimeEnvironment.RuntimeArchitecture);
+        about.OperatingSystem.Should().Be(RuntimeEnvironment.OperatingSystem);
+        about.OperatingSystemVersion.Should().Be(RuntimeEnvironment.OperatingSystemVersion);
 
-            _appSettingsMock.VerifyGet(x => x.Value, Times.Exactly(1));
-        }
+        _appSettingsMock.VerifyGet(x => x.Value, Times.Exactly(1));
     }
 }

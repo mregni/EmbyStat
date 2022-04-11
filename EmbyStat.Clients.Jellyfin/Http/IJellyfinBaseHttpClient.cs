@@ -1,8 +1,7 @@
 ﻿using EmbyStat.Clients.Base.Http;
 
-namespace EmbyStat.Clients.Jellyfin.Http
+namespace EmbyStat.Clients.Jellyfin.Http;
+
+public interface IJellyfinBaseHttpClient : IBaseHttpClient
 {
-    public interface IJellyfinBaseHttpClient : IBaseHttpClient
-    {
-    }
 }

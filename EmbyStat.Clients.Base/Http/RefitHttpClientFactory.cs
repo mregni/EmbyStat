@@ -2,23 +2,22 @@
 using System.Net.Http;
 using Refit;
 
-namespace EmbyStat.Clients.Base.Http
+namespace EmbyStat.Clients.Base.Http;
+
+public class RefitHttpClientFactory<T> : IRefitHttpClientFactory<T>
 {
-    public class RefitHttpClientFactory<T> : IRefitHttpClientFactory<T>
+    private readonly IHttpClientFactory _clientFactory;
+
+    public RefitHttpClientFactory(IHttpClientFactory clientFactory)
     {
-        private readonly IHttpClientFactory _clientFactory;
+        _clientFactory = clientFactory;
+    }
 
-        public RefitHttpClientFactory(IHttpClientFactory clientFactory)
-        {
-            _clientFactory = clientFactory;
-        }
+    public T CreateClient(string baseAddressKey)
+    {
+        var client = _clientFactory.CreateClient("mediaServerClient");
+        client.BaseAddress = new Uri(baseAddressKey);
 
-        public T CreateClient(string baseAddressKey)
-        {
-            var client = _clientFactory.CreateClient("mediaServerClient");
-            client.BaseAddress = new Uri(baseAddressKey);
-
-            return RestService.For<T>(client);
-        }
+        return RestService.For<T>(client);
     }
 }

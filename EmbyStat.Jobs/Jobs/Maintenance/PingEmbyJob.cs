@@ -7,44 +7,41 @@ using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
 
-namespace EmbyStat.Jobs.Jobs.Maintenance
+namespace EmbyStat.Jobs.Jobs.Maintenance;
+
+[DisableConcurrentExecution(30)]
+public class PingEmbyJob : BaseJob, IPingEmbyJob
 {
-    [DisableConcurrentExecution(30)]
-    public class PingEmbyJob : BaseJob, IPingEmbyJob
+    private readonly IMediaServerService _mediaServerService;
+
+    public PingEmbyJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
+        IMediaServerService mediaServerService)
+        : base(hubHelper, jobRepository, settingsService, false, typeof(PingEmbyJob),
+            Constants.LogPrefix.PingMediaServerJob)
     {
-        private readonly IMediaServerService _mediaServerService;
+        _mediaServerService = mediaServerService;
+    }
 
-        public PingEmbyJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
-            IMediaServerService mediaServerService)
-            : base(hubHelper, jobRepository, settingsService, false, typeof(PingEmbyJob),
-                Constants.LogPrefix.PingMediaServerJob)
+    protected sealed override Guid Id => Constants.JobIds.PingEmbyId;
+    protected override string JobPrefix => Constants.LogPrefix.PingMediaServerJob;
+
+    protected override async Task RunJobAsync()
+    {
+        var result = await _mediaServerService.PingMediaServer();
+        await LogProgress(50);
+        if (result)
         {
-            _mediaServerService = mediaServerService;
-            Title = jobRepository.GetById(Id).Title;
+            await LogInformation("We found your MediaServer server");
+            await _mediaServerService.ResetMissedPings();
+        }
+        else
+        {
+            await LogWarning(
+                $"We could not ping your MediaServer server at {Settings.MediaServer.Address}. Might be because it's turned off or dns is wrong");
+            await _mediaServerService.IncreaseMissedPings();
         }
 
-        public sealed override Guid Id => Constants.JobIds.PingEmbyId;
-        public override string JobPrefix => Constants.LogPrefix.PingMediaServerJob;
-        public override string Title { get; }
-
-        public override async Task RunJobAsync()
-        {
-            var result = await _mediaServerService.PingMediaServer();
-            await LogProgress(50);
-            if (result)
-            {
-                await LogInformation("We found your MediaServer server");
-                await _mediaServerService.ResetMissedPings();
-            }
-            else
-            {
-                await LogWarning(
-                    $"We could not ping your MediaServer server at {Settings.MediaServer.Address}. Might be because it's turned off or dns is wrong");
-                await _mediaServerService.IncreaseMissedPings();
-            }
-
-            var status = await _mediaServerService.GetMediaServerStatus();
-            await HubHelper.BroadcastEmbyConnectionStatus(status.MissedPings);
-        }
+        var status = await _mediaServerService.GetMediaServerStatus();
+        await HubHelper.BroadcastEmbyConnectionStatus(status.MissedPings);
     }
 }

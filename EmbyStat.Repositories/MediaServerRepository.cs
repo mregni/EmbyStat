@@ -88,7 +88,7 @@ public class MediaServerRepository : IMediaServerRepository
     #endregion
 
     #region MediaServer Users
-    public async Task DeleteAndInsertUsers(IEnumerable<Common.Models.Entities.Users.MediaServerUser> users)
+    public async Task DeleteAndInsertUsers(IEnumerable<MediaServerUser> users)
     {
         _context.MediaServerUsers.RemoveRange(_context.MediaServerUsers);
         await _context.MediaServerUsers.AddRangeAsync(users);
@@ -131,11 +131,6 @@ public class MediaServerRepository : IMediaServerRepository
     public Task<List<Device>> GetAllDevices()
     {
         return _context.Devices.ToListAsync();
-    }
-
-    public Task<List<Device>> GetDeviceById(IEnumerable<string> ids)
-    {
-        throw new System.NotImplementedException();
     }
 
     public async Task DeleteAndInsertDevices(IEnumerable<Device> devices)

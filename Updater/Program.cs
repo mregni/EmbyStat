@@ -32,7 +32,7 @@ namespace Updater
                 Directory.CreateDirectory("Logs");
             }
 
-            var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+            NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
         }
     }
 }

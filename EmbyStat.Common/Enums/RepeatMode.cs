@@ -1,9 +1,8 @@
-﻿namespace EmbyStat.Common.Enums
+﻿namespace EmbyStat.Common.Enums;
+
+public enum RepeatMode
 {
-    public enum RepeatMode
-    {
-        RepeatNone = 0,
-        RepeatAll = 1,
-        RepeatOne = 2
-    }
+    RepeatNone = 0,
+    RepeatAll = 1,
+    RepeatOne = 2
 }
