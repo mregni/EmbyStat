@@ -1,4 +1,5 @@
 ﻿using System;
+using NLog.Extensions.Logging;
 
 namespace EmbyStat.Logging;
 
@@ -12,6 +13,8 @@ public class Logger
         Prefix = prefix;
         NLogLogger = logger;
     }
+
+    public bool IsInDebugMode => NLogLogger.IsDebugEnabled;
 
     public void Debug(string message)
     {

@@ -23,6 +23,7 @@ using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers;
+using EmbyStat.Controllers.Middleware;
 using EmbyStat.DI;
 using EmbyStat.Migrator;
 using EmbyStat.Migrator.Interfaces;
@@ -33,6 +34,7 @@ using Hangfire.Dashboard;
 using Hangfire.MemoryStorage;
 using Hangfire.RecurringJobExtensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Hosting;
@@ -86,12 +88,6 @@ public class Startup
             .AddApplicationPart(Assembly.Load(new AssemblyName("EmbyStat.Controllers")))
             .AddApiExplorer()
             .AddAuthorization();
-
-        services.AddHangfire(x =>
-        {
-            x.UseMemoryStorage();
-            x.UseRecurringJob();
-        });
 
         SetupDirectories(appSettings);
 
@@ -200,6 +196,29 @@ public class Startup
 
         //services.AddHostedService<WebSocketService>();
         services.AddJsonMigrator(typeof(CreateUserSettings).Assembly);
+        
+        services.AddHangfire(x =>
+        {
+            x.UseMemoryStorage();
+            x.UseRecurringJob();
+        });
+        services.AddHangfireServer(options =>
+        {
+            options.WorkerCount = 1;
+            options.SchedulePollingInterval = new TimeSpan(0, 0, 5);
+            options.ServerTimeout = TimeSpan.FromDays(1);
+            options.ShutdownTimeout = TimeSpan.FromDays(1);
+            options.ServerName = "Main server";
+            options.Queues = new[] {"main"};
+        });
+        
+        services.AddHttpLogging(logging =>
+        {
+            logging.LoggingFields = HttpLoggingFields.All;
+            logging.MediaTypeOptions.AddText("application/javascript");
+            logging.RequestBodyLogLimit = 4096;
+            logging.ResponseBodyLogLimit = 4096;
+        });
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
@@ -221,15 +240,7 @@ public class Startup
 
         //app.UseRollbarMiddleware();
 
-        app.UseHangfireServer(new BackgroundJobServerOptions
-        {
-            WorkerCount = 1,
-            SchedulePollingInterval = new TimeSpan(0, 0, 5),
-            ServerTimeout = TimeSpan.FromDays(1),
-            ShutdownTimeout = TimeSpan.FromDays(1),
-            ServerName = "Main server",
-            Queues = new[] { "main" }
-        });
+        app.UseHangfireServer();
 
         GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 2 });
 
@@ -259,6 +270,7 @@ public class Startup
         app.UseStaticFiles();
         app.UseSpaStaticFiles();
 
+        app.UseMiddleware<RequestLoggingMiddleware>();
         app.UseMvc();
 
         app.UseSpa(spa =>
@@ -304,7 +316,7 @@ public class Startup
         AddDeviceIdToConfig(settingsService);
         RemoveVersionFiles();
         jobService.ResetAllJobs();
-        SetEmbyClientConfiguration(settingsService, clientStrategy);
+        SetMediaServerClientConfiguration(settingsService, clientStrategy);
         jobInitializer.Setup(settings.NoUpdates);
     }
 
@@ -312,7 +324,7 @@ public class Startup
     {
         using var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope();
         var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
-        jobService.ResetAllJobs();
+        jobService?.ResetAllJobs();
     }
 
     private void RemoveVersionFiles()
@@ -323,7 +335,7 @@ public class Startup
         }
     }
 
-    private void AddDeviceIdToConfig(ISettingsService settingsService)
+    private static void AddDeviceIdToConfig(ISettingsService settingsService)
     {
         var userSettings = settingsService.GetUserSettings();
 
@@ -334,7 +346,7 @@ public class Startup
         }
     }
 
-    private void SetEmbyClientConfiguration(ISettingsService settingsService, IClientStrategy clientStrategy)
+    private static void SetMediaServerClientConfiguration(ISettingsService settingsService, IClientStrategy clientStrategy)
     {
         settingsService.SetUpdateInProgressSettingAsync(false);
         var settings = settingsService.GetUserSettings();

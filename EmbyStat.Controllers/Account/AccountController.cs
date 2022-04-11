@@ -86,6 +86,11 @@ public class AccountController : Controller
     [Route("refreshtoken")]
     public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest refresh)
     {
+        if (refresh == null)
+        {
+            await _accountService.LogOut();
+            return Ok(null);
+        }
         var remoteIp = Request.HttpContext.Connection.RemoteIpAddress?.ToString();
         var result = await _accountService.RefreshToken(refresh.AccessToken, refresh.RefreshToken, remoteIp);
 
