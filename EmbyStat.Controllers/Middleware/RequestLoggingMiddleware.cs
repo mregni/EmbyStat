@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using EmbyStat.Logging;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Microsoft.IO;
 using Microsoft.Net.Http.Headers;
 
@@ -11,19 +12,19 @@ namespace EmbyStat.Controllers.Middleware;
 public class RequestLoggingMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly Logger _logger;
+    private readonly ILogger<RequestLoggingMiddleware> _logger;
     private readonly RecyclableMemoryStreamManager _recyclableMemoryStreamManager;
 
-    public RequestLoggingMiddleware(RequestDelegate next)
+    public RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggingMiddleware> logger)
     {
         _next = next;
-        _logger = LogFactory.CreateLoggerForType(typeof(RequestLoggingMiddleware), "CONTROLLER-LOGGING");
+        _logger = logger;
         _recyclableMemoryStreamManager = new RecyclableMemoryStreamManager();
     }
 
     public async Task Invoke(HttpContext context)
     {
-        if (_logger.IsInDebugMode)
+        if (_logger.IsEnabled(LogLevel.Debug))
         {
             await InvokeWithLogging(context);
         }
@@ -55,7 +56,7 @@ public class RequestLoggingMiddleware
         var responseText = await new StreamReader(context.Response.Body).ReadToEndAsync();
         context.Response.Body.Seek(0, SeekOrigin.Begin);
         
-        _logger.Debug($"{Environment.NewLine}Http Request Information:{Environment.NewLine}" +
+        _logger.LogDebug($"{Environment.NewLine}Http Request Information:{Environment.NewLine}" +
                       $"\tFull Path:\t| {context.Request.Scheme}://{context.Request.Host}{context.Request.Path}{Environment.NewLine}" +
                       $"\tStatus: \t| {context.Response.StatusCode}{Environment.NewLine}" +
                       $"\tUserAgent: \t| {context.Request.Headers[HeaderNames.UserAgent]}{Environment.NewLine}" +

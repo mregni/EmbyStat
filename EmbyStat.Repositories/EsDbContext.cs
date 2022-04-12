@@ -4,11 +4,13 @@ using EmbyStat.Common.Models.Entities.Movies;
 using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Entities.Streams;
 using EmbyStat.Common.Models.Entities.Users;
+using EmbyStat.Logging;
 using EmbyStat.Repositories.Seeds;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using NLog.Web;
 using MediaServerUser = EmbyStat.Common.Models.Entities.Users.MediaServerUser;
 
 namespace EmbyStat.Repositories;
@@ -34,25 +36,23 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
     public DbSet<MediaServerStatus> MediaServerStatus { get; set; }
     public DbSet<Statistic> Statistics { get; set; }
 
-    public static readonly ILoggerFactory LoggerFactory = 
-        Microsoft.Extensions.Logging.LoggerFactory.Create(builder => { builder.AddConsole(); });
-
+    private static ILoggerFactory _factory;
     public EsDbContext()
     {
-            
+        
     }
 
-    public EsDbContext(DbContextOptions<EsDbContext> options): base(options)
+    public EsDbContext(DbContextOptions<EsDbContext> options, ILoggerFactory factory): base(options)
     {
-            
+        _factory = factory;  
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder
-            .UseSqlite("Data Source=SqliteData.db", x => x.MigrationsAssembly("EmbyStat.Migrations"))
-            .UseLoggerFactory(LoggerFactory)  //tie-up DbContext with LoggerFactory object
-            .EnableSensitiveDataLogging();
+        optionsBuilder.UseLoggerFactory(_factory);
+        optionsBuilder.EnableDetailedErrors();
+        optionsBuilder.EnableSensitiveDataLogging();
+        optionsBuilder.UseSqlite("Data Source=SqliteData.db", x => x.MigrationsAssembly("EmbyStat.Migrations"));
     }
 
 

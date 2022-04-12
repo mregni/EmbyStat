@@ -37,10 +37,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using NLog.Extensions.Logging;
 using Refit;
 
 namespace EmbyStat.Web;
@@ -50,11 +52,13 @@ public class Startup
     public IConfiguration Configuration { get; }
     public IWebHostEnvironment WebHostEnvironment { get; }
     public IApplicationBuilder ApplicationBuilder { get; set; }
+    private readonly ILoggerFactory _logFactory;
 
-    public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+    public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment, ILoggerFactory logFactory)
     {
         WebHostEnvironment = webHostEnvironment;
         Configuration = configuration;
+        _logFactory = logFactory ?? throw new ArgumentNullException(nameof(logFactory)); ;
     }
 
     public void ConfigureServices(IServiceCollection services)

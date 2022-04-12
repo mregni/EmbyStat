@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EmbyStat.Common.Models.Account;
-using EmbyStat.Logging;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using static System.String;
 
 namespace EmbyStat.Controllers.Account;
 
@@ -12,12 +14,12 @@ namespace EmbyStat.Controllers.Account;
 public class AccountController : Controller
 {
     private readonly IAccountService _accountService;
-    private readonly Logger _logger;
+    private readonly ILogger<AccountController> _logger;
 
-    public AccountController(IAccountService accountService)
+    public AccountController(IAccountService accountService, ILogger<AccountController> logger)
     {
         _accountService = accountService;
-        _logger = LogFactory.CreateLoggerForType(typeof(AccountController), "ACCOUNT");
+        _logger = logger;
     }
 
     [HttpPost]
@@ -34,10 +36,10 @@ public class AccountController : Controller
             {
                 return Ok(result);
             }
-            _logger.Info($"Username {login.Username} was used for login.");
+            _logger.LogInformation("Username {login.Username} was used for login", login.Username);
         }
 
-        _logger.Info("Invalid username or password. ");
+        _logger.LogInformation("Invalid username or password");
         return BadRequest("Invalid username or password");
     }
 
@@ -62,8 +64,8 @@ public class AccountController : Controller
         // We need a check if user is an admin here!
         if (identities.Length != 1 || !identities[0].IsAuthenticated)
         {
-            _logger.Warn("User registration not allowed");
-            _logger.Warn("This is because there is already an admin user in the database but the identity is not authenticated. (You can't create a second user for the moment)");
+            _logger.LogWarning("User registration not allowed");
+            _logger.LogWarning("This is because there is already an admin user in the database but the identity is not authenticated. (You can't create a second user for the moment)");
             return Unauthorized("User registration not allowed");
         }
 

@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using NLog.Web;
 using NLog;
 using NLog.Targets;
+using static EmbyStat.Common.Constants.LogPrefix;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace EmbyStat.Web;
@@ -108,7 +109,7 @@ public class Program
             .ConfigureLogging(logging =>
             {
                 logging.ClearProviders();
-                logging.SetMinimumLevel(LogLevel.Information);
+                logging.SetMinimumLevel(LogLevel.Debug);
             })
             .UseNLog()
             .Build();
