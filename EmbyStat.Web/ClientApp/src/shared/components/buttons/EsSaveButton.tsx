@@ -1,21 +1,20 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
+import {Button, CircularProgress} from '@mui/material';
 
-export interface Props {
+type Props = {
   disabled?: boolean;
   isSaving: boolean;
-  onClick: ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined;
+  onClick?: ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined;
 }
 
 export const EsSaveButton = (props: Props) => {
   const {
     disabled = false,
     isSaving = false,
-    onClick
+    onClick = () => {},
   } = props;
-  const { t } = useTranslation();
+  const {t} = useTranslation();
 
   return (
     <Button
@@ -28,8 +27,8 @@ export const EsSaveButton = (props: Props) => {
       {isSaving ? (
         <CircularProgress color="inherit" size={22} />
       ) : (
-          t('COMMON.SAVE')
-        )}
+        t('COMMON.SAVE')
+      )}
     </Button>
   );
 };

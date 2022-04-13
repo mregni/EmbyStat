@@ -1,4 +1,4 @@
-const calculateFileSize = (value: number): string => {
+export const calculateFileSize = (value: number): string => {
   let suffix = 'MB';
   if (value < 1000000) {
     value /= 1024;
@@ -13,5 +13,3 @@ const calculateFileSize = (value: number): string => {
 
   return `${value.toFixed(2)} ${suffix}`;
 };
-
-export default calculateFileSize;

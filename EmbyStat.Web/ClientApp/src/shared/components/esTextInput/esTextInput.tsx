@@ -1,14 +1,7 @@
-import React, { ReactElement } from 'react';
-import TextField from '@material-ui/core/TextField';
-import { makeStyles } from "@material-ui/core/styles";
-import { FieldError } from 'react-hook-form';
-import classNames from 'classnames';
+import React, {ReactElement} from 'react';
+import {FieldError} from 'react-hook-form';
 
-const useStyles = makeStyles(() => ({
-  error__placeholder: {
-    marginBottom: 23,
-  }
-}));
+import {TextField} from '@mui/material';
 
 export interface Props {
   error?: FieldError | undefined;
@@ -22,7 +15,8 @@ export interface Props {
   className?: string;
   helperText?: string | ReactElement;
   color?: 'primary' | 'secondary',
-  inputProps?: any
+  inputProps?: any,
+  variant?: 'standard' | 'outlined'
 }
 
 export const EsTextInput = (props: Props) => {
@@ -31,27 +25,28 @@ export const EsTextInput = (props: Props) => {
     inputRef,
     defaultValue,
     errorText,
-    label = "",
+    label = '',
     type = 'text',
     onChange,
     readonly = false,
-    className = "",
-    helperText = "",
+    className = '',
+    helperText = '',
     color = 'primary',
-    inputProps = null
+    inputProps = null,
+    variant = 'outlined',
   } = props;
-  const classes = useStyles();
 
-  const { ref, ...rest } = inputRef;
+  const {ref, ...rest} = inputRef;
 
   return (
     <TextField
       label={label}
-      className={classNames(className, { [classes.error__placeholder]: !error && !helperText && errorText })}
+      sx={{marginBottom: !error && !helperText && errorText !== null ? '23px !important' : 0}}
+      className={className}
       defaultValue={defaultValue}
       inputRef={ref}
       {...rest}
-      variant="standard"
+      variant={variant}
       error={!!error}
       size="small"
       color={color}
@@ -62,10 +57,10 @@ export const EsTextInput = (props: Props) => {
       helperText={error ? errorText[error.type] : helperText}
       onChange={(event) => {
         if (!!onChange) {
-          onChange(event.target.value as string)
+          onChange(event.target.value as string);
         }
       }}
       InputProps={inputProps}
     />
-  )
-}
+  );
+};

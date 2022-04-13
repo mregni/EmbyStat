@@ -1,14 +1,12 @@
-import { axiosInstance } from './axiosInstance';
-import { FilterValues } from '../models/filter';
+import {FilterValues} from '../models/filter';
+import {axiosInstance} from './axiosInstance';
 
 const domain = 'filter/';
 
-export const getFilterValues = (
-  filter: string | undefined,
-  libraryIds: string[]
-): Promise<FilterValues> => {
+export const getFilterValues = (filter: string | undefined): Promise<FilterValues> => {
+  console.log(filter);
   return axiosInstance
-    .get<FilterValues>(`${domain}${filter}`, { params: { libraryIds } })
+    .get<FilterValues>(`${domain}${filter}`)
     .then((response) => {
       return response.data;
     });

@@ -1,42 +1,32 @@
-import jwt from 'jwt-decode';
-import moment from 'moment';
-import { BehaviorSubject } from 'rxjs';
-import { axiosInstance } from './axiosInstance';
+import {BehaviorSubject} from 'rxjs';
 
-import { LoginView, AuthenticateResponse, User, ChangeUserNameRequest, ChangePasswordRequest, JwtPayloadCustom } from '../models/login';
-import { AxiosResponse } from 'axios';
-import SnackbarUtils from '../utils/SnackbarUtilsConfigurator';
 import i18n from '../../i18n';
+import {AuthenticateResponse} from '../models/login';
+import SnackbarUtils from '../utils/SnackbarUtilsConfigurator';
+import {axiosInstance} from './axiosInstance';
 
 const domain = 'account/';
-const accessTokenStr = 'accessToken';
-const refreshTokenStr = 'refreshToken';
 
 export const userLoggedIn$ = new BehaviorSubject<boolean>(false);
 
-export const login = (login: LoginView): Promise<boolean> => {
+export const login = (username: string, password: string): Promise<AuthenticateResponse> => {
   return axiosInstance
-    .post<AuthenticateResponse>(`${domain}login`, login)
+    .post<AuthenticateResponse>(`${domain}login`, {username, password})
     .then((response) => {
-      setLocalStorage(response.data);
-      userLoggedIn$.next(true);
-      return true;
+      return response.data;
     })
     .catch(() => {
-      return false;
+      return Promise.reject(new Error('Authentication failed'));
     });
 };
 
 export const logout = () => {
-  return axiosInstance.post<boolean>(`${domain}logout`).finally(() => {
-    clearLocalStorage();
-    userLoggedIn$.next(false);
-  });
+  return axiosInstance.post<boolean>(`${domain}logout`);
 };
 
-export const register = (register: LoginView): Promise<boolean> => {
+export const register = (username: string, password: string): Promise<boolean> => {
   return axiosInstance
-    .post<boolean>(`${domain}register`, register)
+    .post<boolean>(`${domain}register`, {username, password})
     .then((response) => {
       return response.data;
     })
@@ -44,134 +34,44 @@ export const register = (register: LoginView): Promise<boolean> => {
       if (response.status === 401) {
         SnackbarUtils.error(i18n.t('WIZARD.ADMINCREATEFAILED'));
       }
-      return Promise.reject();
+      return Promise.reject(new Error('Registration failed'));
     });
 };
 
-export const forcedRefreshLogin = async () => {
-  if (isUserLoggedIn()) {
-    const accessToken = localStorage.getItem(accessTokenStr);
-    const refreshToken = localStorage.getItem(refreshTokenStr);
-
-    if (accessToken != null && refreshToken != null) {
-      await refreshLogin(accessToken, refreshToken);
-    }
-  }
-}
-
-export const refreshLogin = (
-  accessToken: string,
-  refreshToken: string
-): Promise<boolean> => {
-  const refresh = { accessToken, refreshToken };
+export const refreshLogin = (accessToken: string, refreshToken: string): Promise<AuthenticateResponse> => {
   return axiosInstance
-    .post<AuthenticateResponse>(`${domain}refreshtoken`, refresh)
+    .post<AuthenticateResponse>(`${domain}refreshtoken`, {accessToken, refreshToken})
     .then((response) => {
-      if (response.data === null || response.data === undefined
-        || response.data.accessToken === null || response.data.accessToken === undefined) {
-        return false;
-      }
-      setLocalStorage(response.data);
-      return true;
+      return response.data;
     })
     .catch(() => {
-      return false;
+      return Promise.reject(new Error('Refresh login failed'));
     });
 };
-
-export const anyAdmins = (): Promise<AxiosResponse<boolean>> => {
-  return axiosInstance.get<boolean>(`${domain}any`);
-}
 
 export const resetPassword = (username: string): Promise<boolean> => {
   return axiosInstance
     .post<boolean>(`${domain}reset/password/${username}`)
-    .then(response => response.data)
-    .catch(() => false)
-}
-
-export const changePassword = (request: ChangePasswordRequest): Promise<boolean> => {
-  return axiosInstance
-    .post<boolean>(`${domain}change/password`, request)
-    .then(response => response.data)
+    .then((response) => response.data)
     .catch(() => false);
-}
+};
 
-export const changeUserName = (request: ChangeUserNameRequest): Promise<boolean> => {
+export const changePassword = (oldPassword: string, newPassword: string, username: string): Promise<boolean> => {
   return axiosInstance
-    .post<boolean>(`${domain}change/username`, request)
-    .then(response => response.data)
+    .post<boolean>(`${domain}change/password`, {oldPassword, newPassword, username})
+    .then((response) => response.data)
     .catch(() => false);
-}
-
-export const isUserLoggedIn = async (): Promise<boolean> => {
-  let accessToken = localStorage.getItem(accessTokenStr) ?? "";
-  let refreshToken = localStorage.getItem(refreshTokenStr);
-
-  if (
-    ['undefined', undefined, null, ""].includes(accessToken) ||
-    ['undefined', undefined, null, ""].includes(refreshToken)
-  ) {
-    userLoggedIn$.next(false);
-    return false;
-  }
-
-  let tokenExpiration = jwt<JwtPayloadCustom>(accessToken).exp ?? 0;
-  let tokenExpirationTimeInSeconds = tokenExpiration - moment().unix();
-
-  if (tokenExpirationTimeInSeconds < 250) {
-    const result = await refreshLogin(
-      accessToken as string,
-      refreshToken as string
-    );
-    if (!result) {
-      userLoggedIn$.next(false);
-      return false;
-    }
-
-    accessToken = localStorage.getItem(accessTokenStr) ?? "";
-    refreshToken = localStorage.getItem(refreshTokenStr);
-    tokenExpiration = jwt<JwtPayloadCustom>(accessToken).exp ?? 0;
-    tokenExpirationTimeInSeconds = tokenExpiration - moment().unix();
-
-    const newTokenIsValid = tokenExpirationTimeInSeconds > 120;
-    userLoggedIn$.next(newTokenIsValid);
-    return tokenExpirationTimeInSeconds > 120;
-  }
-
-  userLoggedIn$.next(true);
-  return true;
 };
 
-export const getUserInfo = (): User | null => {
-  if (isUserLoggedIn()) {
-    const accessToken = localStorage.getItem(accessTokenStr) ?? "";
-    const tokenInfo = jwt<JwtPayloadCustom>(accessToken);
-    return {
-      username: tokenInfo.sub ?? "",
-    };
-  }
-
-  return null;
+export const changeUserName = (userName: string, oldUsername: string): Promise<boolean> => {
+  return axiosInstance
+    .post<boolean>(`${domain}change/username`, {userName, oldUsername})
+    .then((response) => response.data)
+    .catch(() => false);
 };
 
-export const checkUserRoles = (roles: string[]): boolean => {
-  const accessToken = localStorage.getItem(accessTokenStr) ?? "";
-  if (['undefined', undefined, null, ""].includes(accessToken)) {
-    return false;
-  }
-
-  const userRoles = jwt<JwtPayloadCustom>(accessToken).roles as string[];
-  const duplicates = userRoles.filter((x) => roles.includes(x));
-  return duplicates.length > 0;
-};
-
-const setLocalStorage = (tokenInfo: AuthenticateResponse) => {
-  localStorage.setItem(accessTokenStr, tokenInfo.accessToken);
-  localStorage.setItem(refreshTokenStr, tokenInfo.refreshToken);
-};
-
-const clearLocalStorage = () => {
-  localStorage.removeItem(accessTokenStr);
-  localStorage.removeItem(refreshTokenStr);
+export const anyAdmins = (): Promise<boolean> => {
+  return axiosInstance
+    .get<boolean>(`${domain}any`)
+    .then((response) => response.data);
 };

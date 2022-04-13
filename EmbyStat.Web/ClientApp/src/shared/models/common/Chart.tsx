@@ -1,5 +1,10 @@
 export interface Chart {
   title: string;
   SeriesCount: number;
-  dataSets: any;
+  dataSets: SimpleData[];
+}
+
+export interface SimpleData {
+  label: string;
+  value: number;
 }

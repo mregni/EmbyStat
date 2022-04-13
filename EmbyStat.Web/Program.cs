@@ -150,6 +150,16 @@ public class Program
             .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Infrastructure", LogEventLevel.Warning) 
             .MinimumLevel.Override("Microsoft.AspNetCore", minimumLevel) 
             .MinimumLevel.Override("Microsoft.AspNetCore.SpaServices", LogEventLevel.Warning) 
+            .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning) 
+            .MinimumLevel.Override("Microsoft.AspNetCore.StaticFiles", LogEventLevel.Warning) 
+            .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Model", LogEventLevel.Warning) 
+            .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Connection", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.AspNetCore.DataProtection", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.AspNetCore.SignalR", LogEventLevel.Warning)
+            
+            
+        
+            
             .MinimumLevel.Override("System.Net.Http.HttpClient", minimumLevel)
             .Enrich.FromLogContext()
             .Enrich.WithExceptionDetails()

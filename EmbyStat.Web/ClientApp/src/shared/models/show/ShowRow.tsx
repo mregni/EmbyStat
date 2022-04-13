@@ -7,8 +7,8 @@ export interface ShowRow {
   episodeCount: number;
   specialEpisodeCount: number;
   missingEpisodeCount: number;
-  runTimeTicks: number;
-  cumulativeRunTimeTicks: number;
+  runTime: number;
+  cumulativeRunTime: number;
   genres: string[];
   officialRating: string;
   sizeInMb: number;

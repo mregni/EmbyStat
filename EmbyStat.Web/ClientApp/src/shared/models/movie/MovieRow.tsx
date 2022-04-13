@@ -1,4 +1,4 @@
-import { VideoStream } from "../common";
+import {VideoStream} from '../common';
 
 export interface MovieRow {
     id: string;

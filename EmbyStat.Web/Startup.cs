@@ -43,7 +43,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Refit;
-using Serilog;
 
 namespace EmbyStat.Web;
 
@@ -223,9 +222,8 @@ public class Startup
         });
     }
 
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime, ILoggerFactory loggerFactory)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
     {
-        loggerFactory.AddSerilog();
         ApplicationBuilder = app;
 
         lifetime.ApplicationStarted.Register(PerformPostStartupFunctions);

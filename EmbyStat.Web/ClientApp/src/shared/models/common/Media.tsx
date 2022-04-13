@@ -1,15 +1,14 @@
 export interface Media {
   id: string;
-  dateCreated: Date | string | null;
+  dateCreated: string | null;
   banner: string;
   logo: string;
   primary: string;
   thumb: string;
-  backdrop: string;
   name: string;
   parentId: string;
   path: string;
-  premiereDate: Date | string | null;
+  premiereDate: string | null;
   productionYear: number | null;
   sortName: string;
   collectionId: string;
@@ -22,11 +21,11 @@ export interface ExtraPerson {
 }
 
 export interface Extra extends Media {
-  communityRating: number | null;
+  communityRating: number | undefined;
   imdb: string;
   tmdb: string;
   tvdb: string;
-  runTimeTicks: number | null;
+  runTime: number | null;
   officialRating: string;
   people: ExtraPerson[];
   genres: string[];
@@ -46,8 +45,7 @@ export interface MediaSource {
   videoRange: string;
 }
 
-export interface VideoStream {
-  id: string;
+export interface VideoStream extends Stream {
   aspectRatio: string;
   averageFrameRate: number | null;
   bitRate: number | null;
@@ -56,27 +54,26 @@ export interface VideoStream {
   height: number | null;
   codec: string | null;
   videoRange: string | null;
-  language: string;
   width: number | null;
 }
 
-export interface AudioStream {
+export interface Stream {
   id: string;
+  isDefault: boolean;
+  language: string;
+}
+
+export interface AudioStream extends Stream {
   bitRate: number | null;
   channelLayout: string;
   channels: number | null;
   codec: string;
-  language: string;
   sampleRate: number | null;
-  isDefault: boolean;
 }
 
-export interface SubtitleStream {
-  id: string;
+export interface SubtitleStream extends Stream {
   codec: string;
   displayTitle: string;
-  isDefault: boolean;
-  language: string;
 }
 
 export interface Video extends Extra {
@@ -87,10 +84,6 @@ export interface Video extends Extra {
   subtitleStreams: SubtitleStream[];
   videoStreams: VideoStream[];
   video3DFormat: number;
-}
-
-export interface Movie extends Video {
-  originalTitle: string;
 }
 
 export interface VirtualEpisode {
@@ -105,7 +98,7 @@ export interface VirtualSeason {
 }
 
 export interface Show extends Extra {
-  cumulativeRunTimeTicks?: number;
+  cumulativeRunTime?: number;
   status: string;
   seasonCount: number;
   missingSeasons: VirtualSeason[];

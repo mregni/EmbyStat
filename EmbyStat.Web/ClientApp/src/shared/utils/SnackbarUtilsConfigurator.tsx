@@ -1,5 +1,5 @@
+import {OptionsObject, useSnackbar, WithSnackbarProps} from 'notistack';
 import React from 'react';
-import { useSnackbar, OptionsObject, WithSnackbarProps } from 'notistack';
 
 interface IProps {
   setUseSnackbarRef: (showSnackbar: WithSnackbarProps) => void;
@@ -23,16 +23,16 @@ export const SnackbarUtilsConfigurator = () => {
 
 export default {
   success(msg: string, options: OptionsObject = {}) {
-    this.toast(msg, { ...options, variant: 'success' });
+    this.toast(msg, {...options, variant: 'success'});
   },
   warning(msg: string, options: OptionsObject = {}) {
-    this.toast(msg, { ...options, variant: 'warning' });
+    this.toast(msg, {...options, variant: 'warning'});
   },
   info(msg: string, options: OptionsObject = {}) {
-    this.toast(msg, { ...options, variant: 'info' });
+    this.toast(msg, {...options, variant: 'info'});
   },
   error(msg: string, options: OptionsObject = {}) {
-    this.toast(msg, { ...options, variant: 'error' });
+    this.toast(msg, {...options, variant: 'error'});
   },
   toast(msg: string, options: OptionsObject = {}) {
     useSnackbarRef.enqueueSnackbar(msg, options);
