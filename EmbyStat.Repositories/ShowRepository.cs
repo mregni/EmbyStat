@@ -12,6 +12,7 @@ using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using MoreLinq.Extensions;
 
 namespace EmbyStat.Repositories;
@@ -20,11 +21,13 @@ public class ShowRepository : IShowRepository
 {
     private readonly EsDbContext _context;
     private readonly ISqliteBootstrap _sqliteBootstrap;
+    private readonly ILogger<ShowRepository> _logger;
 
-    public ShowRepository(EsDbContext context, ISqliteBootstrap sqliteBootstrap)
+    public ShowRepository(EsDbContext context, ISqliteBootstrap sqliteBootstrap, ILogger<ShowRepository> logger)
     {
         _context = context;
         _sqliteBootstrap = sqliteBootstrap;
+        _logger = logger;
     }
 
     public async Task<IEnumerable<Media>> GetNewestPremieredMedia(int count)
@@ -64,6 +67,8 @@ INNER JOIN {Constants.Tables.GenreShow} as gs ON (s.Id = gs.ShowsId)
 INNER JOIN {Constants.Tables.Genres} as g ON (g.Id = gs.GenresId)
 GROUP BY g.Name
 ORDER BY g.Name";
+        
+        _logger.LogDebug(query);
         await using var connection = _sqliteBootstrap.CreateConnection();
         await connection.OpenAsync();
         return connection.Query(query)
@@ -91,6 +96,8 @@ FROM {Constants.Tables.Shows} AS s
 WHERE s.OfficialRating IS NOT NULL 
 GROUP BY upper(s.OfficialRating)
 ORDER BY OfficialRating";
+        
+        _logger.LogDebug(query);
         await using var connection = _sqliteBootstrap.CreateConnection();
         await connection.OpenAsync();
         return connection.Query(query)
@@ -107,6 +114,7 @@ WHERE s.Status IS NOT NULL
 GROUP BY s.Status
 ORDER BY s.Status";
 
+        _logger.LogDebug(query);
         await using var connection = _sqliteBootstrap.CreateConnection();
         await connection.OpenAsync();
         return connection.Query(query)
@@ -125,6 +133,7 @@ WHERE se.IndexNumber != 0
 GROUP BY s.Id
 ORDER BY s.Id";
 
+        _logger.LogDebug(query);
         await using var connection = _sqliteBootstrap.CreateConnection();
         await connection.OpenAsync();
         return connection.Query<double>(query);
@@ -139,6 +148,7 @@ ORDER BY s.Id";
     {
         var query = ShowExtensions.GenerateCountQuery(filters);
 
+        _logger.LogDebug(query);
         await using var connection = _sqliteBootstrap.CreateConnection();
         await connection.OpenAsync();
         var result = await connection.QueryFirstAsync<int>(query);
@@ -160,6 +170,7 @@ FROM {Constants.Tables.Shows} AS s
 WHERE NOT EXISTS (SELECT 1 FROM {Constants.Tables.Seasons} AS se INNER JOIN {Constants.Tables.Episodes} AS ep ON (se.Id = ep.SeasonId) 
     WHERE se.ShowId = s.Id AND ep.LocationType = 1) ";
 
+        _logger.LogDebug(query);
         await using var connection = _sqliteBootstrap.CreateConnection();
         await connection.OpenAsync();
         return connection.QueryFirst<int>(query);
@@ -178,6 +189,7 @@ INNER JOIN {Constants.Tables.GenreShow} AS gs ON (s.Id = gs.ShowsId)
 INNER JOIN {Constants.Tables.Genres} AS g On (g.Id = gs.GenresId)
 WHERE 1=1 ";
 
+        _logger.LogDebug(query);
         await using var connection = _sqliteBootstrap.CreateConnection();
         await connection.OpenAsync();
         return await connection.QueryFirstAsync<int>(query);
@@ -295,6 +307,8 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
     public async Task<IEnumerable<Show>> GetAllShowsWithEpisodes()
     {
         var query = ShowExtensions.GenerateFullShowQuery();
+        
+        _logger.LogDebug(query);
         await using var connection = _sqliteBootstrap.CreateConnection();
         await connection.OpenAsync();
 
@@ -314,11 +328,12 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
     public async Task<Show> GetShowByIdWithEpisodes(string showId)
     {
         var query = ShowExtensions.GenerateFullShowWithGenresQuery();
-        query += $" AND s.Id = {showId}";
+        query += $" AND s.Id = '{showId}'";
 
         await using var connection = _sqliteBootstrap.CreateConnection();
         await connection.OpenAsync();
 
+        _logger.LogDebug(query);
         var list = await connection.QueryAsync<Show, Genre, Season, Episode, Show>(query,
             (s, g, se, e) =>
             {
@@ -339,6 +354,8 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
         IEnumerable<Filter> filters)
     {
         var query = ShowExtensions.GenerateShowPageQuery(filters, sortField, sortOrder);
+        
+        _logger.LogDebug(query);
         await using var connection = _sqliteBootstrap.CreateConnection();
         await connection.OpenAsync();
 

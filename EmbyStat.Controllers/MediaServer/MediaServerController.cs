@@ -8,6 +8,7 @@ using EmbyStat.Common.Helpers;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using MoreLinq;
 
 namespace EmbyStat.Controllers.MediaServer;
 
@@ -59,7 +60,9 @@ public class MediaServerController : Controller
         var result = await _mediaServerService.SearchMediaServer(type);
         if (result != null)
         {
-            var mapped = _mapper.Map<IList<UdpBroadcastViewModel>>(result);
+            var mapped = _mapper
+                .Map<IList<UdpBroadcastViewModel>>(result, opt =>
+                    opt.AfterMap((src, dest) => dest.ForEach<UdpBroadcastViewModel>(y => y.Type = (int)type)));
             return Ok(mapped);
         }
 

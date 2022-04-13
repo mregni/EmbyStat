@@ -16,6 +16,6 @@ public class LanguageRepository : ILanguageRepository
 
     public Task<List<Language>> GetLanguages()
     {
-        return _context.Languages.ToListAsync();
+        return _context.Languages.AsNoTracking().ToListAsync();
     }
 }

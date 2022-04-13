@@ -70,13 +70,13 @@ public class Program
                         .UseStartup<Startup>()
                         .UseUrls(listeningUrl)
                         .UseConfiguration(config)
-                        .ConfigureLogging(logging =>
+                        .ConfigureLogging(builder =>
                         {
-                            logging.ClearProviders();
-                            logging.SetMinimumLevel(LogLevel.Debug);
+                            builder.ClearProviders();
+                            builder.SetMinimumLevel(LogLevel.Debug);
+                            builder.AddSerilog();
                         });
                 })
-                .UseSerilog()
                 .Build();
 
             SetupDatabase(host);
@@ -137,7 +137,7 @@ public class Program
         var levelSwitch = new LoggingLevelSwitch();
         levelSwitch.MinimumLevel = logLevel == 1 ? LogEventLevel.Debug : LogEventLevel.Information;
         var minimumLevel = logLevel == 1 ? LogEventLevel.Debug : LogEventLevel.Warning;
-        var logFormat = "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{Level:u3}] {Message:lj}{NewLine}{Exception}";
+        var logFormat = "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{SourceContext}]  [{Level:u3}] {Message:lj}{NewLine}{Exception}";
         var fullLogPath = Path.Combine(logPath, "log.txt");
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.ControlledBy(levelSwitch)

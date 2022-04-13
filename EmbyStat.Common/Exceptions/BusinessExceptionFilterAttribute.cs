@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using Rollbar;
+using Serilog;
 
 namespace EmbyStat.Common.Exceptions;
 
@@ -23,12 +24,15 @@ public class BusinessExceptionFilterAttribute : ExceptionFilterAttribute
             if (ex.InnerException?.InnerException != null)
             {
                 RollbarLocator.RollbarInstance.Error(ex.InnerException.InnerException);
+                Log.Warning(ex.InnerException.InnerException, "BusinessException occured");
             }
             else if (ex.InnerException != null)
             {
                 RollbarLocator.RollbarInstance.Error(ex.InnerException);
+                Log.Warning(ex.InnerException, "BusinessException occured");
             }
 
+            Log.Warning(ex, "Top BusinessException");
             context.HttpContext.Response.StatusCode = ex.StatusCode;
         }
         else
@@ -44,6 +48,7 @@ public class BusinessExceptionFilterAttribute : ExceptionFilterAttribute
             context.HttpContext.Response.StatusCode = 500;
 
             RollbarLocator.RollbarInstance.Error(context.Exception);
+            Log.Error(context.Exception, "Exception occured");
         }
 
         context.Result = new JsonResult(apiError);

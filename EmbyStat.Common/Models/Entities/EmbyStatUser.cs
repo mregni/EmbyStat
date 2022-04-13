@@ -14,13 +14,13 @@ public class EmbyStatUser : IdentityUser
     [NotMapped]
     public RefreshToken RefreshToken
     {
-        get => JsonConvert.DeserializeObject<RefreshToken>(_refreshToken);
+        get => JsonConvert.DeserializeObject<RefreshToken>(_refreshToken ?? "");
         set => _refreshToken = JsonConvert.SerializeObject(value);
     }
 
     public bool HasValidRefreshToken(string refreshToken)
     {
-        return RefreshToken.Token == refreshToken && RefreshToken.Active;
+        return RefreshToken != null && RefreshToken.Token == refreshToken && RefreshToken.Active;
     }
 
     public void SetRefreshToken(string token, string userId, string remoteIpAddress, double daysToExpire = 5)
