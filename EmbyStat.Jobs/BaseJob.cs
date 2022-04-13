@@ -5,10 +5,10 @@ using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Common.Models.Tasks.Enum;
-using EmbyStat.Logging;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
+using Microsoft.Extensions.Logging;
 
 namespace EmbyStat.Jobs;
 
@@ -17,8 +17,8 @@ public abstract class BaseJob : IBaseJob, IDisposable
 {
     protected readonly IHubHelper HubHelper;
     private readonly IJobRepository _jobRepository;
-    protected readonly Logger Logger;
     private bool _disposed;
+    protected ILogger<BaseJob> Logger;
 
     private JobState State { get; set; }
     private DateTime? StartTimeUtc { get; }
@@ -27,19 +27,19 @@ public abstract class BaseJob : IBaseJob, IDisposable
     private double Progress { get; set; }
 
     protected BaseJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
-        bool enableUiLogging, Type type, string prefix)
+        bool enableUiLogging, ILogger<BaseJob> logger)
     {
         HubHelper = hubHelper;
         _jobRepository = jobRepository;
         Settings = settingsService.GetUserSettings();
         EnableUiLogging = enableUiLogging;
-        Logger = LogFactory.CreateLoggerForType(type, prefix);
         Progress = 0;
         StartTimeUtc = DateTime.UtcNow;
+        Logger = logger;
     }
 
-    protected BaseJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, Type type, string prefix)
-        :this(hubHelper, jobRepository, settingsService, true, type, prefix)
+    protected BaseJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, ILogger<BaseJob> logger)
+        :this(hubHelper, jobRepository, settingsService, true, logger)
     {
             
     }
@@ -63,7 +63,7 @@ public abstract class BaseJob : IBaseJob, IDisposable
         }
         catch (Exception e)
         {
-            Logger.Error(e, "Error while running job");
+            Logger.LogError(e, "Error while running job");
             await FailExecution(e.Message);
             await FailExecution("Job failed, check logs for more info.");
             throw;
@@ -128,20 +128,20 @@ public abstract class BaseJob : IBaseJob, IDisposable
     {
         if (EnableUiLogging)
         {
-            Logger.Info(message);
+            Logger.LogInformation(message);
             await SendLogUpdateToFront(message, ProgressLogType.Information);
         }
     }
 
     protected async Task LogWarning(string message)
     {
-        Logger.Warn(message);
+        Logger.LogWarning(message);
         await SendLogUpdateToFront(message, ProgressLogType.Warning);
     }
 
     protected async Task LogError(string message)
     {
-        Logger.Error(message);
+        Logger.LogError(message);
         await SendLogUpdateToFront(message, ProgressLogType.Error);
     }
 

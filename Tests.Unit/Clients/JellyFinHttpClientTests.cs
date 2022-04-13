@@ -2,10 +2,12 @@
 using AutoMapper;
 using EmbyStat.Clients.Base.Api;
 using EmbyStat.Clients.Base.Http;
+using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Clients.Jellyfin.Http;
 using EmbyStat.Controllers;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -34,7 +36,9 @@ public class JellyFinHttpClientTests
         var mapper = mappingConfig.CreateMapper();
 
         var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
-        _service = new JellyfinBaseHttpClient(httpContextAccessorMock.Object, _factoryMock.Object, mapper);
+        var logger = new Mock<ILogger<JellyfinBaseHttpClient>>();
+
+        _service = new JellyfinBaseHttpClient(httpContextAccessorMock.Object, logger.Object, _factoryMock.Object, mapper);
 
         _service.SetDeviceInfo("embystat", "mediabrowser", "0", "c",
             "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");

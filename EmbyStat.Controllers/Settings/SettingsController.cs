@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Models.Settings;
-using EmbyStat.Logging;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace EmbyStat.Controllers.Settings;
 
@@ -15,15 +15,15 @@ public class SettingsController : Controller
     private readonly ISettingsService _settingsService;
     private readonly ILanguageService _languageService;
     private readonly IMapper _mapper;
-    private readonly Logger _logger;
+    private readonly ILogger<SettingsController> _logger;
 
     public SettingsController(ISettingsService settingsService,
-        ILanguageService languageService, IMapper mapper)
+        ILanguageService languageService, IMapper mapper, ILogger<SettingsController> logger)
     {
         _languageService = languageService;
         _settingsService = settingsService;
         _mapper = mapper;
-        _logger = LogFactory.CreateLoggerForType(typeof(SettingsController), "SETTINGS");
+        _logger = logger;
     }
 
     [HttpGet]
@@ -46,7 +46,7 @@ public class SettingsController : Controller
     {
         if (userSettings == null)
         {
-            _logger.Info("Settings object was NULL while calling the PUT API.");
+            _logger.LogInformation("Settings object was NULL while calling the PUT API.");
             return BadRequest();
         }
 

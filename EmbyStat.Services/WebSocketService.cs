@@ -4,10 +4,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Base.WebSocket;
 using EmbyStat.Common.Converters;
-using EmbyStat.Logging;
 using EmbyStat.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
 namespace EmbyStat.Services;
@@ -15,14 +15,14 @@ namespace EmbyStat.Services;
 public class WebSocketService : IHostedService, IDisposable
 {
     private readonly IServiceScopeFactory _scopeFactory;
-    private readonly Logger _logger;
+    private readonly ILogger<WebSocketService> _logger;
 
     private Timer _timer;
 
-    public WebSocketService(IServiceScopeFactory scopeFactory)
+    public WebSocketService(IServiceScopeFactory scopeFactory, ILogger<WebSocketService> logger)
     {
         _scopeFactory = scopeFactory;
-        _logger = LogFactory.CreateLoggerForType(typeof(WebSocketService), "WEB-SOCKET-SERVICE");
+        _logger = logger;
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
@@ -54,7 +54,7 @@ public class WebSocketService : IHostedService, IDisposable
                 }
                 catch (Exception e)
                 {
-                    _logger.Error(e, "Failed to open socket connection to MediaServer");
+                    _logger.LogError(e, "Failed to open socket connection to MediaServer");
                     throw;
                 }
             }
@@ -81,7 +81,7 @@ public class WebSocketService : IHostedService, IDisposable
             }
             catch (Exception)
             {
-                _logger.Info("Application is closing, socket is closed!");
+                _logger.LogInformation("Application is closing, socket is closed!");
             }
         }
     }
@@ -98,7 +98,7 @@ public class WebSocketService : IHostedService, IDisposable
 
     private void WebSocketApiUserDataChanged(object sender, Common.Models.GenericEventArgs<JArray> e)
     {
-        _logger.Info("EmbyUser data changed");
+        _logger.LogInformation("EmbyUser data changed");
     }
 
     private void WebSocketApiSessionsUpdated(object sender, Common.Models.GenericEventArgs<JArray> e)

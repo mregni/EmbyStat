@@ -6,6 +6,7 @@ using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
+using Microsoft.Extensions.Logging;
 
 namespace EmbyStat.Jobs.Jobs.Updater;
 
@@ -16,8 +17,8 @@ public class CheckUpdateJob : BaseJob, ICheckUpdateJob
     private readonly ISettingsService _settingsService;
 
     public CheckUpdateJob(IHubHelper hubHelper, IJobRepository jobRepository,
-        ISettingsService settingsService, IUpdateService updateService) 
-        : base(hubHelper, jobRepository, settingsService, typeof(CheckUpdateJob), Constants.LogPrefix.CheckUpdateJob)
+        ISettingsService settingsService, IUpdateService updateService, ILogger<CheckUpdateJob> logger) 
+        : base(hubHelper, jobRepository, settingsService, logger)
     {
         _updateService = updateService;
         _settingsService = settingsService;

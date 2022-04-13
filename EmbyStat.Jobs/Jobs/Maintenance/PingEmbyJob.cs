@@ -6,6 +6,7 @@ using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
+using Microsoft.Extensions.Logging;
 
 namespace EmbyStat.Jobs.Jobs.Maintenance;
 
@@ -15,9 +16,8 @@ public class PingEmbyJob : BaseJob, IPingEmbyJob
     private readonly IMediaServerService _mediaServerService;
 
     public PingEmbyJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
-        IMediaServerService mediaServerService)
-        : base(hubHelper, jobRepository, settingsService, false, typeof(PingEmbyJob),
-            Constants.LogPrefix.PingMediaServerJob)
+        IMediaServerService mediaServerService, ILogger<PingEmbyJob> logger)
+        : base(hubHelper, jobRepository, settingsService, false, logger)
     {
         _mediaServerService = mediaServerService;
     }

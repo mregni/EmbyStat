@@ -8,6 +8,7 @@ using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Moq;
 using Tests.Unit.Helpers;
@@ -74,8 +75,9 @@ public class AccountServiceTests
             .Setup(x => x.WriteToken(It.IsAny<SecurityToken>()))
             .Returns("azerty");
 
+        var logger = new Mock<ILogger<AccountService>>();
         var accountService = new AccountService(signInManagerMock.Object, userManagerMock.Object,
-            settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object);
+            settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object, logger.Object);
 
         var result = await accountService.Authenticate(_loginRequest, "0.0.0.0");
         result.Should().NotBeNull();
@@ -110,9 +112,10 @@ public class AccountServiceTests
         var settingsServiceMock = new Mock<ISettingsService>();
         var tokenHandler = new Mock<JwtSecurityTokenHandler>();
         var roleManagerMock = new Mock<FakeRoleManager>();
-
+        var logger = new Mock<ILogger<AccountService>>();
+        
         var accountService = new AccountService(signInManagerMock.Object, userManagerMock.Object,
-            settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object);
+            settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object, logger.Object);
 
         var result = await accountService.Authenticate(_loginRequest, "0.0.0.0");
         result.Should().BeNull();
@@ -135,9 +138,10 @@ public class AccountServiceTests
         var settingsServiceMock = new Mock<ISettingsService>();
         var tokenHandler = new Mock<JwtSecurityTokenHandler>();
         var roleManagerMock = new Mock<FakeRoleManager>();
-
+        var logger = new Mock<ILogger<AccountService>>();
+        
         var accountService = new AccountService(signInManagerMock.Object, userManagerMock.Object,
-            settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object);
+            settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object, logger.Object);
 
         var register = new AuthenticateRequest {Password = "test", Username = "username"};
         await accountService.Register(register);
@@ -158,9 +162,10 @@ public class AccountServiceTests
         var settingsServiceMock = new Mock<ISettingsService>();
         var tokenHandler = new Mock<JwtSecurityTokenHandler>();
         var roleManagerMock = new Mock<FakeRoleManager>();
-
+        var logger = new Mock<ILogger<AccountService>>();
+        
         var accountService = new AccountService(signInManagerMock.Object, userManagerMock.Object,
-            settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object);
+            settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object, logger.Object);
 
         await accountService.LogOut();
 
@@ -182,9 +187,10 @@ public class AccountServiceTests
         var settingsServiceMock = new Mock<ISettingsService>();
         var tokenHandler = new Mock<JwtSecurityTokenHandler>();
         var roleManagerMock = new Mock<FakeRoleManager>();
-
+        var logger = new Mock<ILogger<AccountService>>();
+        
         var accountService = new AccountService(signInManagerMock.Object, userManagerMock.Object,
-            settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object);
+            settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object, logger.Object);
 
         var request = new ChangePasswordRequest
         {
@@ -211,9 +217,10 @@ public class AccountServiceTests
         var settingsServiceMock = new Mock<ISettingsService>();
         var tokenHandler = new Mock<JwtSecurityTokenHandler>();
         var roleManagerMock = new Mock<FakeRoleManager>();
-
+        var logger = new Mock<ILogger<AccountService>>();
+        
         var accountService = new AccountService(signInManagerMock.Object, userManagerMock.Object,
-            settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object);
+            settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object, logger.Object);
 
         var request = new ChangePasswordRequest
         {
@@ -245,9 +252,10 @@ public class AccountServiceTests
         var settingsServiceMock = new Mock<ISettingsService>();
         var tokenHandler = new Mock<JwtSecurityTokenHandler>();
         var roleManagerMock = new Mock<FakeRoleManager>();
-
+        var logger = new Mock<ILogger<AccountService>>();
+        
         var accountService = new AccountService(signInManagerMock.Object, userManagerMock.Object,
-            settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object);
+            settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object, logger.Object);
 
         var request = new ChangePasswordRequest
         {
@@ -278,9 +286,10 @@ public class AccountServiceTests
         var settingsServiceMock = new Mock<ISettingsService>();
         var tokenHandler = new Mock<JwtSecurityTokenHandler>();
         var roleManagerMock = new Mock<FakeRoleManager>();
-
+        var logger = new Mock<ILogger<AccountService>>();
+        
         var accountService = new AccountService(signInManagerMock.Object, userManagerMock.Object,
-            settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object);
+            settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object, logger.Object);
 
         var request = new ChangeUserNameRequest
         {
@@ -306,9 +315,10 @@ public class AccountServiceTests
         var settingsServiceMock = new Mock<ISettingsService>();
         var tokenHandler = new Mock<JwtSecurityTokenHandler>();
         var roleManagerMock = new Mock<FakeRoleManager>();
-
+        var logger = new Mock<ILogger<AccountService>>();
+        
         var accountService = new AccountService(signInManagerMock.Object, userManagerMock.Object,
-            settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object);
+            settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object, logger.Object);
 
         var request = new ChangeUserNameRequest
         {
@@ -337,9 +347,10 @@ public class AccountServiceTests
         var settingsServiceMock = new Mock<ISettingsService>();
         var tokenHandler = new Mock<JwtSecurityTokenHandler>();
         var roleManagerMock = new Mock<FakeRoleManager>();
-
+        var logger = new Mock<ILogger<AccountService>>();
+        
         var accountService = new AccountService(signInManagerMock.Object, userManagerMock.Object,
-            settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object);
+            settingsServiceMock.Object, tokenHandler.Object, roleManagerMock.Object, logger.Object);
 
         var request = new ChangeUserNameRequest
         {

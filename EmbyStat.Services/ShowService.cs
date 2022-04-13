@@ -18,6 +18,7 @@ using EmbyStat.Services.Models.Charts;
 using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Show;
 using EmbyStat.Services.Models.Stat;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using LocationType = EmbyStat.Common.Enums.LocationType;
 
@@ -30,8 +31,9 @@ public class ShowService : MediaService, IShowService
     private readonly IMediaServerRepository _mediaServerRepository;
 
     public ShowService(IJobRepository jobRepository, IShowRepository showRepository,
-        IStatisticsRepository statisticsRepository, IMediaServerRepository mediaServerRepository) 
-        : base(jobRepository, typeof(ShowService), "SHOW")
+        IStatisticsRepository statisticsRepository, IMediaServerRepository mediaServerRepository,
+        ILogger<ShowService> logger) 
+        : base(jobRepository, logger)
     {
         _showRepository = showRepository;
         _statisticsRepository = statisticsRepository;

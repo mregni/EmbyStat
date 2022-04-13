@@ -3,7 +3,7 @@ using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Base.WebSocket;
-using NLog;
+using Microsoft.Extensions.Logging;
 using WebSocket4Net;
 using WebSocketState = WebSocket4Net.WebSocketState;
 
@@ -17,7 +17,13 @@ public class EmbyWebSocketClient : IWebSocketClient, IDisposable
     public event EventHandler Connected;
     public Action<byte[]> OnReceiveBytes { get; set; }
     public Action<string> OnReceive { get; set; }
-        
+    private readonly ILogger<EmbyWebSocketClient> _logger;
+
+    public EmbyWebSocketClient(ILogger<EmbyWebSocketClient> logger)
+    {
+        _logger = logger;
+    }
+
     public Task ConnectAsync(string url)
     {
         var taskCompletionSource = new TaskCompletionSource<bool>();
@@ -81,10 +87,9 @@ public class EmbyWebSocketClient : IWebSocketClient, IDisposable
         {
             var state = State;
 
-            if (state == WebSocketState.Open || state == WebSocketState.Connecting)
+            if (state is WebSocketState.Open or WebSocketState.Connecting)
             {
-                var logger = LogManager.GetCurrentClassLogger();
-                logger.Info("Sending web socket close message");
+                _logger.LogInformation("Sending web socket close message");
                 _socket.Close();
             }
 

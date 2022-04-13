@@ -4,9 +4,8 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models;
-using EmbyStat.Logging;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -25,16 +24,16 @@ public class WebSocketApi : IWebSocketApi, IDisposable
     public event EventHandler<EventArgs> RestartRequired;
 
     private readonly IWebSocketClient _clientWebSocket;
-    private readonly Logger _logger;
+    private readonly ILogger<WebSocketApi> _logger;
 
     private string ApiUrl { get; set; }
     public string AccessToken { get; set; }
     public string DeviceId { get; set; }
 
-    public WebSocketApi(IWebSocketClient clientWebSocket)
+    public WebSocketApi(IWebSocketClient clientWebSocket, ILogger<WebSocketApi> logger)
     {
         _clientWebSocket = clientWebSocket;
-        _logger = LogFactory.CreateLoggerForType(typeof(WebSocketApi), "WEB-SOCKET-API");
+        _logger = logger;
     }
 
     public async Task OpenWebSocket(string url, string accessToken, string deviceId)
@@ -62,7 +61,7 @@ public class WebSocketApi : IWebSocketApi, IDisposable
             var url = GetWebSocketUrl(ApiUrl);
 
             try {
-                _logger.Info($"Connecting to {url}");
+                _logger.LogInformation($"Connecting to {url}");
 
                 //_clientWebSocket.OnReceiveBytes = OnMessageReceived;
                 //_clientWebSocket.OnReceive = OnMessageReceived;
@@ -73,7 +72,7 @@ public class WebSocketApi : IWebSocketApi, IDisposable
             }
             catch (Exception e)
             {
-                _logger.Error(e, $"Error connecting to {url}");
+                _logger.LogError(e, $"Error connecting to {url}");
             }
         }
     }
@@ -81,7 +80,7 @@ public class WebSocketApi : IWebSocketApi, IDisposable
     private void ClientWebSocketConnected(object sender, EventArgs e)
     {
         OnWebSocketConnected?.Invoke(this, EventArgs.Empty);
-        _logger.Info("Web socket connection opened.");
+        _logger.LogInformation("Web socket connection opened.");
     }
 
     private void ClientWebSocketClosed(object sender, EventArgs e)
@@ -103,7 +102,7 @@ public class WebSocketApi : IWebSocketApi, IDisposable
         }
         catch (Exception e)
         {
-            _logger.Error(e, "Error sending web socket message");
+            _logger.LogError(e, "Error sending web socket message");
             throw;
         }
     }
@@ -143,7 +142,7 @@ public class WebSocketApi : IWebSocketApi, IDisposable
         }
         catch (Exception e)
         {
-            _logger.Error(e, "Error in OnMessageReceivedInternal");
+            _logger.LogError(e, "Error in OnMessageReceivedInternal");
         }
     }
 
@@ -213,7 +212,7 @@ public class WebSocketApi : IWebSocketApi, IDisposable
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Error in event handler");
+                _logger.LogError(e, "Error in event handler");
             }
         }
     }

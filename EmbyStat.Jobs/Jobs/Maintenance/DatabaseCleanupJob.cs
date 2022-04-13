@@ -6,6 +6,7 @@ using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
+using Microsoft.Extensions.Logging;
 
 namespace EmbyStat.Jobs.Jobs.Maintenance;
 
@@ -15,8 +16,8 @@ public class DatabaseCleanupJob : BaseJob, IDatabaseCleanupJob
     private readonly IStatisticsRepository _statisticsRepository;
 
     public DatabaseCleanupJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
-        IStatisticsRepository statisticsRepository)
-        : base(hubHelper, jobRepository, settingsService, typeof(DatabaseCleanupJob), Constants.LogPrefix.DatabaseCleanupJob)
+        IStatisticsRepository statisticsRepository, ILogger<DatabaseCleanupJob> logger)
+        : base(hubHelper, jobRepository, settingsService, logger)
     {
         _statisticsRepository = statisticsRepository;
     }

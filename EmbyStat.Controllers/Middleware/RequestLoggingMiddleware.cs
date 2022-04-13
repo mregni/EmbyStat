@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using EmbyStat.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.IO;
@@ -24,7 +23,7 @@ public class RequestLoggingMiddleware
 
     public async Task Invoke(HttpContext context)
     {
-        if (_logger.IsEnabled(LogLevel.Debug))
+        if (_logger.IsEnabled(LogLevel.Debug) && context.Request.Path.StartsWithSegments(new PathString("/api")))
         {
             await InvokeWithLogging(context);
         }

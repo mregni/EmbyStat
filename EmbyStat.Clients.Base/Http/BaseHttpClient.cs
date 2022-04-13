@@ -10,10 +10,10 @@ using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Shows;
-using EmbyStat.Logging;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Querying;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using MediaServerUser = EmbyStat.Common.Models.Entities.Users.MediaServerUser;
 
 namespace EmbyStat.Clients.Base.Http;
@@ -22,7 +22,7 @@ public abstract class BaseHttpClient
 {
     private readonly IHttpContextAccessor _accessor;
     private readonly IRefitHttpClientFactory<IMediaServerApi> _refitFactory;
-    private readonly Logger _logger;
+    private readonly ILogger<BaseHttpClient> _logger;
     private readonly IMapper _mapper;
 
     private string DeviceName { get; set; }
@@ -35,13 +35,13 @@ public abstract class BaseHttpClient
     private string AuthorizationParameter => $"RestClient=\"other\", DeviceId=\"{DeviceId}\", Device=\"{DeviceName}\", Version=\"{ApplicationVersion}\"";
     private string AuthorizationString => $"{AuthorizationScheme} {AuthorizationParameter}";
 
-    protected BaseHttpClient(IHttpContextAccessor accessor, 
+    protected BaseHttpClient(IHttpContextAccessor accessor, ILogger<BaseHttpClient> logger,
         IRefitHttpClientFactory<IMediaServerApi> refitFactory, IMapper mapper)
     {
         _accessor = accessor;
         _refitFactory = refitFactory;
         _mapper = mapper;
-        _logger = LogFactory.CreateLoggerForType(typeof(BaseHttpClient), "BASE-HTTP-CLIENT");
+        _logger = logger;
     }
 
     public void SetDeviceInfo(string deviceName, string authorizationScheme, string applicationVersion, string deviceId, string userId)
@@ -57,11 +57,11 @@ public abstract class BaseHttpClient
     {
         var list = new List<MediaServerUdpBroadcast>();
         var ownIp = _accessor.HttpContext?.Connection.RemoteIpAddress ?? IPAddress.Any;
-        _logger.Debug($"Own IP detected: {ownIp.MapToIPv4()}");
-        _logger.Debug($"Sending \"{message}\" to following broadcast IPs:");
+        _logger.LogDebug($"Own IP detected: {ownIp.MapToIPv4()}");
+        _logger.LogDebug($"Sending \"{message}\" to following broadcast IPs:");
         foreach (var ip in GetBroadCastIps(ownIp))
         {
-            _logger.Debug($"\t{ip.MapToIPv4()}");
+            _logger.LogDebug($"\t{ip.MapToIPv4()}");
             await Task.Run(async () =>
             {
                 var to = new IPEndPoint(ip, 7359);
@@ -82,7 +82,7 @@ public abstract class BaseHttpClient
 
     private IEnumerable<IPAddress> GetBroadCastIps(IPAddress ip)
     {
-        _logger.Debug($"{ip.MapToIPv4()})");
+        _logger.LogDebug($"{ip.MapToIPv4()})");
         var interfaces = NetworkInterface.GetAllNetworkInterfaces();
         foreach (var adapter in interfaces)
         {
@@ -117,7 +117,7 @@ public abstract class BaseHttpClient
     {
         var client = _refitFactory.CreateClient(BaseUrl);
         var result = await client.Ping(ApiKey, AuthorizationString);
-        _logger.Debug($"Ping returned: {result}");
+        _logger.LogDebug($"Ping returned: {result}");
         return result == message;
     }
 

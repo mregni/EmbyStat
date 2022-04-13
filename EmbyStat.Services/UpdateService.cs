@@ -15,10 +15,10 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Settings;
-using EmbyStat.Logging;
 using EmbyStat.Services.Interfaces;
 using MediaBrowser.Model.Net;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace EmbyStat.Services;
 
@@ -27,15 +27,15 @@ public class UpdateService : IUpdateService
     private readonly IGitHubClient _gitHubClient;
     private readonly ISettingsService _settingsService;
     private readonly IHostApplicationLifetime _applicationLifetime;
-    private readonly Logger _logger;
+    private readonly ILogger<UpdateService> _logger;
 
     public UpdateService(IGitHubClient gitHubClient, ISettingsService settingsService,
-        IHostApplicationLifetime appLifetime)
+        IHostApplicationLifetime appLifetime, ILogger<UpdateService> logger)
     {
         _gitHubClient = gitHubClient;
         _settingsService = settingsService;
         _applicationLifetime = appLifetime;
-        _logger = LogFactory.CreateLoggerForType(typeof(UpdateService), "UPDATE-SERVICE");
+        _logger = logger;
     }
 
     public async Task<UpdateResult> CheckForUpdate()
@@ -182,8 +182,8 @@ public class UpdateService : IUpdateService
 
         try
         {
-            _logger.Info("---------------------------------");
-            _logger.Info($"Downloading zip file {result.Package.Name}");
+            _logger.LogInformation("---------------------------------");
+            _logger.LogInformation($"Downloading zip file {result.Package.Name}");
 
             using var webClient = new WebClient();
             webClient.DownloadFileCompleted += delegate { DownloadFileCompleted(result); };
@@ -191,7 +191,7 @@ public class UpdateService : IUpdateService
         }
         catch (Exception e)
         {
-            _logger.Error(e, "Downloading update zip failed!");
+            _logger.LogError(e, "Downloading update zip failed!");
         }
     }
 
@@ -199,9 +199,9 @@ public class UpdateService : IUpdateService
     {
         return Task.Run(() =>
         {
-            _logger.Info("Starting updater process.");
+            _logger.LogInformation("Starting updater process.");
             var appSettings = _settingsService.GetAppSettings();
-            _logger.Info(Directory.GetCurrentDirectory());
+            _logger.LogInformation(Directory.GetCurrentDirectory());
             var updaterExtension = string.Empty;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
@@ -216,13 +216,13 @@ public class UpdateService : IUpdateService
 
             if (!File.Exists(updaterTool))
             {
-                _logger.Debug($"Update tool not found in location: {updaterTool}");
+                _logger.LogDebug($"Update tool not found in location: {updaterTool}");
                 throw new BusinessException("NOUPDATEFILE");
             }
 
-            _logger.Info($"StartJob tool located at {updaterTool}");
-            _logger.Info($"Arguments passed are {GetArgs(appSettings)}");
-            _logger.Info($"Working directory is {workingDirectory}");
+            _logger.LogInformation($"StartJob tool located at {updaterTool}");
+            _logger.LogInformation($"Arguments passed are {GetArgs(appSettings)}");
+            _logger.LogInformation($"Working directory is {workingDirectory}");
 
             var start = new ProcessStartInfo
             {
@@ -241,14 +241,14 @@ public class UpdateService : IUpdateService
 
     private void DownloadFileCompleted(UpdateResult result)
     {
-        _logger.Info("Downloading finished");
+        _logger.LogInformation("Downloading finished");
         UnPackZip(result);
     }
 
     private void UnPackZip(UpdateResult result)
     {
-        _logger.Info("---------------------------------");
-        _logger.Info("Starting to unpack new version");
+        _logger.LogInformation("---------------------------------");
+        _logger.LogInformation("Starting to unpack new version");
 
         try
         {
@@ -257,7 +257,7 @@ public class UpdateService : IUpdateService
         }
         catch (Exception e)
         {
-            _logger.Error(e, "Unpack error");
+            _logger.LogError(e, "Unpack error");
             throw new BusinessException("UPDATEUNPACKERROR");
         }
         finally

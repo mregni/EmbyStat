@@ -20,12 +20,12 @@ public class JobRepository : IJobRepository
 
     public IEnumerable<Job> GetAll()
     {
-        return _context.Jobs.AsEnumerable();
+        return _context.Jobs.AsNoTracking().AsEnumerable();
     }
 
     public Job GetById(Guid id)
     {
-        return _context.Jobs.FirstOrDefault(x => x.Id == id);
+        return _context.Jobs.AsNoTracking().FirstOrDefault(x => x.Id == id);
     }
 
     public async Task StartJob(Guid id)

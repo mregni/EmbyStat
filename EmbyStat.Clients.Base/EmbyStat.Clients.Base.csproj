@@ -22,4 +22,10 @@
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\6.0.1\Microsoft.Extensions.Http.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

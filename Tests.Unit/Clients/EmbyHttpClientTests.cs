@@ -6,6 +6,7 @@ using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Controllers;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -34,7 +35,8 @@ public class EmbyHttpClientTests
         var mapper = mappingConfig.CreateMapper();
 
         var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
-        _service = new EmbyBaseHttpClient(httpContextAccessorMock.Object, _factoryMock.Object, mapper);
+        var logger = new Mock<ILogger<EmbyBaseHttpClient>>();
+        _service = new EmbyBaseHttpClient(httpContextAccessorMock.Object,logger.Object, _factoryMock.Object, mapper);
 
         _service.SetDeviceInfo("embystat", "mediabrowser", "0", "c",
             "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");

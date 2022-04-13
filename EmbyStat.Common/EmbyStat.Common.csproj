@@ -23,13 +23,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="4.14.0" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.3" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.17.0" />
     <PackageReference Include="Rollbar.NetCore.AspNet" Version="4.0.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.17.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\EmbyStat.Logging\EmbyStat.Logging.csproj" />
   </ItemGroup>
 
   <ItemGroup>

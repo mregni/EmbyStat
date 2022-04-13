@@ -18,6 +18,7 @@ using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
 using MediaBrowser.Model.Net;
+using Microsoft.Extensions.Logging;
 
 namespace EmbyStat.Jobs.Jobs.Sync;
 
@@ -38,8 +39,8 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
         IClientStrategy clientStrategy, IShowRepository showRepository,
         IStatisticsRepository statisticsRepository, IShowService showService, ITmdbClient tmdbClient,
         IGenreRepository genreRepository, IPersonRepository personRepository, 
-        IMediaServerRepository mediaServerRepository, IFilterRepository filterRepository)
-        : base(hubHelper, jobRepository, settingsService, typeof(ShowSyncJob), Constants.LogPrefix.ShowSyncJob)
+        IMediaServerRepository mediaServerRepository, IFilterRepository filterRepository, ILogger<ShowSyncJob> logger)
+        : base(hubHelper, jobRepository, settingsService, logger)
     {
         _showRepository = showRepository;
         _statisticsRepository = statisticsRepository;
@@ -195,9 +196,8 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
         }
         catch (Exception e)
         {
-            await LogError(e.Message);
             await LogError($"Can't seem to process show {show.Name}, check the logs for more details!");
-            Logger.Error(e);
+            Logger.LogError(e, "Exception details");
             show.ExternalSynced = false;
         }
     }
@@ -217,7 +217,7 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
             var season = show.Seasons.FirstOrDefault(x => x.IndexNumber == externalEpisode.SeasonNumber);
             if (season == null)
             {
-                Logger.Debug(
+                Logger.LogDebug(
                     $"No season with index {externalEpisode.SeasonNumber} found for missing episode ({show.Name}), so we need to create one first");
                 season = externalEpisode.SeasonNumber.ConvertToVirtualSeason(show);
                 show.Seasons.Add(season);
@@ -229,7 +229,7 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
             if (IsEpisodeMissing(localEpisodes, season, externalEpisode))
             {
                 var episode = externalEpisode.ConvertToVirtualEpisode(season);
-                Logger.Debug($"Episode missing: {episode.Id} - {season.Id} - {show.Id} - {show.Name}");
+                Logger.LogDebug($"Episode missing: {episode.Id} - {season.Id} - {show.Id} - {show.Name}");
                 show.Seasons.Single(x => x.Id == season.Id).Episodes.Add(episode);
                 missingEpisodesCount++;
             }

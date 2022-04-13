@@ -1,6 +1,6 @@
-﻿using EmbyStat.Logging;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
 using Rollbar;
 
 namespace EmbyStat.Common.Exceptions;
@@ -9,8 +9,6 @@ public class BusinessExceptionFilterAttribute : ExceptionFilterAttribute
 {
     public override void OnException(ExceptionContext context)
     {
-        var logger = LogFactory.CreateLoggerForType(typeof(BusinessExceptionFilterAttribute), "EXCEPTION-HANDLER");
-
         ApiError apiError;
         if (context.Exception is BusinessException ex)
         {
@@ -25,17 +23,13 @@ public class BusinessExceptionFilterAttribute : ExceptionFilterAttribute
             if (ex.InnerException?.InnerException != null)
             {
                 RollbarLocator.RollbarInstance.Error(ex.InnerException.InnerException);
-                logger.Error(ex.InnerException.InnerException);
             }
             else if (ex.InnerException != null)
             {
                 RollbarLocator.RollbarInstance.Error(ex.InnerException);
-                logger.Error(ex.InnerException);
             }
 
             context.HttpContext.Response.StatusCode = ex.StatusCode;
-            logger.Warn(ex, $"Application thrown error: {ex.Message}");
-            logger.Warn("Frontend will know what to do with this!");
         }
         else
         {
@@ -50,7 +44,6 @@ public class BusinessExceptionFilterAttribute : ExceptionFilterAttribute
             context.HttpContext.Response.StatusCode = 500;
 
             RollbarLocator.RollbarInstance.Error(context.Exception);
-            logger.Error(context.Exception, msg);
         }
 
         context.Result = new JsonResult(apiError);

@@ -9,6 +9,7 @@ using EmbyStat.Controllers.Settings;
 using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Tests.Unit.Builders.ViewModels;
 using Xunit;
@@ -78,8 +79,9 @@ public class SettingsControllerTests : IDisposable
             new() {Code = "BE", Id = "1", Name = "Dutch"},
             new() {Code = "EN", Id = "2", Name = "English"}
         });
-
-        _subject = new SettingsController(_settingsServiceMock.Object, _languageServiceMock.Object, mapperMock.Object);
+        
+        var logger = new Mock<ILogger<SettingsController>>();
+        _subject = new SettingsController(_settingsServiceMock.Object, _languageServiceMock.Object, mapperMock.Object, logger.Object);
     }
 
     public void Dispose()

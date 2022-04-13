@@ -15,14 +15,12 @@
     <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Rollbar.NetCore.AspNet" Version="4.0.3" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.17.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Clients.Base\EmbyStat.Clients.Base.csproj" />
     <ProjectReference Include="..\EmbyStat.Clients.GitHub\EmbyStat.Clients.GitHub.csproj" />
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
-    <ProjectReference Include="..\EmbyStat.Logging\EmbyStat.Logging.csproj" />
     <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
   </ItemGroup>
 

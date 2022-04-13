@@ -14,6 +14,7 @@ using EmbyStat.Services;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Cards;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Tests.Unit.Builders;
 using Xunit;
@@ -30,12 +31,14 @@ public class MovieServiceTests
     private readonly Mock<ISettingsService> _settingsServiceMock;
     private readonly Mock<IMovieRepository> _movieRepositoryMock;
     private readonly Mock<IMediaServerRepository> _mediaServerRepositoryMock;
+    private readonly Mock<ILogger<MovieService>> _logger;
 
     public MovieServiceTests()
     {
         var actorIdOne = 1;
 
         _movieRepositoryMock = new Mock<IMovieRepository>();
+        _logger = new Mock<ILogger<MovieService>>();
         _mediaServerRepositoryMock = new Mock<IMediaServerRepository>();
 
         _movieOne = new MovieBuilder(Guid.NewGuid().ToString())
@@ -199,7 +202,7 @@ public class MovieServiceTests
         var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
         var jobRepositoryMock = new Mock<IJobRepository>();
         return new MovieService(_movieRepositoryMock.Object, settingsServiceMock.Object, 
-            statisticsRepositoryMock.Object, jobRepositoryMock.Object, _mediaServerRepositoryMock.Object);
+            statisticsRepositoryMock.Object, jobRepositoryMock.Object, _mediaServerRepositoryMock.Object, _logger.Object);
     }
 
     #region General

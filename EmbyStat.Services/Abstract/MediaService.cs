@@ -4,21 +4,21 @@ using System.Linq;
 using EmbyStat.Common;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Logging;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Models.Charts;
+using Microsoft.Extensions.Logging;
 
 namespace EmbyStat.Services.Abstract;
 
 public abstract class MediaService
 {
     private readonly IJobRepository _jobRepository;
-    private readonly Logger _logger;
+    private readonly ILogger<MediaService> _logger;
 
-    protected MediaService(IJobRepository jobRepository, Type type, string logPrefix)
+    protected MediaService(IJobRepository jobRepository, ILogger<MediaService> logger)
     {
         _jobRepository = jobRepository;
-        _logger = LogFactory.CreateLoggerForType(type, logPrefix);
+        _logger = logger;
     }
 
     internal bool StatisticsAreValid(Statistic statistic, Guid jobId)
@@ -40,7 +40,7 @@ public abstract class MediaService
         }
         catch (Exception e)
         {
-            _logger.Error(e, errorMessage);
+            _logger.LogError(e, errorMessage);
         }
 
         return default;

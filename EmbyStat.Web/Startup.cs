@@ -42,8 +42,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using NLog.Extensions.Logging;
 using Refit;
+using Serilog;
 
 namespace EmbyStat.Web;
 
@@ -52,17 +52,15 @@ public class Startup
     public IConfiguration Configuration { get; }
     public IWebHostEnvironment WebHostEnvironment { get; }
     public IApplicationBuilder ApplicationBuilder { get; set; }
-    private readonly ILoggerFactory _logFactory;
 
-    public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment, ILoggerFactory logFactory)
+    public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
     {
         WebHostEnvironment = webHostEnvironment;
         Configuration = configuration;
-        _logFactory = logFactory ?? throw new ArgumentNullException(nameof(logFactory)); ;
     }
 
     public void ConfigureServices(IServiceCollection services)
-    {
+    { 
         services.AddOptions();
         services.Configure<AppSettings>(Configuration);
         var appSettings = Configuration.Get<AppSettings>();
@@ -83,7 +81,7 @@ public class Startup
                     .SetIsOriginAllowed(_ => true)
                     .AllowCredentials();
             }));
-
+        
         services
             .AddMvcCore(options => {
                 options.Filters.Add(new BusinessExceptionFilterAttribute());
@@ -225,8 +223,9 @@ public class Startup
         });
     }
 
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime, ILoggerFactory loggerFactory)
     {
+        loggerFactory.AddSerilog();
         ApplicationBuilder = app;
 
         lifetime.ApplicationStarted.Register(PerformPostStartupFunctions);
@@ -243,8 +242,6 @@ public class Startup
         });
 
         //app.UseRollbarMiddleware();
-
-        app.UseHangfireServer();
 
         GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 2 });
 

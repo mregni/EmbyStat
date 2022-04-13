@@ -13,6 +13,7 @@ using EmbyStat.Services;
 using EmbyStat.Services.Models.Cards;
 using EmbyStat.Services.Models.Charts;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Tests.Unit.Builders;
 using Xunit;
@@ -21,7 +22,6 @@ namespace Tests.Unit.Services;
 
 public class ShowServiceTests
 {
-    private readonly List<Library> _collections;
     private readonly ShowService _subject;
 
     private readonly Show _showOne;
@@ -30,10 +30,12 @@ public class ShowServiceTests
 
     private readonly Mock<IShowRepository> _showRepositoryMock;
     private readonly Mock<IMediaServerRepository> _mediaServerRepositoryMock;
+    private readonly Mock<ILogger<ShowService>> _logger;
 
     public ShowServiceTests()
     {
         _showRepositoryMock = new Mock<IShowRepository>();
+        _logger = new Mock<ILogger<ShowService>>();
         _mediaServerRepositoryMock = new Mock<IMediaServerRepository>();
 
         var showOneId = Guid.NewGuid().ToString();
@@ -169,7 +171,7 @@ public class ShowServiceTests
         var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
         var jobRepositoryMock = new Mock<IJobRepository>();
         return new ShowService(jobRepositoryMock.Object, _showRepositoryMock.Object,
-            statisticsRepositoryMock.Object, _mediaServerRepositoryMock.Object);
+            statisticsRepositoryMock.Object, _mediaServerRepositoryMock.Object, _logger.Object);
                 
     }
 

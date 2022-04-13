@@ -18,6 +18,7 @@ using EmbyStat.Services.Models.Charts;
 using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Stat;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace EmbyStat.Services;
@@ -31,8 +32,9 @@ public class MovieService : MediaService, IMovieService
 
     public MovieService(IMovieRepository movieRepository,
         ISettingsService settingsService, IStatisticsRepository statisticsRepository,
-        IJobRepository jobRepository, IMediaServerRepository mediaServerRepository) : base(jobRepository,
-        typeof(MovieService), "MOVIE")
+        IJobRepository jobRepository, IMediaServerRepository mediaServerRepository,
+        ILogger<MovieService> logger) 
+        : base(jobRepository, logger)
     {
         _movieRepository = movieRepository;
         _settingsService = settingsService;

@@ -11,6 +11,7 @@ using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
+using Microsoft.Extensions.Logging;
 
 namespace EmbyStat.Jobs.Jobs.Sync;
 
@@ -29,8 +30,9 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
     public MovieSyncJob(IHubHelper hubHelper, IJobRepository jobRepository,
         ISettingsService settingsService, IClientStrategy clientStrategy,
         IMovieRepository movieRepository, IStatisticsRepository statisticsRepository, 
-        IMovieService movieService, IGenreRepository genreRepository, IPersonRepository personRepository, IMediaServerRepository mediaServerRepository, IFilterRepository filterRepository) 
-        : base(hubHelper, jobRepository, settingsService, typeof(MovieSyncJob), Constants.LogPrefix.MovieSyncJob)
+        IMovieService movieService, IGenreRepository genreRepository, IPersonRepository personRepository, 
+        IMediaServerRepository mediaServerRepository, IFilterRepository filterRepository, ILogger<MovieSyncJob> logger) 
+        : base(hubHelper, jobRepository, settingsService, logger)
     {
         _movieRepository = movieRepository;
         _statisticsRepository = statisticsRepository;

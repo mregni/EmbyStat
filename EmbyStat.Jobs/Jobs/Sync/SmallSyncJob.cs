@@ -6,6 +6,7 @@ using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
+using Microsoft.Extensions.Logging;
 
 namespace EmbyStat.Jobs.Jobs.Sync;
 
@@ -15,8 +16,8 @@ public class SmallSyncJob : BaseJob, ISmallSyncJob
     private readonly IMediaServerService _mediaServerService;
 
     public SmallSyncJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
-        IMediaServerService mediaServerService) 
-        : base(hubHelper, jobRepository, settingsService, typeof(SmallSyncJob), Constants.LogPrefix.SmallMediaServerSyncJob)
+        IMediaServerService mediaServerService, ILogger<SmallSyncJob> logger) 
+        : base(hubHelper, jobRepository, settingsService, logger)
     {
         _mediaServerService = mediaServerService;
     }

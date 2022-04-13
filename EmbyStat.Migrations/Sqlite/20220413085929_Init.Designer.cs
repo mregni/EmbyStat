@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmbyStat.Migrations.Sqlite
 {
     [DbContext(typeof(EsDbContext))]
-    [Migration("20220411064416_RenamingToken")]
-    partial class RenamingToken
+    [Migration("20220413085929_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

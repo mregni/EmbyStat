@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
 using CommandLine;
-using NLog.Web;
+using Serilog;
+using Serilog.Events;
 using Updater.Models;
 
 namespace Updater
@@ -32,7 +33,10 @@ namespace Updater
                 Directory.CreateDirectory("Logs");
             }
 
-            NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+            Log.Logger = new LoggerConfiguration()
+                    .MinimumLevel.Debug()
+                    .WriteTo.File("log.txt", LogEventLevel.Debug)
+                .CreateLogger();
         }
     }
 }

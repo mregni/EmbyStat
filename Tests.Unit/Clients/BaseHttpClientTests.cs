@@ -15,6 +15,7 @@ using EmbyStat.Controllers;
 using FluentAssertions;
 using MediaBrowser.Model.Querying;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Refit;
 using Tests.Unit.Builders;
@@ -32,7 +33,6 @@ public class BaseHttpClientTests
 
     public BaseHttpClientTests()
     {
-        var boe = new QueryResultBuilder("Movies", "1").Build();
         var boe2 = new QueryResult<BaseItemDto>
         {
             Items = new[]
@@ -45,6 +45,7 @@ public class BaseHttpClientTests
             },
             TotalRecordCount = 1
         };
+        
         _restClientMock = new Mock<IMediaServerApi>();
         _restClientMock
             .Setup(x => x.GetMediaFolders(It.IsAny<string>(), It.IsAny<string>()))
@@ -88,7 +89,8 @@ public class BaseHttpClientTests
         var mapper = mappingConfig.CreateMapper();
 
         var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
-        _service = new EmbyBaseHttpClient(httpContextAccessorMock.Object, _factoryMock.Object, mapper);
+        var logger = new Mock<ILogger<EmbyBaseHttpClient>>();
+        _service = new EmbyBaseHttpClient(httpContextAccessorMock.Object, logger.Object, _factoryMock.Object, mapper);
 
         _service.SetDeviceInfo("embystat", "mediabrowser", "0", "c",
             "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
@@ -228,7 +230,9 @@ public class BaseHttpClientTests
         var mapper = mappingConfig.CreateMapper();
 
         var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
-        var service = new EmbyBaseHttpClient(httpContextAccessorMock.Object, factoryMock.Object, mapper);
+        var logger = new Mock<ILogger<EmbyBaseHttpClient>>();
+
+        var service = new EmbyBaseHttpClient(httpContextAccessorMock.Object, logger.Object, factoryMock.Object, mapper);
 
         service.SetDeviceInfo("embystat", "mediabrowser", "0", "c",
             "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");

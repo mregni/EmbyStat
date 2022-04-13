@@ -16,11 +16,11 @@ using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.Settings;
-using EmbyStat.Logging;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.Stat;
+using Microsoft.Extensions.Logging;
 
 namespace EmbyStat.Services;
 
@@ -31,16 +31,16 @@ public class MediaServerService : IMediaServerService
     private readonly ISessionService _sessionService;
     private readonly ISettingsService _settingsService;
     private readonly IClientStrategy _clientStrategy;
-    private readonly Logger _logger;
+    private readonly ILogger<MediaServerService> _logger;
 
     public MediaServerService(IClientStrategy clientStrategy, IMediaServerRepository mediaServerRepository,
-        ISessionService sessionService, ISettingsService settingsService)
+        ISessionService sessionService, ISettingsService settingsService, ILogger<MediaServerService> logger)
     {
         _mediaServerRepository = mediaServerRepository;
         _sessionService = sessionService;
         _settingsService = settingsService;
         _clientStrategy = clientStrategy;
-        _logger = LogFactory.CreateLoggerForType(typeof(MediaServerService), "SERVER-API");
+        _logger = logger;
 
         var settings = _settingsService.GetUserSettings();
         ChangeClientType(settings.MediaServer?.Type);
@@ -66,8 +66,8 @@ public class MediaServerService : IMediaServerService
 
     public async Task<bool> TestNewApiKey(string url, string apiKey, ServerType type)
     {
-        _logger.Debug($"Testing new API key on {url}");
-        _logger.Debug($"API key used: {apiKey}");
+        _logger.LogDebug($"Testing new API key on {url}");
+        _logger.LogDebug($"API key used: {apiKey}");
         ChangeClientType(type);
         var oldApiKey = _baseHttpClient.ApiKey;
         var oldUrl = _baseHttpClient.BaseUrl;
@@ -77,14 +77,14 @@ public class MediaServerService : IMediaServerService
         var info = await _baseHttpClient.GetServerInfo();
         if (info != null)
         {
-            _logger.Debug("new API key works!");
+            _logger.LogDebug("new API key works!");
             return true;
         }
             
         _baseHttpClient.ApiKey = oldApiKey;
         _baseHttpClient.BaseUrl = oldUrl;
 
-        _logger.Debug("new API key not working!");
+        _logger.LogDebug("new API key not working!");
         return false;
     }
 
@@ -106,7 +106,7 @@ public class MediaServerService : IMediaServerService
 
     public async Task<bool> PingMediaServer(string url)
     {
-        _logger.Debug($"Pinging server on {url}");
+        _logger.LogDebug($"Pinging server on {url}");
         var oldUrl = _baseHttpClient.BaseUrl;
         _baseHttpClient.BaseUrl = url;
             
@@ -118,7 +118,7 @@ public class MediaServerService : IMediaServerService
         
     public async Task<bool> PingMediaServer()
     {
-        _logger.Debug($"Pinging server on {_settingsService.GetUserSettings().MediaServer.Address}");
+        _logger.LogDebug($"Pinging server on {_settingsService.GetUserSettings().MediaServer.Address}");
         return await _baseHttpClient.Ping();
     }
 

@@ -8,9 +8,9 @@ using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models.Account;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Settings;
-using EmbyStat.Logging;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace EmbyStat.Services;
@@ -21,11 +21,12 @@ public class AccountService : IAccountService
     private readonly UserManager<EmbyStatUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly AppSettings _appSettings;
-    private readonly Logger _logger;
+    private readonly ILogger<AccountService> _logger;
     private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
 
     public AccountService(SignInManager<EmbyStatUser> signInManager, UserManager<EmbyStatUser> userManager, 
-        ISettingsService settingsService, JwtSecurityTokenHandler jwtSecurityTokenHandler, RoleManager<IdentityRole> roleManager)
+        ISettingsService settingsService, JwtSecurityTokenHandler jwtSecurityTokenHandler, RoleManager<IdentityRole> roleManager,
+        ILogger<AccountService> logger)
     {
         _signInManager = signInManager;
         _jwtSecurityTokenHandler = jwtSecurityTokenHandler;
@@ -34,7 +35,7 @@ public class AccountService : IAccountService
         _userManager.Options.User.RequireUniqueEmail = false;
             
         _appSettings = settingsService.GetAppSettings();
-        _logger = LogFactory.CreateLoggerForType(typeof(AccountService), "ACCOUNT");
+        _logger = logger;
     }
 
     public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest login, string remoteIp)
@@ -143,7 +144,7 @@ public class AccountService : IAccountService
         var result = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
         if (!result.Succeeded)
         {
-            _logger.Warn($"Password update for ${user.UserName} failed with following message \n ${result.Errors.Select(x => x.Code + " - " + x.Description + "\n")}");
+            _logger.LogWarning($"Password update for ${user.UserName} failed with following message \n ${result.Errors.Select(x => x.Code + " - " + x.Description + "\n")}");
         }
 
         return result.Succeeded;
@@ -161,7 +162,7 @@ public class AccountService : IAccountService
         var result = await _userManager.SetUserNameAsync(user, request.UserName);
         if (!result.Succeeded)
         {
-            _logger.Warn($"Username update for ${user.UserName} failed with following message \n ${result.Errors.Select(x => x.Code + " - " + x.Description + "\n")}");
+            _logger.LogWarning($"Username update for ${user.UserName} failed with following message \n ${result.Errors.Select(x => x.Code + " - " + x.Description + "\n")}");
         }
 
         return result.Succeeded;
@@ -175,10 +176,10 @@ public class AccountService : IAccountService
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var newPassword = RandomString(15);
             await _userManager.ResetPasswordAsync(user, token, newPassword);
-            _logger.Info("------------------------------");
-            _logger.Info($"Password reset requested for user {user.UserName}");
-            _logger.Info($"New Password: {newPassword}");
-            _logger.Info("------------------------------");
+            _logger.LogInformation("------------------------------");
+            _logger.LogInformation($"Password reset requested for user {user.UserName}");
+            _logger.LogInformation($"New Password: {newPassword}");
+            _logger.LogInformation("------------------------------");
             return true;
         }
 

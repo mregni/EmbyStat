@@ -31,8 +31,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Clients.Emby", "Em
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Clients.Jellyfin", "EmbyStat.Clients.Jellyfin\EmbyStat.Clients.Jellyfin.csproj", "{38FB4C9E-D2AE-49E2-A25A-DCC403D0459D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Logging", "EmbyStat.Logging\EmbyStat.Logging.csproj", "{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Plugin", "EmbyStat.Plugin\EmbyStat.Plugin.csproj", "{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Clients.Tmdb", "EmbyStat.Clients.Tmdb\EmbyStat.Clients.Tmdb.csproj", "{4D486D10-E1D4-478A-BDFE-B600FEAC0A92}"
@@ -304,24 +302,6 @@ Global
 		{38FB4C9E-D2AE-49E2-A25A-DCC403D0459D}.Release|x64.Build.0 = Release|Any CPU
 		{38FB4C9E-D2AE-49E2-A25A-DCC403D0459D}.Release|x86.ActiveCfg = Release|Any CPU
 		{38FB4C9E-D2AE-49E2-A25A-DCC403D0459D}.Release|x86.Build.0 = Release|Any CPU
-		{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}.Debug|x64.Build.0 = Debug|Any CPU
-		{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}.Debug|x86.Build.0 = Debug|Any CPU
-		{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}.DefaultBuild|Any CPU.ActiveCfg = Debug|Any CPU
-		{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}.DefaultBuild|Any CPU.Build.0 = Debug|Any CPU
-		{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}.DefaultBuild|x64.ActiveCfg = Debug|Any CPU
-		{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}.DefaultBuild|x64.Build.0 = Debug|Any CPU
-		{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}.DefaultBuild|x86.ActiveCfg = Debug|Any CPU
-		{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}.DefaultBuild|x86.Build.0 = Debug|Any CPU
-		{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}.Release|x64.ActiveCfg = Release|Any CPU
-		{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}.Release|x64.Build.0 = Release|Any CPU
-		{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}.Release|x86.ActiveCfg = Release|Any CPU
-		{BE8AFEF2-E5F4-40A5-8413-C2E4190C061E}.Release|x86.Build.0 = Release|Any CPU
 		{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D5831E6-303E-4C2C-A3CD-FF5AFF5210FE}.Debug|x64.ActiveCfg = Debug|Any CPU
