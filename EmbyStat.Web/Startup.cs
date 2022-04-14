@@ -37,7 +37,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -226,8 +225,8 @@ public class Startup
     {
         ApplicationBuilder = app;
 
-        lifetime.ApplicationStarted.Register(PerformPostStartupFunctions);
-        lifetime.ApplicationStopping.Register(PerformPreShutdownFunctions);
+        lifetime.ApplicationStarted.Register(PerformPostStartup);
+        lifetime.ApplicationStopping.Register(PerformPreShutdown);
 
         if (env.IsDevelopment())
         {
@@ -295,31 +294,35 @@ public class Startup
         }
     }
 
-    private void PerformPostStartupFunctions()
+    private void PerformPostStartup()
     {
         using var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope();
         var migrationRunner = serviceScope.ServiceProvider.GetService<IMigrationRunner>();
-        migrationRunner.Migrate();
-                
+        migrationRunner?.Migrate();
+
         var settingsService = serviceScope.ServiceProvider.GetService<ISettingsService>();
         var accountService = serviceScope.ServiceProvider.GetService<IAccountService>();
-        var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
         var clientStrategy = serviceScope.ServiceProvider.GetService<IClientStrategy>();
         var jobInitializer = serviceScope.ServiceProvider.GetService<IJobInitializer>();
-
-        var settings = settingsService.GetAppSettings();
-
-        accountService.CreateRoles();
-        settingsService.LoadUserSettingsFromFile();
-        settingsService.CreateRollbarLogger();
-        AddDeviceIdToConfig(settingsService);
+        
+        if (settingsService != null)
+        {
+            var settings = settingsService.GetAppSettings();
+            settingsService?.LoadUserSettingsFromFile();
+            accountService?.CreateRoles();
+            settingsService.CreateRollbarLogger();
+            AddDeviceIdToConfig(settingsService);
+            SetMediaServerClientConfiguration(settingsService, clientStrategy);
+            jobInitializer?.Setup(settings.NoUpdates);
+        }
+        
         RemoveVersionFiles();
-        jobService.ResetAllJobs();
-        SetMediaServerClientConfiguration(settingsService, clientStrategy);
-        jobInitializer.Setup(settings.NoUpdates);
+        
+        var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
+        jobService?.ResetAllJobs();
     }
 
-    private void PerformPreShutdownFunctions()
+    private void PerformPreShutdown()
     {
         using var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope();
         var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
@@ -338,11 +341,12 @@ public class Startup
     {
         var userSettings = settingsService.GetUserSettings();
 
-        if (userSettings.Id == null)
+        if (userSettings.Id != null)
         {
-            userSettings.Id = Guid.NewGuid();
-            settingsService.SaveUserSettingsAsync(userSettings);
+            return;
         }
+        userSettings.Id = Guid.NewGuid();
+        settingsService.SaveUserSettingsAsync(userSettings);
     }
 
     private static void SetMediaServerClientConfiguration(ISettingsService settingsService, IClientStrategy clientStrategy)
