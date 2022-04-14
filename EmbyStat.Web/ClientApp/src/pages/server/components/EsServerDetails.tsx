@@ -24,7 +24,7 @@ export const EsServerDetails = () => {
   const dataRows = [
     {label: 'COMMON.ID', value: serverInfo.id},
     {label: 'SERVER.LANADDRESS', value: serverInfo.localAddress},
-    {label: 'SERVER.WANADDRESS', value: serverInfo.wanAddress ?? ('COMMON.UNKNOWN')},
+    {label: 'SERVER.WANADDRESS', value: serverInfo.wanAddress ?? t('COMMON.UNKNOWN')},
     {label: 'COMMON.OS', value: `${serverInfo.operatingSystem} / ${serverInfo.operatingSystemDisplayName}`},
     {label: 'COMMON.UPDATELEVEL', value: serverInfo.systemUpdateLevel},
     {label: 'COMMON.HTTPPORT', value: serverInfo.httpServerPortNumber},
