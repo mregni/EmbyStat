@@ -23,7 +23,9 @@ public class MediaServerRepository : IMediaServerRepository
     #region MediaServer Status
     public Task<MediaServerStatus> GetEmbyStatus()
     {
-        return _context.MediaServerStatus.FirstOrDefaultAsync();
+        return _context.MediaServerStatus
+            .AsNoTracking()
+            .FirstOrDefaultAsync();
     }
 
     public async Task IncreaseMissedPings()
@@ -51,7 +53,7 @@ public class MediaServerRepository : IMediaServerRepository
     #region MediaServer Plugins
     public Task<List<PluginInfo>> GetAllPlugins()
     {
-        return _context.Plugins.ToListAsync();
+        return _context.Plugins.AsNoTracking().ToListAsync();
     }
 
     public async Task InsertPlugins(IEnumerable<PluginInfo> plugins)
@@ -70,7 +72,7 @@ public class MediaServerRepository : IMediaServerRepository
     #region MediaServer Server Info
     public Task<MediaServerInfo> GetServerInfo()
     {
-        return _context.MediaServerInfo.SingleOrDefaultAsync();
+        return _context.MediaServerInfo.AsNoTracking().SingleOrDefaultAsync();
     }
 
     public async Task DeleteAndInsertServerInfo(MediaServerInfo entity)
@@ -100,6 +102,7 @@ public class MediaServerRepository : IMediaServerRepository
         return _context.MediaServerUsers
             .Include(x => x.Configuration)
             .Include(x => x.Policy)
+            .AsNoTracking()
             .ToListAsync();
     }
 
@@ -108,6 +111,7 @@ public class MediaServerRepository : IMediaServerRepository
         return _context.MediaServerUsers
             .Include(x => x.Configuration)
             .Include(x => x.Policy)
+            .AsNoTracking()
             .Where(x => x.Policy.IsAdministrator)
             .ToListAsync();
     }
@@ -117,6 +121,7 @@ public class MediaServerRepository : IMediaServerRepository
         return _context.MediaServerUsers
             .Include(x => x.Configuration)
             .Include(x => x.Policy)
+            .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
@@ -130,7 +135,7 @@ public class MediaServerRepository : IMediaServerRepository
     #region Devices
     public Task<List<Device>> GetAllDevices()
     {
-        return _context.Devices.ToListAsync();
+        return _context.Devices.AsNoTracking().ToListAsync();
     }
 
     public async Task DeleteAndInsertDevices(IEnumerable<Device> devices)
@@ -150,12 +155,14 @@ public class MediaServerRepository : IMediaServerRepository
     #region Libraries
     public Task<List<Library>> GetAllLibraries()
     {
-        return _context.Libraries.ToListAsync();
+        return _context.Libraries.AsNoTracking().ToListAsync();
     }
 
     public Task<List<Library>> GetAllLibraries(LibraryType type)
     {
-        return _context.Libraries.Where(x => x.Type == type).ToListAsync();
+        return _context.Libraries
+            .AsNoTracking()
+            .Where(x => x.Type == type).ToListAsync();
     }
     
     public Task<List<Library>> GetAllLibraries(LibraryType type, bool synced)
