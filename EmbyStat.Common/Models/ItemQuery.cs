@@ -20,6 +20,8 @@ public class ItemQuery
     public ImageType[] EnableImageTypes { get; set; }
     public bool EnableTotalRecordCount { get; set; }
     public DateTime? MinDateLastSaved { get; set; }
+    public bool? IsPlayed { get; set; }
+    public bool? EnableUserData { get; set; }
 
     public ItemQuery()
     {

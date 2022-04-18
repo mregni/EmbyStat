@@ -13,6 +13,7 @@ import {
   Movies as MovieSettings, Server as ServerSettings, Settings, Shows as ShowSettings,
 } from './pages/settings';
 import {General as ShowGeneral, List as ShowList, Shows} from './pages/shows';
+import {Users} from './pages/users';
 import {Wizard} from './pages/wizard';
 import {SettingsContext} from './shared/context/settings';
 
@@ -49,6 +50,7 @@ const RoutesContainer = () => {
         <Route path="show" element={<ShowSettings />} />
         <Route path="movie" element={<MovieSettings />} />
       </Route>
+      <Route path="/users" element={<RequireAuth><Users /></RequireAuth>} />
       <Route path="/wizard" element={<Wizard />} />
       <Route path="/" element={<Navigate to="/home" replace />} />
     </Routes>

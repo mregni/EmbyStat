@@ -49,6 +49,8 @@ public static class ItemQueryExtensions
         paramList.AddIfNotNull("EnableImages", query.EnableImages);
         paramList.AddIfNotNull("MediaTypes", query.MediaTypes);
         paramList.AddIfNotNull("IncludeItemTypes", query.IncludeItemTypes);
+        paramList.AddIfNotNull("IsPlayed", query.IsPlayed);
+        paramList.AddIfNotNull("EnableUserData", query.EnableUserData);
 
         return paramList;
     }

@@ -178,7 +178,8 @@
     "MOVIES": "Movies",
     "SERVER": "Server",
     "SETTINGS": "Settings",
-    "SHOWS": "Shows"
+    "SHOWS": "Shows",
+    "USERS": "Users"
   },
   "MOVIES": {
     "HIGHESTRATED": "Highest Rated",
@@ -311,6 +312,11 @@
     "TOTALPLAYLENGTH": "Total play length",
     "TOTALSHOWS": "Total shows",
     "WITHMOESTEPISODES": "With most episodes"
+  },
+  "USERS":{
+    "LOADER": "Loading user info",
+    "NUMBERS": "Numbers",
+    "USERS": "Users"
   },
   "WIZARD": {
     "ACCOUNT": "User details",

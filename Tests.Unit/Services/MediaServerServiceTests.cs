@@ -162,7 +162,7 @@ public class MediaServerServiceTests
     [Fact]
     public async Task GetAllUsers_Should_Return_Users()
     {
-        var users = new List<MediaServerUser>
+        var users = new MediaServerUser[]
         {
             new() {Id = "1"}
         };
@@ -178,7 +178,7 @@ public class MediaServerServiceTests
         var result = await service.GetAllUsers();
 
         result.Should().NotBeNull();
-        result.Count.Should().Be(1);
+        result.Length.Should().Be(1);
         result[0].Id.Should().Be(users[0].Id);
 
         _mediaServerRepositoryMock.Verify(x => x.GetAllUsers());
@@ -215,7 +215,7 @@ public class MediaServerServiceTests
     [Fact]
     public async Task GetAllAdministrators_Should_Return_Existing_Users()
     {
-        var users = new List<MediaServerUser>
+        var users = new MediaServerUser[]
         {
             new() {Id = "1"}
         };
@@ -231,7 +231,7 @@ public class MediaServerServiceTests
         var result = await service.GetAllAdministrators();
 
         result.Should().NotBeNull();
-        result.Count.Should().Be(1);
+        result.Length.Should().Be(1);
         result[0].Id.Should().Be(users[0].Id);
 
         _mediaServerRepositoryMock.Verify(x => x.GetAllAdministrators());
@@ -241,8 +241,8 @@ public class MediaServerServiceTests
     [Fact]
     public async Task GetAllAdministrators_Should_Return_Fetch_New_Users()
     {
-        var users = new List<MediaServerUser>();
-        var newUsers = new List<MediaServerUser>
+        var users = Array.Empty<MediaServerUser>();
+        var newUsers = new MediaServerUser[]
         {
             new() {Id = "1"}
         };
@@ -267,7 +267,7 @@ public class MediaServerServiceTests
         var result = await service.GetAllAdministrators();
 
         result.Should().NotBeNull();
-        result.Count.Should().Be(1);
+        result.Length.Should().Be(1);
         result[0].Id.Should().Be(newUsers[0].Id);
 
         _mediaServerRepositoryMock.Verify(x => x.GetAllAdministrators(), Times.Exactly(2));
@@ -450,7 +450,7 @@ public class MediaServerServiceTests
     [Fact]
     public async Task GetAndProcessUsers_Should_Process_Users()
     {
-        var users = new List<MediaServerUser>
+        var users = new MediaServerUser[]
         {
             new() {Id = "1"}
         };

@@ -36,6 +36,8 @@ public class BaseItemDto
     public string CollectionType { get; set; }
     public string Etag { get; set; }
     public string Overview { get; set; }
+    public UserData UserData { get; set; }
+    public string Type { get; set; }
 
     public override string ToString()
     {

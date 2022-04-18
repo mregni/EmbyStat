@@ -62,7 +62,7 @@ public class MediaServerController : Controller
         {
             var mapped = _mapper
                 .Map<IList<UdpBroadcastViewModel>>(result, opt =>
-                    opt.AfterMap((src, dest) => dest.ForEach<UdpBroadcastViewModel>(y => y.Type = (int)type)));
+                    opt.AfterMap((src, dest) => dest.ForEach(y => y.Type = (int)type)));
             return Ok(mapped);
         }
 
@@ -165,20 +165,21 @@ public class MediaServerController : Controller
         var views = _mediaServerService.GetUserViewPageByUserId(id, page, size);
         var list = _mapper.Map<IList<UserMediaViewViewModel>>(views);
 
-        var count = _mediaServerService.GetUserViewCount(id);
+        //TODO: FIX THIS
+        //var count = _mediaServerService.GetUserViewCount(id);
         var container = new ListContainer<UserMediaViewViewModel>
         {
             Data = list.ToList(),
-            TotalCount = count
+            TotalCount = 0
         };
         return Ok(container);
     }
 
     [HttpGet]
     [Route("users/ids")]
-    public IActionResult GetUserIdList()
+    public async Task<IActionResult> GetUserIdList()
     {
-        var users = _mediaServerService.GetAllUsers();
+        var users = await _mediaServerService.GetAllUsers();
         return Ok(_mapper.Map<IList<UserIdViewModel>>(users));
     }
     #endregion

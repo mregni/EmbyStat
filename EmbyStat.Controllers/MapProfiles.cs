@@ -117,10 +117,42 @@ public class MapProfiles : Profile
 
     private void CreateMediaServerUserMappings()
     {
-        CreateMap<MediaServerUser, UserOverviewViewModel>()
+        CreateMap<BaseUserDto, MediaServerUser>()
+            .ForMember(x => x.Views, x => x.Ignore())
             .ForMember(x => x.IsAdministrator, x => x.MapFrom(y => y.Policy.IsAdministrator))
             .ForMember(x => x.IsDisabled, x => x.MapFrom(y => y.Policy.IsDisabled))
-            .ForMember(x => x.IsHidden, x => x.MapFrom(y => y.Policy.IsHidden));
+            .ForMember(x => x.IsHidden, x => x.MapFrom(y => y.Policy.IsHidden))
+            .ForMember(x => x.IsHiddenRemotely, x => x.MapFrom(y => y.Policy.IsHiddenRemotely))
+            .ForMember(x => x.IsHiddenFromUnusedDevices, x => x.MapFrom(y => y.Policy.IsHiddenFromUnusedDevices))
+            .ForMember(x => x.EnableLiveTvAccess, x => x.MapFrom(y => y.Policy.IsHiddenFromUnusedDevices))
+            .ForMember(x => x.EnableLiveTvAccess, x => x.MapFrom(y => y.Policy.EnableLiveTvAccess))
+            .ForMember(x => x.EnableContentDeletion, x => x.MapFrom(y => y.Policy.EnableContentDeletion))
+            .ForMember(x => x.EnableContentDownloading, x => x.MapFrom(y => y.Policy.EnableContentDownloading))
+            .ForMember(x => x.EnableSubtitleDownloading, x => x.MapFrom(y => y.Policy.EnableSubtitleDownloading))
+            .ForMember(x => x.EnableSubtitleManagement, x => x.MapFrom(y => y.Policy.EnableSubtitleManagement))
+            .ForMember(x => x.EnableSyncTranscoding, x => x.MapFrom(y => y.Policy.EnableSyncTranscoding))
+            .ForMember(x => x.EnableMediaConversion, x => x.MapFrom(y => y.Policy.EnableMediaConversion))
+            .ForMember(x => x.InvalidLoginAttemptCount, x => x.MapFrom(y => y.Policy.InvalidLoginAttemptCount))
+            .ForMember(x => x.EnablePublicSharing, x => x.MapFrom(y => y.Policy.EnablePublicSharing))
+            .ForMember(x => x.RemoteClientBitrateLimit, x => x.MapFrom(y => y.Policy.RemoteClientBitrateLimit))
+            .ForMember(x => x.SimultaneousStreamLimit, x => x.MapFrom(y => y.Policy.SimultaneousStreamLimit))
+            .ForMember(x => x.EnableAllDevices, x => x.MapFrom(y => y.Policy.EnableAllDevices))
+            .ForMember(x => x.PlayDefaultAudioTrack, x => x.MapFrom(y => y.Configuration.PlayDefaultAudioTrack))
+            .ForMember(x => x.SubtitleLanguagePreference,
+                x => x.MapFrom(y => y.Configuration.SubtitleLanguagePreference))
+            .ForMember(x => x.DisplayMissingEpisodes, x => x.MapFrom(y => y.Configuration.DisplayMissingEpisodes))
+            .ForMember(x => x.SubtitleMode, x => x.MapFrom(y => y.Configuration.SubtitleMode));
+            
+        
+        CreateMap<MediaServerUser, UserOverviewViewModel>()
+            .ForMember(x => x.TotalPlayCount, x => x.MapFrom(y => y.Views.Count));
+
+        CreateMap<BaseItemDto, MediaServerUserView>()
+            .ForMember(x => x.MediaId, x => x.MapFrom(y => y.Id))
+            .ForMember(x => x.MediaType, x => x.MapFrom(y => y.Type))
+            .ForMember(x => x.PlayCount, x => x.MapFrom(y => y.UserData.PlayCount))
+            .ForMember(x => x.UserId, x => x.Ignore())
+            .ForMember(x => x.LastPlayedDate, x => x.MapFrom(y => y.UserData.LastPlayedDate));
     }
 
     private void CreateSettingMappings()

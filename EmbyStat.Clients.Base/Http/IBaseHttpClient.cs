@@ -26,7 +26,9 @@ public interface IBaseHttpClient
 
     Task<List<PluginInfo>> GetInstalledPlugins();
     Task<MediaServerInfo> GetServerInfo();
-    Task<List<MediaServerUser>> GetUsers();
+    Task<MediaServerUser[]> GetUsers();
+    Task<int> GetPlayedMediaCountForUser(string userId);
+    Task<MediaServerUserView[]> GetPlayedMediaForUser(string userId, int startIndex, int limit);
     Task<IEnumerable<Device>> GetDevices();
     Task<Library[]> GetLibraries();
 

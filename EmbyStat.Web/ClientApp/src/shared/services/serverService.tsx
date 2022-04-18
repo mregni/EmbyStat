@@ -27,12 +27,8 @@ export const getAdministrators = (): Promise<MediaServerUser[]> => {
 
 export const getLibraries = (): Promise<Library[]> => {
   return axiosInstance.get<Library[]>(`${domain}server/libraries`)
-    .then((response) => {
-      return response.data;
-    })
-    .catch(() => {
-      return [];
-    });
+    .then((response) => response.data)
+    .catch(() => []);
 };
 
 export const getPlugins = (): Promise<MediaServerPlugin[]> => {
@@ -69,4 +65,11 @@ export const testApiKey = (login: MediaServerLogin): Promise<boolean | null> => 
     .catch(() => {
       return null;
     }); ;
+};
+
+export const getUsers = (): Promise<MediaServerUser[]> => {
+  return axiosInstance
+    .get<MediaServerUser[]>(`${domain}users`)
+    .then((response) => response.data)
+    .catch(() => []);
 };

@@ -33,10 +33,13 @@ public class SmallSyncJob : BaseJob, ISmallSyncJob
 
         await _mediaServerService.GetAndProcessPluginInfo();
         await LogInformation("Server plugins downloaded");
-        await LogProgress(55);
+        await LogProgress(45);
 
         await _mediaServerService.GetAndProcessUsers();
         await LogInformation("Server users downloaded");
+        await LogProgress(55);
+
+        await ProcessUserViews();
         await LogProgress(80);
 
         await _mediaServerService.GetAndProcessDevices();
@@ -45,5 +48,17 @@ public class SmallSyncJob : BaseJob, ISmallSyncJob
 
         await _mediaServerService.GetAndProcessLibraries();
         await LogInformation("Server libraries downloaded");
+    }
+
+    private async Task ProcessUserViews()
+    {
+        var users = await _mediaServerService.GetAllUsers();
+        var stepPerUser = 25d / users.Length;
+        foreach (var user in users)
+        {
+            var viewCount = await _mediaServerService.ProcessViewsForUser(user.Id);
+            await LogInformation($"Processed {viewCount} views for {user.Name}");
+            await LogProgressIncrement(stepPerUser);
+        }
     }
 }

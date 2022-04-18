@@ -148,18 +148,19 @@ public class Program
             .MinimumLevel.Override("Hangfire.Server.ServerHeartbeatProcess", LogEventLevel.Warning) 
             .MinimumLevel.Override("Hangfire.Processing.BackgroundExecution", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Infrastructure", LogEventLevel.Warning) 
+            .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Model", LogEventLevel.Warning) 
+            .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Connection", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.EntityFrameworkCore.ChangeTracking", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore", minimumLevel) 
             .MinimumLevel.Override("Microsoft.AspNetCore.SpaServices", LogEventLevel.Warning) 
             .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning) 
             .MinimumLevel.Override("Microsoft.AspNetCore.StaticFiles", LogEventLevel.Warning) 
-            .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Model", LogEventLevel.Warning) 
-            .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Connection", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.DataProtection", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.SignalR", LogEventLevel.Warning)
-            
-            
-        
-            
+            .MinimumLevel.Override("Microsoft.AspNetCore.Server.Kestrel", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.Microsoft.AspNetCore.Mvc.Infrastructure", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.AspNetCore.Cors", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.AspNetCore.Authentication.JwtBearer", LogEventLevel.Warning)
             .MinimumLevel.Override("System.Net.Http.HttpClient", minimumLevel)
             .Enrich.FromLogContext()
             .Enrich.WithExceptionDetails()

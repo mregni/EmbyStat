@@ -112,10 +112,27 @@ public interface IMediaServerApi
     /// <param name="authorization">Fixed authentication string</param>
     /// <returns><see cref="List{T}"/> where T is of type <see cref="Common.Models.Entities.Users.MediaServerUser"/></returns>
     [Get("/Users")]
-    Task<List<MediaServerUser>> GetUsers(
+    Task<BaseUserDto[]> GetUsers(
         [Header("X-Emby-Token")] string apiKey,
         [Header("X-Emby-Authorization")] string authorization);
-        
+
+
+    /// <summary>
+    /// Fetches all items for a certain user
+    /// </summary>
+    /// <param name="apiKey">Server API key</param>
+    /// <param name="authorization">Fixed authentication string</param>
+    /// <param name="userId">User id for which the items are requested</param>
+    /// <param name="param">Filter parameters</param>
+    /// <returns><see cref="QueryResult{T}"/> where T is of type <see cref="BaseItemDto"/></returns>
+    [Get("/Users/{id}/Items")]
+    Task<QueryResult<BaseItemDto>> GetPlayedItemForUser(
+        [Header("X-Emby-Token")] string apiKey,
+        [Header("X-Emby-Authorization")] string authorization,
+        [AliasAs("id")] string userId,
+        [Query] Dictionary<string, string> param
+    );
+
     #endregion
 
     #region Devices

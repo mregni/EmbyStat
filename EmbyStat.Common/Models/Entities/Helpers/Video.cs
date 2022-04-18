@@ -12,4 +12,5 @@ public abstract class Video : Extra
     public ICollection<VideoStream> VideoStreams { get; set; }
     public ICollection<AudioStream> AudioStreams { get; set; }
     public ICollection<SubtitleStream> SubtitleStreams { get; set; }
+    public ICollection<MediaServerUserView> Views { get; set; }
 }

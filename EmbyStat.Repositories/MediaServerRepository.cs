@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapper;
+using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using MoreLinq.Extensions;
 
 namespace EmbyStat.Repositories;
@@ -14,13 +17,19 @@ namespace EmbyStat.Repositories;
 public class MediaServerRepository : IMediaServerRepository
 {
     private readonly EsDbContext _context;
+    private readonly ISqliteBootstrap _sqliteBootstrap;
+    private readonly ILogger<MediaServerRepository> _logger;
 
-    public MediaServerRepository(EsDbContext context)
+    public MediaServerRepository(EsDbContext context, ISqliteBootstrap sqliteBootstrap,
+        ILogger<MediaServerRepository> logger)
     {
         _context = context;
+        _sqliteBootstrap = sqliteBootstrap;
+        _logger = logger;
     }
 
     #region MediaServer Status
+
     public Task<MediaServerStatus> GetEmbyStatus()
     {
         return _context.MediaServerStatus
@@ -51,6 +60,7 @@ public class MediaServerRepository : IMediaServerRepository
     #endregion
 
     #region MediaServer Plugins
+
     public Task<List<PluginInfo>> GetAllPlugins()
     {
         return _context.Plugins.AsNoTracking().ToListAsync();
@@ -67,9 +77,11 @@ public class MediaServerRepository : IMediaServerRepository
         _context.Plugins.RemoveRange(_context.Plugins);
         return _context.SaveChangesAsync();
     }
+
     #endregion
 
     #region MediaServer Server Info
+
     public Task<MediaServerInfo> GetServerInfo()
     {
         return _context.MediaServerInfo.AsNoTracking().SingleOrDefaultAsync();
@@ -87,9 +99,11 @@ public class MediaServerRepository : IMediaServerRepository
         _context.MediaServerInfo.RemoveRange(_context.MediaServerInfo);
         await _context.SaveChangesAsync();
     }
+
     #endregion
 
     #region MediaServer Users
+
     public async Task DeleteAndInsertUsers(IEnumerable<MediaServerUser> users)
     {
         _context.MediaServerUsers.RemoveRange(_context.MediaServerUsers);
@@ -97,30 +111,25 @@ public class MediaServerRepository : IMediaServerRepository
         await _context.SaveChangesAsync();
     }
 
-    public Task<List<MediaServerUser>> GetAllUsers()
+    public Task<MediaServerUser[]> GetAllUsers()
     {
         return _context.MediaServerUsers
-            .Include(x => x.Configuration)
-            .Include(x => x.Policy)
+            .Include(x => x.Views)
             .AsNoTracking()
-            .ToListAsync();
+            .ToArrayAsync();
     }
 
-    public Task<List<MediaServerUser>> GetAllAdministrators()
+    public Task<MediaServerUser[]> GetAllAdministrators()
     {
         return _context.MediaServerUsers
-            .Include(x => x.Configuration)
-            .Include(x => x.Policy)
             .AsNoTracking()
-            .Where(x => x.Policy.IsAdministrator)
-            .ToListAsync();
+            .Where(x => x.IsAdministrator)
+            .ToArrayAsync();
     }
 
     public Task<MediaServerUser> GetUserById(string id)
     {
         return _context.MediaServerUsers
-            .Include(x => x.Configuration)
-            .Include(x => x.Policy)
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id);
     }
@@ -130,9 +139,28 @@ public class MediaServerRepository : IMediaServerRepository
         _context.MediaServerUsers.RemoveRange(_context.MediaServerUsers);
         await _context.SaveChangesAsync();
     }
+
+    public async Task InsertOrUpdateUserViews(List<MediaServerUserView> views)
+    {
+        var query = $@"
+INSERT INTO {Constants.Tables.MediaServerUserView} (UserId, MediaId, LastPlayedDate, MediaType, PlayCount)
+VALUES (@UserId, @MediaId, @LastPlayedDate, @MediaType, @PlayCount)
+ON CONFLICT (UserId, MediaId) DO
+UPDATE SET LastPlayedDate=excluded.LastPlayedDate, PlayCount=excluded.PlayCount;";
+
+        _logger.LogDebug(query);
+        await using var connection = _sqliteBootstrap.CreateConnection();
+        await connection.OpenAsync();
+        
+        await using var transaction = connection.BeginTransaction();
+        await connection.ExecuteAsync(query, views, transaction);
+        await transaction.CommitAsync();
+    }
+
     #endregion
 
     #region Devices
+
     public Task<List<Device>> GetAllDevices()
     {
         return _context.Devices.AsNoTracking().ToListAsync();
@@ -150,9 +178,11 @@ public class MediaServerRepository : IMediaServerRepository
         _context.Devices.RemoveRange(_context.Devices);
         await _context.SaveChangesAsync();
     }
+
     #endregion
-    
+
     #region Libraries
+
     public Task<List<Library>> GetAllLibraries()
     {
         return _context.Libraries.AsNoTracking().ToListAsync();
@@ -164,7 +194,7 @@ public class MediaServerRepository : IMediaServerRepository
             .AsNoTracking()
             .Where(x => x.Type == type).ToListAsync();
     }
-    
+
     public Task<List<Library>> GetAllLibraries(LibraryType type, bool synced)
     {
         return _context.Libraries
@@ -178,7 +208,7 @@ public class MediaServerRepository : IMediaServerRepository
         libraries
             .Where(x => libraryIds.Any(y => y == x.Id))
             .ForEach(x => x.Sync = true);
-        
+
         libraries
             .Where(x => libraryIds.All(y => y != x.Id))
             .ForEach(x => x.Sync = false);
@@ -204,12 +234,17 @@ public class MediaServerRepository : IMediaServerRepository
         var library = await _context.Libraries
             .Where(x => x.Id == libraryId)
             .FirstOrDefaultAsync();
-        
+
         if (library != null)
         {
             library.LastSynced = date;
             await _context.SaveChangesAsync();
         }
+    }
+
+    public Task SaveChangesAsync()
+    {
+        return _context.SaveChangesAsync();
     }
 
     #endregion

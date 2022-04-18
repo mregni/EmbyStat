@@ -12,4 +12,5 @@ public class UserOverviewViewModel
     public bool IsHidden { get; set; }
     public bool IsDisabled { get; set; }
     public string PrimaryImageTag { get; set; }
+    public int TotalPlayCount { get; set; }
 }

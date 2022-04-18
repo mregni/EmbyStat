@@ -80,7 +80,7 @@ public class MediaServerService : IMediaServerService
             _logger.LogDebug("new API key works!");
             return true;
         }
-            
+
         _baseHttpClient.ApiKey = oldApiKey;
         _baseHttpClient.BaseUrl = oldUrl;
 
@@ -109,13 +109,13 @@ public class MediaServerService : IMediaServerService
         _logger.LogDebug($"Pinging server on {url}");
         var oldUrl = _baseHttpClient.BaseUrl;
         _baseHttpClient.BaseUrl = url;
-            
+
         var result = await _baseHttpClient.Ping();
 
         _baseHttpClient.BaseUrl = oldUrl;
         return result;
     }
-        
+
     public async Task<bool> PingMediaServer()
     {
         _logger.LogDebug($"Pinging server on {_settingsService.GetUserSettings().MediaServer.Address}");
@@ -145,12 +145,12 @@ public class MediaServerService : IMediaServerService
 
     #region Users
 
-    public Task<List<MediaServerUser>> GetAllUsers()
+    public Task<MediaServerUser[]> GetAllUsers()
     {
         return _mediaServerRepository.GetAllUsers();
     }
 
-    public async Task<List<MediaServerUser>> GetAllAdministrators()
+    public async Task<MediaServerUser[]> GetAllAdministrators()
     {
         var administrators = await _mediaServerRepository.GetAllAdministrators();
 
@@ -254,6 +254,23 @@ public class MediaServerService : IMediaServerService
     {
         var users = await _baseHttpClient.GetUsers();
         await _mediaServerRepository.DeleteAndInsertUsers(users);
+    }
+
+    public async Task<int> ProcessViewsForUser(string id)
+    {
+        var viewCount = await _baseHttpClient.GetPlayedMediaCountForUser(id);
+        var processed = 0;
+        const int limit = 500;
+        var totalViews = new List<MediaServerUserView>();
+        do
+        {
+            var views = await _baseHttpClient.GetPlayedMediaForUser(id, processed, limit);
+            totalViews.AddRange(views);
+            processed += limit;
+        } while (processed < viewCount);
+
+        await _mediaServerRepository.InsertOrUpdateUserViews(totalViews);
+        return viewCount;
     }
 
     public async Task GetAndProcessDevices()

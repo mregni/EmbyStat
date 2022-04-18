@@ -29,10 +29,11 @@ public interface IMediaServerRepository
 
     #region MediaServer Users
     Task DeleteAndInsertUsers(IEnumerable<MediaServerUser> users);
-    Task<List<MediaServerUser>>  GetAllUsers();
-    Task<List<MediaServerUser>>  GetAllAdministrators();
+    Task<MediaServerUser[]>  GetAllUsers();
+    Task<MediaServerUser[]>  GetAllAdministrators();
     Task<MediaServerUser> GetUserById(string id);
     Task DeleteAllUsers();
+    Task InsertOrUpdateUserViews(List<MediaServerUserView> views);
     #endregion
 
     #region Devices
@@ -50,5 +51,4 @@ public interface IMediaServerRepository
     Task DeleteAllLibraries();
     Task UpdateLibrarySyncDate(string libraryId, DateTime utcNow);
     #endregion
-
 }

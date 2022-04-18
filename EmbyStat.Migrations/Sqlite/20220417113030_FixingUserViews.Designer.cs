@@ -3,6 +3,7 @@ using System;
 using EmbyStat.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmbyStat.Migrations.Sqlite
 {
     [DbContext(typeof(EsDbContext))]
-    partial class EsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220417113030_FixingUserViews")]
+    partial class FixingUserViews
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.3");
@@ -511,16 +513,17 @@ namespace EmbyStat.Migrations.Sqlite
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.MediaServerUserView", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MediaId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("EpisodeId")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("LastPlayedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MediaId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("MediaType")
@@ -532,11 +535,17 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<int>("PlayCount")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("UserId", "MediaId");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("EpisodeId");
 
                     b.HasIndex("MovieId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("MediaServerUserView");
                 });

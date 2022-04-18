@@ -150,6 +150,46 @@ namespace EmbyStat.Migrations.Sqlite
                 });
 
             migrationBuilder.CreateTable(
+                name: "MediaServerUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    ServerId = table.Column<string>(type: "TEXT", nullable: true),
+                    HasPassword = table.Column<bool>(type: "INTEGER", nullable: false),
+                    HasConfiguredPassword = table.Column<bool>(type: "INTEGER", nullable: false),
+                    HasConfiguredEasyPassword = table.Column<bool>(type: "INTEGER", nullable: false),
+                    PrimaryImageTag = table.Column<string>(type: "TEXT", nullable: true),
+                    LastLoginDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
+                    LastActivityDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
+                    PlayDefaultAudioTrack = table.Column<bool>(type: "INTEGER", nullable: false),
+                    SubtitleLanguagePreference = table.Column<string>(type: "TEXT", nullable: true),
+                    DisplayMissingEpisodes = table.Column<bool>(type: "INTEGER", nullable: false),
+                    SubtitleMode = table.Column<string>(type: "TEXT", nullable: true),
+                    IsAdministrator = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsHidden = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsHiddenRemotely = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsHiddenFromUnusedDevices = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsDisabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    EnableLiveTvAccess = table.Column<bool>(type: "INTEGER", nullable: false),
+                    EnableContentDeletion = table.Column<bool>(type: "INTEGER", nullable: false),
+                    EnableContentDownloading = table.Column<bool>(type: "INTEGER", nullable: false),
+                    EnableSubtitleDownloading = table.Column<bool>(type: "INTEGER", nullable: false),
+                    EnableSubtitleManagement = table.Column<bool>(type: "INTEGER", nullable: false),
+                    EnableSyncTranscoding = table.Column<bool>(type: "INTEGER", nullable: false),
+                    EnableMediaConversion = table.Column<bool>(type: "INTEGER", nullable: false),
+                    InvalidLoginAttemptCount = table.Column<int>(type: "INTEGER", nullable: false),
+                    EnablePublicSharing = table.Column<bool>(type: "INTEGER", nullable: false),
+                    RemoteClientBitrateLimit = table.Column<int>(type: "INTEGER", nullable: false),
+                    SimultaneousStreamLimit = table.Column<int>(type: "INTEGER", nullable: false),
+                    EnableAllDevices = table.Column<bool>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MediaServerUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "People",
                 columns: table => new
                 {
@@ -561,6 +601,40 @@ namespace EmbyStat.Migrations.Sqlite
                 });
 
             migrationBuilder.CreateTable(
+                name: "MediaServerUserView",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    MovieId = table.Column<string>(type: "TEXT", nullable: true),
+                    EpisodeId = table.Column<string>(type: "TEXT", nullable: true),
+                    PlayCount = table.Column<int>(type: "INTEGER", nullable: false),
+                    LastPlayedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MediaServerUserView", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MediaServerUserView_Episodes_EpisodeId",
+                        column: x => x.EpisodeId,
+                        principalTable: "Episodes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_MediaServerUserView_MediaServerUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "MediaServerUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MediaServerUserView_Movies_MovieId",
+                        column: x => x.MovieId,
+                        principalTable: "Movies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MediaSource",
                 columns: table => new
                 {
@@ -652,102 +726,6 @@ namespace EmbyStat.Migrations.Sqlite
                         name: "FK_VideoStream_Movies_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MediaServerUserConfiguration",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    UserId = table.Column<string>(type: "TEXT", nullable: true),
-                    PlayDefaultAudioTrack = table.Column<bool>(type: "INTEGER", nullable: false),
-                    SubtitleLanguagePreference = table.Column<string>(type: "TEXT", nullable: true),
-                    DisplayMissingEpisodes = table.Column<bool>(type: "INTEGER", nullable: false),
-                    SubtitleMode = table.Column<string>(type: "TEXT", nullable: true),
-                    EnableLocalPassword = table.Column<bool>(type: "INTEGER", nullable: false),
-                    HidePlayedInLatest = table.Column<bool>(type: "INTEGER", nullable: false),
-                    RememberAudioSelections = table.Column<bool>(type: "INTEGER", nullable: false),
-                    RememberSubtitleSelections = table.Column<bool>(type: "INTEGER", nullable: false),
-                    EnableNextEpisodeAutoPlay = table.Column<bool>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MediaServerUserConfiguration", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MediaServerUserPolicy",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    UserId = table.Column<string>(type: "TEXT", nullable: true),
-                    IsAdministrator = table.Column<bool>(type: "INTEGER", nullable: false),
-                    IsHidden = table.Column<bool>(type: "INTEGER", nullable: false),
-                    IsHiddenRemotely = table.Column<bool>(type: "INTEGER", nullable: false),
-                    IsHiddenFromUnusedDevices = table.Column<bool>(type: "INTEGER", nullable: false),
-                    IsDisabled = table.Column<bool>(type: "INTEGER", nullable: false),
-                    IsTagBlockingModeInclusive = table.Column<bool>(type: "INTEGER", nullable: false),
-                    EnableUserPreferenceAccess = table.Column<bool>(type: "INTEGER", nullable: false),
-                    EnableRemoteControlOfOtherUsers = table.Column<bool>(type: "INTEGER", nullable: false),
-                    EnableSharedDeviceControl = table.Column<bool>(type: "INTEGER", nullable: false),
-                    EnableRemoteAccess = table.Column<bool>(type: "INTEGER", nullable: false),
-                    EnableLiveTvManagement = table.Column<bool>(type: "INTEGER", nullable: false),
-                    EnableLiveTvAccess = table.Column<bool>(type: "INTEGER", nullable: false),
-                    EnableMediaPlayback = table.Column<bool>(type: "INTEGER", nullable: false),
-                    EnableAudioPlaybackTranscoding = table.Column<bool>(type: "INTEGER", nullable: false),
-                    EnableVideoPlaybackTranscoding = table.Column<bool>(type: "INTEGER", nullable: false),
-                    EnablePlaybackRemuxing = table.Column<bool>(type: "INTEGER", nullable: false),
-                    EnableContentDeletion = table.Column<bool>(type: "INTEGER", nullable: false),
-                    EnableContentDownloading = table.Column<bool>(type: "INTEGER", nullable: false),
-                    EnableSubtitleDownloading = table.Column<bool>(type: "INTEGER", nullable: false),
-                    EnableSubtitleManagement = table.Column<bool>(type: "INTEGER", nullable: false),
-                    EnableSyncTranscoding = table.Column<bool>(type: "INTEGER", nullable: false),
-                    EnableMediaConversion = table.Column<bool>(type: "INTEGER", nullable: false),
-                    EnableAllChannels = table.Column<bool>(type: "INTEGER", nullable: false),
-                    EnableAllFolders = table.Column<bool>(type: "INTEGER", nullable: false),
-                    InvalidLoginAttemptCount = table.Column<int>(type: "INTEGER", nullable: false),
-                    EnablePublicSharing = table.Column<bool>(type: "INTEGER", nullable: false),
-                    RemoteClientBitrateLimit = table.Column<int>(type: "INTEGER", nullable: false),
-                    AuthenticationProviderId = table.Column<string>(type: "TEXT", nullable: true),
-                    SimultaneousStreamLimit = table.Column<int>(type: "INTEGER", nullable: false),
-                    EnableAllDevices = table.Column<bool>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MediaServerUserPolicy", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MediaServerUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    ServerId = table.Column<string>(type: "TEXT", nullable: true),
-                    HasPassword = table.Column<bool>(type: "INTEGER", nullable: false),
-                    HasConfiguredPassword = table.Column<bool>(type: "INTEGER", nullable: false),
-                    HasConfiguredEasyPassword = table.Column<bool>(type: "INTEGER", nullable: false),
-                    PrimaryImageTag = table.Column<string>(type: "TEXT", nullable: true),
-                    LastLoginDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
-                    LastActivityDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
-                    ConfigurationId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    PolicyId = table.Column<Guid>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MediaServerUsers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_MediaServerUsers_MediaServerUserConfiguration_ConfigurationId",
-                        column: x => x.ConfigurationId,
-                        principalTable: "MediaServerUserConfiguration",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_MediaServerUsers_MediaServerUserPolicy_PolicyId",
-                        column: x => x.PolicyId,
-                        principalTable: "MediaServerUserPolicy",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -918,26 +896,19 @@ namespace EmbyStat.Migrations.Sqlite
                 column: "ShowId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MediaServerUserConfiguration_UserId",
-                table: "MediaServerUserConfiguration",
-                column: "UserId",
-                unique: true);
+                name: "IX_MediaServerUserView_EpisodeId",
+                table: "MediaServerUserView",
+                column: "EpisodeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MediaServerUserPolicy_UserId",
-                table: "MediaServerUserPolicy",
-                column: "UserId",
-                unique: true);
+                name: "IX_MediaServerUserView_MovieId",
+                table: "MediaServerUserView",
+                column: "MovieId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MediaServerUsers_ConfigurationId",
-                table: "MediaServerUsers",
-                column: "ConfigurationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MediaServerUsers_PolicyId",
-                table: "MediaServerUsers",
-                column: "PolicyId");
+                name: "IX_MediaServerUserView_UserId",
+                table: "MediaServerUserView",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MediaSource_EpisodeId",
@@ -1083,34 +1054,10 @@ namespace EmbyStat.Migrations.Sqlite
                 name: "IX_VideoStream_Width",
                 table: "VideoStream",
                 column: "Width");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_MediaServerUserConfiguration_MediaServerUsers_UserId",
-                table: "MediaServerUserConfiguration",
-                column: "UserId",
-                principalTable: "MediaServerUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_MediaServerUserPolicy_MediaServerUsers_UserId",
-                table: "MediaServerUserPolicy",
-                column: "UserId",
-                principalTable: "MediaServerUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_MediaServerUserConfiguration_MediaServerUsers_UserId",
-                table: "MediaServerUserConfiguration");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_MediaServerUserPolicy_MediaServerUsers_UserId",
-                table: "MediaServerUserPolicy");
-
             migrationBuilder.DropTable(
                 name: "AudioStream");
 
@@ -1140,6 +1087,9 @@ namespace EmbyStat.Migrations.Sqlite
 
             migrationBuilder.DropTable(
                 name: "MediaServerStatus");
+
+            migrationBuilder.DropTable(
+                name: "MediaServerUserView");
 
             migrationBuilder.DropTable(
                 name: "MediaSource");
@@ -1184,6 +1134,9 @@ namespace EmbyStat.Migrations.Sqlite
                 name: "People");
 
             migrationBuilder.DropTable(
+                name: "MediaServerUsers");
+
+            migrationBuilder.DropTable(
                 name: "Episodes");
 
             migrationBuilder.DropTable(
@@ -1197,15 +1150,6 @@ namespace EmbyStat.Migrations.Sqlite
 
             migrationBuilder.DropTable(
                 name: "Libraries");
-
-            migrationBuilder.DropTable(
-                name: "MediaServerUsers");
-
-            migrationBuilder.DropTable(
-                name: "MediaServerUserConfiguration");
-
-            migrationBuilder.DropTable(
-                name: "MediaServerUserPolicy");
         }
     }
 }

@@ -23,9 +23,8 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
 
     public DbSet<PluginInfo> Plugins { get; set; }
     public DbSet<MediaServerInfo> MediaServerInfo { get; set; }
-
+    
     public DbSet<MediaServerUser> MediaServerUsers { get; set; }
-
     public DbSet<Library> Libraries { get; set; }
     public DbSet<Device> Devices { get; set; }
     public DbSet<FilterValues> Filters { get; set; }
@@ -58,6 +57,7 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
         BuildShows(modelBuilder);
         BuildUsers(modelBuilder);
         BuildFilterValues(modelBuilder);
+        BuildUserViews(modelBuilder);
         AddExtraIndexes(modelBuilder);
 
         SeedDatabase(modelBuilder);
@@ -68,6 +68,19 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
     }
 
     #region Builders
+
+    private static void BuildUserViews(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<MediaServerUserView>()
+            .HasKey(x => new {x.UserId, x.MediaId});
+        
+        modelBuilder.Entity<MediaServerUserView>()
+            .HasOne(x => x.User)
+            .WithMany(x => x.Views)
+            .HasForeignKey(x => x.UserId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
+    }
 
     private static void BuildFilterValues(ModelBuilder modelBuilder)
     {
@@ -80,15 +93,6 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
     private static void BuildUsers(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<MediaServerUser>().HasKey(x => x.Id);
-        modelBuilder.Entity<MediaServerUser>()
-            .HasOne<MediaServerUserConfiguration>()
-            .WithOne(x => x.User)
-            .OnDelete(DeleteBehavior.Cascade);
-            
-        modelBuilder.Entity<MediaServerUser>()
-            .HasOne<MediaServerUserPolicy>()
-            .WithOne(x => x.User)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 
     private static void BuildPeople(ModelBuilder modelBuilder)

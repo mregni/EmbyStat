@@ -10,11 +10,13 @@ using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Shows;
+using EmbyStat.Common.Models.Entities.Users;
+using EmbyStat.Common.Models.Net;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Querying;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using MediaServerUser = EmbyStat.Common.Models.Entities.Users.MediaServerUser;
+using MoreLinq.Extensions;
 
 namespace EmbyStat.Clients.Base.Http;
 
@@ -32,7 +34,10 @@ public abstract class BaseHttpClient
     public string BaseUrl { get; set; }
     public string ApiKey { get; set; }
     private string AuthorizationScheme { get; set; }
-    private string AuthorizationParameter => $"RestClient=\"other\", DeviceId=\"{DeviceId}\", Device=\"{DeviceName}\", Version=\"{ApplicationVersion}\"";
+
+    private string AuthorizationParameter =>
+        $"RestClient=\"other\", DeviceId=\"{DeviceId}\", Device=\"{DeviceName}\", Version=\"{ApplicationVersion}\"";
+
     private string AuthorizationString => $"{AuthorizationScheme} {AuthorizationParameter}";
 
     protected BaseHttpClient(IHttpContextAccessor accessor, ILogger<BaseHttpClient> logger,
@@ -44,7 +49,8 @@ public abstract class BaseHttpClient
         _logger = logger;
     }
 
-    public void SetDeviceInfo(string deviceName, string authorizationScheme, string applicationVersion, string deviceId, string userId)
+    public void SetDeviceInfo(string deviceName, string authorizationScheme, string applicationVersion, string deviceId,
+        string userId)
     {
         AuthorizationScheme = authorizationScheme;
         ApplicationVersion = applicationVersion;
@@ -67,10 +73,7 @@ public abstract class BaseHttpClient
                 var to = new IPEndPoint(ip, 7359);
                 using var client = new ServerSearcher(to);
 
-                client.MediaServerFound += (_, broadcast) =>
-                {
-                    list.Add(broadcast);
-                };
+                client.MediaServerFound += (_, broadcast) => { list.Add(broadcast); };
 
                 client.Send(message);
                 await Task.Run(() => Task.Delay(3000));
@@ -170,10 +173,12 @@ public abstract class BaseHttpClient
         return client.GetPlugins(ApiKey, AuthorizationString);
     }
 
-    public Task<List<MediaServerUser>> GetUsers()
+    public async Task<MediaServerUser[]> GetUsers()
     {
         var client = _refitFactory.CreateClient(BaseUrl);
-        return client.GetUsers(ApiKey, AuthorizationString);
+        var result = await client.GetUsers(ApiKey, AuthorizationString);
+
+        return _mapper.Map<MediaServerUser[]>(result);
     }
 
     public async Task<IEnumerable<Device>> GetDevices()
@@ -191,22 +196,24 @@ public abstract class BaseHttpClient
         return _mapper.Map<IList<Genre>>(baseItems.Items);
     }
 
-    public async Task<T[]> GetMedia<T>(string parentId, int startIndex, int limit, DateTime? lastSynced, string itemType)
+    public async Task<T[]> GetMedia<T>(string parentId, int startIndex, int limit, DateTime? lastSynced,
+        string itemType)
     {
         var query = new ItemQuery
         {
             UserId = UserId,
-            EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
+            EnableImageTypes = new[] {ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo},
             ParentId = parentId,
             Recursive = true,
-            LocationTypes = new[] { LocationType.FileSystem },
-            IncludeItemTypes = new[] { itemType },
+            LocationTypes = new[] {LocationType.FileSystem},
+            IncludeItemTypes = new[] {itemType},
             StartIndex = startIndex,
             Limit = limit,
             EnableImages = true,
-            MediaTypes = new []{"Video"},
+            MediaTypes = new[] {"Video"},
             MinDateLastSaved = lastSynced,
-            Fields = new[] {
+            Fields = new[]
+            {
                 ItemFields.Genres, ItemFields.DateCreated, ItemFields.MediaSources, ItemFields.ExternalUrls,
                 ItemFields.OriginalTitle, ItemFields.Studios, ItemFields.MediaStreams, ItemFields.Path,
                 ItemFields.Overview, ItemFields.ProviderIds, ItemFields.SortName, ItemFields.ParentId,
@@ -227,15 +234,16 @@ public abstract class BaseHttpClient
         var query = new ItemQuery
         {
             UserId = UserId,
-            EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
+            EnableImageTypes = new[] {ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo},
             ParentId = parentId,
-            LocationTypes = new[] { LocationType.FileSystem },
+            LocationTypes = new[] {LocationType.FileSystem},
             Recursive = true,
             StartIndex = startIndex,
             Limit = limit,
-            IncludeItemTypes = new[] { "Series" },
+            IncludeItemTypes = new[] {"Series"},
             MinDateLastSaved = lastSynced,
-            Fields = new[] {
+            Fields = new[]
+            {
                 ItemFields.OriginalTitle, ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
                 ItemFields.Studios, ItemFields.Path, ItemFields.ProviderIds,
                 ItemFields.SortName, ItemFields.ParentId, ItemFields.People, ItemFields.PremiereDate,
@@ -257,15 +265,15 @@ public abstract class BaseHttpClient
         var query = new ItemQuery
         {
             UserId = UserId,
-            EnableImageTypes = new[] { ImageType.Primary },
+            EnableImageTypes = new[] {ImageType.Primary},
             ParentId = parentId,
-            LocationTypes = new[] { LocationType.FileSystem },
+            LocationTypes = new[] {LocationType.FileSystem},
             Recursive = true,
-            IncludeItemTypes = new[] { nameof(Season) },
+            IncludeItemTypes = new[] {nameof(Season)},
             MinDateLastSaved = lastSynced,
             Fields = new[]
             {
-                ItemFields.OriginalTitle,ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
+                ItemFields.OriginalTitle, ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
                 ItemFields.Studios, ItemFields.Path, ItemFields.Overview, ItemFields.ProviderIds,
                 ItemFields.SortName, ItemFields.ParentId, ItemFields.People, ItemFields.MediaSources,
                 ItemFields.MediaStreams, ItemFields.PremiereDate, ItemFields.CommunityRating,
@@ -286,15 +294,15 @@ public abstract class BaseHttpClient
         var query = new ItemQuery
         {
             UserId = UserId,
-            EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
+            EnableImageTypes = new[] {ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo},
             ParentId = parentId,
-            LocationTypes = new[] { LocationType.FileSystem },
+            LocationTypes = new[] {LocationType.FileSystem},
             Recursive = true,
-            IncludeItemTypes = new[] { nameof(Episode) },
+            IncludeItemTypes = new[] {nameof(Episode)},
             MinDateLastSaved = lastSynced,
             Fields = new[]
             {
-                ItemFields.OriginalTitle,ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
+                ItemFields.OriginalTitle, ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
                 ItemFields.Studios, ItemFields.Path, ItemFields.Overview, ItemFields.ProviderIds,
                 ItemFields.SortName, ItemFields.ParentId, ItemFields.MediaSources,
                 ItemFields.MediaStreams, ItemFields.PremiereDate, ItemFields.CommunityRating,
@@ -317,8 +325,8 @@ public abstract class BaseHttpClient
             UserId = UserId,
             ParentId = parentId,
             Recursive = true,
-            IncludeItemTypes = new[] { mediaType },
-            ExcludeLocationTypes = new[] { LocationType.Virtual },
+            IncludeItemTypes = new[] {mediaType},
+            ExcludeLocationTypes = new[] {LocationType.Virtual},
             Limit = 0,
             EnableTotalRecordCount = true,
             MinDateLastSaved = lastSynced
@@ -327,6 +335,49 @@ public abstract class BaseHttpClient
         var paramList = query.ConvertToStringDictionary();
         var client = _refitFactory.CreateClient(BaseUrl);
         var result = await client.GetItems(ApiKey, AuthorizationString, paramList);
+        return result.TotalRecordCount;
+    }
+
+    public async Task<MediaServerUserView[]> GetPlayedMediaForUser(string userId, int startIndex, int limit)
+    {
+        var query = new ItemQuery
+        {
+            Recursive = true,
+            IsPlayed = true,
+            EnableImages = false,
+            EnableUserData = true,
+            EnableTotalRecordCount = false,
+            StartIndex = startIndex,
+            Limit = limit
+        };
+        
+        var paramList = query.ConvertToStringDictionary();
+        var client = _refitFactory.CreateClient(BaseUrl);
+        var result = await client.GetPlayedItemForUser(ApiKey, AuthorizationString, userId, paramList);
+        
+        var views = _mapper.Map<MediaServerUserView[]>(result.Items, 
+            opt =>
+            {
+                opt.AfterMap((src, dest) => dest.ForEach(y => y.UserId = userId));
+            });
+        return views;
+    }
+    
+    public async Task<int> GetPlayedMediaCountForUser(string userId)
+    {
+        var query = new ItemQuery
+        {
+            Recursive = true,
+            IsPlayed = true,
+            EnableImages = false,
+            EnableUserData = true,
+            Limit = 0,
+            EnableTotalRecordCount = true
+        };
+        
+        var paramList = query.ConvertToStringDictionary();
+        var client = _refitFactory.CreateClient(BaseUrl);
+        var result = await client.GetPlayedItemForUser(ApiKey, AuthorizationString, userId, paramList);
         return result.TotalRecordCount;
     }
 }

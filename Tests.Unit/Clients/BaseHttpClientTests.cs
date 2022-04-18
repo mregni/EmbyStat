@@ -59,7 +59,7 @@ public class BaseHttpClientTests
                 new MediaServerInfo {ServerName = "server-name"}, new RefitSettings()));
         _restClientMock
             .Setup(x => x.GetUsers(It.IsAny<string>(), It.IsAny<string>()))
-            .ReturnsAsync(new List<MediaServerUser> {new() {Id = "1", Name = "Mike"}});
+            .ReturnsAsync(new BaseUserDto []{new() {Id = "1", Name = "Mike"}});
         _restClientMock
             .Setup(x => x.GetDevices(It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync(new QueryResult<Device>
@@ -254,7 +254,7 @@ public class BaseHttpClientTests
     {
         var result = await _service.GetUsers();
         result.Should().NotBeNull();
-        result.Count.Should().Be(1);
+        result.Length.Should().Be(1);
 
         result[0].Id.Should().Be("1");
         result[0].Name.Should().Be("Mike");

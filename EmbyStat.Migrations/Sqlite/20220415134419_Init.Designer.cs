@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmbyStat.Migrations.Sqlite
 {
     [DbContext(typeof(EsDbContext))]
-    [Migration("20220413085929_Init")]
+    [Migration("20220415134419_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -509,6 +509,39 @@ namespace EmbyStat.Migrations.Sqlite
                             Id = new Guid("e55668a1-6a81-47ba-882d-738347e7e9cd"),
                             MissedPings = 0
                         });
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.Models.Entities.MediaServerUserView", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EpisodeId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("LastPlayedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MovieId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("PlayCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EpisodeId");
+
+                    b.HasIndex("MovieId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("MediaServerUserView");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Movies.Movie", b =>
@@ -1065,108 +1098,10 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("ConfigurationId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("HasConfiguredEasyPassword")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("HasConfiguredPassword")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("HasPassword")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTimeOffset?>("LastActivityDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTimeOffset?>("LastLoginDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("PolicyId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PrimaryImageTag")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ServerId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConfigurationId");
-
-                    b.HasIndex("PolicyId");
-
-                    b.ToTable("MediaServerUsers");
-                });
-
-            modelBuilder.Entity("EmbyStat.Common.Models.Entities.Users.MediaServerUserConfiguration", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
                     b.Property<bool>("DisplayMissingEpisodes")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("EnableLocalPassword")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("EnableNextEpisodeAutoPlay")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("HidePlayedInLatest")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("PlayDefaultAudioTrack")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("RememberAudioSelections")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("RememberSubtitleSelections")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("SubtitleLanguagePreference")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SubtitleMode")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("MediaServerUserConfiguration");
-                });
-
-            modelBuilder.Entity("EmbyStat.Common.Models.Entities.Users.MediaServerUserPolicy", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("AuthenticationProviderId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("EnableAllChannels")
-                        .HasColumnType("INTEGER");
-
                     b.Property<bool>("EnableAllDevices")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("EnableAllFolders")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("EnableAudioPlaybackTranscoding")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("EnableContentDeletion")
@@ -1178,28 +1113,10 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<bool>("EnableLiveTvAccess")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("EnableLiveTvManagement")
-                        .HasColumnType("INTEGER");
-
                     b.Property<bool>("EnableMediaConversion")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("EnableMediaPlayback")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("EnablePlaybackRemuxing")
-                        .HasColumnType("INTEGER");
-
                     b.Property<bool>("EnablePublicSharing")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("EnableRemoteAccess")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("EnableRemoteControlOfOtherUsers")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("EnableSharedDeviceControl")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("EnableSubtitleDownloading")
@@ -1211,10 +1128,13 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<bool>("EnableSyncTranscoding")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("EnableUserPreferenceAccess")
+                    b.Property<bool>("HasConfiguredEasyPassword")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("EnableVideoPlaybackTranscoding")
+                    b.Property<bool>("HasConfiguredPassword")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("HasPassword")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("InvalidLoginAttemptCount")
@@ -1235,24 +1155,39 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<bool>("IsHiddenRemotely")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsTagBlockingModeInclusive")
+                    b.Property<DateTimeOffset?>("LastActivityDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset?>("LastLoginDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("PlayDefaultAudioTrack")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("PrimaryImageTag")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("RemoteClientBitrateLimit")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ServerId")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("SimultaneousStreamLimit")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("SubtitleLanguagePreference")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SubtitleMode")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("MediaServerUserPolicy");
+                    b.ToTable("MediaServerUsers");
                 });
 
             modelBuilder.Entity("GenreMovie", b =>
@@ -1422,6 +1357,31 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Navigation("Show");
                 });
 
+            modelBuilder.Entity("EmbyStat.Common.Models.Entities.MediaServerUserView", b =>
+                {
+                    b.HasOne("EmbyStat.Common.Models.Entities.Shows.Episode", "Episode")
+                        .WithMany("Views")
+                        .HasForeignKey("EpisodeId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("EmbyStat.Common.Models.Entities.Movies.Movie", "Movie")
+                        .WithMany("Views")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("EmbyStat.Common.Models.Entities.Users.MediaServerUser", "User")
+                        .WithMany("Views")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Episode");
+
+                    b.Navigation("Movie");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Movies.Movie", b =>
                 {
                     b.HasOne("EmbyStat.Common.Models.Entities.Library", "Library")
@@ -1530,45 +1490,6 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Navigation("Movie");
                 });
 
-            modelBuilder.Entity("EmbyStat.Common.Models.Entities.Users.MediaServerUser", b =>
-                {
-                    b.HasOne("EmbyStat.Common.Models.Entities.Users.MediaServerUserConfiguration", "Configuration")
-                        .WithMany()
-                        .HasForeignKey("ConfigurationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EmbyStat.Common.Models.Entities.Users.MediaServerUserPolicy", "Policy")
-                        .WithMany()
-                        .HasForeignKey("PolicyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Configuration");
-
-                    b.Navigation("Policy");
-                });
-
-            modelBuilder.Entity("EmbyStat.Common.Models.Entities.Users.MediaServerUserConfiguration", b =>
-                {
-                    b.HasOne("EmbyStat.Common.Models.Entities.Users.MediaServerUser", "User")
-                        .WithOne()
-                        .HasForeignKey("EmbyStat.Common.Models.Entities.Users.MediaServerUserConfiguration", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("EmbyStat.Common.Models.Entities.Users.MediaServerUserPolicy", b =>
-                {
-                    b.HasOne("EmbyStat.Common.Models.Entities.Users.MediaServerUser", "User")
-                        .WithOne()
-                        .HasForeignKey("EmbyStat.Common.Models.Entities.Users.MediaServerUserPolicy", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("GenreMovie", b =>
                 {
                     b.HasOne("EmbyStat.Common.Models.Entities.Genre", null)
@@ -1617,6 +1538,8 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Navigation("SubtitleStreams");
 
                     b.Navigation("VideoStreams");
+
+                    b.Navigation("Views");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Person", b =>
@@ -1633,6 +1556,8 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Navigation("SubtitleStreams");
 
                     b.Navigation("VideoStreams");
+
+                    b.Navigation("Views");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Shows.Season", b =>
@@ -1645,6 +1570,11 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Navigation("People");
 
                     b.Navigation("Seasons");
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.Models.Entities.Users.MediaServerUser", b =>
+                {
+                    b.Navigation("Views");
                 });
 #pragma warning restore 612, 618
         }

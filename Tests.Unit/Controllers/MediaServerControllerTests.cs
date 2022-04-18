@@ -99,7 +99,7 @@ public class MediaServerControllerTests
 
         var mediaServerServiceMock = new Mock<IMediaServerService>();
         mediaServerServiceMock.Setup(x => x.GetServerInfo(false)).ReturnsAsync(serverInfoObject);
-        mediaServerServiceMock.Setup(x => x.GetAllUsers()).ReturnsAsync(new List<MediaServerUser>
+        mediaServerServiceMock.Setup(x => x.GetAllUsers()).ReturnsAsync(new []
         {
             new MediaServerUserBuilder("1").Build(),
             new MediaServerUserBuilder("2").Build(),

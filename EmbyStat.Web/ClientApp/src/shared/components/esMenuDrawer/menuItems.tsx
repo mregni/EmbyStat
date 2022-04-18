@@ -3,6 +3,7 @@ import React, {ReactElement} from 'react';
 import HomeIcon from '@mui/icons-material/Home';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import MovieIcon from '@mui/icons-material/Movie';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
 import StorageIcon from '@mui/icons-material/Storage';
 import TvIcon from '@mui/icons-material/Tv';
@@ -45,6 +46,11 @@ export const MediaMenuItems: MenuItem[] = [
         route: '/shows/list',
       },
     ],
+  },
+  {
+    icon: <PeopleAltIcon />,
+    title: 'MENU.USERS',
+    route: '/users',
   },
   {
     icon: <StorageIcon />,

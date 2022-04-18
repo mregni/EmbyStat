@@ -33,13 +33,13 @@ public interface IMediaServerService
 
     #region Users
 
-    Task<List<MediaServerUser>> GetAllUsers();
-    Task<List<MediaServerUser>> GetAllAdministrators();
+    Task<MediaServerUser[]> GetAllUsers();
+    Task<MediaServerUser[]> GetAllAdministrators();
     Task<MediaServerUser> GetUserById(string id);
     Card<int> GetViewedEpisodeCountByUserId(string id);
     Card<int> GetViewedMovieCountByUserId(string id);
     IEnumerable<UserMediaView> GetUserViewPageByUserId(string id, int page, int size);
-    int GetUserViewCount(string id);
+    Task<int> ProcessViewsForUser(string id);
 
     #endregion
 
