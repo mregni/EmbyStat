@@ -18,15 +18,18 @@ using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.MediaServer;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
+using EmbyStat.Services.Abstract;
 using EmbyStat.Services.Interfaces;
 using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Emby;
+using EmbyStat.Services.Models.MediaServerUser;
 using EmbyStat.Services.Models.Stat;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace EmbyStat.Services;
 
-public class MediaServerService : IMediaServerService
+public class MediaServerService : StatisticHelper, IMediaServerService
 {
     private IBaseHttpClient _baseHttpClient;
     private readonly IMediaServerRepository _mediaServerRepository;
@@ -34,15 +37,18 @@ public class MediaServerService : IMediaServerService
     private readonly ISettingsService _settingsService;
     private readonly IClientStrategy _clientStrategy;
     private readonly ILogger<MediaServerService> _logger;
+    private readonly IStatisticsRepository _statisticsRepository;
 
     public MediaServerService(IClientStrategy clientStrategy, IMediaServerRepository mediaServerRepository,
-        ISessionService sessionService, ISettingsService settingsService, ILogger<MediaServerService> logger)
+        ISessionService sessionService, ISettingsService settingsService, ILogger<MediaServerService> logger,
+        IStatisticsRepository statisticsRepository, IJobRepository jobRepository): base(logger, jobRepository)
     {
         _mediaServerRepository = mediaServerRepository;
         _sessionService = sessionService;
         _settingsService = settingsService;
         _clientStrategy = clientStrategy;
         _logger = logger;
+        _statisticsRepository = statisticsRepository;
 
         var settings = _settingsService.GetUserSettings();
         ChangeClientType(settings.MediaServer?.Type);
@@ -147,11 +153,82 @@ public class MediaServerService : IMediaServerService
 
     #region Users
 
-    public async Task<Page<MediaServerUserRow>> GetUserPage(int skip, int take, string sortField, string sortOrder, bool requireTotalCount)
+    public async Task<MediaServerUserStatistics> GetMediaServerUserStatistics()
     {
-        var list = await  _mediaServerRepository.GetUserPage(skip, take, sortField, sortOrder);
+        var statistic = await _statisticsRepository.GetLastResultByType(StatisticType.User);
+
+        MediaServerUserStatistics statistics;
+        if (StatisticsAreValid(statistic, Constants.JobIds.SmallSyncId))
+        {
+            statistics = JsonConvert.DeserializeObject<MediaServerUserStatistics>(statistic.JsonResult);
+        }
+        else
+        {
+            statistics = await CalculateMediaServerUserStatistics();
+        }
+
+        return statistics;
+    }
+    
+    public async Task<MediaServerUserStatistics> CalculateMediaServerUserStatistics()
+    {
+        var statistics = new MediaServerUserStatistics
+        {
+            Cards = await CalculateCards()
+        };
+
+        var json = JsonConvert.SerializeObject(statistics);
+        await _statisticsRepository.ReplaceStatistic(json, DateTime.UtcNow, StatisticType.User);
+
+        return statistics;
+    }
+
+    private async Task<List<Card<string>>> CalculateCards()
+    {
+        var list = new List<Card<string>>();
+        list.AddIfNotNull(await CalculateActiveUsers());
+        list.AddIfNotNull(await CalculateIdleUsers());
+        return list;
+    }
+    
+    private Task<Card<string>> CalculateActiveUsers()
+    {
+        return CalculateStat(async () =>
+        {
+            var users = await _mediaServerRepository.GetAllUsers();
+            var count = users.Count(x => x.LastActivityDate > DateTime.Now.AddMonths(-6));
+            return new Card<string>
+            {
+                Title = Constants.MediaServer.TotalActiveUsers,
+                Value = count.ToString(),
+                Type = CardType.Text,
+                Icon = Constants.Icons.TheatersRoundedIcon
+            };
+        }, "Calculate total active user count failed:");
+    } 
+    
+    private Task<Card<string>> CalculateIdleUsers()
+    {
+        return CalculateStat(async () =>
+        {
+            var users = await _mediaServerRepository.GetAllUsers();
+            var count = users.Count(x => x.LastActivityDate <= DateTime.Now.AddMonths(-6));
+            return new Card<string>
+            {
+                Title = Constants.MediaServer.TotalIdleUsers,
+                Value = count.ToString(),
+                Type = CardType.Text,
+                Icon = Constants.Icons.TheatersRoundedIcon
+            };
+        }, "Calculate total idle user count failed:");
+    } 
+
+    public async Task<Page<MediaServerUserRow>> GetUserPage(int skip, int take, string sortField, string sortOrder,
+        bool requireTotalCount)
+    {
+        var list = await _mediaServerRepository.GetUserPage(skip, take, sortField, sortOrder);
         var page = new Page<MediaServerUserRow>(list);
-        
+
         if (requireTotalCount)
         {
             page.TotalCount = await _mediaServerRepository.GetUserCount();
@@ -159,7 +236,7 @@ public class MediaServerService : IMediaServerService
 
         return page;
     }
-    
+
     public Task<MediaServerUser[]> GetAllUsers()
     {
         return _mediaServerRepository.GetAllUsers();
@@ -188,7 +265,7 @@ public class MediaServerService : IMediaServerService
         var episodeIds = _sessionService.GetMediaIdsForUser(id, PlayType.Episode);
         return new Card<int>
         {
-            Title = Constants.Users.TotalWatchedEpisodes,
+            Title = "Constants.Users.TotalWatchedEpisodes",
             Value = episodeIds.Count()
         };
     }
@@ -198,7 +275,7 @@ public class MediaServerService : IMediaServerService
         var movieIds = _sessionService.GetMediaIdsForUser(id, PlayType.Movie);
         return new Card<int>
         {
-            Title = Constants.Users.TotalWatchedMovies,
+            Title = "Constants.Users.TotalWatchedMovies",
             Value = movieIds.Count()
         };
     }

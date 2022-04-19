@@ -7,6 +7,7 @@ using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.MediaServer;
 using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Emby;
+using EmbyStat.Services.Models.MediaServerUser;
 using EmbyStat.Services.Models.Stat;
 
 namespace EmbyStat.Services.Interfaces;
@@ -35,6 +36,7 @@ public interface IMediaServerService
 
     #region Users
 
+    Task<MediaServerUserStatistics> GetMediaServerUserStatistics();
     Task<Page<MediaServerUserRow>> GetUserPage(int skip, int take, string sortField, string sortOrder, bool requireTotalCount);
     Task<MediaServerUser[]> GetAllUsers();
     Task<MediaServerUser[]> GetAllAdministrators();

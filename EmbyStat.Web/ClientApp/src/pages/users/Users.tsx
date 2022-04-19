@@ -6,7 +6,7 @@ import {Stack} from '@mui/material';
 import {EsLoading} from '../../shared/components/esLoading';
 import {EsTitle} from '../../shared/components/esTitle';
 import {MediaServerUserContextProvider} from '../../shared/context/mediaServerUser';
-import {EsUserTable} from './components';
+import {EsUserStatistics, EsUserTable} from './components';
 
 const UserContainer = () => {
   const {t} = useTranslation();
@@ -16,6 +16,7 @@ const UserContainer = () => {
     <EsLoading label={t('USERS.LOADER')} loading={false}>
       <Stack spacing={2}>
         <EsTitle content={t('USERS.NUMBERS')} isFirst />
+        <EsUserStatistics />
         <EsTitle content={t('USERS.USERS')} />
         <EsUserTable/>
       </Stack>

@@ -201,7 +201,6 @@
   },
   "SERVER": {
     "ACTIVEDEVICES": "ACtive devices",
-    "ACTIVEUSERS": "Active users",
     "AUTORUNSUPPORT": "Supports auto run at startup",
     "CACHEPATH": "Cache path",
     "CANLAUNCHBROWSER": "Can launch browser",
@@ -210,7 +209,6 @@
     "FEATURES": "Features",
     "HTTPSSUPPORT": "HTTPS support",
     "IDLEDEVICES": "Idle devices",
-    "IDLEUSERS": "Idle users",
     "INFO": "Server info",
     "ITEMSBYNAMEPATH": "Items by name path",
     "LANADDRESS": "LAN",
@@ -325,7 +323,9 @@
       "MOVIES": "Movies watched",
       "EPISODES": "Episodes watched",
       "TOTAL": "Total watched"
-    }
+    },
+    "ACTIVEUSERS": "Active users",
+    "IDLEUSERS": "Idle users"
   },
   "WIZARD": {
     "ACCOUNT": "User details",

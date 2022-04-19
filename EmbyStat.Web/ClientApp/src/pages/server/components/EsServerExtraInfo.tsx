@@ -10,8 +10,8 @@ export const EsServerExtraInfo = () => {
   const {serverInfo} = useContext(ServerContext);
 
   const cards: Card[] = [
-    {value: serverInfo.activeUserCount.toString(), title: 'SERVER.ACTIVEUSERS', type: 'text', icon: 'PoundRoundedIcon'},
-    {value: serverInfo.idleUserCount.toString(), title: 'SERVER.IDLEUSERS', type: 'text', icon: 'PoundRoundedIcon'},
+    {value: serverInfo.activeUserCount.toString(), title: 'USERS.ACTIVEUSERS', type: 'text', icon: 'PoundRoundedIcon'},
+    {value: serverInfo.idleUserCount.toString(), title: 'USERS.IDLEUSERS', type: 'text', icon: 'PoundRoundedIcon'},
     {value: serverInfo.activeDeviceCount.toString(),
       title: 'SERVER.ACTIVEDEVICES',
       type: 'text',

@@ -5,3 +5,4 @@ export * from './MediaServerUdpBroadcast';
 export * from './MediaServer';
 export * from './MediaServerLogin';
 export * from './MediaServerUserRow';
+export * from './MediaServerUserStatistics';

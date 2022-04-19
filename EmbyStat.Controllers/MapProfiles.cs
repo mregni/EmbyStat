@@ -31,6 +31,7 @@ using EmbyStat.Services.Models.Cards;
 using EmbyStat.Services.Models.Charts;
 using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Emby;
+using EmbyStat.Services.Models.MediaServerUser;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Show;
 using EmbyStat.Services.Models.Stat;
@@ -146,6 +147,7 @@ public class MapProfiles : Profile
 
         CreateMap<MediaServerUserRow, MediaServerUserRowViewModel>();
         CreateMap<MediaServerUser, UserOverviewViewModel>();
+        CreateMap<MediaServerUserStatistics, MediaServerUserStatisticsViewModel>();
 
         CreateMap<BaseItemDto, MediaServerUserView>()
             .ForMember(x => x.MediaId, x => x.MapFrom(y => y.Id))

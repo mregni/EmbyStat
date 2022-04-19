@@ -22,6 +22,13 @@ public static class Constants
         public static string MediaServerUsers => "MediaServerUsers";
         public static string MediaServerUserView => "MediaServerUserView";
     }
+
+    public static class MediaServer
+    {
+        public static string TotalActiveUsers => "USERS.ACTIVEUSERS";
+        public static string TotalIdleUsers => "USERS.IDLEUSERS";
+    }
+    
     public static class Movies
     {
         public static string TotalMovies => "MOVIES.TOTALMOVIES";
@@ -68,12 +75,6 @@ public static class Constants
         public static string MostEpisodes => "SHOWS.WITHMOESTEPISODES";
         public static string ShowStatusChart => "SHOWS.SHOWSTATUS";
         public static string MostDiskSpace => "SHOWS.MOSTDISKSPACE";
-    }
-
-    public static class Users
-    {
-        public static string TotalWatchedMovies => "USERS.STATS.TOTALWATCHEDMOVIES";
-        public static string TotalWatchedEpisodes => "USERS.STATS.TOTALWATCHEDEPISODES";
     }
 
     public static class LogPrefix

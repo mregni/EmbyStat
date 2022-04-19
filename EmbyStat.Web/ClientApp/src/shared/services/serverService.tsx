@@ -4,7 +4,7 @@ import {TablePage} from '../models/common';
 import {Library} from '../models/library';
 import {
   MediaServerInfo, MediaServerLogin, MediaServerPlugin, MediaServerUdpBroadcast, MediaServerUser,
-  MediaServerUserRow,
+  MediaServerUserRow, MediaServerUserStatistics,
 } from '../models/mediaServer';
 import {axiosInstance} from './axiosInstance';
 
@@ -78,4 +78,12 @@ export const getUserPage = (skip: number, take: number, sortField: string,
 &sortField=${sortField}&sortOrder=${sortOrder}
 &requireTotalCount=${requireTotalCount}`)
     .then((response) => response.data);
+};
+
+export const getUserStatistics = (): Promise<MediaServerUserStatistics> => {
+  return axiosInstance
+    .get<MediaServerUserStatistics>(`${domain}users/statistics`)
+    .then((response) => {
+      return response.data;
+    });
 };

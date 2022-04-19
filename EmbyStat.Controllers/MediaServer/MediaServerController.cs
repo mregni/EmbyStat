@@ -111,6 +111,14 @@ public class MediaServerController : Controller
     #region Users
 
     [HttpGet]
+    [Route("administrators")]
+    public async Task<IActionResult> GetAdministrators()
+    {
+        var result = await _mediaServerService.GetAllAdministrators();
+        return Ok(_mapper.Map<IList<UserOverviewViewModel>>(result));
+    }
+    
+    [HttpGet]
     [Route("users/page")]
     public async Task<IActionResult> GetUserPage(int skip, int take, string sortField, string sortOrder, bool requireTotalCount)
     {
@@ -118,14 +126,6 @@ public class MediaServerController : Controller
 
         var convert = _mapper.Map<PageViewModel<MediaServerUserRowViewModel>>(page);
         return Ok(convert);
-    }
-
-    [HttpGet]
-    [Route("administrators")]
-    public async Task<IActionResult> GetAdministrators()
-    {
-        var result = await _mediaServerService.GetAllAdministrators();
-        return Ok(_mapper.Map<IList<UserOverviewViewModel>>(result));
     }
 
     [HttpGet]
@@ -177,5 +177,15 @@ public class MediaServerController : Controller
         };
         return Ok(container);
     }
+    
+    [HttpGet]
+    [Route("users/statistics")]
+    public async Task<IActionResult> GetGeneralStats()
+    {
+        var result = await _mediaServerService.GetMediaServerUserStatistics();
+        var convert = _mapper.Map<MediaServerUserStatisticsViewModel>(result);
+        return Ok(convert);
+    }
+    
     #endregion
 }

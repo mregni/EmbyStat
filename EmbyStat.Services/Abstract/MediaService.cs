@@ -10,40 +10,12 @@ using Microsoft.Extensions.Logging;
 
 namespace EmbyStat.Services.Abstract;
 
-public abstract class MediaService
+public abstract class MediaService : StatisticHelper
 {
-    private readonly IJobRepository _jobRepository;
-    private readonly ILogger<MediaService> _logger;
-
     protected MediaService(IJobRepository jobRepository, ILogger<MediaService> logger)
+    :base(logger, jobRepository)
     {
-        _jobRepository = jobRepository;
-        _logger = logger;
-    }
-
-    internal bool StatisticsAreValid(Statistic statistic, Guid jobId)
-    {
-        var lastMediaSync = _jobRepository.GetById(jobId);
-
-        //We need to add 5 minutes here because the CalculationDateTime is ALWAYS just in front of the EndTimeUtc
-        //(Ugly fix for now)
-        return statistic != null
-               && lastMediaSync != null
-               && statistic.CalculationDateTime.AddMinutes(5) > lastMediaSync.EndTimeUtc;
-    }
-
-    internal T CalculateStat<T>(Func<T> action, string errorMessage)
-    {
-        try
-        {
-            return action();
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, errorMessage);
-        }
-
-        return default;
+        
     }
 
     #region Chart
