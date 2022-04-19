@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.MediaServer;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Controllers.MediaServer;
 using EmbyStat.Services.Interfaces;
+using EmbyStat.Services.Models.DataGrid;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -99,7 +102,8 @@ public class MediaServerControllerTests
 
         var mediaServerServiceMock = new Mock<IMediaServerService>();
         mediaServerServiceMock.Setup(x => x.GetServerInfo(false)).ReturnsAsync(serverInfoObject);
-        mediaServerServiceMock.Setup(x => x.GetUserPage()).ReturnsAsync(new []
+        mediaServerServiceMock.Setup(x => x.GetAllUsers()).ReturnsAsync(new []
+        
         {
             new MediaServerUserBuilder("1").Build(),
             new MediaServerUserBuilder("2").Build(),
@@ -126,7 +130,7 @@ public class MediaServerControllerTests
         serverInfo.IdleUserCount.Should().Be(1);
             
         mediaServerServiceMock.Verify(x => x.GetAllDevices(), Times.Once);
-        mediaServerServiceMock.Verify(x => x.GetUserPage(), Times.Once);
+        mediaServerServiceMock.Verify(x => x.GetAllUsers(), Times.Once);
         mediaServerServiceMock.Verify(x => x.GetServerInfo(false), Times.Once);
         mediaServerServiceMock.VerifyNoOtherCalls();
     }
@@ -177,6 +181,62 @@ public class MediaServerControllerTests
         libraryViewModel[0].Primary.Should().Be(library.Primary);
 
         mediaServerServiceMock.Verify(x => x.GetMediaServerLibraries(), Times.Once);
+        mediaServerServiceMock.VerifyNoOtherCalls();
+    }
+
+    [Fact]
+    public async Task GetUserPage_Should_Return_Page()
+    {
+        var page = new Page<MediaServerUserRow>(new[]
+        {
+            new MediaServerUserRow {Id = "12"},
+            new MediaServerUserRow {Id = "32"}
+        })
+        {
+            TotalCount = 2
+        };
+
+        var mediaServerServiceMock = new Mock<IMediaServerService>();
+        mediaServerServiceMock
+            .Setup(x => x.GetUserPage(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
+            .ReturnsAsync(page);
+        
+        var controller = new MediaServerController(mediaServerServiceMock.Object, _mapper);
+        var result = await controller.GetUserPage(1, 10, "name", "asc", true);
+        var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
+        var pageViewModel = resultObject.Should().BeOfType<PageViewModel<MediaServerUserRowViewModel>>().Subject;
+
+        pageViewModel.Should().NotBeNull();
+        pageViewModel.Data.Count().Should().Be(2);
+        pageViewModel.TotalCount.Should().Be(2);
+        
+        mediaServerServiceMock.Verify(x => x.GetUserPage(1,10,"name", "asc", true), Times.Once);
+        mediaServerServiceMock.VerifyNoOtherCalls();
+    }
+    
+    [Fact]
+    public async Task GetAdministrators_Should_Return_Administrators()
+    {
+        var users = new []
+        {
+            new MediaServerUser {Id = "12"},
+            new MediaServerUser {Id = "32"}
+        };
+
+        var mediaServerServiceMock = new Mock<IMediaServerService>();
+        mediaServerServiceMock
+            .Setup(x => x.GetAllAdministrators())
+            .ReturnsAsync(users);
+        
+        var controller = new MediaServerController(mediaServerServiceMock.Object, _mapper);
+        var result = await controller.GetAdministrators();
+        var resultObject = result.Should().BeOfType<OkObjectResult>().Subject.Value;
+        var resultList = resultObject.Should().BeOfType<List<UserOverviewViewModel>>().Subject;
+
+        resultList.Should().NotBeNull();
+        resultList.Count().Should().Be(2);
+        
+        mediaServerServiceMock.Verify(x => x.GetAllAdministrators(), Times.Once);
         mediaServerServiceMock.VerifyNoOtherCalls();
     }
 }

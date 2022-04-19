@@ -8,6 +8,7 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Users;
+using EmbyStat.Common.Models.MediaServer;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services;
@@ -167,7 +168,7 @@ public class MediaServerServiceTests
             new() {Id = "1"}
         };
         _mediaServerRepositoryMock
-            .Setup(x => x.GetUserPage())
+            .Setup(x => x.GetAllUsers())
             .ReturnsAsync(users);
 
         var strategy = new Mock<IClientStrategy>();
@@ -175,13 +176,77 @@ public class MediaServerServiceTests
 
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
             _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object);
-        var result = await service.GetUserPage();
+        var result = await service.GetAllUsers();
 
         result.Should().NotBeNull();
         result.Length.Should().Be(1);
         result[0].Id.Should().Be(users[0].Id);
 
-        _mediaServerRepositoryMock.Verify(x => x.GetUserPage());
+        _mediaServerRepositoryMock.Verify(x => x.GetAllUsers());
+        _mediaServerRepositoryMock.VerifyNoOtherCalls();
+    }
+    
+    [Fact]
+    public async Task GetUserPage_Should_Return_Page_With_Total_Count()
+    {
+        var list = new[]
+        {
+            new MediaServerUserRow {Id = "12"},
+            new MediaServerUserRow {Id = "32"}
+        };
+        _mediaServerRepositoryMock
+            .Setup(x => x.GetUserPage(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync(list);
+        _mediaServerRepositoryMock
+            .Setup(x => x.GetUserCount())
+            .ReturnsAsync(list.Length);
+
+        var strategy = new Mock<IClientStrategy>();
+        strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+
+        var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
+            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object);
+        var result = await service.GetUserPage(0, 1, "name", "asc", true);
+        result.Should().NotBeNull();
+
+        result.TotalCount.Should().Be(2);
+        var results = result.Data.ToList();
+        results.Count.Should().Be(2);
+        results[0].Id.Should().Be(list[0].Id);
+        results[1].Id.Should().Be(list[1].Id);
+            
+        _mediaServerRepositoryMock.Verify(x => x.GetUserPage(0, 1, "name", "asc"));
+        _mediaServerRepositoryMock.Verify(x => x.GetUserCount());
+        _mediaServerRepositoryMock.VerifyNoOtherCalls();
+    }
+    
+    [Fact]
+    public async Task GetUserPage_Should_Return_Page_Without_Total_Count()
+    {
+        var list = new[]
+        {
+            new MediaServerUserRow {Id = "12"},
+            new MediaServerUserRow {Id = "32"}
+        };
+        _mediaServerRepositoryMock
+            .Setup(x => x.GetUserPage(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync(list);
+
+        var strategy = new Mock<IClientStrategy>();
+        strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
+
+        var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
+            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object);
+        var result = await service.GetUserPage(0, 1, "name", "asc", false);
+        result.Should().NotBeNull();
+
+        result.TotalCount.Should().Be(0);
+        var results = result.Data.ToList();
+        results.Count.Should().Be(2);
+        results[0].Id.Should().Be(list[0].Id);
+        results[1].Id.Should().Be(list[1].Id);
+            
+        _mediaServerRepositoryMock.Verify(x => x.GetUserPage(0, 1, "name", "asc"));
         _mediaServerRepositoryMock.VerifyNoOtherCalls();
     }
         
@@ -252,7 +317,7 @@ public class MediaServerServiceTests
             .ReturnsAsync(newUsers);
 
         _mediaServerRepositoryMock
-            .Setup(x => x.GetUserPage())
+            .Setup(x => x.GetAllUsers())
             .ReturnsAsync(newUsers);
 
         _httpClientMock
