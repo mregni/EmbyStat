@@ -316,7 +316,16 @@
   "USERS":{
     "LOADER": "Loading user info",
     "NUMBERS": "Numbers",
-    "USERS": "Users"
+    "USERS": "Users",
+    "LASTACTIVE": "Last active",
+    "ADMIN": "Admin",
+    "HIDDEN": "Hidden",
+    "DISABLED": "Disabled",
+    "WATCHED":{
+      "MOVIES": "Movies watched",
+      "EPISODES": "Episodes watched",
+      "TOTAL": "Total watched"
+    }
   },
   "WIZARD": {
     "ACCOUNT": "User details",

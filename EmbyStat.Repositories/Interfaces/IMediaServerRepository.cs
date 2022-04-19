@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Users;
+using EmbyStat.Common.Models.MediaServer;
 
 namespace EmbyStat.Repositories.Interfaces;
 
@@ -29,11 +30,13 @@ public interface IMediaServerRepository
 
     #region MediaServer Users
     Task DeleteAndInsertUsers(IEnumerable<MediaServerUser> users);
-    Task<MediaServerUser[]>  GetAllUsers();
+    Task<IEnumerable<MediaServerUserRow>> GetUserPage(int skip, int take, string sortField, string sortOrder);
+    Task<MediaServerUser[]> GetAllUsers();
     Task<MediaServerUser[]>  GetAllAdministrators();
     Task<MediaServerUser> GetUserById(string id);
     Task DeleteAllUsers();
     Task InsertOrUpdateUserViews(List<MediaServerUserView> views);
+    Task<int> GetUserCount();
     #endregion
 
     #region Devices

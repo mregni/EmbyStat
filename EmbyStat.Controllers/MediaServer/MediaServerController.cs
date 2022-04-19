@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Helpers;
+using EmbyStat.Common.Models.MediaServer;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -110,11 +111,13 @@ public class MediaServerController : Controller
     #region Users
 
     [HttpGet]
-    [Route("users")]
-    public async Task<IActionResult> GetUsers()
+    [Route("users/page")]
+    public async Task<IActionResult> GetUserPage(int skip, int take, string sortField, string sortOrder, bool requireTotalCount)
     {
-        var result = await _mediaServerService.GetAllUsers();
-        return Ok(_mapper.Map<IList<UserOverviewViewModel>>(result));
+        var page = await _mediaServerService.GetUserPage(skip, take, sortField, sortOrder, requireTotalCount);
+
+        var convert = _mapper.Map<PageViewModel<MediaServerUserRowViewModel>>(page);
+        return Ok(convert);
     }
 
     [HttpGet]
@@ -127,14 +130,14 @@ public class MediaServerController : Controller
 
     [HttpGet]
     [Route("users/{id}")]
-    public IActionResult GetUserById(string id)
+    public async Task<IActionResult> GetUserById(string id)
     {
         if (string.IsNullOrWhiteSpace(id))
         {
             return NotFound();
         }
 
-        var user = _mediaServerService.GetUserById(id);
+        var user = await _mediaServerService.GetUserById(id);
         if (user == null)
         {
             return NotFound();
@@ -173,14 +176,6 @@ public class MediaServerController : Controller
             TotalCount = 0
         };
         return Ok(container);
-    }
-
-    [HttpGet]
-    [Route("users/ids")]
-    public async Task<IActionResult> GetUserIdList()
-    {
-        var users = await _mediaServerService.GetAllUsers();
-        return Ok(_mapper.Map<IList<UserIdViewModel>>(users));
     }
     #endregion
 }

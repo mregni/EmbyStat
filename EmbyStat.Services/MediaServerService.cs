@@ -15,9 +15,11 @@ using EmbyStat.Common.Models.Entities.Events;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Entities.Users;
+using EmbyStat.Common.Models.MediaServer;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
+using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.Stat;
 using Microsoft.Extensions.Logging;
@@ -145,6 +147,19 @@ public class MediaServerService : IMediaServerService
 
     #region Users
 
+    public async Task<Page<MediaServerUserRow>> GetUserPage(int skip, int take, string sortField, string sortOrder, bool requireTotalCount)
+    {
+        var list = await  _mediaServerRepository.GetUserPage(skip, take, sortField, sortOrder);
+        var page = new Page<MediaServerUserRow>(list);
+        
+        if (requireTotalCount)
+        {
+            page.TotalCount = await _mediaServerRepository.GetUserCount();
+        }
+
+        return page;
+    }
+    
     public Task<MediaServerUser[]> GetAllUsers()
     {
         return _mediaServerRepository.GetAllUsers();

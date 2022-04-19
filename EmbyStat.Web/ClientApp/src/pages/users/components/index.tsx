@@ -1,1 +1,1 @@
-export * from './UserOverviewCard';
+export * from './EsUserTable';

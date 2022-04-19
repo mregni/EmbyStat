@@ -99,7 +99,7 @@ public class MediaServerControllerTests
 
         var mediaServerServiceMock = new Mock<IMediaServerService>();
         mediaServerServiceMock.Setup(x => x.GetServerInfo(false)).ReturnsAsync(serverInfoObject);
-        mediaServerServiceMock.Setup(x => x.GetAllUsers()).ReturnsAsync(new []
+        mediaServerServiceMock.Setup(x => x.GetUserPage()).ReturnsAsync(new []
         {
             new MediaServerUserBuilder("1").Build(),
             new MediaServerUserBuilder("2").Build(),
@@ -126,7 +126,7 @@ public class MediaServerControllerTests
         serverInfo.IdleUserCount.Should().Be(1);
             
         mediaServerServiceMock.Verify(x => x.GetAllDevices(), Times.Once);
-        mediaServerServiceMock.Verify(x => x.GetAllUsers(), Times.Once);
+        mediaServerServiceMock.Verify(x => x.GetUserPage(), Times.Once);
         mediaServerServiceMock.Verify(x => x.GetServerInfo(false), Times.Once);
         mediaServerServiceMock.VerifyNoOtherCalls();
     }

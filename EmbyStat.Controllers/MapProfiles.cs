@@ -12,6 +12,7 @@ using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Entities.Streams;
 using EmbyStat.Common.Models.Entities.Users;
+using EmbyStat.Common.Models.MediaServer;
 using EmbyStat.Common.Models.Net;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Show;
@@ -142,10 +143,9 @@ public class MapProfiles : Profile
                 x => x.MapFrom(y => y.Configuration.SubtitleLanguagePreference))
             .ForMember(x => x.DisplayMissingEpisodes, x => x.MapFrom(y => y.Configuration.DisplayMissingEpisodes))
             .ForMember(x => x.SubtitleMode, x => x.MapFrom(y => y.Configuration.SubtitleMode));
-            
-        
-        CreateMap<MediaServerUser, UserOverviewViewModel>()
-            .ForMember(x => x.TotalPlayCount, x => x.MapFrom(y => y.Views.Count));
+
+        CreateMap<MediaServerUserRow, MediaServerUserRowViewModel>();
+        CreateMap<MediaServerUser, UserOverviewViewModel>();
 
         CreateMap<BaseItemDto, MediaServerUserView>()
             .ForMember(x => x.MediaId, x => x.MapFrom(y => y.Id))

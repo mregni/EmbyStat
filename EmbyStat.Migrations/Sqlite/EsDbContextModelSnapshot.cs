@@ -45,7 +45,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("Id");
 
-                    b.ToTable("Devices");
+                    b.ToTable("Devices", (string)null);
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.EmbyStatUser", b =>
@@ -101,7 +101,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.FilterValues", b =>
@@ -122,7 +122,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("Id");
 
-                    b.ToTable("Filters");
+                    b.ToTable("Filters", (string)null);
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Genre", b =>
@@ -137,7 +137,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasIndex("Name");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Helpers.MediaPerson", b =>
@@ -167,7 +167,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasIndex("ShowId");
 
-                    b.ToTable("MediaPerson");
+                    b.ToTable("MediaPerson", (string)null);
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Job", b =>
@@ -199,7 +199,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("Id");
 
-                    b.ToTable("Jobs");
+                    b.ToTable("Jobs", (string)null);
 
                     b.HasData(
                         new
@@ -271,7 +271,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("Id");
 
-                    b.ToTable("Languages");
+                    b.ToTable("Languages", (string)null);
 
                     b.HasData(
                         new
@@ -400,7 +400,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("Id");
 
-                    b.ToTable("Libraries");
+                    b.ToTable("Libraries", (string)null);
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.MediaServerInfo", b =>
@@ -485,7 +485,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("Id");
 
-                    b.ToTable("MediaServerInfo");
+                    b.ToTable("MediaServerInfo", (string)null);
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.MediaServerStatus", b =>
@@ -499,7 +499,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("Id");
 
-                    b.ToTable("MediaServerStatus");
+                    b.ToTable("MediaServerStatus", (string)null);
 
                     b.HasData(
                         new
@@ -538,7 +538,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("MediaServerUserView");
+                    b.ToTable("MediaServerUserView", (string)null);
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Movies.Movie", b =>
@@ -622,7 +622,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasIndex("SortName");
 
-                    b.ToTable("Movies");
+                    b.ToTable("Movies", (string)null);
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Person", b =>
@@ -638,7 +638,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("Id");
 
-                    b.ToTable("People");
+                    b.ToTable("People", (string)null);
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.PluginInfo", b =>
@@ -657,7 +657,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("Id");
 
-                    b.ToTable("Plugins");
+                    b.ToTable("Plugins", (string)null);
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Shows.Episode", b =>
@@ -742,7 +742,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasIndex("SeasonId");
 
-                    b.ToTable("Episodes");
+                    b.ToTable("Episodes", (string)null);
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Shows.Season", b =>
@@ -797,7 +797,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasIndex("ShowId");
 
-                    b.ToTable("Season");
+                    b.ToTable("Season", (string)null);
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Shows.Show", b =>
@@ -884,7 +884,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasIndex("SortName");
 
-                    b.ToTable("Shows");
+                    b.ToTable("Shows", (string)null);
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Statistic", b =>
@@ -907,7 +907,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("Id");
 
-                    b.ToTable("Statistics");
+                    b.ToTable("Statistics", (string)null);
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Streams.AudioStream", b =>
@@ -948,7 +948,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("AudioStream");
+                    b.ToTable("AudioStream", (string)null);
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Streams.MediaSource", b =>
@@ -988,7 +988,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasIndex("SizeInMb");
 
-                    b.ToTable("MediaSource");
+                    b.ToTable("MediaSource", (string)null);
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Streams.SubtitleStream", b =>
@@ -1022,7 +1022,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("SubtitleStream");
+                    b.ToTable("SubtitleStream", (string)null);
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Streams.VideoStream", b =>
@@ -1087,7 +1087,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasIndex("Width");
 
-                    b.ToTable("VideoStream");
+                    b.ToTable("VideoStream", (string)null);
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Users.MediaServerUser", b =>
@@ -1184,7 +1184,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("Id");
 
-                    b.ToTable("MediaServerUsers");
+                    b.ToTable("MediaServerUsers", (string)null);
                 });
 
             modelBuilder.Entity("GenreMovie", b =>
@@ -1199,7 +1199,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasIndex("MoviesId");
 
-                    b.ToTable("GenreMovie");
+                    b.ToTable("GenreMovie", (string)null);
                 });
 
             modelBuilder.Entity("GenreShow", b =>
@@ -1214,7 +1214,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasIndex("ShowsId");
 
-                    b.ToTable("GenreShow");
+                    b.ToTable("GenreShow", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -1233,7 +1233,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1253,7 +1253,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("Id");
 
-                    b.ToTable("RoleClaims");
+                    b.ToTable("RoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -1273,7 +1273,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserClaims");
+                    b.ToTable("UserClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -1292,7 +1292,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
-                    b.ToTable("UserLogins");
+                    b.ToTable("UserLogins", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
@@ -1305,7 +1305,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("UserId", "RoleId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("UserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -1324,7 +1324,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("UserTokens");
+                    b.ToTable("UserTokens", (string)null);
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Helpers.MediaPerson", b =>

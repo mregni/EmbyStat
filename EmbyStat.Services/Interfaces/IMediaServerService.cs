@@ -4,6 +4,8 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Users;
+using EmbyStat.Common.Models.MediaServer;
+using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.Stat;
 
@@ -33,6 +35,7 @@ public interface IMediaServerService
 
     #region Users
 
+    Task<Page<MediaServerUserRow>> GetUserPage(int skip, int take, string sortField, string sortOrder, bool requireTotalCount);
     Task<MediaServerUser[]> GetAllUsers();
     Task<MediaServerUser[]> GetAllAdministrators();
     Task<MediaServerUser> GetUserById(string id);
@@ -58,4 +61,5 @@ public interface IMediaServerService
     Task GetAndProcessLibraries();
 
     #endregion
+
 }

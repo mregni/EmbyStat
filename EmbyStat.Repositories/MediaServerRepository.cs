@@ -5,8 +5,11 @@ using System.Threading.Tasks;
 using Dapper;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Users;
+using EmbyStat.Common.Models.MediaServer;
+using EmbyStat.Common.Models.Query;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -111,10 +114,20 @@ public class MediaServerRepository : IMediaServerRepository
         await _context.SaveChangesAsync();
     }
 
+    public async Task<IEnumerable<MediaServerUserRow>> GetUserPage(int skip, int take, string sortField, string sortOrder)
+    {
+        var query = MediaServerExtensions.GenerateUserPageQuery(skip, take, sortField, sortOrder);
+        _logger.LogDebug(query);
+        
+        await using var connection = _sqliteBootstrap.CreateConnection();
+        await connection.OpenAsync();
+        return await connection.QueryAsync<MediaServerUserRow>(query);
+    }
+
     public Task<MediaServerUser[]> GetAllUsers()
     {
-        return _context.MediaServerUsers
-            .Include(x => x.Views)
+        return _context
+            .MediaServerUsers
             .AsNoTracking()
             .ToArrayAsync();
     }
@@ -155,6 +168,11 @@ UPDATE SET LastPlayedDate=excluded.LastPlayedDate, PlayCount=excluded.PlayCount;
         await using var transaction = connection.BeginTransaction();
         await connection.ExecuteAsync(query, views, transaction);
         await transaction.CommitAsync();
+    }
+
+    public Task<int> GetUserCount()
+    {
+        return _context.MediaServerUsers.CountAsync();
     }
 
     #endregion

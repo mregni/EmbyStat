@@ -19,6 +19,7 @@ public static class Constants
         public static string Seasons => "Season";
         public static string Episodes => "Episodes";
         public static string GenreShow => "GenreShow";
+        public static string MediaServerUsers => "MediaServerUsers";
         public static string MediaServerUserView => "MediaServerUserView";
     }
     public static class Movies

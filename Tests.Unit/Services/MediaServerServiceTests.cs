@@ -167,7 +167,7 @@ public class MediaServerServiceTests
             new() {Id = "1"}
         };
         _mediaServerRepositoryMock
-            .Setup(x => x.GetAllUsers())
+            .Setup(x => x.GetUserPage())
             .ReturnsAsync(users);
 
         var strategy = new Mock<IClientStrategy>();
@@ -175,13 +175,13 @@ public class MediaServerServiceTests
 
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
             _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object);
-        var result = await service.GetAllUsers();
+        var result = await service.GetUserPage();
 
         result.Should().NotBeNull();
         result.Length.Should().Be(1);
         result[0].Id.Should().Be(users[0].Id);
 
-        _mediaServerRepositoryMock.Verify(x => x.GetAllUsers());
+        _mediaServerRepositoryMock.Verify(x => x.GetUserPage());
         _mediaServerRepositoryMock.VerifyNoOtherCalls();
     }
         
@@ -252,7 +252,7 @@ public class MediaServerServiceTests
             .ReturnsAsync(newUsers);
 
         _mediaServerRepositoryMock
-            .Setup(x => x.GetAllUsers())
+            .Setup(x => x.GetUserPage())
             .ReturnsAsync(newUsers);
 
         _httpClientMock

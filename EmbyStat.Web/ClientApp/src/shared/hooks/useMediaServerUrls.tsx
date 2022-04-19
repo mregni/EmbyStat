@@ -24,6 +24,17 @@ export const useMediaServerUrls = () => {
     return '';
   };
 
+  const getPrimaryUserImageLink = (userId: string, fallbackUrl: string = ''): string => {
+    if (settings !== null) {
+      let url = getFullMediaServerUrl();
+      if (url === null || url === '') {
+        url = fallbackUrl;
+      }
+      return `${url}/Users/${userId}/Images/Primary/0?Width=50&EnableImageEnhancers=false`;
+    }
+    return '';
+  };
+
   const getItemDetailLink = (itemId: string): string => {
     if (settings !== null) {
       const url = getFullMediaServerUrl();
@@ -32,6 +43,19 @@ export const useMediaServerUrls = () => {
       }
 
       return `${url}/web/index.html#!/details?id=${itemId}&serverId=${settings.mediaServer.id}`;
+    }
+
+    return '';
+  };
+
+  const getUserDetailLink = (userId: string): string => {
+    if (settings !== null) {
+      const url = getFullMediaServerUrl();
+      if (settings.mediaServer.type === 0) {
+        return `${url}/web/index.html#!/users/user?userId=${userId}`;
+      }
+
+      return `${url}/web/index.html#!/useredit.html?userId=${userId}`;
     }
 
     return '';
@@ -50,5 +74,7 @@ export const useMediaServerUrls = () => {
     return '';
   };
 
-  return {getPrimaryImageLink, getItemDetailLink, getBackdropImageLink};
+  return {getPrimaryImageLink, getItemDetailLink,
+    getBackdropImageLink, getPrimaryUserImageLink,
+    getUserDetailLink};
 };

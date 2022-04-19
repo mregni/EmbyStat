@@ -1,39 +1,10 @@
 import React, {useContext} from 'react';
-import {useTranslation} from 'react-i18next';
 
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import {
-  Card, CardContent, Stack, Table, TableBody, TableCell, TableRow, Typography,
-} from '@mui/material';
+import {Card, CardContent, Stack, Table, TableBody} from '@mui/material';
 
 import {EsTitle} from '../../../shared/components/esTitle';
+import {EsBoolRow} from '../../../shared/components/table/EsBoolRow';
 import {ServerContext} from '../../../shared/context/server';
-
-type EsBoolListItemProps = {
-  label: string;
-  value: boolean;
-}
-
-const EsBoolRow = (props: EsBoolListItemProps) => {
-  const {label, value} = props;
-  const {t} = useTranslation();
-
-  return (
-    <TableRow>
-      <TableCell>
-        {value && (<CheckCircleOutlineIcon color="success" />)}
-        {!value && (<HighlightOffIcon color="error" />)}
-      </TableCell>
-      <TableCell>
-        <Typography>
-          {t(label)}
-        </Typography>
-      </TableCell>
-    </TableRow>
-  );
-};
-
 
 export const EsServerFeatures = () => {
   const {serverInfo} = useContext(ServerContext);

@@ -1,8 +1,10 @@
 import axios from 'axios';
 
+import {TablePage} from '../models/common';
 import {Library} from '../models/library';
 import {
   MediaServerInfo, MediaServerLogin, MediaServerPlugin, MediaServerUdpBroadcast, MediaServerUser,
+  MediaServerUserRow,
 } from '../models/mediaServer';
 import {axiosInstance} from './axiosInstance';
 
@@ -67,9 +69,13 @@ export const testApiKey = (login: MediaServerLogin): Promise<boolean | null> => 
     }); ;
 };
 
-export const getUsers = (): Promise<MediaServerUser[]> => {
+export const getUserPage = (skip: number, take: number, sortField: string,
+  sortOrder: string, requireTotalCount: boolean)
+: Promise<TablePage<MediaServerUserRow>> => {
   return axiosInstance
-    .get<MediaServerUser[]>(`${domain}users`)
-    .then((response) => response.data)
-    .catch(() => []);
+    .get<TablePage<MediaServerUserRow>>(`${domain}users/page
+?skip=${skip}&take=${take}
+&sortField=${sortField}&sortOrder=${sortOrder}
+&requireTotalCount=${requireTotalCount}`)
+    .then((response) => response.data);
 };

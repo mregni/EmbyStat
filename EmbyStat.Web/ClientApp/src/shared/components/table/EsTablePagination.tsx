@@ -9,17 +9,23 @@ type EsTablePaginationProps = {
   pageNumber: number;
   handleChangePage: (newPage: number) => void;
   handleChangeRowsPerPage: (countPerPage: number) => void;
+  pageSizeSteps?: number[];
 }
 
 export const EsTablePagination = (props: EsTablePaginationProps) => {
-  const {totalCount, rowsPerPage, pageNumber, handleChangePage, handleChangeRowsPerPage} = props;
+  const {totalCount,
+    rowsPerPage,
+    pageNumber,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    pageSizeSteps = [25, 50, 100, 200]} = props;
   const {t} = useTranslation();
 
   return (
     <TablePagination
       sx={{width: '100%'}}
       component="div"
-      rowsPerPageOptions={[25, 50, 100, 200]}
+      rowsPerPageOptions={pageSizeSteps}
       count={totalCount}
       rowsPerPage={rowsPerPage}
       page={pageNumber}

@@ -12,7 +12,6 @@ export const JobLogs = () => {
   const {logLines, jobs} = useContext(JobsContext);
   const {locale} = useLocale();
 
-  console.log(logLines);
   return (
     <Zoom in={true} style={{transitionDelay: `${25 * jobs.length + 100}ms`}}>
       <Paper sx={{p: 2, minHeight: 482}}>
