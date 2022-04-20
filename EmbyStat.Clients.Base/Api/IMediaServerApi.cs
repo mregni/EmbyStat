@@ -5,7 +5,6 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Net;
 using MediaBrowser.Model.Querying;
 using Refit;
-using MediaServerUser = EmbyStat.Common.Models.Entities.Users.MediaServerUser;
 
 namespace EmbyStat.Clients.Base.Api;
 

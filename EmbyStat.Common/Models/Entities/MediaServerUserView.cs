@@ -1,6 +1,4 @@
 ﻿using System;
-using EmbyStat.Common.Models.Entities.Movies;
-using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Entities.Users;
 
 namespace EmbyStat.Common.Models.Entities;

@@ -1,7 +1,6 @@
 ﻿using System;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Query;
-using EmbyStat.Repositories;
 using FluentAssertions;
 using Tests.Unit.Builders;
 using Xunit;

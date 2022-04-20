@@ -11,7 +11,6 @@ using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Entities.Users;
-using EmbyStat.Common.Models.Net;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Querying;
 using Microsoft.AspNetCore.Http;

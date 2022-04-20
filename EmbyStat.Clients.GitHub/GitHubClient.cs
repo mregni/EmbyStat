@@ -1,8 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Clients.GitHub.Models;
-using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Settings;
 using Microsoft.Extensions.Options;
 

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Rollbar;
-using Serilog;
 
 namespace EmbyStat.Common.Exceptions;
 

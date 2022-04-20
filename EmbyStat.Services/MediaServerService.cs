@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common;
@@ -204,7 +203,7 @@ public class MediaServerService : StatisticHelper, IMediaServerService
                     .Where(x => x.Title != Constants.Movies.TotalWatchedMovies)
                     .ToList();
                 movieStatistics?.Cards.AddIfNotNull(CalculateWatchedMovieCount());
-                
+
                 movieStatistics.TopCards = movieStatistics.TopCards
                     .Where(x => x.Title != Constants.Movies.MostWatchedMovies)
                     .ToList();
@@ -227,12 +226,12 @@ public class MediaServerService : StatisticHelper, IMediaServerService
                     .Where(x => x.Title != Constants.Shows.TotalWatchedEpisodes)
                     .ToList();
                 showStatistics?.Cards.AddIfNotNull(CalculateWatchedEpisodeCount());
-                
+
                 showStatistics.TopCards = showStatistics.TopCards
                     .Where(x => x.Title != Constants.Shows.MostWatchedShows)
                     .ToList();
                 showStatistics?.TopCards.AddIfNotNull(await CalculateMostWatchedShows());
-                
+
                 var showJson = JsonConvert.SerializeObject(showStatistics);
                 await _statisticsRepository.ReplaceStatistic(showJson, DateTime.UtcNow, StatisticType.Show);
             }
@@ -327,7 +326,7 @@ public class MediaServerService : StatisticHelper, IMediaServerService
                 : null;
         }, "Calculate most watched shows failed:");
     }
-    
+
     private Task<TopCard> CalculateMostWatchedMovies()
     {
         return CalculateStat(async () =>

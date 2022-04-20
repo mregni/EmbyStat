@@ -1,7 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using EmbyStat.Clients.GitHub.Models;
-using EmbyStat.Common.Enums;
 
 namespace EmbyStat.Clients.GitHub;
 

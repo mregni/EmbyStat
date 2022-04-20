@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using EmbyStat.Common;
 using EmbyStat.Common.Extensions;
-using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Models.Charts;
 using Microsoft.Extensions.Logging;

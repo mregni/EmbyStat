@@ -1,15 +1,12 @@
-﻿using System.Threading.Tasks;
-using EmbyStat.Common.Models.Entities;
+﻿using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Movies;
 using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Entities.Streams;
-using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Repositories.Seeds;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using MediaServerUser = EmbyStat.Common.Models.Entities.Users.MediaServerUser;
 
 namespace EmbyStat.Repositories;
