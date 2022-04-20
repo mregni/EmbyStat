@@ -19,7 +19,7 @@ SELECT u.Id, u.Name, u.LastActivityDate, u.IsAdministrator, u.IsHidden, u.IsDisa
 	, SUM(CASE WHEN uc.MediaType = 'Episode' THEN 1 ELSE 0 END) AS EpisodeViewCount
 	, SUM(CASE WHEN uc.MediaType = 'Episode' OR uc.MediaType = 'Movie' THEN 1 ELSE 0 END) AS TotalViewCount
 FROM MediaServerUsers AS u
-LEFT JOIN MediaServerUserView AS uc ON (u.Id = uc.UserId)
+LEFT JOIN MediaServerUserViews AS uc ON (u.Id = uc.UserId)
 GROUP BY u.Id
 ORDER BY {sortField.FirstCharToUpper()} {sortOrder.ToUpper()} LIMIT {take} OFFSET {skip}");
     }
@@ -36,7 +36,7 @@ SELECT u.Id, u.Name, u.LastActivityDate, u.IsAdministrator, u.IsHidden, u.IsDisa
 	, SUM(CASE WHEN uc.MediaType = 'Episode' THEN 1 ELSE 0 END) AS EpisodeViewCount
 	, SUM(CASE WHEN uc.MediaType = 'Episode' OR uc.MediaType = 'Movie' THEN 1 ELSE 0 END) AS TotalViewCount
 FROM MediaServerUsers AS u
-LEFT JOIN MediaServerUserView AS uc ON (u.Id = uc.UserId)
+LEFT JOIN MediaServerUserViews AS uc ON (u.Id = uc.UserId)
 GROUP BY u.Id
 LIMIT {take} OFFSET {skip}");
     }
