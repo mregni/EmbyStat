@@ -1,5 +1,4 @@
 import {format} from 'date-fns';
-import {t} from 'i18next';
 import React, {useEffect, useState} from 'react';
 
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -9,7 +8,6 @@ import {
 } from '@mui/material';
 
 import {EsHyperLinkButton} from '../../../shared/components/buttons';
-import {EsLoading} from '../../../shared/components/esLoading';
 import {EsTableHeader, EsTablePagination, Header} from '../../../shared/components/table';
 import {useLocale, useMediaServerUrls, useServerType} from '../../../shared/hooks';
 import {MediaServerUserRow} from '../../../shared/models/mediaServer';
@@ -107,36 +105,38 @@ export const EsUserTable = () => {
     {label: 'COMMON.LINKS', field: '', sortable: false, align: 'right'},
   ];
 
+  if (loading) {
+    return (<></>);
+  }
+
   return (
     <Box>
-      <EsLoading loading={loading} label={t('USERS.LOADINGLIST')}>
-        <Paper sx={{p: 1}}>
-          <EsTablePagination
-            totalCount={pageData.totalCount}
-            rowsPerPage={rowsPerPage}
-            pageNumber={pageNumber}
-            handleChangePage={handleChangePage}
-            handleChangeRowsPerPage={handleChangeRowsPerPage}
-            pageSizeSteps={[10, 20, 50, 100]}
-          />
-          <TableContainer>
-            <Table stickyHeader size="small">
-              <EsTableHeader orderedBy={orderedBy} order={order} sortHandler={sortHandler} headers={headers} />
-              <TableBody>
-                { pageData.data.map((user) => <EsUserRow key={user.id} user={user} /> )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <EsTablePagination
-            totalCount={pageData.totalCount}
-            rowsPerPage={rowsPerPage}
-            pageNumber={pageNumber}
-            handleChangePage={handleChangePage}
-            handleChangeRowsPerPage={handleChangeRowsPerPage}
-            pageSizeSteps={[10, 20, 50, 100]}
-          />
-        </Paper>
-      </EsLoading>
+      <Paper sx={{p: 1}}>
+        <EsTablePagination
+          totalCount={pageData.totalCount}
+          rowsPerPage={rowsPerPage}
+          pageNumber={pageNumber}
+          handleChangePage={handleChangePage}
+          handleChangeRowsPerPage={handleChangeRowsPerPage}
+          pageSizeSteps={[10, 20, 50, 100]}
+        />
+        <TableContainer>
+          <Table stickyHeader size="small">
+            <EsTableHeader orderedBy={orderedBy} order={order} sortHandler={sortHandler} headers={headers} />
+            <TableBody>
+              { pageData.data.map((user) => <EsUserRow key={user.id} user={user} /> )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <EsTablePagination
+          totalCount={pageData.totalCount}
+          rowsPerPage={rowsPerPage}
+          pageNumber={pageNumber}
+          handleChangePage={handleChangePage}
+          handleChangeRowsPerPage={handleChangeRowsPerPage}
+          pageSizeSteps={[10, 20, 50, 100]}
+        />
+      </Paper>
     </Box>
   );
 };

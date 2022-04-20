@@ -20,7 +20,7 @@ public static class Constants
         public static string Episodes => "Episodes";
         public static string GenreShow => "GenreShow";
         public static string MediaServerUsers => "MediaServerUsers";
-        public static string MediaServerUserView => "MediaServerUserView";
+        public static string MediaServerUserViews => "MediaServerUserViews";
     }
 
     public static class MediaServer
@@ -40,6 +40,8 @@ public static class Constants
         public static string Longest => "MOVIES.LONGEST";
         public static string LatestAdded => "MOVIES.LATESTADDED";
         public static string TotalPlayLength => "MOVIES.TOTALPLAYLENGTH";
+        public static string TotalWatchedMovies => "MOVIES.TOTALWATCHED";
+        public static string MostWatchedMovies => "MOVIES.MOSTWATCHED";
     }
 
     public static class Icons
@@ -71,10 +73,12 @@ public static class Constants
         public static string LowestRatedShow => "SHOWS.LOWESTRATED";
         public static string OldestPremiered => "SHOWS.OLDESTPREMIERED";
         public static string NewestPremiered => "SHOWS.NEWESTPREMIERED";
+        public static string MostWatchedShows => "SHOWS.MOSTWATCHED";
         public static string LatestAdded => "SHOWS.LATESTADDED";
         public static string MostEpisodes => "SHOWS.WITHMOESTEPISODES";
         public static string ShowStatusChart => "SHOWS.SHOWSTATUS";
         public static string MostDiskSpace => "SHOWS.MOSTDISKSPACE";
+        public static string TotalWatchedEpisodes => "SHOWS.TOTALEPISODESWATCHED";
     }
 
     public static class LogPrefix

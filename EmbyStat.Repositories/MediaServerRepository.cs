@@ -7,13 +7,16 @@ using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Movies;
+using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.MediaServer;
-using EmbyStat.Common.Models.Query;
 using EmbyStat.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using MoreLinq;
 using MoreLinq.Extensions;
+// ReSharper disable All
 
 namespace EmbyStat.Repositories;
 
@@ -109,8 +112,21 @@ public class MediaServerRepository : IMediaServerRepository
 
     public async Task DeleteAndInsertUsers(IEnumerable<MediaServerUser> users)
     {
-        _context.MediaServerUsers.RemoveRange(_context.MediaServerUsers);
-        await _context.MediaServerUsers.AddRangeAsync(users);
+        var query = MediaServerExtensions.UserInsertQuery;
+        _logger.LogDebug(query);
+        
+        await using var connection = _sqliteBootstrap.CreateConnection();
+        await connection.OpenAsync();
+        
+        await using var transaction = connection.BeginTransaction();
+        await connection.ExecuteAsync(query, users, transaction);
+        await transaction.CommitAsync();
+
+        var usersToDelete = await _context.MediaServerUsers
+            .Where(x => !users.Select(u => u.Id).Contains(x.Id))
+            .ToListAsync();
+        
+        _context.MediaServerUsers.RemoveRange(usersToDelete);
         await _context.SaveChangesAsync();
     }
 
@@ -156,7 +172,7 @@ public class MediaServerRepository : IMediaServerRepository
     public async Task InsertOrUpdateUserViews(List<MediaServerUserView> views)
     {
         var query = $@"
-INSERT INTO {Constants.Tables.MediaServerUserView} (UserId, MediaId, LastPlayedDate, MediaType, PlayCount)
+INSERT INTO {Constants.Tables.MediaServerUserViews} (UserId, MediaId, LastPlayedDate, MediaType, PlayCount)
 VALUES (@UserId, @MediaId, @LastPlayedDate, @MediaType, @PlayCount)
 ON CONFLICT (UserId, MediaId) DO
 UPDATE SET LastPlayedDate=excluded.LastPlayedDate, PlayCount=excluded.PlayCount;";
@@ -173,6 +189,62 @@ UPDATE SET LastPlayedDate=excluded.LastPlayedDate, PlayCount=excluded.PlayCount;
     public Task<int> GetUserCount()
     {
         return _context.MediaServerUsers.CountAsync();
+    }
+
+    public int GetUserViewsForType(string type)
+    {
+        var list = _context.MediaServerUserViews
+            .AsNoTracking()
+            .Where(x => x.MediaType == type)
+            .AsEnumerable();
+
+        return MoreEnumerable.DistinctBy(list, x => x.MediaId).Count();
+    }
+
+    public async Task<Dictionary<Show, int>> GetMostWatchedShows(int count)
+    {
+        var query = $@"
+SELECT s.*, COUNT(*) AS ViewCount
+FROM {Constants.Tables.MediaServerUserViews} AS vi
+INNER JOIN {Constants.Tables.Episodes} AS e ON (vi.MediaId = e.Id)
+INNER JOIN {Constants.Tables.Seasons} AS se ON (se.Id = e.SeasonId)
+INNER JOIN {Constants.Tables.Shows} AS s ON (s.Id = se.ShowId)
+WHERE vi.MediaType = 'Episode'
+GROUP BY s.Id
+ORDER BY ViewCount DESC
+LIMIT {count}";
+        
+        _logger.LogDebug(query);
+        await using var connection = _sqliteBootstrap.CreateConnection();
+        await connection.OpenAsync();
+        var result = await connection
+            .QueryAsync<Show, long, KeyValuePair<Show, int>>(query,
+            (s, c) => new KeyValuePair<Show, int>(s, Convert.ToInt32(c)),
+            splitOn: "ViewCount");
+
+        return result.ToDictionary(x => x.Key, x => x.Value);
+    }
+    
+    public async Task<Dictionary<Movie, int>> GetMostWatchedMovies(int count)
+    {
+        var query = $@"
+SELECT m.*, COUNT(*) AS ViewCount
+FROM {Constants.Tables.MediaServerUserViews} AS vi
+INNER JOIN {Constants.Tables.Movies} AS m ON (vi.MediaId = m.Id)
+WHERE vi.MediaType = 'Movie'
+GROUP BY m.Id
+ORDER BY ViewCount DESC
+LIMIT {count}";
+        
+        _logger.LogDebug(query);
+        await using var connection = _sqliteBootstrap.CreateConnection();
+        await connection.OpenAsync();
+        var result = await connection
+            .QueryAsync<Movie, long, KeyValuePair<Movie, int>>(query,
+                (m, c) => new KeyValuePair<Movie, int>(m, Convert.ToInt32(c)),
+                splitOn: "ViewCount");
+
+        return result.ToDictionary(x => x.Key, x => x.Value);
     }
 
     #endregion
@@ -223,13 +295,11 @@ UPDATE SET LastPlayedDate=excluded.LastPlayedDate, PlayCount=excluded.PlayCount;
     public async Task SetLibraryAsSynced(string[] libraryIds, LibraryType type)
     {
         var libraries = await _context.Libraries.Where(x => x.Type == type).ToListAsync();
-        libraries
-            .Where(x => libraryIds.Any(y => y == x.Id))
-            .ForEach(x => x.Sync = true);
+        ForEachExtension.ForEach(libraries
+                .Where(x => libraryIds.Any(y => y == x.Id)), x => x.Sync = true);
 
-        libraries
-            .Where(x => libraryIds.All(y => y != x.Id))
-            .ForEach(x => x.Sync = false);
+        ForEachExtension.ForEach(libraries
+                .Where(x => libraryIds.All(y => y != x.Id)), x => x.Sync = false);
 
         await _context.SaveChangesAsync();
     }

@@ -60,5 +60,8 @@ public class SmallSyncJob : BaseJob, ISmallSyncJob
             await LogInformation($"Processed {viewCount} views for {user.Name}");
             await LogProgressIncrement(stepPerUser);
         }
+
+        await LogInformation($"Calculating user statistics");
+        await _mediaServerService.CalculateMediaServerUserStatistics();
     }
 }

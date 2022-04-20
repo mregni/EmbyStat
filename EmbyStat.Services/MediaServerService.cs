@@ -19,10 +19,14 @@ using EmbyStat.Common.Models.MediaServer;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Abstract;
+using EmbyStat.Services.Converters;
 using EmbyStat.Services.Interfaces;
+using EmbyStat.Services.Models.Cards;
 using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Emby;
 using EmbyStat.Services.Models.MediaServerUser;
+using EmbyStat.Services.Models.Movie;
+using EmbyStat.Services.Models.Show;
 using EmbyStat.Services.Models.Stat;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -41,7 +45,7 @@ public class MediaServerService : StatisticHelper, IMediaServerService
 
     public MediaServerService(IClientStrategy clientStrategy, IMediaServerRepository mediaServerRepository,
         ISessionService sessionService, ISettingsService settingsService, ILogger<MediaServerService> logger,
-        IStatisticsRepository statisticsRepository, IJobRepository jobRepository): base(logger, jobRepository)
+        IStatisticsRepository statisticsRepository, IJobRepository jobRepository) : base(logger, jobRepository)
     {
         _mediaServerRepository = mediaServerRepository;
         _sessionService = sessionService;
@@ -153,6 +157,8 @@ public class MediaServerService : StatisticHelper, IMediaServerService
 
     #region Users
 
+    #region Statistics
+
     public async Task<MediaServerUserStatistics> GetMediaServerUserStatistics()
     {
         var statistic = await _statisticsRepository.GetLastResultByType(StatisticType.User);
@@ -169,7 +175,7 @@ public class MediaServerService : StatisticHelper, IMediaServerService
 
         return statistics;
     }
-    
+
     public async Task<MediaServerUserStatistics> CalculateMediaServerUserStatistics()
     {
         var statistics = new MediaServerUserStatistics
@@ -180,8 +186,60 @@ public class MediaServerService : StatisticHelper, IMediaServerService
         var json = JsonConvert.SerializeObject(statistics);
         await _statisticsRepository.ReplaceStatistic(json, DateTime.UtcNow, StatisticType.User);
 
+        await CalculateMovieStatistics();
+        await CalculateShowStatistics();
+
         return statistics;
     }
+
+    private async Task CalculateMovieStatistics()
+    {
+        var movieStatistic = await _statisticsRepository.GetLastResultByType(StatisticType.Movie);
+        if (StatisticsAreValid(movieStatistic, Constants.JobIds.MovieSyncId))
+        {
+            var movieStatistics = JsonConvert.DeserializeObject<MovieStatistics>(movieStatistic.JsonResult);
+            if (movieStatistics != null)
+            {
+                movieStatistics.Cards = movieStatistics.Cards
+                    .Where(x => x.Title != Constants.Movies.TotalWatchedMovies)
+                    .ToList();
+                movieStatistics?.Cards.AddIfNotNull(CalculateWatchedMovieCount());
+                
+                movieStatistics.TopCards = movieStatistics.TopCards
+                    .Where(x => x.Title != Constants.Movies.MostWatchedMovies)
+                    .ToList();
+                movieStatistics?.TopCards.AddIfNotNull(await CalculateMostWatchedMovies());
+                var movieJson = JsonConvert.SerializeObject(movieStatistics);
+                await _statisticsRepository.ReplaceStatistic(movieJson, DateTime.UtcNow, StatisticType.Movie);
+            }
+        }
+    }
+
+    private async Task CalculateShowStatistics()
+    {
+        var showStatistic = await _statisticsRepository.GetLastResultByType(StatisticType.Show);
+        if (StatisticsAreValid(showStatistic, Constants.JobIds.ShowSyncId))
+        {
+            var showStatistics = JsonConvert.DeserializeObject<ShowStatistics>(showStatistic.JsonResult);
+            if (showStatistics != null)
+            {
+                showStatistics.Cards = showStatistics.Cards
+                    .Where(x => x.Title != Constants.Shows.TotalWatchedEpisodes)
+                    .ToList();
+                showStatistics?.Cards.AddIfNotNull(CalculateWatchedEpisodeCount());
+                
+                showStatistics.TopCards = showStatistics.TopCards
+                    .Where(x => x.Title != Constants.Shows.MostWatchedShows)
+                    .ToList();
+                showStatistics?.TopCards.AddIfNotNull(await CalculateMostWatchedShows());
+                
+                var showJson = JsonConvert.SerializeObject(showStatistics);
+                await _statisticsRepository.ReplaceStatistic(showJson, DateTime.UtcNow, StatisticType.Show);
+            }
+        }
+    }
+
+    #region Cards
 
     private async Task<List<Card<string>>> CalculateCards()
     {
@@ -190,7 +248,8 @@ public class MediaServerService : StatisticHelper, IMediaServerService
         list.AddIfNotNull(await CalculateIdleUsers());
         return list;
     }
-    
+
+
     private Task<Card<string>> CalculateActiveUsers()
     {
         return CalculateStat(async () =>
@@ -202,11 +261,11 @@ public class MediaServerService : StatisticHelper, IMediaServerService
                 Title = Constants.MediaServer.TotalActiveUsers,
                 Value = count.ToString(),
                 Type = CardType.Text,
-                Icon = Constants.Icons.TheatersRoundedIcon
+                Icon = Constants.Icons.PoundRoundedIcon
             };
         }, "Calculate total active user count failed:");
-    } 
-    
+    }
+
     private Task<Card<string>> CalculateIdleUsers()
     {
         return CalculateStat(async () =>
@@ -218,10 +277,72 @@ public class MediaServerService : StatisticHelper, IMediaServerService
                 Title = Constants.MediaServer.TotalIdleUsers,
                 Value = count.ToString(),
                 Type = CardType.Text,
-                Icon = Constants.Icons.TheatersRoundedIcon
+                Icon = Constants.Icons.PoundRoundedIcon
             };
         }, "Calculate total idle user count failed:");
-    } 
+    }
+
+    private Card<string> CalculateWatchedMovieCount()
+    {
+        return CalculateStat(() =>
+        {
+            var viewCount = _mediaServerRepository.GetUserViewsForType("Movie");
+            return new Card<string>
+            {
+                Title = Constants.Movies.TotalWatchedMovies,
+                Value = viewCount.ToString(),
+                Type = CardType.Text,
+                Icon = Constants.Icons.PoundRoundedIcon
+            };
+        }, "Calculate total idle user count failed:");
+    }
+
+    private Card<string> CalculateWatchedEpisodeCount()
+    {
+        return CalculateStat(() =>
+        {
+            var viewCount = _mediaServerRepository.GetUserViewsForType("Episode");
+            return new Card<string>
+            {
+                Title = Constants.Shows.TotalWatchedEpisodes,
+                Value = viewCount.ToString(),
+                Type = CardType.Text,
+                Icon = Constants.Icons.PoundRoundedIcon
+            };
+        }, "Calculate total idle user count failed:");
+    }
+
+    #endregion
+
+    #region TopCards
+
+    private Task<TopCard> CalculateMostWatchedShows()
+    {
+        return CalculateStat(async () =>
+        {
+            var data = await _mediaServerRepository.GetMostWatchedShows(5);
+
+            return data.Count > 0
+                ? data.ConvertToTopCard(Constants.Shows.MostWatchedShows, "#", false)
+                : null;
+        }, "Calculate most watched shows failed:");
+    }
+    
+    private Task<TopCard> CalculateMostWatchedMovies()
+    {
+        return CalculateStat(async () =>
+        {
+            var data = await _mediaServerRepository.GetMostWatchedMovies(5);
+
+            return data.Count > 0
+                ? data.ConvertToTopCard(Constants.Movies.MostWatchedMovies, "#", false)
+                : null;
+        }, "Calculate most watched shows failed:");
+    }
+
+    #endregion
+
+    #endregion
 
     public async Task<Page<MediaServerUserRow>> GetUserPage(int skip, int take, string sortField, string sortOrder,
         bool requireTotalCount)

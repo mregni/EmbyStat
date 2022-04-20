@@ -3,6 +3,7 @@ using System;
 using EmbyStat.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmbyStat.Migrations.Sqlite
 {
     [DbContext(typeof(EsDbContext))]
-    partial class EsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220420072350_RenaingTable")]
+    partial class RenaingTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.3");
@@ -538,7 +540,7 @@ namespace EmbyStat.Migrations.Sqlite
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("MediaServerUserViews");
+                    b.ToTable("MediaServerUsersViews");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Movies.Movie", b =>

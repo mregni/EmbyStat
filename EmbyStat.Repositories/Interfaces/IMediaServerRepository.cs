@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Movies;
+using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.MediaServer;
 
@@ -37,6 +39,9 @@ public interface IMediaServerRepository
     Task DeleteAllUsers();
     Task InsertOrUpdateUserViews(List<MediaServerUserView> views);
     Task<int> GetUserCount();
+    int GetUserViewsForType(string type);
+    Task<Dictionary<Show, int>> GetMostWatchedShows(int count);
+    Task<Dictionary<Movie, int>> GetMostWatchedMovies(int count);
     #endregion
 
     #region Devices

@@ -45,7 +45,8 @@ public interface IMediaServerService
     Card<int> GetViewedMovieCountByUserId(string id);
     IEnumerable<UserMediaView> GetUserViewPageByUserId(string id, int page, int size);
     Task<int> ProcessViewsForUser(string id);
-
+    Task<MediaServerUserStatistics> CalculateMediaServerUserStatistics();
+    
     #endregion
 
     #region Devices

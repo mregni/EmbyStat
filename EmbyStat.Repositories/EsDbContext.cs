@@ -1,4 +1,5 @@
-﻿using EmbyStat.Common.Models.Entities;
+﻿using System.Threading.Tasks;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Movies;
 using EmbyStat.Common.Models.Entities.Shows;
@@ -32,6 +33,7 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
     public DbSet<Language> Languages { get; set; }
     public DbSet<MediaServerStatus> MediaServerStatus { get; set; }
     public DbSet<Statistic> Statistics { get; set; }
+    public DbSet<MediaServerUserView> MediaServerUserViews { get; set; }
 
     public EsDbContext()
     {

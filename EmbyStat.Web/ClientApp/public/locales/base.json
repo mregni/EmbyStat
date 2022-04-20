@@ -188,11 +188,13 @@
     "LOADINGLIST": "Loading movie list",
     "LONGEST": "Longest",
     "LOWESTRATED": "Lowest Rated",
+    "MOSTWATCHED": "Most watched",
     "NEWESTPREMIERED": "Latest Premiered",
     "OLDESTPREMIERED": "Earliest Premiered",
     "SHORTEST": "Shortest",
     "TOTALMOVIES": "Total Movies",
-    "TOTALPLAYLENGTH": "Total Watchable Time"
+    "TOTALPLAYLENGTH": "Total Watchable Time",
+    "TOTALWATCHED": "Total watched"
   },
   "PAGINATION": {
     "NEXTPAGE": "Next page",
@@ -301,31 +303,33 @@
     "LOWESTRATED": "Lowest Rated",
     "MISSINGEPISODES": "Missing episodes",
     "MOSTDISKSPACE": "Most used disk space",
+    "MOSTWATCHED": "Most watched",
     "NEWESTPREMIERED": "Latest Premiered",
     "NOMISSINGEPS": "No missing episodes",
     "OLDESTPREMIERED": "Earliest Premiered",
     "SHOWSTATUS": "Show status",
     "TOTALEPISODES": "Total episodes",
+    "TOTALEPISODESWATCHED": "Total watched episodes",
     "TOTALMISSINGEPISODES": "Total missing episodes",
     "TOTALPLAYLENGTH": "Total play length",
     "TOTALSHOWS": "Total shows",
     "WITHMOESTEPISODES": "With most episodes"
   },
-  "USERS":{
+  "USERS": {
+    "ACTIVEUSERS": "Active users",
+    "ADMIN": "Admin",
+    "DISABLED": "Disabled",
+    "HIDDEN": "Hidden",
+    "IDLEUSERS": "Idle users",
+    "LASTACTIVE": "Last active",
     "LOADER": "Loading user info",
     "NUMBERS": "Numbers",
     "USERS": "Users",
-    "LASTACTIVE": "Last active",
-    "ADMIN": "Admin",
-    "HIDDEN": "Hidden",
-    "DISABLED": "Disabled",
-    "WATCHED":{
-      "MOVIES": "Movies watched",
+    "WATCHED": {
       "EPISODES": "Episodes watched",
+      "MOVIES": "Movies watched",
       "TOTAL": "Total watched"
-    },
-    "ACTIVEUSERS": "Active users",
-    "IDLEUSERS": "Idle users"
+    }
   },
   "WIZARD": {
     "ACCOUNT": "User details",
