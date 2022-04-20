@@ -245,6 +245,8 @@ public class MediaServerService : StatisticHelper, IMediaServerService
         var list = new List<Card<string>>();
         list.AddIfNotNull(await CalculateActiveUsers());
         list.AddIfNotNull(await CalculateIdleUsers());
+        list.AddIfNotNull(CalculateWatchedEpisodeCount());
+        list.AddIfNotNull(CalculateWatchedMovieCount());
         return list;
     }
 
