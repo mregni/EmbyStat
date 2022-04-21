@@ -15,11 +15,11 @@ import {JobSettingsDialog} from './';
 type Props = {
   job: Job;
   i: number;
-}
+};
 
 type JobMenuProps = {
   job: Job;
-}
+};
 
 const JobMenu = (props: JobMenuProps) => {
   const {job} = props;

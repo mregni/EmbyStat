@@ -8,7 +8,7 @@ import {Row} from './';
 
 type BodyProps = {
   page: TablePage<ShowRow>;
-}
+};
 
 export const Body = (props: BodyProps) => {
   const {page} = props;

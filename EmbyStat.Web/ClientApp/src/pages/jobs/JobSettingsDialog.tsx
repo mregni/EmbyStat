@@ -17,11 +17,11 @@ type Props = {
   openSettingsDialog: boolean;
   job: Job;
   onClose: () => void;
-}
+};
 
 type Cron = {
   cron: string;
-}
+};
 
 export const JobSettingsDialog = (props: Props) => {
   const {openSettingsDialog, job, onClose} = props;

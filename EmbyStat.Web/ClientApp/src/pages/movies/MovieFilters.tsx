@@ -1,6 +1,8 @@
 import {v4 as uuid} from 'uuid';
 
-import {FilterDefinition} from '../../shared/models/filter';
+import {
+  between, bit, FilterDefinition, fps, has, hasNo, is, isNull, isZero, larger, min, pixels, smaller,
+} from '../../shared/models/filter';
 
 export const movieFilters: FilterDefinition[] = [
   {
@@ -54,14 +56,14 @@ export const movieFilters: FilterDefinition[] = [
     operations: [
       {
         operation: '==',
-        label: 'FILTERS.OPERATIONS.IS',
+        label: is,
         type: 'text',
         open: false,
         id: uuid(),
       },
       {
         operation: 'null',
-        label: 'FILTERS.OPERATIONS.ISNULL',
+        label: isNull,
         type: 'none',
         open: false,
         id: uuid(),
@@ -77,14 +79,14 @@ export const movieFilters: FilterDefinition[] = [
     operations: [
       {
         operation: '==',
-        label: 'FILTERS.OPERATIONS.IS',
+        label: is,
         type: 'text',
         open: false,
         id: uuid(),
       },
       {
         operation: 'null',
-        label: 'FILTERS.OPERATIONS.ISNULL',
+        label: isNull,
         type: 'none',
         open: false,
         id: uuid(),
@@ -100,7 +102,7 @@ export const movieFilters: FilterDefinition[] = [
     operations: [
       {
         operation: '!null',
-        label: 'FILTERS.OPERATIONS.HAS',
+        label: has,
         type: 'dropdown',
         itemType: 'static',
         items: [
@@ -112,7 +114,7 @@ export const movieFilters: FilterDefinition[] = [
       },
       {
         operation: 'null',
-        label: 'FILTERS.OPERATIONS.HASNO',
+        label: hasNo,
         type: 'dropdown',
         itemType: 'static',
         items: [
@@ -133,7 +135,7 @@ export const movieFilters: FilterDefinition[] = [
     operations: [
       {
         operation: 'any',
-        label: 'FILTERS.OPERATIONS.HAS',
+        label: has,
         type: 'dropdown',
         itemType: 'url',
         itemUrl: '1/genre',
@@ -142,7 +144,7 @@ export const movieFilters: FilterDefinition[] = [
       },
       {
         operation: '!any',
-        label: 'FILTERS.OPERATIONS.HASNO',
+        label: hasNo,
         type: 'dropdown',
         itemType: 'url',
         itemUrl: '1/genre',
@@ -167,7 +169,7 @@ export const movieFilters: FilterDefinition[] = [
       },
       {
         operation: 'any',
-        label: 'FILTERS.OPERATIONS.HAS',
+        label: has,
         type: 'dropdown',
         itemType: 'url',
         itemUrl: '1/subtitle',
@@ -176,7 +178,7 @@ export const movieFilters: FilterDefinition[] = [
       },
       {
         operation: '!any',
-        label: 'FILTERS.OPERATIONS.HASNO',
+        label: hasNo,
         type: 'dropdown',
         itemType: 'url',
         itemUrl: '1/subtitle',
@@ -194,7 +196,7 @@ export const movieFilters: FilterDefinition[] = [
     operations: [
       {
         operation: '==',
-        label: 'FILTERS.OPERATIONS.IS',
+        label: is,
         type: 'number',
         unit: '',
         open: false,
@@ -202,7 +204,7 @@ export const movieFilters: FilterDefinition[] = [
       },
       {
         operation: 'between',
-        label: 'FILTERS.OPERATIONS.BETWEEN',
+        label: between,
         type: 'range',
         unit: '',
         open: false,
@@ -221,7 +223,7 @@ export const movieFilters: FilterDefinition[] = [
         operation: '<',
         label: 'FILTERS.OPERATIONS.SHORTER',
         type: 'number',
-        unit: 'COMMON.MIN',
+        unit: min,
         open: false,
         id: uuid(),
       },
@@ -229,21 +231,21 @@ export const movieFilters: FilterDefinition[] = [
         operation: '>',
         label: 'FILTERS.OPERATIONS.LONGER',
         type: 'number',
-        unit: 'COMMON.MIN',
+        unit: min,
         open: false,
         id: uuid(),
       },
       {
         operation: 'between',
-        label: 'FILTERS.OPERATIONS.BETWEEN',
+        label: between,
         type: 'range',
-        unit: 'COMMON.MIN',
+        unit: min,
         open: false,
         id: uuid(),
       },
       {
         operation: 'null',
-        label: 'FILTERS.OPERATIONS.ISZERO',
+        label: isZero,
         type: 'none',
         open: false,
         id: uuid(),
@@ -259,7 +261,7 @@ export const movieFilters: FilterDefinition[] = [
     operations: [
       {
         operation: '>',
-        label: 'FILTERS.OPERATIONS.LARGER',
+        label: larger,
         type: 'number',
         unit: 'COMMON.GB',
         open: false,
@@ -267,7 +269,7 @@ export const movieFilters: FilterDefinition[] = [
       },
       {
         operation: '<',
-        label: 'FILTERS.OPERATIONS.SMALLER',
+        label: smaller,
         type: 'number',
         unit: 'COMMON.GB',
         open: false,
@@ -275,7 +277,7 @@ export const movieFilters: FilterDefinition[] = [
       },
       {
         operation: 'between',
-        label: 'FILTERS.OPERATIONS.BETWEEN',
+        label: between,
         type: 'range',
         unit: 'COMMON.GB',
         open: false,
@@ -283,7 +285,7 @@ export const movieFilters: FilterDefinition[] = [
       },
       {
         operation: 'null',
-        label: 'FILTERS.OPERATIONS.ISZERO',
+        label: isZero,
         type: 'none',
         open: false,
         id: uuid(),
@@ -299,7 +301,7 @@ export const movieFilters: FilterDefinition[] = [
     operations: [
       {
         operation: 'any',
-        label: 'FILTERS.OPERATIONS.HAS',
+        label: has,
         type: 'dropdown',
         itemType: 'url',
         itemUrl: '1/codec',
@@ -308,7 +310,7 @@ export const movieFilters: FilterDefinition[] = [
       },
       {
         operation: '!any',
-        label: 'FILTERS.OPERATIONS.HASNO',
+        label: hasNo,
         type: 'dropdown',
         itemType: 'url',
         itemUrl: '1/codec',
@@ -326,7 +328,7 @@ export const movieFilters: FilterDefinition[] = [
     operations: [
       {
         operation: 'any',
-        label: 'FILTERS.OPERATIONS.HAS',
+        label: has,
         type: 'dropdown',
         itemType: 'url',
         itemUrl: '1/videorange',
@@ -335,7 +337,7 @@ export const movieFilters: FilterDefinition[] = [
       },
       {
         operation: '!any',
-        label: 'FILTERS.OPERATIONS.HASNO',
+        label: hasNo,
         type: 'dropdown',
         itemType: 'url',
         itemUrl: '1/videorange',
@@ -353,31 +355,31 @@ export const movieFilters: FilterDefinition[] = [
     operations: [
       {
         operation: '>',
-        label: 'FILTERS.OPERATIONS.LARGER',
+        label: larger,
         type: 'number',
-        unit: 'COMMON.BIT',
+        unit: bit,
         open: false,
         id: uuid(),
       },
       {
         operation: '<',
-        label: 'FILTERS.OPERATIONS.SMALLER',
+        label: smaller,
         type: 'number',
-        unit: 'COMMON.BIT',
+        unit: bit,
         open: false,
         id: uuid(),
       },
       {
         operation: 'between',
-        label: 'FILTERS.OPERATIONS.BETWEEN',
+        label: between,
         type: 'range',
-        unit: 'COMMON.BIT',
+        unit: bit,
         open: false,
         id: uuid(),
       },
       {
         operation: 'null',
-        label: 'FILTERS.OPERATIONS.ISZERO',
+        label: isZero,
         type: 'none',
         open: false,
         id: uuid(),
@@ -393,39 +395,39 @@ export const movieFilters: FilterDefinition[] = [
     operations: [
       {
         operation: '==',
-        label: 'FILTERS.OPERATIONS.IS',
+        label: is,
         type: 'number',
-        unit: 'COMMON.PIXELS',
+        unit: pixels,
         open: false,
         id: uuid(),
       },
       {
         operation: '>',
-        label: 'FILTERS.OPERATIONS.LARGER',
+        label: larger,
         type: 'number',
-        unit: 'COMMON.PIXELS',
+        unit: pixels,
         open: false,
         id: uuid(),
       },
       {
         operation: '<',
-        label: 'FILTERS.OPERATIONS.SMALLER',
+        label: smaller,
         type: 'number',
-        unit: 'COMMON.PIXELS',
+        unit: pixels,
         open: false,
         id: uuid(),
       },
       {
         operation: 'between',
-        label: 'FILTERS.OPERATIONS.BETWEEN',
+        label: between,
         type: 'range',
-        unit: 'COMMON.PIXELS',
+        unit: pixels,
         open: false,
         id: uuid(),
       },
       {
         operation: 'null',
-        label: 'FILTERS.OPERATIONS.ISZERO',
+        label: isZero,
         type: 'none',
         open: false,
         id: uuid(),
@@ -441,39 +443,39 @@ export const movieFilters: FilterDefinition[] = [
     operations: [
       {
         operation: '==',
-        label: 'FILTERS.OPERATIONS.IS',
+        label: is,
         type: 'number',
-        unit: 'COMMON.PIXELS',
+        unit: pixels,
         open: false,
         id: uuid(),
       },
       {
         operation: '<',
-        label: 'FILTERS.OPERATIONS.LARGER',
+        label: larger,
         type: 'number',
-        unit: 'COMMON.PIXELS',
+        unit: pixels,
         open: false,
         id: uuid(),
       },
       {
         operation: '>',
-        label: 'FILTERS.OPERATIONS.SMALLER',
+        label: smaller,
         type: 'number',
-        unit: 'COMMON.PIXELS',
+        unit: pixels,
         open: false,
         id: uuid(),
       },
       {
         operation: 'between',
-        label: 'FILTERS.OPERATIONS.BETWEEN',
+        label: between,
         type: 'range',
-        unit: 'COMMON.PIXELS',
+        unit: pixels,
         open: false,
         id: uuid(),
       },
       {
         operation: 'null',
-        label: 'FILTERS.OPERATIONS.ISZERO',
+        label: isZero,
         type: 'none',
         open: false,
         id: uuid(),
@@ -489,39 +491,39 @@ export const movieFilters: FilterDefinition[] = [
     operations: [
       {
         operation: '==',
-        label: 'FILTERS.OPERATIONS.IS',
+        label: is,
         type: 'number',
-        unit: 'COMMON.FPS',
+        unit: fps,
         open: false,
         id: uuid(),
       },
       {
         operation: '>',
-        label: 'FILTERS.OPERATIONS.LARGER',
+        label: larger,
         type: 'number',
-        unit: 'COMMON.FPS',
+        unit: fps,
         open: false,
         id: uuid(),
       },
       {
         operation: '<',
-        label: 'FILTERS.OPERATIONS.SMALLER',
+        label: smaller,
         type: 'number',
-        unit: 'COMMON.FPS',
+        unit: fps,
         open: false,
         id: uuid(),
       },
       {
         operation: 'between',
-        label: 'FILTERS.OPERATIONS.BETWEEN',
+        label: between,
         type: 'range',
-        unit: 'COMMON.FPS',
+        unit: fps,
         open: false,
         id: uuid(),
       },
       {
         operation: 'null',
-        label: 'FILTERS.OPERATIONS.ISZERO',
+        label: isZero,
         type: 'none',
         open: false,
         id: uuid(),
@@ -537,7 +539,7 @@ export const movieFilters: FilterDefinition[] = [
     operations: [
       {
         operation: '==',
-        label: 'FILTERS.OPERATIONS.IS',
+        label: is,
         type: 'dropdown',
         itemType: 'url',
         itemUrl: '1/container',
@@ -555,7 +557,7 @@ export const movieFilters: FilterDefinition[] = [
       },
       {
         operation: 'null',
-        label: 'FILTERS.OPERATIONS.ISNULL',
+        label: isNull,
         type: 'none',
         open: false,
         id: uuid(),

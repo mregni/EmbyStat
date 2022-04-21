@@ -9,9 +9,7 @@ import {
 import {LogFile} from '../../shared/models/logs';
 import {downloadLogFile, getLogList} from '../../shared/services/logService';
 
-type Props = {}
-
-export const Logs = (props: Props) => {
+export const Logs = () => {
   const [logs, setLogs] = useState<LogFile[]>([]);
   const {t} = useTranslation();
 

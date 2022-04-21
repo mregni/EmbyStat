@@ -1,6 +1,8 @@
 import {v4 as uuid} from 'uuid';
 
-import {FilterDefinition} from '../../shared/models/filter';
+import {
+  between, FilterDefinition, has, hasNo, is, isNull, isZero, min,
+} from '../../shared/models/filter';
 
 export const showFilters: FilterDefinition[] = [
   {
@@ -54,14 +56,14 @@ export const showFilters: FilterDefinition[] = [
     operations: [
       {
         operation: '==',
-        label: 'FILTERS.OPERATIONS.IS',
+        label: is,
         type: 'text',
         open: false,
         id: uuid(),
       },
       {
         operation: 'null',
-        label: 'FILTERS.OPERATIONS.ISNULL',
+        label: isNull,
         type: 'none',
         open: false,
         id: uuid(),
@@ -77,14 +79,14 @@ export const showFilters: FilterDefinition[] = [
     operations: [
       {
         operation: '==',
-        label: 'FILTERS.OPERATIONS.IS',
+        label: is,
         type: 'text',
         open: false,
         id: uuid(),
       },
       {
         operation: 'null',
-        label: 'FILTERS.OPERATIONS.ISNULL',
+        label: isNull,
         type: 'none',
         open: false,
         id: uuid(),
@@ -100,7 +102,7 @@ export const showFilters: FilterDefinition[] = [
     operations: [
       {
         operation: '!null',
-        label: 'FILTERS.OPERATIONS.HAS',
+        label: has,
         type: 'dropdown',
         itemType: 'static',
         items: [
@@ -112,7 +114,7 @@ export const showFilters: FilterDefinition[] = [
       },
       {
         operation: 'null',
-        label: 'FILTERS.OPERATIONS.HASNO',
+        label: hasNo,
         type: 'dropdown',
         itemType: 'static',
         items: [
@@ -133,7 +135,7 @@ export const showFilters: FilterDefinition[] = [
     operations: [
       {
         operation: 'any',
-        label: 'FILTERS.OPERATIONS.HAS',
+        label: has,
         type: 'dropdown',
         itemType: 'url',
         itemUrl: '2/genre',
@@ -142,7 +144,7 @@ export const showFilters: FilterDefinition[] = [
       },
       {
         operation: '!any',
-        label: 'FILTERS.OPERATIONS.HASNO',
+        label: hasNo,
         type: 'dropdown',
         itemType: 'url',
         itemUrl: '2/genre',
@@ -160,7 +162,7 @@ export const showFilters: FilterDefinition[] = [
     operations: [
       {
         operation: '==',
-        label: 'FILTERS.OPERATIONS.IS',
+        label: is,
         type: 'number',
         unit: '',
         open: false,
@@ -168,7 +170,7 @@ export const showFilters: FilterDefinition[] = [
       },
       {
         operation: 'between',
-        label: 'FILTERS.OPERATIONS.BETWEEN',
+        label: between,
         type: 'range',
         unit: '',
         open: false,
@@ -187,7 +189,7 @@ export const showFilters: FilterDefinition[] = [
         operation: '<',
         label: 'FILTERS.OPERATIONS.SHORTER',
         type: 'number',
-        unit: 'COMMON.MIN',
+        unit: min,
         open: false,
         id: uuid(),
       },
@@ -195,21 +197,21 @@ export const showFilters: FilterDefinition[] = [
         operation: '>',
         label: 'FILTERS.OPERATIONS.LONGER',
         type: 'number',
-        unit: 'COMMON.MIN',
+        unit: min,
         open: false,
         id: uuid(),
       },
       {
         operation: 'between',
-        label: 'FILTERS.OPERATIONS.BETWEEN',
+        label: between,
         type: 'range',
-        unit: 'COMMON.MIN',
+        unit: min,
         open: false,
         id: uuid(),
       },
       {
         operation: 'null',
-        label: 'FILTERS.OPERATIONS.ISZERO',
+        label: isZero,
         type: 'none',
         open: false,
         id: uuid(),

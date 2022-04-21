@@ -1,10 +1,11 @@
-import {Grid, Card, CardContent} from '@mui/material';
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Navigate} from 'react-router';
 
-import {LoginForm, RecoverPasswordForm} from '.';
+import {Card, CardContent, Grid} from '@mui/material';
+
 import SmallLogo from '../../shared/assets/images/logo-small.png';
 import {UserContext} from '../../shared/context/user';
+import {LoginForm, RecoverPasswordForm} from './';
 
 export const Login = () => {
   const [inRecoveryMode, setInRecoveryMode] = useState(false);
@@ -20,7 +21,7 @@ export const Login = () => {
 
   if (isLoggedIn) {
     return <Navigate to="/" replace />;
-  };
+  }
 
   return (
     <Grid
