@@ -144,7 +144,7 @@ public class MovieControllerTests
         _movieServiceMock.VerifyNoOtherCalls();
     }
 
-    private Mapper CreateMapper()
+    private static Mapper CreateMapper()
     {
         var profiles = new MapProfiles();
         var configuration = new MapperConfiguration(cfg => cfg.AddProfile(profiles));

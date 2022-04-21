@@ -5,7 +5,7 @@ namespace Tests.Unit.Builders;
 
 public class DeviceBuilder
 {
-    private static Device _device;
+    private readonly Device _device;
 
     public DeviceBuilder(string id)
     {

@@ -40,7 +40,7 @@ public class CheckUpdateJob : BaseJob, ICheckUpdateJob
                 await LogInformation("Auto update is enabled so going to update the server now!");
                 await _settingsService.SetUpdateInProgressSettingAsync(true);
                 await HubHelper.BroadcastUpdateState(true);
-                Task.WaitAll(_updateService.DownloadZipAsync(update));
+                _updateService.DownloadZipAsync(update).Wait();
                 await LogProgress(50);
                 await _updateService.UpdateServerAsync();
                 await _settingsService.SetUpdateInProgressSettingAsync(false);

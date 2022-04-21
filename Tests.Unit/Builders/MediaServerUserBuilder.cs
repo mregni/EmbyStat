@@ -5,7 +5,7 @@ namespace Tests.Unit.Builders;
 
 public class MediaServerUserBuilder
 {
-    private static MediaServerUser _user;
+    private readonly MediaServerUser _user;
 
     public MediaServerUserBuilder(string id)
     {

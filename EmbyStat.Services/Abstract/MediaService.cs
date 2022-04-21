@@ -33,7 +33,7 @@ public abstract class MediaService : StatisticHelper
         };
     }
 
-    internal Chart CreateRatingChart(IEnumerable<decimal?> items)
+    internal static Chart CreateRatingChart(IEnumerable<decimal?> items)
     {
         var ratingDataList = items.GroupBy(x => x.RoundToHalf())
             .OrderBy(x => x.Key)
@@ -60,7 +60,7 @@ public abstract class MediaService : StatisticHelper
         };
     }
 
-    internal Chart CalculatePremiereYearChart(IEnumerable<DateTime?> items)
+    internal static Chart CalculatePremiereYearChart(IEnumerable<DateTime?> items)
     {
         var yearDataList = items.GroupBy(x => x.RoundToFiveYear())
             .Where(x => x.Key != null)

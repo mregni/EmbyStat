@@ -560,7 +560,7 @@ public class ShowServiceTests
         TestDataSets(graph.DataSets[19], "95% - 99%", 0);
     }
 
-    private void TestDataSets(SimpleChartData set, string label, int value)
+    private static void TestDataSets(SimpleChartData set, string label, int value)
     {
         set.Label.Should().Be(label);
         set.Value.Should().Be(value);

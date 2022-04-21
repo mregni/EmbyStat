@@ -234,7 +234,7 @@ public class MediaServerControllerTests
         var resultList = resultObject.Should().BeOfType<List<UserOverviewViewModel>>().Subject;
 
         resultList.Should().NotBeNull();
-        resultList.Count().Should().Be(2);
+        resultList.Count.Should().Be(2);
         
         mediaServerServiceMock.Verify(x => x.GetAllAdministrators(), Times.Once);
         mediaServerServiceMock.VerifyNoOtherCalls();
