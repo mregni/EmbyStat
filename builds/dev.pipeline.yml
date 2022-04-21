@@ -18,7 +18,7 @@ variables:
     value: 'ubuntu-20.04'
 
 pool:
-  name: $(WinPool)
+  vmImage: $(WinPool)
 
 stages:
   - stage: test_stage
