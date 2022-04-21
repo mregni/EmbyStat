@@ -3,12 +3,16 @@ steps:
     displayName: Install GitVersion
     inputs:
       versionSpec: '5.x'
+      
+  - task: CmdLine@2
+    inputs:
+      script: 'dir'
 
   - task: gitversion/execute@0
-    displayName: Calculate GitVersion
     inputs:
+      targetPath: '$(Build.SourcesDirectory)'
       useConfigFile: true
-      workingDirectory: $(Build.SourcesDirectory)
+      configFilePath: 'GitVersion.yml'
 
   - task: PowerShell@2
     displayName: 'Update build number'
