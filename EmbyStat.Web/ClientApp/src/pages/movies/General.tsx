@@ -13,7 +13,7 @@ export const General = () => {
 
   return (
     <Stack direction="column" spacing={2}>
-      <EsTitle content="Numbers" isFirst />
+      <EsTitle content="COMMON.NUMBERS" isFirst />
       <Box>
         <Grid container spacing={2}>
           {statistics?.cards != null && statistics.cards.length > 0 ?

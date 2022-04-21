@@ -1,6 +1,7 @@
 import React, {ReactElement} from 'react';
 
 import HomeIcon from '@mui/icons-material/Home';
+import InfoIcon from '@mui/icons-material/Info';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import MovieIcon from '@mui/icons-material/Movie';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
@@ -84,5 +85,10 @@ export const ServerMenuItems: MenuItem[] = [
     icon: <InsertDriveFileIcon />,
     title: 'MENU.LOGS',
     route: '/logs',
+  },
+  {
+    icon: <InfoIcon />,
+    title: 'MENU.ABOUT',
+    route: '/about',
   },
 ];

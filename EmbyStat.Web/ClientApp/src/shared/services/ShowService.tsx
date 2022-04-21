@@ -39,7 +39,6 @@ export const fetchLibraries = (): Promise<Library[]> => {
 };
 
 export const pushLibraries = (libraryIds: string[]): Promise<void> => {
-  console.log(libraryIds);
   return axiosInstance
     .post<void>(`${domain}libraries`, libraryIds )
     .then((response) => {

@@ -1,4 +1,18 @@
 {
+  "ABOUT": {
+    "OS": "Operating system",
+    "SERVERINFO": "Server info",
+    "GITHUBRELEASE": "Releases on Github",
+    "REQUESTFEATURE": "Request feature",
+    "LOGBUG": "Log bug on Github",
+    "HELPTRANSLATE": "Help translate the app",
+    "THANKS": {
+      "TITLE": "Thanks",
+      "TEXT": "A big thanks to the following people for translating the app in their native language or helping to test the application:",
+      "MISSINGNAME": "If your name is missing from this list, send me a message on Crowdin!"
+    },
+    "ACTIONS": "Actions"
+  },
   "COMMON": {
     "AND": "and",
     "AUDIO": "Audio",
@@ -40,6 +54,7 @@
     "MOVIE": "movie",
     "MOVIES": "Movies",
     "NAME": "Name",
+    "NUMBERS": "Numbers",
     "OFFICIALRATING": "Official rating",
     "OS": "Operating system",
     "OTHER": "Other",
@@ -172,6 +187,7 @@
     "ANONYMISED": "Anonymised"
   },
   "MENU": {
+    "ABOUT": "About",
     "DASHBOARD": "Dashboard",
     "JOBS": "Jobs",
     "LOGS": "Logs",
@@ -323,7 +339,6 @@
     "IDLEUSERS": "Idle users",
     "LASTACTIVE": "Last active",
     "LOADER": "Loading user info",
-    "NUMBERS": "Numbers",
     "USERS": "Users",
     "WATCHED": {
       "EPISODES": "Episodes watched",

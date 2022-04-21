@@ -31,7 +31,6 @@ export const useFilterHelpers = () => {
   };
 
   const calculateValueLabel = (value: string, operation: FilterOperation): string => {
-    console.log(value);
     switch (operation.type) {
     case 'dropdown':
       return `${value.split('|')[1]}`;

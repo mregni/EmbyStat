@@ -3,6 +3,7 @@ import {Navigate, Route, Routes, useNavigate} from 'react-router';
 
 import {RequireAuth} from './authentication';
 import i18n from './i18n';
+import {About} from './pages/about';
 import {Home} from './pages/home';
 import {Jobs} from './pages/jobs';
 import {Login} from './pages/login';
@@ -51,6 +52,7 @@ const RoutesContainer = () => {
         <Route path="movie" element={<MovieSettings />} />
       </Route>
       <Route path="/users" element={<RequireAuth><Users /></RequireAuth>} />
+      <Route path="/about" element={<RequireAuth><About /></RequireAuth>} />
       <Route path="/wizard" element={<Wizard />} />
       <Route path="/" element={<Navigate to="/home" replace />} />
     </Routes>

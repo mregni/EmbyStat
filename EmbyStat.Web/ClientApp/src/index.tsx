@@ -1,15 +1,24 @@
+import './index.css';
+import './i18n';
+
 import React, {Suspense} from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter} from 'react-router-dom';
 
-import './index.css';
-import './i18n';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {EsPageLoader} from './shared/components/esPageLoader';
+import {JobsContextProvider} from './shared/context/jobs';
 import {SettingsContextProvider} from './shared/context/settings';
 import {UserContextProvider} from './shared/context/user';
-import {JobsContextProvider} from './shared/context/jobs';
+import {Config} from './shared/utils';
+
+declare global {
+  // eslint-disable-next-line no-unused-vars
+  interface Window {
+    runConfig: Config,
+  }
+}
 
 ReactDOM.render(
   <React.StrictMode>
