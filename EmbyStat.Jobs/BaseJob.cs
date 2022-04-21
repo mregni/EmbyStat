@@ -168,11 +168,6 @@ public abstract class BaseJob : IBaseJob, IDisposable
         if (_disposed)
             return;
 
-        if (disposing)
-        {
-                
-        }
-
         _disposed = true;
     }
 

@@ -19,6 +19,7 @@ using Moq;
 using Tests.Unit.Builders;
 using Xunit;
 using Constants = EmbyStat.Common.Constants;
+using ValueType = EmbyStat.Services.Models.Cards.ValueType;
 
 namespace Tests.Unit.Services;
 
@@ -326,7 +327,7 @@ public class MovieServiceTests
         card.Values[0].Value.Should().Be(_movieOne.CommunityRating.ToString());
         card.Values[0].Label.Should().Be(_movieOne.Name);
         card.UnitNeedsTranslation.Should().Be(false);
-        card.ValueType.Should().Be(ValueTypeEnum.None);
+        card.ValueType.Should().Be(ValueType.None);
     }
 
     [Fact]
@@ -344,7 +345,7 @@ public class MovieServiceTests
         card.Values[0].Value.Should().Be(_movieThree.CommunityRating.ToString());
         card.Values[0].Label.Should().Be(_movieThree.Name);
         card.UnitNeedsTranslation.Should().Be(false);
-        card.ValueType.Should().Be(ValueTypeEnum.None);
+        card.ValueType.Should().Be(ValueType.None);
     }
 
     [Fact]
@@ -362,7 +363,7 @@ public class MovieServiceTests
         card.Values[0].Value.Should().Be(_movieOne.PremiereDate?.ToString("s"));
         card.Values[0].Label.Should().Be(_movieOne.Name);
         card.UnitNeedsTranslation.Should().Be(true);
-        card.ValueType.Should().Be(ValueTypeEnum.Date);
+        card.ValueType.Should().Be(ValueType.Date);
     }
 
     [Fact]
@@ -380,7 +381,7 @@ public class MovieServiceTests
         card.Values[0].Value.Should().Be(_movieThree.PremiereDate?.ToString("s"));
         card.Values[0].Label.Should().Be(_movieThree.Name);
         card.UnitNeedsTranslation.Should().Be(true);
-        card.ValueType.Should().Be(ValueTypeEnum.Date);
+        card.ValueType.Should().Be(ValueType.Date);
     }
 
     [Fact]
@@ -398,7 +399,7 @@ public class MovieServiceTests
         card.Values[0].Value.Should().Be(_movieOne.RunTimeTicks.ToString());
         card.Values[0].Label.Should().Be(_movieOne.Name);
         card.UnitNeedsTranslation.Should().Be(true);
-        card.ValueType.Should().Be(ValueTypeEnum.Ticks);
+        card.ValueType.Should().Be(ValueType.Ticks);
     }
 
     [Fact]
@@ -416,7 +417,7 @@ public class MovieServiceTests
         card.Values[0].Value.Should().Be(_movieThree.RunTimeTicks.ToString());
         card.Values[0].Label.Should().Be(_movieThree.Name);
         card.UnitNeedsTranslation.Should().Be(true);
-        card.ValueType.Should().Be(ValueTypeEnum.Ticks);
+        card.ValueType.Should().Be(ValueType.Ticks);
     }
 
     [Fact]
@@ -434,7 +435,7 @@ public class MovieServiceTests
         card.Values[0].Value.Should().Be(_movieOne.DateCreated?.ToString("s"));
         card.Values[0].Label.Should().Be(_movieOne.Name);
         card.UnitNeedsTranslation.Should().Be(true);
-        card.ValueType.Should().Be(ValueTypeEnum.Date);
+        card.ValueType.Should().Be(ValueType.Date);
     }
 
     [Fact]

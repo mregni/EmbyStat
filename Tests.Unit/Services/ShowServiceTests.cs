@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Tests.Unit.Builders;
 using Xunit;
+using ValueType = EmbyStat.Services.Models.Cards.ValueType;
 
 namespace Tests.Unit.Services;
 
@@ -323,7 +324,7 @@ public class ShowServiceTests
         card.Values[0].Value.Should().Be(_showThree.CommunityRating.ToString());
         card.Values[0].Label.Should().Be(_showThree.Name);
         card.UnitNeedsTranslation.Should().Be(false);
-        card.ValueType.Should().Be(ValueTypeEnum.None);
+        card.ValueType.Should().Be(ValueType.None);
     }
 
     [Fact]
@@ -341,7 +342,7 @@ public class ShowServiceTests
         card.Values[0].Value.Should().Be(_showTwo.CommunityRating.ToString());
         card.Values[0].Label.Should().Be(_showTwo.Name);
         card.UnitNeedsTranslation.Should().Be(false);
-        card.ValueType.Should().Be(ValueTypeEnum.None);
+        card.ValueType.Should().Be(ValueType.None);
     }
 
     [Fact]
@@ -359,7 +360,7 @@ public class ShowServiceTests
         card.Values[0].Value.Should().Be(_showTwo.PremiereDate?.ToString("s"));
         card.Values[0].Label.Should().Be(_showTwo.Name);
         card.UnitNeedsTranslation.Should().Be(true);
-        card.ValueType.Should().Be(ValueTypeEnum.Date);
+        card.ValueType.Should().Be(ValueType.Date);
     }
 
     [Fact]
@@ -377,7 +378,7 @@ public class ShowServiceTests
         card.Values[0].Value.Should().Be(_showTwo.Seasons.SelectMany(x => x.Episodes).Count().ToString());
         card.Values[0].Label.Should().Be(_showTwo.Name);
         card.UnitNeedsTranslation.Should().Be(false);
-        card.ValueType.Should().Be(ValueTypeEnum.None);
+        card.ValueType.Should().Be(ValueType.None);
     }
 
     [Fact]
@@ -395,7 +396,7 @@ public class ShowServiceTests
         card.Values[0].Value.Should().Be(_showThree.DateCreated?.ToString("s"));
         card.Values[0].Label.Should().Be(_showThree.Name);
         card.UnitNeedsTranslation.Should().Be(true);
-        card.ValueType.Should().Be(ValueTypeEnum.Date);
+        card.ValueType.Should().Be(ValueType.Date);
     }
 
     [Fact]
@@ -413,7 +414,7 @@ public class ShowServiceTests
         card.Values[0].Value.Should().Be(_showThree.PremiereDate?.ToString("s"));
         card.Values[0].Label.Should().Be(_showThree.Name);
         card.UnitNeedsTranslation.Should().Be(true);
-        card.ValueType.Should().Be(ValueTypeEnum.Date);
+        card.ValueType.Should().Be(ValueType.Date);
     }
 
     [Fact]

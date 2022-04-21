@@ -64,14 +64,14 @@ LIMIT {count}";
     public static void AddGenres<T>(this IEnumerable<T> items, IEnumerable<Genre> genres) where T : ILinkedMedia
     {
         var genreList = genres.ToList();
-        foreach (var item in items)
+        foreach (var itemGenres in items.Select(x => x.Genres))
         {
-            if (item.Genres == null || !item.Genres.Any())
+            if (itemGenres == null || !itemGenres.Any())
             {
                 continue;
             }
 
-            foreach (var dtoGenre in item.Genres)
+            foreach (var dtoGenre in itemGenres)
             {
                 var localGenre = genreList.FirstOrDefault(x => x.Name == dtoGenre.Name);
                 if (localGenre != null)

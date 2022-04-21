@@ -5,7 +5,7 @@ public class TopCard
     public string Title { get; set; }
     public string Unit { get; set; }
     public bool UnitNeedsTranslation { get; set; }
-    public ValueTypeEnum ValueType { get; set; }
+    public ValueType ValueType { get; set; }
     public TopCardItem[] Values { get; set; }
 }
 
@@ -17,7 +17,7 @@ public class TopCardItem
     public string Value { get; set; }
 }
 
-public enum ValueTypeEnum
+public enum ValueType
 {
     None = 0,
     Ticks = 1,

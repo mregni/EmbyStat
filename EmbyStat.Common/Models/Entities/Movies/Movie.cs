@@ -8,9 +8,9 @@ public class Movie : Video, ILinkedMedia
 {
     public string OriginalTitle { get; set; }
 
-    public override bool Equals(object? other)
+    public override bool Equals(object? obj)
     {
-        if (other is Movie media)
+        if (obj is Movie media)
         {
             return Id == media.Id;
         }

@@ -5,6 +5,7 @@ using System.Linq;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Services.Models.Cards;
+using ValueType = EmbyStat.Services.Models.Cards.ValueType;
 
 namespace EmbyStat.Services.Converters;
 
@@ -13,13 +14,13 @@ public static class MediaTopCardHelper
     #region Media
 
     public static TopCard ConvertToTopCard(this IEnumerable<Media> list, string title, string unit,
-        string valueSelector, ValueTypeEnum valueTypeEnum)
+        string valueSelector, ValueType valueType)
     {
-        return ConvertToTopCard(list, title, unit, valueSelector, valueTypeEnum, true);
+        return ConvertToTopCard(list, title, unit, valueSelector, valueType, true);
     }
 
     private static TopCard ConvertToTopCard(IEnumerable<Media> list, string title, string unit, string valueSelector,
-        ValueTypeEnum valueTypeEnum, bool unitNeedsTranslation)
+        ValueType valueType, bool unitNeedsTranslation)
     {
         var values = list.Select(x =>
         {
@@ -46,7 +47,7 @@ public static class MediaTopCardHelper
             Values = values,
             Unit = unit,
             UnitNeedsTranslation = unitNeedsTranslation,
-            ValueType = valueTypeEnum
+            ValueType = valueType
         };
     }
 
@@ -74,11 +75,11 @@ public static class ExtraTopCardHelper
             Values = values,
             Unit = unit,
             UnitNeedsTranslation = unitNeedsTranslation,
-            ValueType = ValueTypeEnum.None
+            ValueType = ValueType.None
         };
     }
         
-    public static TopCard ConvertToTopCard(this IEnumerable<Show> list, string title, string unit, bool unitNeedsTranslation, ValueTypeEnum type)
+    public static TopCard ConvertToTopCard(this IEnumerable<Show> list, string title, string unit, bool unitNeedsTranslation, ValueType type)
     {
         var values = list.Select(x => new TopCardItem
         {
@@ -99,19 +100,19 @@ public static class ExtraTopCardHelper
     }
         
     public static TopCard ConvertToTopCard(this IEnumerable<Extra> list, string title, string unit, string valueSelector,
-        ValueTypeEnum valueTypeEnum)
+        ValueType valueType)
     {
-        return ConvertToTopCard(list, title, unit, valueSelector, valueTypeEnum, true);
+        return ConvertToTopCard(list, title, unit, valueSelector, valueType, true);
     }
 
     public static TopCard ConvertToTopCard(this IEnumerable<Extra> list, string title, string unit,
         string valueSelector, bool unitNeedsTranslation)
     {
-        return ConvertToTopCard(list, title, unit, valueSelector, ValueTypeEnum.None, unitNeedsTranslation);
+        return ConvertToTopCard(list, title, unit, valueSelector, ValueType.None, unitNeedsTranslation);
     }
 
     private static TopCard ConvertToTopCard(IEnumerable<Extra> list, string title, string unit, string valueSelector,
-        ValueTypeEnum valueTypeEnum, bool unitNeedsTranslation)
+        ValueType valueType, bool unitNeedsTranslation)
     {
         var values = list.Select(x =>
         {
@@ -138,7 +139,7 @@ public static class ExtraTopCardHelper
             Values = values,
             Unit = unit,
             UnitNeedsTranslation = unitNeedsTranslation,
-            ValueType = valueTypeEnum
+            ValueType = valueType
         };
     }
 

@@ -21,6 +21,7 @@ using EmbyStat.Services.Models.Stat;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using LocationType = EmbyStat.Common.Enums.LocationType;
+using ValueType = EmbyStat.Services.Models.Cards.ValueType;
 
 namespace EmbyStat.Services;
 
@@ -270,7 +271,7 @@ public class ShowService : MediaService, IShowService
             var list = data.ToArray();
                 
             return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Shows.NewestPremiered, "COMMON.DATE", "PremiereDate", ValueTypeEnum.Date)
+                ? list.ConvertToTopCard(Constants.Shows.NewestPremiered, "COMMON.DATE", "PremiereDate", ValueType.Date)
                 : null;
         }, "Calculate newest premiered shows failed:");
     }
@@ -283,7 +284,7 @@ public class ShowService : MediaService, IShowService
             var list = data.ToArray();
 
             return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Shows.OldestPremiered, "COMMON.DATE", "PremiereDate", ValueTypeEnum.Date)
+                ? list.ConvertToTopCard(Constants.Shows.OldestPremiered, "COMMON.DATE", "PremiereDate", ValueType.Date)
                 : null;
         }, "Calculate oldest premiered shows failed:");
     }
@@ -295,7 +296,7 @@ public class ShowService : MediaService, IShowService
             var list = _showRepository.GetLatestAddedMedia(5).ToArray();
 
             return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Shows.LatestAdded, "COMMON.DATE", "DateCreated", ValueTypeEnum.Date)
+                ? list.ConvertToTopCard(Constants.Shows.LatestAdded, "COMMON.DATE", "DateCreated", ValueType.Date)
                 : null;
         }, "Calculate latest added shows failed:");
     }
@@ -345,7 +346,7 @@ public class ShowService : MediaService, IShowService
             var list = _showRepository.GetShowsWithMostDiskSpaceUsed(5).ToArray();
 
             return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Shows.MostDiskSpace, "#", false, ValueTypeEnum.SizeInMb)
+                ? list.ConvertToTopCard(Constants.Shows.MostDiskSpace, "#", false, ValueType.SizeInMb)
                 : null;
         }, "Calculate shows with most episodes failed:");
     }

@@ -20,6 +20,7 @@ using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Stat;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using ValueType = EmbyStat.Services.Models.Cards.ValueType;
 
 namespace EmbyStat.Services;
 
@@ -259,7 +260,7 @@ public class MovieService : MediaService, IMovieService
             var list = data.ToArray();
             return list.Length > 0
                 ? list.ConvertToTopCard(Constants.Movies.OldestPremiered, "COMMON.DATE", "PremiereDate",
-                    ValueTypeEnum.Date)
+                    ValueType.Date)
                 : null;
         }, "Calculate oldest premiered movies failed:");
     }
@@ -272,7 +273,7 @@ public class MovieService : MediaService, IMovieService
             var list = data.ToArray();
             return list.Length > 0
                 ? list.ConvertToTopCard(Constants.Movies.NewestPremiered, "COMMON.DATE", "PremiereDate",
-                    ValueTypeEnum.Date)
+                    ValueType.Date)
                 : null;
         }, "Calculate newest premiered movies failed:");
     }
@@ -286,7 +287,7 @@ public class MovieService : MediaService, IMovieService
             var list = _movieRepository.GetShortestMovie(toShortMovieTicks, 5).ToArray();
             return list.Length > 0
                 ? list.ConvertToTopCard(Constants.Movies.Shortest, "COMMON.MIN", "RunTimeTicks",
-                    ValueTypeEnum.Ticks)
+                    ValueType.Ticks)
                 : null;
         }, "Calculate shortest movies failed:");
     }
@@ -297,7 +298,7 @@ public class MovieService : MediaService, IMovieService
         {
             var list = _movieRepository.GetLongestMovie(5).ToArray();
             return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Movies.Longest, "COMMON.MIN", "RunTimeTicks", ValueTypeEnum.Ticks)
+                ? list.ConvertToTopCard(Constants.Movies.Longest, "COMMON.MIN", "RunTimeTicks", ValueType.Ticks)
                 : null;
         }, "Calculate longest movies failed:");
     }
@@ -309,7 +310,7 @@ public class MovieService : MediaService, IMovieService
             var list = _movieRepository.GetLatestAddedMedia(5).ToArray();
             return list.Length > 0
                 ? list.ConvertToTopCard(Constants.Movies.LatestAdded, "COMMON.DATE", "DateCreated",
-                    ValueTypeEnum.Date)
+                    ValueType.Date)
                 : null;
         }, "Calculate latest added movies failed:");
     }
