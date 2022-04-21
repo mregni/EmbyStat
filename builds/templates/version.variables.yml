@@ -8,6 +8,7 @@ steps:
     displayName: Calculate GitVersion
     inputs:
       useConfigFile: true
+      workingDirectory: $(Build.SourcesDirectory)
 
   - task: PowerShell@2
     displayName: 'Update build number'
