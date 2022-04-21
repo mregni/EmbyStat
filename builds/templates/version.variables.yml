@@ -1,10 +1,13 @@
 steps:
-  - task: GitVersion@5
-    displayName: 'Set Version'
+  - task: gitversion/setup@0
+    displayName: Install GitVersion
     inputs:
-      runtime: 'core'
-      preferBundledVersion: false
-      configFilePath: 'GitVersion.yml'
+      versionSpec: '5.x'
+
+  - task: gitversion/execute@0
+    displayName: Calculate GitVersion
+    inputs:
+      useConfigFile: true
 
   - task: PowerShell@2
     displayName: 'Update build number'
