@@ -49,6 +49,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "lint": "eslint --ext .tsx src --color",
+    "lint-fix": "eslint --ext .tsx src --color --fix",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

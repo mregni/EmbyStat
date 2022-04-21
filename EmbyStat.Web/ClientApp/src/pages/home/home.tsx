@@ -1,14 +1,11 @@
+import React, {ReactElement} from 'react';
+
 /* eslint-disable max-len */
 import {Box} from '@mui/material';
-import React, {ReactElement, useContext} from 'react';
 
 import construction from '../../shared/assets/images/under-construction.webp';
-import {SettingsContext} from '../../shared/context/settings';
 
 export const Home = (): ReactElement => {
-  const settings = useContext(SettingsContext);
-
-  console.log(settings.settings);
   return (
     <Box>
       <h1>Welcome to EmbyStat</h1>
