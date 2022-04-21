@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Models.Show;
@@ -39,6 +41,6 @@ public class TmdbClient : ITmdbClient
             episodes.AddRange(_mapper.Map<IList<VirtualEpisode>>(season.Episodes));
         }
 
-        return episodes;
+        return episodes.Where(x => x.FirstAired != null && x.FirstAired < DateTime.Now);
     }
 }
