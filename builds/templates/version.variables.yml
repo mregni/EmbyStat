@@ -3,7 +3,7 @@ steps:
     displayName: Install GitVersion
     inputs:
       versionSpec: '5.x'
-      
+
   - task: CmdLine@2
     inputs:
       script: 'dir'
