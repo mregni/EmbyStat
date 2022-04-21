@@ -14,42 +14,49 @@ variables:
   - group: packages
 
 pool:
-  name: Hosted Windows 2019 with VS2019
-  demands: java
+  name: windows-2022
 
-jobs:
-  - job: main_build
-    displayName: 'Test application'
-    steps:
-    - template: './templates/version.variables.yml'
-    - template: './templates/update.version.yml'
-    - template: './templates/sonarcloud.start.yml'
+stages:
+  - stage: test_stage
+    displayName: Test
+    jobs:
+    - job: main_build
+      displayName: 'Test application'
+      steps:
+      - template: './templates/version.variables.yml'
+      - template: './templates/update.version.yml'
+      - template: './templates/sonarcloud.start.yml'
 
-    - task: PowerShell@2
-      displayName: 'Update appsettings.json file'
-      inputs:
-        targetType: filePath
-        filePath: $(paths.script)/appsettings.ps1
-        arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
-  
-    - task: DotNetCoreCLI@2
-      displayName: 'Restore NuGet packages'
-      inputs:
-        command: 'restore'
-        projects: '$(webapp.project)'
+      - task: PowerShell@2
+        displayName: 'Update appsettings.json file'
+        inputs:
+          targetType: filePath
+          filePath: $(paths.script)/appsettings.ps1
+          arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
+    
+      - task: DotNetCoreCLI@2
+        displayName: 'Restore NuGet packages'
+        inputs:
+          command: 'restore'
+          projects: '$(webapp.project)'
 
-    - task: DotNetCoreCLI@2
-      displayName: 'Build web app'
-      inputs:
-        projects: '$(webapp.project)'
-        arguments: '--output publish'
-  
-    - template: './templates/unit.tests.yml'
-    - template: './templates/sonarcloud.end.yml'
+      - task: DotNetCoreCLI@2
+        displayName: 'Build web app'
+        inputs:
+          projects: '$(webapp.project)'
+          arguments: '--output publish'
+    
+      - template: './templates/unit.tests.yml'
+      - template: './templates/sonarcloud.end.yml'
 
-  - template: './win-x64/build.pipeline.yml'
+  - stage: build_artifacts
+    dependsOn: test_stage
+    displayName: 'Build artifacts'
+    jobs:
+    - template: './win-x64/build.pipeline.yml'
 
-  - ${{ if eq(variables['Build.SourceBranchName'], 'develop') }}:
-    - template: './docker-containers/win.pipeline.yml'
-    - template: './docker-containers/linux.pipeline.yml'
-    - template: './docker-containers/build.pipeline.yml'
+    - ${{ if eq(variables['Build.SourceBranchName'], 'develop') }}:
+      - template: './docker-containers/win.pipeline.yml'
+      - template: './docker-containers/linux.pipeline.yml'
+      - template: './docker-containers/arm64.pipeline.yml'
+      - template: './docker-containers/build.pipeline.yml'
