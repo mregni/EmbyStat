@@ -49,21 +49,21 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
     }
 
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        BuildPeople(modelBuilder);
-        BuildMovies(modelBuilder);
-        BuildShows(modelBuilder);
-        BuildUsers(modelBuilder);
-        BuildFilterValues(modelBuilder);
-        BuildUserViews(modelBuilder);
-        AddExtraIndexes(modelBuilder);
+        BuildPeople(builder);
+        BuildMovies(builder);
+        BuildShows(builder);
+        BuildUsers(builder);
+        BuildFilterValues(builder);
+        BuildUserViews(builder);
+        AddExtraIndexes(builder);
 
-        SeedDatabase(modelBuilder);
+        SeedDatabase(builder);
             
-        modelBuilder.Entity<IdentityUserLogin<string>>().HasKey(x => new { x.LoginProvider, x.ProviderKey});
-        modelBuilder.Entity<IdentityUserRole<string>>().HasKey(x => new { x.UserId, x.RoleId});
-        modelBuilder.Entity<IdentityUserToken<string>>().HasKey(x => new {x.UserId, x.LoginProvider, x.Name});
+        builder.Entity<IdentityUserLogin<string>>().HasKey(x => new { x.LoginProvider, x.ProviderKey});
+        builder.Entity<IdentityUserRole<string>>().HasKey(x => new { x.UserId, x.RoleId});
+        builder.Entity<IdentityUserToken<string>>().HasKey(x => new {x.UserId, x.LoginProvider, x.Name});
     }
 
     #region Builders

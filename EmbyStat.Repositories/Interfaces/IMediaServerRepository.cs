@@ -57,6 +57,6 @@ public interface IMediaServerRepository
     Task SetLibraryAsSynced(string[] libraryIds, LibraryType type);
     Task DeleteAndInsertLibraries(Library[] libraries);
     Task DeleteAllLibraries();
-    Task UpdateLibrarySyncDate(string libraryId, DateTime utcNow);
+    Task UpdateLibrarySyncDate(string libraryId, DateTime date);
     #endregion
 }

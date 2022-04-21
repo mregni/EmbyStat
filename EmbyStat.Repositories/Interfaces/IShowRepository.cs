@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities.Helpers;
@@ -16,7 +16,7 @@ public interface IShowRepository : IMediaRepository
     Task<Show> GetShowByIdWithEpisodes(string showId);
     Task<Dictionary<Show, int>> GetShowsWithMostEpisodes(int count);
     Task<IEnumerable<Show>> GetShowPage(int skip, int take, string sortField, string sortOrder, IEnumerable<Filter> filters);
-    IEnumerable<Show> GetShowsWithMostDiskSpaceUsed(int i);
+    IEnumerable<Show> GetShowsWithMostDiskSpaceUsed(int count);
 
     Task<int> CompleteCollectedCount();
     Task DeleteAll();
