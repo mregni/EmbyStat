@@ -1,9 +1,8 @@
 jobs:
 - job: linux_docker_container
-  dependsOn: main_build
   displayName: 'Create Linux docker build'
   pool:
-    vmImage: ubuntu-18.04
+    vmImage: ubuntu-20.04
   variables:
     GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
     GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]

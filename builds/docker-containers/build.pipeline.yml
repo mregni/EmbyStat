@@ -1,9 +1,8 @@
 jobs:
 - job: docker_container
-  dependsOn: [win_docker_container, linux_docker_container]
+  dependsOn: [win_docker_container, linux_docker_container, arm64_docker_container]
+  condition: succeeded()
   displayName: 'Copy Docker files'
-  pool:
-    name: Hosted Windows 2019 with VS2019
   variables:
     GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
     GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
