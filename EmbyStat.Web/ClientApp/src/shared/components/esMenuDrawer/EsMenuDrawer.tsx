@@ -1,10 +1,15 @@
-import React, {useEffect, useState} from 'react';
-import {Drawer, Toolbar, Box, List, ListItemButton, ListItemIcon, ListItemText, Divider} from '@mui/material';
+import React, {useContext, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useNavigate} from 'react-router';
 
-import {MediaMenuItems, ServerMenuItems, MenuItem, SimpleMenuItem} from '.';
+import {
+  Box, Divider, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Stack, Toolbar,
+  Typography,
+} from '@mui/material';
+
+import {SettingsContext} from '../../context/settings';
 import {useEsLocation} from '../../hooks';
+import {MediaMenuItems, MenuItem, ServerMenuItems, SimpleMenuItem} from './';
 
 const drawerWidth = 200;
 
@@ -96,6 +101,8 @@ const EsMenuItem = (props: MenuItemProps) => {
 };
 
 export const EsMenuDrawer = () => {
+  const {settings} = useContext(SettingsContext);
+
   return (
     <Drawer
       variant="permanent"
@@ -105,16 +112,31 @@ export const EsMenuDrawer = () => {
         ['& .MuiDrawer-paper']: {width: drawerWidth, boxSizing: 'border-box'},
       }}
     >
-      <Toolbar />
-      <Box sx={{overflow: 'auto'}}>
-        <List>
-          {MediaMenuItems.map((item: MenuItem) => (<EsMenuItem key={item.route} item={item} />))}
-        </List>
-        <Divider />
-        <List>
-          {ServerMenuItems.map((item: MenuItem) => (<EsMenuItem key={item.route} item={item} />))}
-        </List>
-      </Box>
+      <Stack
+        justifyContent="space-between"
+        sx={{height: '100%'}}
+      >
+        <Box>
+          <Toolbar />
+          <Box sx={{overflow: 'auto'}}>
+            <List>
+              {MediaMenuItems.map((item: MenuItem) => (<EsMenuItem key={item.route} item={item} />))}
+            </List>
+            <Divider />
+            <List>
+              {ServerMenuItems.map((item: MenuItem) => (<EsMenuItem key={item.route} item={item} />))}
+            </List>
+          </Box>
+        </Box>
+        <Box>
+          <Typography
+            variant='subtitle2'
+            align='center'
+            sx={{mb: 1}}>
+            {settings.version}
+          </Typography>
+        </Box>
+      </Stack>
     </Drawer>
   );
 };
