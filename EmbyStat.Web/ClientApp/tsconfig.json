@@ -22,6 +22,10 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
+    "src/**/*"
+  ],
+  "exclude": [
+    "../wwwroot/app",
+    "node_modules/*"
   ]
 }
