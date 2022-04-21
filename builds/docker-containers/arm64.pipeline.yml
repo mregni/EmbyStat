@@ -1,8 +1,8 @@
 jobs:
-- job: linux_docker_container
+- job: arm64_docker_container
   displayName: 'Create ARM64 docker build'
   pool:
-    vmImage: ubuntu-20.04
+    vmImage: $(LinuxPool)
   variables:
     GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
     GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
