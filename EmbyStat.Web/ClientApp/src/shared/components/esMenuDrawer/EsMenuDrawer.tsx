@@ -93,7 +93,7 @@ const EsMenuItem = (props: MenuItemProps) => {
         </ListItemIcon>
         <ListItemText primary={t(item.title)} />
       </ListItemButton>
-      {location.pathname.startsWith(item.route) && (item.children?.length ?? 0 > 0) ?
+      {location.pathname.startsWith(item.route) && ((item.children?.length ?? 0) > 0) ?
         item.children?.map((subItem) => (<EsChildMenuItem item={subItem} key={subItem.route} />)) :
         null}
     </>
