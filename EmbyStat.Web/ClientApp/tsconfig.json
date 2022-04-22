@@ -25,7 +25,8 @@
     "./src/**/*"
   ],
   "exclude": [
-    "../wwwroot/app",
-    "node_modules/*"
+    "./node_modules/**/*",
+    "./public/**/*",
+    "./e2e/**/*"
   ]
 }

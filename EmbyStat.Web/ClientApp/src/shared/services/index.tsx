@@ -6,3 +6,4 @@ export * from './logService';
 export * from './accountService';
 export * from './serverService';
 export * from './systemService';
+export * from './aboutService';

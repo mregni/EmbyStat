@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 
 import {About} from '../../../shared/models/about';
-import {getAbout} from '../../../shared/services/aboutService';
+import {getAbout} from '../../../shared/services';
 
 export const useAbout = () => {
   const [loaded, setLoaded] = useState(false);
