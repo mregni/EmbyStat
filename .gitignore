@@ -308,3 +308,5 @@ EmbyStat.Web/ClientApp/.eslintcache
 *.db-shm
 
 *.db-wal
+
+EmbyStat.Web/ClientApp/junit.xml

@@ -49,7 +49,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "lint": "eslint --ext .tsx src --color",
+    "test:ci": "npm run test -- --coverage --ci --testResultsProcessor=\"jest-junit\" --watchAll=false",
+    "lint": "eslint --ext .tsx src --color -f json -o report.json",
     "lint-fix": "eslint --ext .tsx src --color --fix",
     "eject": "react-scripts eject"
   },
@@ -78,6 +79,7 @@
     "eslint": "^8.8.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-react": "^7.28.0",
-    "eslist": "^1.0.0-beta.1"
+    "eslist": "^1.0.0-beta.1",
+    "jest-junit": "^13.2.0"
   }
 }

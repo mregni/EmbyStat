@@ -27,6 +27,13 @@ steps:
         npm run lint
       workingDirectory: 'EmbyStat.Web/ClientApp'
 
+  - task: CmdLine@2
+    displayName: 'Run jest'
+    inputs:
+      script: |
+        npm run test:ci
+      workingDirectory: 'EmbyStat.Web/ClientApp'
+
   - task: CopyFiles@2
     displayName: 'Copy Test result files'
     inputs:
