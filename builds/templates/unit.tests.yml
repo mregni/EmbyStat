@@ -35,12 +35,20 @@ steps:
       workingDirectory: 'EmbyStat.Web/ClientApp'
 
   - task: CopyFiles@2
-    displayName: 'Copy Test result files'
+    displayName: 'Copy test result files'
     inputs:
       SourceFolder: '$(Agent.TempDirectory)'
       Contents: |
         **\*.trx
         **\*.coverage
         **\report.json
+        **\lcov.info
+      TargetFolder: '$(Common.TestResultsDirectory)'
+
+  - task: CopyFiles@2
+    displayName: 'Copy FE test result files'
+    inputs:
+      SourceFolder: 'EmbyStat.Web/ClientApp'
+      Contents: |
         **\lcov.info
       TargetFolder: '$(Common.TestResultsDirectory)'
