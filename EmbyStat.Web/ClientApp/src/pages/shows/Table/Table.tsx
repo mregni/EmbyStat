@@ -6,9 +6,9 @@ import {Box, Paper, Table, TableContainer} from '@mui/material';
 import {EsLoading} from '../../../shared/components/esLoading';
 import {EsTableHeader, EsTablePagination, Header} from '../../../shared/components/table';
 import {ShowsContext} from '../../../shared/context/shows';
-import {Body, useShowTable} from './';
+import {Body, useShowTable} from '.';
 
-export const ShowTable = () => {
+export function ShowTable() {
   const {activeFilters} = useContext(ShowsContext);
   const {t} = useTranslation();
   const {fetchRows, loading, pageData} = useShowTable();
@@ -68,7 +68,7 @@ export const ShowTable = () => {
             handleChangeRowsPerPage={handleChangeRowsPerPage}
           />
           <TableContainer>
-            <Table stickyHeader size="small">
+            <Table stickyHeader={true} size="small">
               <EsTableHeader orderedBy={orderedBy} order={order} sortHandler={sortHandler} headers={headers} />
               <Body page={pageData} />
             </Table>
@@ -84,4 +84,4 @@ export const ShowTable = () => {
       </EsLoading>
     </Box>
   );
-};
+}

@@ -12,7 +12,7 @@ interface Props {
   children: ReactElement | ReactElement[];
 }
 
-export const RequireAuth = (props: Props): ReactElement => {
+export function RequireAuth(props: Props): ReactElement {
   const {children} = props;
   const location = useEsLocation();
   const userContext = useContext(UserContext);
@@ -32,7 +32,7 @@ export const RequireAuth = (props: Props): ReactElement => {
   }
 
   if (!isLoggedIn) {
-    return <Navigate to="/login" state={{from: location}} replace />;
+    return <Navigate to="/login" state={{from: location}} replace={true} />;
   }
 
   return (
@@ -50,4 +50,4 @@ export const RequireAuth = (props: Props): ReactElement => {
         {children}
       </Box>
     </Box>);
-};
+}

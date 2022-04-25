@@ -3,7 +3,7 @@ import {useTranslation} from 'react-i18next';
 
 import {Typography} from '@mui/material';
 
-import {EsFilterNumberField} from '../';
+import {EsFilterNumberField} from '..';
 
 type Props = {
   onValueChanged: (val0: string) => void;
@@ -12,7 +12,7 @@ type Props = {
   unit?: string;
 }
 
-export const EsFilterRangeField = (props: Props) => {
+export function EsFilterRangeField(props: Props) {
   const {onValueChanged, errors, register, unit = ''} = props;
   const {t} = useTranslation();
   const [betweenValue, setBetweenValue] = useState({
@@ -55,4 +55,4 @@ export const EsFilterRangeField = (props: Props) => {
       />
     </>
   );
-};
+}

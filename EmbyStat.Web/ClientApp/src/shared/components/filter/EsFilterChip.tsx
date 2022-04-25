@@ -10,7 +10,7 @@ type FilterChipProps = {
   removeFilter: (id: string) => void;
 }
 
-export const EsFilterChip = (props: FilterChipProps) => {
+export function EsFilterChip(props: FilterChipProps) {
   const {filter, removeFilter} = props;
   const {generateLabel} = useFilterHelpers();
 
@@ -19,5 +19,5 @@ export const EsFilterChip = (props: FilterChipProps) => {
     label={generateLabel(filter)}
     variant="outlined"
   />);
-};
+}
 

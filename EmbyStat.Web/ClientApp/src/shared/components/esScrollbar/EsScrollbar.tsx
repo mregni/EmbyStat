@@ -7,7 +7,7 @@ type Props = {
   children : ReactElement | ReactElement[];
 }
 
-export const EsScrollbar = (props: Props) => {
+export function EsScrollbar(props: Props) {
   const {children} = props;
   const theme = useTheme();
 
@@ -27,4 +27,4 @@ export const EsScrollbar = (props: Props) => {
       {children}
     </Scrollbars>
   );
-};
+}

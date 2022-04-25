@@ -25,7 +25,7 @@ type Props = {
   id: string;
 }
 
-export const MovieDetailRow = (props: Props) => {
+export function MovieDetailRow(props: Props) {
   const {id} = props;
   const {t} = useTranslation();
   const {getBackdropImageLink, getItemDetailLink} = useMediaServerUrls();
@@ -63,49 +63,49 @@ export const MovieDetailRow = (props: Props) => {
         </Box>
         <Box sx={{flexGrow: 1, pl: 2}}>
           <Grid
-            container
+            container={true}
             direction="column"
             spacing={2}>
             <Grid
-              item
+              item={true}
               spacing={1}
-              container
+              container={true}
               direction="column"
             >
               <Grid
-                item
+                item={true}
                 spacing={2}
                 direction="row"
-                container
+                container={true}
                 alignItems="center"
               >
-                <Grid item>
+                <Grid item={true}>
                   <Typography variant="h5">
                     {movie.originalTitle}
                   </Typography>
                 </Grid>
-                <Grid item>
+                <Grid item={true}>
                   <Tooltip title={`${movie.communityRating}/10`}>
                     <Box>
-                      <Rating defaultValue={(movie.communityRating ?? 0)/2} precision={0.1} readOnly />
+                      <Rating defaultValue={(movie.communityRating ?? 0)/2} precision={0.1} readOnly={true} />
                     </Box>
                   </Tooltip>
                 </Grid>
               </Grid>
-              <Grid item>
+              <Grid item={true}>
                 <Stack spacing={1} direction="row">
                   {movie.genres.map((genre) => <Chip label={genre} key={genre} size="small" /> ) }
                 </Stack>
               </Grid>
             </Grid>
-            <Grid item>
+            <Grid item={true}>
               <Stack direction="row" spacing={2} >
                 <Box
                   sx={{
                     minWidth: 200,
                     borderRight: 'solid 1px #aaaaaa',
                   }}>
-                  <Grid container direction="column" >
+                  <Grid container={true} direction="column" >
                     <DataLine
                       icon={<StorageIcon />}
                       value={calculateFileSize(movie.mediaSources[0].sizeInMb)}
@@ -139,7 +139,7 @@ export const MovieDetailRow = (props: Props) => {
                 </Box>
                 <Box>
                   <Grid
-                    container
+                    container={true}
                     direction="column"
                     justifyContent="flex-start"
                   >
@@ -176,4 +176,4 @@ export const MovieDetailRow = (props: Props) => {
       </Box>
     </Box>
   );
-};
+}

@@ -1,12 +1,12 @@
 import React, {ReactElement} from 'react';
 
-import {LibrariesContext, useLibrariesContext} from './';
+import {LibrariesContext, useLibrariesContext} from '.';
 
 interface Props {
   children: ReactElement | ReactElement[];
 }
 
-export const LibrariesContextProvider = (props: Props): ReactElement => {
+export function LibrariesContextProvider(props: Props): ReactElement {
   const {children} = props;
   const librariesContext = useLibrariesContext();
 
@@ -15,4 +15,4 @@ export const LibrariesContextProvider = (props: Props): ReactElement => {
       {children}
     </LibrariesContext.Provider>
   );
-};
+}

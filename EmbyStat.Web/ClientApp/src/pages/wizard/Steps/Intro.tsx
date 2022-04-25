@@ -12,7 +12,7 @@ import {WizardContext} from '../../../shared/context/wizard/WizardState';
 import {Language} from '../../../shared/models/language';
 import {ValidationHandleWithSave} from '../Interfaces';
 
-export const Intro = forwardRef<ValidationHandleWithSave, StepProps>(function Intro(props, ref) {
+export const Intro = forwardRef<ValidationHandleWithSave, StepProps>((props, ref) => {
   const {t} = useTranslation();
   const {setLanguage, setMonitoring} = useContext(WizardContext);
   const {languages} = useContext(SettingsContext);
@@ -48,15 +48,15 @@ export const Intro = forwardRef<ValidationHandleWithSave, StepProps>(function In
   const introText = {__html: t('WIZARD.INTROTEXT')};
 
   return (
-    <Grid container direction="column" spacing={4}>
-      <Grid item>
+    <Grid container={true} direction="column" spacing={4}>
+      <Grid item={true}>
         <Typography variant="h4" color="primary">
           {t('WIZARD.TITLE')}
         </Typography>
         <Typography variant="body1" dangerouslySetInnerHTML={introText} />
       </Grid>
-      <Grid item container direction="column" spacing={1}>
-        <Grid item>
+      <Grid item={true} container={true} direction="column" spacing={1}>
+        <Grid item={true}>
           <Typography variant="h6" color="primary">
             {t('WIZARD.LANGUAGE')}
           </Typography>
@@ -64,7 +64,7 @@ export const Intro = forwardRef<ValidationHandleWithSave, StepProps>(function In
             {t('WIZARD.SELECTLANGUAGE')}
           </Typography>
         </Grid>
-        <Grid item>
+        <Grid item={true}>
           <Controller
             name="language"
             control={control}
@@ -89,7 +89,7 @@ export const Intro = forwardRef<ValidationHandleWithSave, StepProps>(function In
             )}
           />
         </Grid>
-        <Grid item>
+        <Grid item={true}>
           <Typography
             variant="body1"
             dangerouslySetInnerHTML={crowdinText}
@@ -106,8 +106,8 @@ export const Intro = forwardRef<ValidationHandleWithSave, StepProps>(function In
           />
         </Grid>
       </Grid>
-      <Grid item container direction="column" spacing={1}>
-        <Grid item>
+      <Grid item={true} container={true} direction="column" spacing={1}>
+        <Grid item={true}>
           <Typography variant="h6" color="primary">
             {t('WIZARD.EXCEPTIONLOGGING')}
           </Typography>
@@ -115,7 +115,7 @@ export const Intro = forwardRef<ValidationHandleWithSave, StepProps>(function In
             {t('SETTINGS.ROLLBAR.EXCEPTIONLOGGING')}
           </Typography>
         </Grid>
-        <Grid item>
+        <Grid item={true}>
           <Controller
             name="enableMonitoring"
             control={control}
@@ -126,7 +126,7 @@ export const Intro = forwardRef<ValidationHandleWithSave, StepProps>(function In
                   <Checkbox
                     {...field}
                     checked={getValues('enableMonitoring')}
-                    disableRipple color="primary" />
+                    disableRipple={true} color="primary" />
                 }
                 label={t('SETTINGS.ROLLBAR.ENABLEROLLBAR') as string}
               />

@@ -6,7 +6,7 @@ type Props = {
   maxItems?: number;
 }
 
-export const EsChipList = (props: Props) => {
+export function EsChipList(props: Props) {
   const {list, maxItems = 2} = props;
   return (
     <>
@@ -22,4 +22,4 @@ export const EsChipList = (props: Props) => {
       }
     </>
   );
-};
+}

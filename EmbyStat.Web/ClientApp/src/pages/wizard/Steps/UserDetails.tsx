@@ -8,7 +8,7 @@ import {EsTextInput} from '../../../shared/components/esTextInput';
 import {WizardContext} from '../../../shared/context/wizard/WizardState';
 import {StepProps, ValidationHandleWithSave} from '../Interfaces';
 
-export const UserDetails = forwardRef<ValidationHandleWithSave, StepProps>( function UserDetails(props, ref) {
+export const UserDetails = forwardRef<ValidationHandleWithSave, StepProps>( (props, ref) => {
   const {t} = useTranslation();
   const {wizard, setUserDetails} = useContext(WizardContext);
 

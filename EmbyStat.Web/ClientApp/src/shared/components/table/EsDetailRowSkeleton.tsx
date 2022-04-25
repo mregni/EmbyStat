@@ -2,7 +2,7 @@ import React from 'react';
 
 import {Box, Grid, Skeleton, Stack} from '@mui/material';
 
-export const EsDetailRowSkeleton = () => {
+export function EsDetailRowSkeleton() {
   return (
     <Box sx={{width: '100%', p: 2}} >
       <Box sx={{display: 'flex'}}>
@@ -11,30 +11,30 @@ export const EsDetailRowSkeleton = () => {
         </Box>
         <Box sx={{flexGrow: 1, pl: 2}}>
           <Grid
-            container
+            container={true}
             direction="column"
             spacing={2}>
             <Grid
-              item
+              item={true}
               spacing={1}
-              container
+              container={true}
               direction="column"
             >
               <Grid
-                item
+                item={true}
                 spacing={2}
                 direction="row"
-                container
+                container={true}
                 alignItems="center"
               >
-                <Grid item>
+                <Grid item={true}>
                   <Skeleton variant="text" width={200} height={30} animation="wave" />
                 </Grid>
-                <Grid item>
+                <Grid item={true}>
                   <Skeleton variant="text" width={120} height={30} animation="wave" />
                 </Grid>
               </Grid>
-              <Grid item>
+              <Grid item={true}>
                 <Stack spacing={1} direction="row">
                   <Skeleton variant="text" width={60} height={24} animation="wave" />
                   <Skeleton variant="text" width={60} height={24} animation="wave" />
@@ -42,13 +42,13 @@ export const EsDetailRowSkeleton = () => {
                 </Stack>
               </Grid>
             </Grid>
-            <Grid item>
+            <Grid item={true}>
               <Stack
                 direction="row"
                 spacing={2}
               >
                 <Box sx={{minWidth: 200, borderRight: 'solid 1px #aaaaaa'}}>
-                  <Grid container direction="column" >
+                  <Grid container={true} direction="column" >
                     <Skeleton variant="text" width={180} height={24} animation="wave" />
                     <Skeleton variant="text" width={60} height={24} animation="wave" style={{marginTop: 2}} />
                     <Skeleton variant="text" width={180} height={24} animation="wave" style={{marginTop: 2}} />
@@ -58,7 +58,7 @@ export const EsDetailRowSkeleton = () => {
                 </Box>
                 <Box>
                   <Grid
-                    container
+                    container={true}
                     direction="column"
                     justifyContent="flex-start"
                   >
@@ -75,4 +75,4 @@ export const EsDetailRowSkeleton = () => {
       </Box>
     </Box>
   );
-};
+}

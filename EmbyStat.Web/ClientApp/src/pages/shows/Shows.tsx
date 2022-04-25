@@ -8,7 +8,7 @@ import {EsLoading} from '../../shared/components/esLoading';
 import {ShowsContext, ShowsContextProvider} from '../../shared/context/shows';
 import {showJobId} from '../../shared/utils';
 
-const ShowsContainer = () => {
+function ShowsContainer() {
   const {loaded, mediaPresent, load} = useContext(ShowsContext);
   const {t} = useTranslation();
 
@@ -31,12 +31,12 @@ const ShowsContainer = () => {
       </EsJobRunning>
     </EsLoading>
   );
-};
+}
 
-export const Shows = () => {
+export function Shows() {
   return (
     <ShowsContextProvider>
       <ShowsContainer />
     </ShowsContextProvider>
   );
-};
+}

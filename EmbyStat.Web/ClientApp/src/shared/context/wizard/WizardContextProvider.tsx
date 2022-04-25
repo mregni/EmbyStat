@@ -6,7 +6,7 @@ interface Props {
   children: ReactElement | ReactElement[];
 }
 
-export const WizardContextProvider = (props: Props): ReactElement => {
+export function WizardContextProvider(props: Props): ReactElement {
   const {children} = props;
   const wizardContext = useWizardContext();
 
@@ -15,4 +15,4 @@ export const WizardContextProvider = (props: Props): ReactElement => {
       {children}
     </WizardContext.Provider>
   );
-};
+}

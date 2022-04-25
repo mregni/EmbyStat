@@ -8,7 +8,7 @@ type Props = {
   startIcon?: ReactElement;
 }
 
-export const EsHyperLinkButton = (props: Props) => {
+export function EsHyperLinkButton(props: Props) {
   const {label, href, startIcon = <OpenInNewIcon />} = props;
   return (
     <Button
@@ -22,4 +22,4 @@ export const EsHyperLinkButton = (props: Props) => {
       {label}
     </Button>
   );
-};
+}

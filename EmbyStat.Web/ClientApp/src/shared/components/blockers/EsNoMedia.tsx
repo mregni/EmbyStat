@@ -12,7 +12,7 @@ type Props = {
   jobId: string;
 }
 
-export const EsNoMedia = (props: Props) => {
+export function EsNoMedia(props: Props) {
   const {mediaPresent, children, title, body, jobId} = props;
   const {fireJobById} = useContext(JobsContext);
   const {getMediaServerTypeString} = useServerType();
@@ -42,7 +42,7 @@ export const EsNoMedia = (props: Props) => {
         <CardContent>
           <Stack direction="column" justifyContent="space-between" >
             <Box>
-              <Typography variant="h5" color="primary" gutterBottom>
+              <Typography variant="h5" color="primary" gutterBottom={true}>
                 {t(title)}
               </Typography>
               <Typography variant="body1">
@@ -59,4 +59,4 @@ export const EsNoMedia = (props: Props) => {
       </Card>
     </Box>
   );
-};
+}

@@ -6,10 +6,10 @@ import {Box, Paper, Table, TableContainer} from '@mui/material';
 import {EsLoading} from '../../../shared/components/esLoading';
 import {EsTableHeader, EsTablePagination, Header} from '../../../shared/components/table';
 import {MoviesContext} from '../../../shared/context/movies';
-import {useMovieTable} from './';
+import {useMovieTable} from '.';
 import {Body} from './Helpers';
 
-export const MovieTable = () => {
+export function MovieTable() {
   const {activeFilters} = useContext(MoviesContext);
   const {t} = useTranslation();
   const {fetchRows, loading, pageData} = useMovieTable();
@@ -68,7 +68,7 @@ export const MovieTable = () => {
             handleChangeRowsPerPage={handleChangeRowsPerPage}
           />
           <TableContainer>
-            <Table stickyHeader size="small">
+            <Table stickyHeader={true} size="small">
               <EsTableHeader orderedBy={orderedBy} order={order} sortHandler={sortHandler} headers={headers} />
               <Body page={pageData} />
             </Table>
@@ -84,4 +84,4 @@ export const MovieTable = () => {
       </EsLoading>
     </Box>
   );
-};
+}

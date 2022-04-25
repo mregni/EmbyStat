@@ -1,4 +1,4 @@
-import {FilterOperation} from './';
+import {FilterOperation} from '.';
 
 export interface ActiveFilter {
   field: string;

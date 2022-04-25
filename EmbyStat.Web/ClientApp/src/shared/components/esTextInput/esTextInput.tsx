@@ -19,7 +19,7 @@ export interface Props {
   variant?: 'standard' | 'outlined'
 }
 
-export const EsTextInput = (props: Props) => {
+export function EsTextInput(props: Props) {
   const {
     error,
     inputRef,
@@ -50,17 +50,17 @@ export const EsTextInput = (props: Props) => {
       error={!!error}
       size="small"
       color={color}
-      fullWidth
+      fullWidth={true}
       autoComplete={'' + Math.random()}
       type={type}
       disabled={readonly}
       helperText={error ? errorText[error.type] : helperText}
       onChange={(event) => {
-        if (!!onChange) {
+        if (onChange) {
           onChange(event.target.value as string);
         }
       }}
       InputProps={inputProps}
     />
   );
-};
+}

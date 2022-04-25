@@ -12,7 +12,7 @@ type Props = {
   label: string,
 }
 
-export const EsSortLabel = (props: Props) => {
+export function EsSortLabel(props: Props) {
   const {field, orderedBy, order, sortHandler, label} = props;
   const {t} = useTranslation();
 
@@ -46,4 +46,4 @@ export const EsSortLabel = (props: Props) => {
       ) : null}
     </TableSortLabel>
   );
-};
+}

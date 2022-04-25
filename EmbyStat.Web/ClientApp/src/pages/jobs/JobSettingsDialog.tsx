@@ -23,7 +23,7 @@ type Cron = {
   cron: string;
 };
 
-export const JobSettingsDialog = (props: Props) => {
+export function JobSettingsDialog(props: Props) {
   const {openSettingsDialog, job, onClose} = props;
   const [changed, setChanged] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -103,7 +103,7 @@ export const JobSettingsDialog = (props: Props) => {
                       },
                     }} dangerouslySetInnerHTML={errorText} />,
                   }}
-                  label={'FORMLABELS.CRON'}
+                  label="FORMLABELS.CRON"
                   onChange={handleChange}
                   readonly={isSaving}
                 />
@@ -127,4 +127,4 @@ export const JobSettingsDialog = (props: Props) => {
       }
     </>
   );
-};
+}

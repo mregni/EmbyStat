@@ -9,7 +9,7 @@ import {
 
 import {SettingsContext} from '../../context/settings';
 import {useEsLocation} from '../../hooks';
-import {MediaMenuItems, MenuItem, ServerMenuItems, SimpleMenuItem} from './';
+import {MediaMenuItems, MenuItem, ServerMenuItems, SimpleMenuItem} from '.';
 
 const drawerWidth = 200;
 
@@ -21,7 +21,7 @@ type ChildMenuProps = {
   item: SimpleMenuItem;
 }
 
-const EsChildMenuItem = (props: ChildMenuProps) => {
+function EsChildMenuItem(props: ChildMenuProps) {
   const {item} = props;
   const {t} = useTranslation();
   const navigate = useNavigate();
@@ -54,9 +54,9 @@ const EsChildMenuItem = (props: ChildMenuProps) => {
       <ListItemText primary={t(item.title)} />
     </ListItemButton>
   );
-};
+}
 
-const EsMenuItem = (props: MenuItemProps) => {
+function EsMenuItem(props: MenuItemProps) {
   const {item} = props;
   const {t} = useTranslation();
   const location = useEsLocation();
@@ -98,18 +98,18 @@ const EsMenuItem = (props: MenuItemProps) => {
         null}
     </>
   );
-};
+}
 
-export const EsMenuDrawer = () => {
+export function EsMenuDrawer() {
   const {settings} = useContext(SettingsContext);
 
   return (
     <Drawer
       variant="permanent"
       sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        ['& .MuiDrawer-paper']: {width: drawerWidth, boxSizing: 'border-box'},
+        'width': drawerWidth,
+        'flexShrink': 0,
+        '& .MuiDrawer-paper': {width: drawerWidth, boxSizing: 'border-box'},
       }}
     >
       <Stack
@@ -139,4 +139,4 @@ export const EsMenuDrawer = () => {
       </Stack>
     </Drawer>
   );
-};
+}

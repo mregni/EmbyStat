@@ -12,7 +12,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(
-  function(request) {
+  (request) => {
     const accessToken = localStorage.getItem('accessToken');
     if (!['undefined', null].includes(accessToken)) {
       if (request.headers === undefined) {
@@ -26,10 +26,10 @@ axiosInstance.interceptors.request.use(
 );
 
 axiosInstance.interceptors.response.use(
-  function(response) {
+  (response) => {
     return response;
   },
-  function(error) {
+  (error) => {
     if (error.response == null) {
       SnackbarUtils.error(i18n.t('EXCEPTIONS.UNHANDLED'));
       return Promise.reject(error.response);

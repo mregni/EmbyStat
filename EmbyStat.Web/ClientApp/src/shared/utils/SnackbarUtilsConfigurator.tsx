@@ -15,11 +15,11 @@ const setUseSnackbarRef = (useSnackbarRefProp: WithSnackbarProps) => {
   useSnackbarRef = useSnackbarRefProp;
 };
 
-export const SnackbarUtilsConfigurator = () => {
+export function SnackbarUtilsConfigurator() {
   return (
     <InnerSnackbarUtilsConfigurator setUseSnackbarRef={setUseSnackbarRef} />
   );
-};
+}
 
 export default {
   success(msg: string, options: OptionsObject = {}) {

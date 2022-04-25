@@ -4,7 +4,7 @@ import React from 'react';
 import {TableCell, TableHead, TableRow} from '@mui/material';
 
 import {EsSortLabel} from '../esSortLabel';
-import {Header} from './';
+import {Header} from '.';
 
 type HeaderProps = {
   orderedBy?: string;
@@ -14,7 +14,7 @@ type HeaderProps = {
 }
 
 
-export const EsTableHeader = (props: HeaderProps) => {
+export function EsTableHeader(props: HeaderProps) {
   const {orderedBy = '', order = 'asc', sortHandler, headers} = props;
   return (
     <TableHead>
@@ -48,4 +48,4 @@ export const EsTableHeader = (props: HeaderProps) => {
       </TableRow>
     </TableHead>
   );
-};
+}

@@ -5,14 +5,14 @@ import {Chip, Stack} from '@mui/material';
 
 import {LibraryContextProps} from '../../context/ILibraryContext';
 import {ActiveFilter, FilterDefinition} from '../../models/filter';
-import {EsFilterChip, EsNewFilterDialog} from './';
+import {EsFilterChip, EsNewFilterDialog} from '.';
 
 type FilterProps<T> = {
   filters: FilterDefinition[];
   context: Context<LibraryContextProps<T>>;
 }
 
-export const EsFilterContainer = <T, >(props: FilterProps<T>) => {
+export function EsFilterContainer<T, >(props: FilterProps<T>) {
   const {filters, context} = props;
   const {activeFilters, addFilter, removeFilter} = useContext(context);
   const [open, setOpen] = useState(false);
@@ -32,4 +32,4 @@ export const EsFilterContainer = <T, >(props: FilterProps<T>) => {
       <EsNewFilterDialog open={open} handleClose={closeDialog} filters={filters} addFilter={addFilter} />
     </Stack>
   );
-};
+}

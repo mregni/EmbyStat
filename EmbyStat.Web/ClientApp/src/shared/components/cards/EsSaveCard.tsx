@@ -11,7 +11,7 @@ type Props<T> = {
   handleSubmit: (onValid: SubmitHandler<T>) => (e?: React.BaseSyntheticEvent) =>Promise<void>;
 }
 
-export const EsSaveCard = <T, >(props: Props<T>) => {
+export function EsSaveCard<T, >(props: Props<T>) {
   const {title, children, saveForm, handleSubmit} = props;
   const {t} = useTranslation();
 
@@ -22,7 +22,7 @@ export const EsSaveCard = <T, >(props: Props<T>) => {
           <Typography
             variant="h5"
             color="primary"
-            gutterBottom
+            gutterBottom={true}
             sx={{textTransform: 'capitalize', mb: 2}}
           >
             {t(title)}
@@ -41,4 +41,4 @@ export const EsSaveCard = <T, >(props: Props<T>) => {
       </Card>
     </form>
   );
-};
+}

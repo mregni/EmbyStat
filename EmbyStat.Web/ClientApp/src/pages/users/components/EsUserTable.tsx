@@ -17,7 +17,7 @@ type EsUserRowProps = {
   user: MediaServerUserRow;
 }
 
-const EsUserRow = (props: EsUserRowProps) => {
+function EsUserRow(props: EsUserRowProps) {
   const {user} = props;
   const {getPrimaryUserImageLink} = useMediaServerUrls();
   const {locale} = useLocale();
@@ -36,7 +36,7 @@ const EsUserRow = (props: EsUserRowProps) => {
           alt={user.name.charAt(0).toUpperCase()}
           sx={{
             'borderRadius': 1,
-            'backgroundColor': backgroundColor,
+            backgroundColor,
             'color': (theme) => theme.palette.getContrastText(backgroundColor),
           }}
           src={getPrimaryUserImageLink(user.id)}
@@ -64,9 +64,9 @@ const EsUserRow = (props: EsUserRowProps) => {
       </TableCell>
     </TableRow>
   );
-};
+}
 
-export const EsUserTable = () => {
+export function EsUserTable() {
   const {fetchRows, loading, pageData} = useUserTable();
   const [orderedBy, setOrderedBy] = useState('Name');
   const [rowsPerPage, setRowsPerPage] = useState<number>(100);
@@ -121,7 +121,7 @@ export const EsUserTable = () => {
           pageSizeSteps={[10, 20, 50, 100]}
         />
         <TableContainer>
-          <Table stickyHeader size="small">
+          <Table stickyHeader={true} size="small">
             <EsTableHeader orderedBy={orderedBy} order={order} sortHandler={sortHandler} headers={headers} />
             <TableBody>
               { pageData.data.map((user) => <EsUserRow key={user.id} user={user} /> )}
@@ -139,4 +139,4 @@ export const EsUserTable = () => {
       </Paper>
     </Box>
   );
-};
+}

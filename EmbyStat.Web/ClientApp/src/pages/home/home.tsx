@@ -5,7 +5,7 @@ import {Box} from '@mui/material';
 
 import construction from '../../shared/assets/images/under-construction.webp';
 
-export const Home = (): ReactElement => {
+export function Home(): ReactElement {
   return (
     <Box>
       <h1>Welcome to EmbyStat</h1>
@@ -15,5 +15,5 @@ export const Home = (): ReactElement => {
       <img src={construction} alt="work in progress" width={100} className="m-t-16" />
     </Box>
   );
-};
+}
 

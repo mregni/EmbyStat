@@ -12,7 +12,7 @@ interface Props {
   openLoginForm: () => void;
 }
 
-export const RecoverPasswordForm = (props: Props) => {
+export function RecoverPasswordForm(props: Props) {
   const {openLoginForm} = props;
   const {t} = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
@@ -50,13 +50,13 @@ export const RecoverPasswordForm = (props: Props) => {
   return (
     <form>
       <Grid
-        container
+        container={true}
         direction="column"
         spacing={4}
       >
-        <Grid item>
-          <Grid container direction="column">
-            <Grid item>
+        <Grid item={true}>
+          <Grid container={true} direction="column">
+            <Grid item={true}>
               <EsTextInput
                 inputRef={usernameRegister}
                 label={t('SETTINGS.ACCOUNT.USERNAME')}
@@ -67,16 +67,16 @@ export const RecoverPasswordForm = (props: Props) => {
           </Grid>
         </Grid>
 
-        <Grid item>
-          <Grid container spacing={1} direction="column" alignItems="center">
-            <Grid item
+        <Grid item={true}>
+          <Grid container={true} spacing={1} direction="column" alignItems="center">
+            <Grid item={true}
               sx={{
                 marginBottom: resetFailed ? 0 : '23px',
               }}>
               <Typography variant="body1" color="error">{resetFailed ? t('LOGIN.RESETFAILED') : null}</Typography>
             </Grid>
-            <Grid item container direction="row" justifyContent="space-between">
-              <Grid item>
+            <Grid item={true} container={true} direction="row" justifyContent="space-between">
+              <Grid item={true}>
                 <Button
                   variant="text"
                   onClick={openLoginForm}
@@ -86,7 +86,7 @@ export const RecoverPasswordForm = (props: Props) => {
                   {t('COMMON.BACK')}
                 </Button>
               </Grid>
-              <Grid item>
+              <Grid item={true}>
                 <Button
                   variant="contained"
                   onClick={recoverPassword}
@@ -105,4 +105,4 @@ export const RecoverPasswordForm = (props: Props) => {
       </Grid>
     </form>
   );
-};
+}

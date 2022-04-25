@@ -11,7 +11,7 @@ type RollbarForm = {
   enabled: boolean;
 }
 
-export const EsRollbarCard = () => {
+export function EsRollbarCard() {
   const {settings, save} = useContext(SettingsContext);
   const {t} = useTranslation();
 
@@ -59,4 +59,4 @@ export const EsRollbarCard = () => {
       />
     </EsSaveCard>
   );
-};
+}

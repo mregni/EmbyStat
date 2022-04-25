@@ -3,10 +3,10 @@ import Grid from '@mui/material/Grid';
 
 import LogoGif from '../../assets/images/running-logo.gif';
 
-export const EsPageLoader = () => {
+export function EsPageLoader() {
   return (
     <Grid
-      container
+      container={true}
       justifyContent="center"
       alignItems="center"
       sx={{
@@ -14,9 +14,9 @@ export const EsPageLoader = () => {
         height: '100vh',
       }}
     >
-      <Grid item>
+      <Grid item={true}>
         <img src={LogoGif} alt="running logo" width="500" />
       </Grid>
     </Grid>
   );
-};
+}

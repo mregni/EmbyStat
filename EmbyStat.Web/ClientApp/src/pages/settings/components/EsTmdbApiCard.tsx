@@ -12,7 +12,7 @@ type TmdbApiForm = {
   apiKey: string;
 }
 
-export const EsTmdbApiCard = () => {
+export function EsTmdbApiCard() {
   const {settings, save} = useContext(SettingsContext);
 
   const {handleSubmit, register, getValues, formState: {errors}} = useForm<TmdbApiForm>({
@@ -49,4 +49,4 @@ export const EsTmdbApiCard = () => {
       />
     </EsSaveCard>
   );
-};
+}

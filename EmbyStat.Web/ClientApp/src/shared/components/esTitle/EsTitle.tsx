@@ -12,7 +12,7 @@ type Props = {
   tooltip?: string;
 }
 
-export const EsTitle = (props: Props) => {
+export function EsTitle(props: Props) {
   const {content, isFirst = false, variant = 'h4', onClick, icon, tooltip = ''} = props;
   const {t} = useTranslation();
 
@@ -33,7 +33,7 @@ export const EsTitle = (props: Props) => {
                 color="primary"
                 component="span"
                 onClick={onClick}
-                disableRipple
+                disableRipple={true}
               >
                 {(icon)}
               </IconButton>
@@ -43,4 +43,4 @@ export const EsTitle = (props: Props) => {
       }
     </Stack>
   );
-};
+}

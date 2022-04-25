@@ -14,7 +14,7 @@ type Props = {
   chart: Chart;
 }
 
-export const EsBarGraph = (props: Props) => {
+export function EsBarGraph(props: Props) {
   const {chart} = props;
   const {t} = useTranslation();
   const [data, setData] = useState<SimpleData[]>(null!);
@@ -65,4 +65,4 @@ export const EsBarGraph = (props: Props) => {
       </Box>
     </Paper>
   );
-};
+}

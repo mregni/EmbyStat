@@ -10,7 +10,7 @@ import {EsRoundIconButton} from '../../shared/components/buttons';
 import {JobsContext} from '../../shared/context/jobs';
 import {useServerType} from '../../shared/hooks';
 import {Job} from '../../shared/models/jobs';
-import {JobSettingsDialog} from './';
+import {JobSettingsDialog} from '.';
 
 type Props = {
   job: Job;
@@ -21,7 +21,7 @@ type JobMenuProps = {
   job: Job;
 };
 
-const JobMenu = (props: JobMenuProps) => {
+function JobMenu(props: JobMenuProps) {
   const {job} = props;
   const [openSettings, setOpenSettings] = useState(false);
 
@@ -42,9 +42,9 @@ const JobMenu = (props: JobMenuProps) => {
         null}
     </>
   );
-};
+}
 
-export const JobItem = (props: Props) => {
+export function JobItem(props: Props) {
   const {job, i} = props;
   const {t} = useTranslation();
   const [loading, setLoading] = useState(false);
@@ -138,4 +138,4 @@ export const JobItem = (props: Props) => {
       </Paper>
     </Zoom>
   );
-};
+}

@@ -7,7 +7,7 @@ import {EsTitle} from '../../shared/components/esTitle';
 import {SettingsContext} from '../../shared/context/settings';
 import {useAbout} from './hooks';
 
-export const About = () => {
+export function About() {
   const {settings} = useContext(SettingsContext);
   const {about, loaded} = useAbout();
   const {t} = useTranslation();
@@ -25,7 +25,7 @@ export const About = () => {
 
   return (
     <Stack direction="column" spacing={2}>
-      <EsTitle content="ABOUT.SERVERINFO" isFirst />
+      <EsTitle content="ABOUT.SERVERINFO" isFirst={true} />
       <Stack spacing={1}>
         <Typography>
         EmbyStat {t('COMMON.VERSION')}: {settings.version}
@@ -67,7 +67,7 @@ export const About = () => {
       </Stack>
     </Stack>
   );
-};
+}
 
 {/* <mat-list-item>
   <a href="{{ environment.urls.featureupvote }}" mat-raised-button color="primary"

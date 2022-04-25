@@ -21,7 +21,7 @@ import {
   UserDetails,
 } from './Steps';
 
-const WizardContainer = () => {
+function WizardContainer() {
   const {t} = useTranslation();
   const {hasAdmins, isLoading} = useHasAnyAdmins();
   const {finishWizard} = useContext(WizardContext);
@@ -114,17 +114,17 @@ const WizardContainer = () => {
 
 
   return (
-    <Grid container justifyContent="center" sx={{mt: 8}}>
-      <Grid item xs={12} md={10} lg={8} xl={6}>
+    <Grid container={true} justifyContent="center" sx={{mt: 8}}>
+      <Grid item={true} xs={12} md={10} lg={8} xl={6}>
         <Paper sx={{minHeight: 500, p: 4}}>
           <Grid
-            container
+            container={true}
             direction="column"
             spacing={2}
             justifyContent="space-between"
             sx={{minHeight: 500}}
           >
-            <Grid item>
+            <Grid item={true}>
               {activeStep === 0 && <Intro ref={introRef} />}
               {activeStep === 1 && <UserDetails ref={userDetailRef} />}
               {activeStep === 2 && <SearchMediaServer handleNext={handleNext} ref={searchMediaServerRef} />}
@@ -134,7 +134,7 @@ const WizardContainer = () => {
               {activeStep === 6 && <ConfigureLibrary type="show" ref={configureShowLibraryRef} />}
               {activeStep === 7 && <Finish />}
             </Grid>
-            <Grid item>
+            <Grid item={true}>
               <MobileStepper
                 steps={steps}
                 position="static"
@@ -180,13 +180,13 @@ const WizardContainer = () => {
       </Grid>
     </Grid>
   );
-};
+}
 
-export const Wizard = () => {
+export function Wizard() {
   return (
     <WizardContextProvider>
       <WizardContainer />
     </WizardContextProvider>
   );
-};
+}
 

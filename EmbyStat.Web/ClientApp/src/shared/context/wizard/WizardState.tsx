@@ -43,7 +43,7 @@ export const useWizardContext = (): WizardContextProps => {
   };
 
   const setUserDetails = (username: string, password: string): void => {
-    setWizard((prev: Wizard) => ({...prev, username: username, password: password}));
+    setWizard((prev: Wizard) => ({...prev, username, password}));
   };
 
   const getMediaServers = async (): Promise<void> => {
@@ -66,11 +66,11 @@ export const useWizardContext = (): WizardContextProps => {
   };
 
   const setAdministrators = (administrators: MediaServerUser[]): void => {
-    setWizard((prev: Wizard) => ({...prev, administrators: administrators}));
+    setWizard((prev: Wizard) => ({...prev, administrators}));
   };
 
   const setAdministrator = (userId: string): void => {
-    setWizard((prev: Wizard) => ({...prev, userId: userId}));
+    setWizard((prev: Wizard) => ({...prev, userId}));
   };
 
   const setMovieLibraryIds = (libraries: string[]): Promise<void> => {

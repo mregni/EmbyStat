@@ -10,13 +10,13 @@ import {EsChipList} from '../../../shared/components/esChipList';
 import {useMediaServerUrls, useServerType} from '../../../shared/hooks';
 import {ShowRow} from '../../../shared/models/show';
 import {calculateFileSize} from '../../../shared/utils';
-import {EpisodeColumn, ShowDetailRow} from './';
+import {EpisodeColumn, ShowDetailRow} from '.';
 
 type Props = {
   row: ShowRow;
 }
 
-export const Row = (props: Props) => {
+export function Row(props: Props) {
   const {row} = props;
   const [open, setOpen] = React.useState(false);
   const {t} = useTranslation();
@@ -25,7 +25,7 @@ export const Row = (props: Props) => {
 
   return (
     <>
-      <TableRow key={row.id} hover>
+      <TableRow key={row.id} hover={true}>
         <TableCell>
           <IconButton size="small" onClick={() => setOpen(!open)}>
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -46,11 +46,11 @@ export const Row = (props: Props) => {
       </TableRow>
       <TableRow>
         <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={11}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
+          <Collapse in={open} timeout="auto" unmountOnExit={true}>
             <ShowDetailRow id={row.id} />
           </Collapse>
         </TableCell>
       </TableRow>
     </>
   );
-};
+}

@@ -13,13 +13,13 @@ import {EsDetailRowSkeleton, EsFetchFailedRow} from '../../../shared/components/
 import {useLocale, useMediaServerUrls, useServerType, useShowDetails} from '../../../shared/hooks';
 import {calculateFileSize} from '../../../shared/utils';
 import {DataLine} from '../../movies/Table/Helpers';
-import {MissingEpisodeList} from './';
+import {MissingEpisodeList} from '.';
 
 type Props = {
   id: string;
 }
 
-export const ShowDetailRow = (props: Props) => {
+export function ShowDetailRow(props: Props) {
   const {id} = props;
   const {t} = useTranslation();
   const {getBackdropImageLink, getItemDetailLink} = useMediaServerUrls();
@@ -61,49 +61,49 @@ export const ShowDetailRow = (props: Props) => {
         </Box>
         <Box sx={{flexGrow: 1, pl: 2}}>
           <Grid
-            container
+            container={true}
             direction="column"
             spacing={2}>
             <Grid
-              item
+              item={true}
               spacing={1}
-              container
+              container={true}
               direction="column"
             >
               <Grid
-                item
+                item={true}
                 spacing={2}
                 direction="row"
-                container
+                container={true}
                 alignItems="center"
               >
-                <Grid item>
+                <Grid item={true}>
                   <Typography variant="h5">
                     {show.name}
                   </Typography>
                 </Grid>
-                <Grid item>
+                <Grid item={true}>
                   <Tooltip title={`${show.communityRating}/10`}>
                     <Box>
-                      <Rating defaultValue={(show.communityRating ?? 0)/2} precision={0.1} readOnly />
+                      <Rating defaultValue={(show.communityRating ?? 0)/2} precision={0.1} readOnly={true} />
                     </Box>
                   </Tooltip>
                 </Grid>
               </Grid>
-              <Grid item>
+              <Grid item={true}>
                 <Stack spacing={1} direction="row">
                   {show.genres.map((genre) => <Chip label={genre} key={genre} size="small" /> ) }
                 </Stack>
               </Grid>
             </Grid>
-            <Grid item>
+            <Grid item={true}>
               <Stack direction="row" spacing={2} >
                 <Box
                   sx={{
                     minWidth: 200,
                     borderRight: 'solid 1px #aaaaaa',
                   }}>
-                  <Grid container direction="column" >
+                  <Grid container={true} direction="column" >
                     <DataLine
                       icon={<StorageIcon />}
                       value={calculateFileSize(show.sizeInMb)}
@@ -164,4 +164,4 @@ export const ShowDetailRow = (props: Props) => {
       </Box>
     </Box>
   );
-};
+}

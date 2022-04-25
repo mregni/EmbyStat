@@ -10,7 +10,7 @@ import {
 
 import {useFilterHelpers} from '../../hooks';
 import {ActiveFilter, FilterDefinition, FilterOperation} from '../../models/filter';
-import {EsFilterInputContainer} from './';
+import {EsFilterInputContainer} from '.';
 
 type EsNewFilterDialogProps = {
   open: boolean;
@@ -19,7 +19,7 @@ type EsNewFilterDialogProps = {
   addFilter: (filter: ActiveFilter) => void;
  }
 
-export const EsNewFilterDialog = (props: EsNewFilterDialogProps) => {
+export function EsNewFilterDialog(props: EsNewFilterDialogProps) {
   const {open, handleClose, filters, addFilter} = props;
   const {t} = useTranslation();
   const [fieldId, setFieldId] = useState<string>(filters[0].id);
@@ -151,10 +151,10 @@ export const EsNewFilterDialog = (props: EsNewFilterDialogProps) => {
         <Button onClick={closeDialog} variant="text" color="error">
           {t('COMMON.CANCEL')}
         </Button>
-        <Button onClick={handleCreate} autoFocus color="primary" variant="contained">
+        <Button onClick={handleCreate} autoFocus={true} color="primary" variant="contained">
           {t('COMMON.CREATE')}
         </Button>
       </DialogActions>
     </Dialog>
   );
-};
+}

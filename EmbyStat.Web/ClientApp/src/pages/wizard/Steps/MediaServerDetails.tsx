@@ -7,7 +7,7 @@ import {
   Box, FormControl, FormHelperText, Grid, IconButton, MenuItem, Select, Stack, Typography,
 } from '@mui/material';
 
-import {StepProps, ValidationHandleWithSave} from '../';
+import {StepProps, ValidationHandleWithSave} from '..';
 import embyLogo from '../../../shared/assets/images/emby.png';
 import jellyfinLogo from '../../../shared/assets/images/jellyfin.png';
 import {EsTextInput} from '../../../shared/components/esTextInput';
@@ -16,7 +16,7 @@ import {useServerType} from '../../../shared/hooks';
 import {MediaServer} from '../../../shared/models/mediaServer';
 
 export const MediaServerDetails =
-forwardRef<ValidationHandleWithSave, StepProps>(function MediaServerDetails(props, ref) {
+forwardRef<ValidationHandleWithSave, StepProps>((props, ref) => {
   const {wizard, setMediaServerNetworkInfo} = useContext(WizardContext);
   const {getMediaServerTypeStringFromNumber} = useServerType();
   const {t} = useTranslation();
@@ -30,11 +30,11 @@ forwardRef<ValidationHandleWithSave, StepProps>(function MediaServerDetails(prop
       if (isValid) {
         const {address, apiKey, type} = getValues();
         const mediaServer: MediaServer = {
-          address: address,
-          apiKey: apiKey,
+          address,
+          apiKey,
           id: '',
           name: '',
-          type: type,
+          type,
         };
         setMediaServerNetworkInfo(mediaServer);
       }
@@ -92,11 +92,11 @@ forwardRef<ValidationHandleWithSave, StepProps>(function MediaServerDetails(prop
             >
               {serverTypeList.map((x) => (
                 <MenuItem key={x.id} value={x.value}>
-                  <Grid container spacing={1} alignItems="center">
-                    <Grid item>
+                  <Grid container={true} spacing={1} alignItems="center">
+                    <Grid item={true}>
                       <img src={x.logo} height={20} alt="mediaserver logo" />
                     </Grid>
-                    <Grid item>
+                    <Grid item={true}>
                       {x.label}
                     </Grid>
                   </Grid>

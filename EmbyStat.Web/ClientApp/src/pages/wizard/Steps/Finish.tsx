@@ -6,7 +6,7 @@ import {Stack, Typography} from '@mui/material';
 import {WizardContext} from '../../../shared/context/wizard/WizardState';
 import {useServerType} from '../../../shared/hooks';
 
-export const Finish = () => {
+export function Finish() {
   const {wizard} = useContext(WizardContext);
   const {t} = useTranslation();
   const {getMediaServerTypeStringFromNumber} = useServerType();
@@ -24,4 +24,4 @@ export const Finish = () => {
       </Typography>
     </Stack>
   );
-};
+}

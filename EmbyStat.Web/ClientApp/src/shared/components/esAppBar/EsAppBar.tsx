@@ -8,9 +8,9 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import {useNavigate} from 'react-router';
 
 import {UserContext} from '../../context/user';
-import SmallLogo from '../../../shared/assets/images/logo-small.png';
+import SmallLogo from '../../assets/images/logo-small.png';
 
-export const EsAppBar = () => {
+export function EsAppBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const {t} = useTranslation();
   const userContext = useContext(UserContext);
@@ -61,7 +61,7 @@ export const EsAppBar = () => {
                 vertical: 'top',
                 horizontal: 'right',
               }}
-              keepMounted
+              keepMounted={true}
               transformOrigin={{
                 vertical: 'top',
                 horizontal: 'right',
@@ -81,4 +81,4 @@ export const EsAppBar = () => {
       </Toolbar>
     </AppBar>
   );
-};
+}

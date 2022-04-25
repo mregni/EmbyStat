@@ -5,15 +5,15 @@ import {Stack} from '@mui/material';
 import {EsTitle} from '../../shared/components/esTitle';
 import {EsFilterContainer} from '../../shared/components/filter';
 import {MoviesContext} from '../../shared/context/movies';
-import {movieFilters} from './';
+import {movieFilters} from '.';
 import {MovieTable} from './Table';
 
-export const List = () => {
+export function List() {
   return (
     <Stack direction="column" spacing={2}>
-      <EsTitle content="COMMON.FILTERS" isFirst />
+      <EsTitle content="COMMON.FILTERS" isFirst={true} />
       <EsFilterContainer filters={movieFilters} context={MoviesContext} />
       <MovieTable />
     </Stack>
   );
-};
+}

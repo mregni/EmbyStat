@@ -13,7 +13,7 @@ type Props = {
   finishedAction: () => Promise<void>;
 }
 
-export const EsJobRunning = (props: Props) => {
+export function EsJobRunning(props: Props) {
   const {children, title, body, jobId, finishedAction} = props;
   const [isRunning, setIsRunning] = useState(false);
   const {jobs, logLines} = useContext(JobsContext);
@@ -60,7 +60,7 @@ export const EsJobRunning = (props: Props) => {
             }}
           >
             <Box>
-              <Typography variant="h5" color="primary" gutterBottom>
+              <Typography variant="h5" color="primary" gutterBottom={true}>
                 {t(title)}
               </Typography>
               <Typography variant="body1">
@@ -78,4 +78,4 @@ export const EsJobRunning = (props: Props) => {
       </Card>
     </Box>
   );
-};
+}

@@ -8,26 +8,26 @@ import {EsTitle} from '../../shared/components/esTitle';
 import {MediaServerUserContextProvider} from '../../shared/context/mediaServerUser';
 import {EsUserStatistics, EsUserTable} from './components';
 
-const UserContainer = () => {
+function UserContainer() {
   const {t} = useTranslation();
 
   // TODO: Fix the loadin state here!
   return (
     <EsLoading label={t('USERS.LOADER')} loading={false}>
       <Stack spacing={2}>
-        <EsTitle content={t('COMMON.NUMBERS')} isFirst />
+        <EsTitle content={t('COMMON.NUMBERS')} isFirst={true} />
         <EsUserStatistics />
         <EsTitle content={t('USERS.USERS')} />
         <EsUserTable/>
       </Stack>
     </EsLoading>
   );
-};
+}
 
-export const Users = () => {
+export function Users() {
   return (
     <MediaServerUserContextProvider>
       <UserContainer/>
     </MediaServerUserContextProvider>
   );
-};
+}

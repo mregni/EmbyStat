@@ -8,7 +8,7 @@ type Props = {
   tag: string;
 }
 
-export const EsPoster = (props: Props) => {
+export function EsPoster(props: Props) {
   const {mediaId, tag} = props;
   const {getPrimaryImageLink} = useMediaServerUrls();
 
@@ -31,4 +31,4 @@ export const EsPoster = (props: Props) => {
       />
     </Paper>
   );
-};
+}

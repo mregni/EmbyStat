@@ -6,7 +6,7 @@ interface Props {
   children: ReactElement | ReactElement[];
 }
 
-export const MediaServerUserContextProvider = (props: Props): ReactElement => {
+export function MediaServerUserContextProvider(props: Props): ReactElement {
   const {children} = props;
   const context = useMediaServerUserContext();
 
@@ -15,4 +15,4 @@ export const MediaServerUserContextProvider = (props: Props): ReactElement => {
       {children}
     </MediaServerUserContext.Provider>
   );
-};
+}

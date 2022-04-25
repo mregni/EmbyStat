@@ -5,13 +5,13 @@ import {Grid, Typography} from '@mui/material';
 
 import {WizardContext} from '../../../../shared/context/wizard/WizardState';
 
-export const TestFailed = () => {
+export function TestFailed() {
   const {wizard} = useContext(WizardContext);
   const {t} = useTranslation();
   const [type] = useState(wizard.serverType === 0 ? 'Emby' : 'Jellyfin');
 
   return (
-    <Grid container direction="column">
+    <Grid container={true} direction="column">
       <Typography variant="body1" className="m-t-16">
         {t('WIZARD.APIKEYFAILED', {type, address: wizard.address, key: wizard.apiKey})}
       </Typography>
@@ -23,4 +23,4 @@ export const TestFailed = () => {
       </Typography>
     </Grid>
   );
-};
+}

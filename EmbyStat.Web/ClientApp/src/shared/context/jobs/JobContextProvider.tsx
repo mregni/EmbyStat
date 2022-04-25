@@ -5,7 +5,7 @@ interface Props {
   children: ReactElement | ReactElement[];
 }
 
-export const JobsContextProvider = (props: Props): ReactElement => {
+export function JobsContextProvider(props: Props): ReactElement {
   const {children} = props;
   const jobsContext = useJobsContext();
 
@@ -14,4 +14,4 @@ export const JobsContextProvider = (props: Props): ReactElement => {
       {children}
     </JobsContext.Provider>
   );
-};
+}

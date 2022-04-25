@@ -5,7 +5,7 @@ import {Stack} from '@mui/material';
 import {ServerContext} from '../../shared/context/server';
 import {EsServerDetails, EsServerExtraInfo, EsServerFeatures, EsServerPaths} from './components';
 
-export const ServerInfo = () => {
+export function ServerInfo() {
   const {serverInfo} = useContext(ServerContext);
 
   if (serverInfo === null) {
@@ -22,4 +22,4 @@ export const ServerInfo = () => {
       <EsServerExtraInfo />
     </>
   );
-};
+}

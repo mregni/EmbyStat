@@ -10,7 +10,7 @@ type EsBoolListItemProps = {
   value: boolean;
 }
 
-export const EsBoolRow = (props: EsBoolListItemProps) => {
+export function EsBoolRow(props: EsBoolListItemProps) {
   const {label, value} = props;
   const {t} = useTranslation();
 
@@ -27,4 +27,4 @@ export const EsBoolRow = (props: EsBoolListItemProps) => {
       </TableCell>
     </TableRow>
   );
-};
+}

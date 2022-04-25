@@ -14,7 +14,7 @@ interface Props {
   openForgotPasswordForm: () => void,
 };
 
-export const LoginForm = (props: Props) => {
+export function LoginForm(props: Props) {
   const {openForgotPasswordForm} = props;
   const navigate = useNavigate();
   const location = useEsLocation();
@@ -56,20 +56,20 @@ export const LoginForm = (props: Props) => {
 
   return (
     <Grid
-      container
+      container={true}
       direction="column"
       spacing={3}
     >
-      <Grid item>
-        <Grid container direction="column" spacing={1} >
-          <Grid item>
+      <Grid item={true}>
+        <Grid container={true} direction="column" spacing={1} >
+          <Grid item={true}>
             <EsTextInput
               inputRef={usernameRegister}
               label={t('SETTINGS.ACCOUNT.USERNAME')}
               defaultValue={getValues('username')}
             />
           </Grid>
-          <Grid item>
+          <Grid item={true}>
             <EsTextInput
               inputRef={passwordRegister}
               label={t('SETTINGS.PASSWORD.PASSWORD')}
@@ -79,16 +79,16 @@ export const LoginForm = (props: Props) => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item>
-        <Grid container spacing={1} direction="column" alignItems="center">
-          <Grid item
+      <Grid item={true}>
+        <Grid container={true} spacing={1} direction="column" alignItems="center">
+          <Grid item={true}
             sx={{
               marginBottom: failedLogin ? 0 : '23px',
             }}>
             <Typography variant="body1" color="error">{failedLogin ? t('LOGIN.ERROR') : null}</Typography>
           </Grid>
-          <Grid item container direction="row" justifyContent="space-between">
-            <Grid item>
+          <Grid item={true} container={true} direction="row" justifyContent="space-between">
+            <Grid item={true}>
               <EsButton
                 variant="text"
                 onClick={() => openForgotPasswordForm()}
@@ -97,7 +97,7 @@ export const LoginForm = (props: Props) => {
                 {t('LOGIN.RECOVERPASSWORD')}
               </EsButton>
             </Grid>
-            <Grid item>
+            <Grid item={true}>
               <EsButton
                 onClick={loginUser}
                 disabled={isLoading}
@@ -114,4 +114,4 @@ export const LoginForm = (props: Props) => {
       </Grid>
     </Grid>
   );
-};
+}

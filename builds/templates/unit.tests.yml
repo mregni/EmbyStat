@@ -24,7 +24,7 @@ steps:
     displayName: 'Run eslint'
     inputs:
       script: |
-        npm run lint
+        npx eslint --ext .tsx --color -f json -o report.json src
       workingDirectory: 'EmbyStat.Web/ClientApp'
 
   - task: CmdLine@2
@@ -42,13 +42,4 @@ steps:
         **\*.trx
         **\*.coverage
         **\report.json
-        **\lcov.info
-      TargetFolder: '$(Common.TestResultsDirectory)'
-
-  - task: CopyFiles@2
-    displayName: 'Copy FE test result files'
-    inputs:
-      SourceFolder: 'EmbyStat.Web/ClientApp'
-      Contents: |
-        **\lcov.info
       TargetFolder: '$(Common.TestResultsDirectory)'

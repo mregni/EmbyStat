@@ -8,7 +8,7 @@ import {EsLoading} from '../../shared/components/esLoading';
 import {MoviesContext, MoviesContextProvider} from '../../shared/context/movies';
 import {movieJobId} from '../../shared/utils';
 
-const MoviesContainer = () => {
+function MoviesContainer() {
   const {loaded, mediaPresent, load} = useContext(MoviesContext);
   const {t} = useTranslation();
 
@@ -31,12 +31,12 @@ const MoviesContainer = () => {
       </EsJobRunning>
     </EsLoading>
   );
-};
+}
 
-export const Movies = () => {
+export function Movies() {
   return (
     <MoviesContextProvider>
       <MoviesContainer />
     </MoviesContextProvider>
   );
-};
+}

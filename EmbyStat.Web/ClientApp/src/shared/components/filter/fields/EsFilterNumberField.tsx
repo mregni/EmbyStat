@@ -13,7 +13,7 @@ interface Props {
   fieldName?: string;
 }
 
-export const EsFilterNumberField = (props: Props) => {
+export function EsFilterNumberField(props: Props) {
   const {onValueChanged, errors, register, unit = '', fieldName = 'text'} = props;
   const {t} = useTranslation();
   const [value, setValue] = useState('');
@@ -48,4 +48,4 @@ export const EsFilterNumberField = (props: Props) => {
       />
     </Box>
   );
-};
+}

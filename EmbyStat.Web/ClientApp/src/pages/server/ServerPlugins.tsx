@@ -7,7 +7,7 @@ import {ServerContext} from '../../shared/context/server';
 
 type Props = {}
 
-export const ServerPlugins = (props: Props) => {
+export function ServerPlugins(props: Props) {
   const {isLoaded, plugins} = useContext(ServerContext);
 
   if (!isLoaded) {
@@ -43,4 +43,4 @@ export const ServerPlugins = (props: Props) => {
     </Paper>
 
   );
-};
+}

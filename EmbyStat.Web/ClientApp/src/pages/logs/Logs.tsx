@@ -9,7 +9,7 @@ import {
 import {LogFile} from '../../shared/models/logs';
 import {downloadLogFile, getLogList} from '../../shared/services/logService';
 
-export const Logs = () => {
+export function Logs() {
   const [logs, setLogs] = useState<LogFile[]>([]);
   const {t} = useTranslation();
 
@@ -22,13 +22,12 @@ export const Logs = () => {
       return `${String(value)} b`;
     } else if (value < 1024 * 1024) {
       return `${Math.floor(value / 1024)} Kb`;
-    } else {
-      return `${Math.floor(value / (1024 * 1024))} Mb`;
     }
+    return `${Math.floor(value / (1024 * 1024))} Mb`;
   };
 
   return (
-    <Grid container item xs={12} lg={6} xl={3}>
+    <Grid container={true} item={true} xs={12} lg={6} xl={3}>
       <TableContainer component={Paper} sx={{p: 2}}>
         <Table size="small">
           <TableHead>
@@ -75,4 +74,4 @@ export const Logs = () => {
       </TableContainer>
     </Grid>
   );
-};
+}

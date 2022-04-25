@@ -12,7 +12,7 @@ type EsTablePaginationProps = {
   pageSizeSteps?: number[];
 }
 
-export const EsTablePagination = (props: EsTablePaginationProps) => {
+export function EsTablePagination(props: EsTablePaginationProps) {
   const {totalCount,
     rowsPerPage,
     pageNumber,
@@ -41,4 +41,4 @@ export const EsTablePagination = (props: EsTablePaginationProps) => {
         handleChangeRowsPerPage(parseInt(event.target.value, 10))}
     />
   );
-};
+}

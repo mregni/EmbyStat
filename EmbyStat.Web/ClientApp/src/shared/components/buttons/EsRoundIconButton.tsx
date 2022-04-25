@@ -8,7 +8,7 @@ type Props = {
   disabled: boolean;
 }
 
-export const EsRoundIconButton = (props: Props) => {
+export function EsRoundIconButton(props: Props) {
   const {Icon, onClick, loading, disabled} = props;
 
   const clickedButton = () => {
@@ -37,7 +37,7 @@ export const EsRoundIconButton = (props: Props) => {
     >
       {loading ? (
         <Grid
-          container
+          container={true}
           justifyContent="center"
           alignItems="center"
           sx={{mt: (theme) => theme.spacing(1)}}
@@ -46,7 +46,7 @@ export const EsRoundIconButton = (props: Props) => {
         </Grid>
       ) : (
         <Grid
-          container
+          container={true}
           justifyContent="center"
           alignItems="center"
           sx={{
@@ -62,4 +62,4 @@ export const EsRoundIconButton = (props: Props) => {
       )}
     </Paper>
   );
-};
+}

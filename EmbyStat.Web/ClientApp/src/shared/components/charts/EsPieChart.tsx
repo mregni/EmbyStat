@@ -21,10 +21,10 @@ const calculateTotal = (pieChart: any): string => {
     .reduce((s: number, p: any) => s + p.data.value, 0));
 };
 
-const CenterTemplate = (pieChart: any): ReactElement => {
+function CenterTemplate(pieChart: any): ReactElement {
   return (
     <svg>
-      <circle cx="100" cy="100" r={pieChart.getInnerRadius() - 6} fill={theme.palette.background.paper}></circle>
+      <circle cx="100" cy="100" r={pieChart.getInnerRadius() - 6} fill={theme.palette.background.paper} />
       <text textAnchor="middle" x="100" y="100" style={{fontSize: 18, fill: theme.palette.text.primary}}>
         <tspan x="100">{i18n.t('COMMON.TOTAL')}</tspan>
         <tspan x="100" dy="20px" style={{fontWeight: 600}}>{
@@ -33,13 +33,13 @@ const CenterTemplate = (pieChart: any): ReactElement => {
       </text>
     </svg>
   );
-};
+}
 
 interface Props {
   chart: Chart;
 }
 
-export const EsPieGraph = (props: Props) => {
+export function EsPieGraph(props: Props) {
   const {chart} = props;
   const theme = useTheme();
   const {t} = useTranslation();
@@ -80,5 +80,5 @@ export const EsPieGraph = (props: Props) => {
       </Box>
     </Paper>
   );
-};
+}
 

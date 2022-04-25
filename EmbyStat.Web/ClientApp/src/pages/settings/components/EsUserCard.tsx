@@ -13,7 +13,7 @@ type User = {
   username: string;
 }
 
-export const EsUserCard = () => {
+export function EsUserCard() {
   const {user, changeUserName} = useContext(UserContext);
   const {t} = useTranslation();
 
@@ -57,4 +57,4 @@ export const EsUserCard = () => {
       />
     </EsSaveCard>
   );
-};
+}

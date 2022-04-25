@@ -7,7 +7,7 @@ type Props = {
   maxItems: number;
 }
 
-export const EsFlagList = (props: Props) => {
+export function EsFlagList(props: Props) {
   const {list, maxItems} = props;
   if (list && list.length) {
     const uniqueList = Array.from(new Set(list));
@@ -16,21 +16,21 @@ export const EsFlagList = (props: Props) => {
       (normalCount > maxItems ? normalCount - maxItems : 0);
 
     return (
-      <Grid container justifyContent="flex-end" direction="row">
+      <Grid container={true} justifyContent="flex-end" direction="row">
         {uniqueList?.filter((x) => x !== 'und' && x !== null).slice(0, maxItems).map((x) => (
-          <Grid item key={x} sx={{mr: '4px', pt: '6px'}}>
+          <Grid item={true} key={x} sx={{mr: '4px', pt: '6px'}}>
             <EsFlag language={x} />
           </Grid>
         ))}
         {extraCount > 0 ? (
-          <Grid item>
-            <Chip size='small' label={`+${extraCount}`} sx={{mr: '4px', mt: '4px'}}></Chip>
+          <Grid item={true}>
+            <Chip size='small' label={`+${extraCount}`} sx={{mr: '4px', mt: '4px'}} />
           </Grid>
         ) : null}
       </Grid>
     );
   }
   return (<div />);
-};
+}
 
 export default EsFlagList;

@@ -13,7 +13,7 @@ type EsTextRowProps = {
   label: string;
 }
 
-const EsTextRow = (props: EsTextRowProps) => {
+function EsTextRow(props: EsTextRowProps) {
   const {value, label} = props;
   const {t} = useTranslation();
 
@@ -31,9 +31,9 @@ const EsTextRow = (props: EsTextRowProps) => {
       </TableCell>
     </TableRow>
   );
-};
+}
 
-export const EsServerPaths = () => {
+export function EsServerPaths() {
   const {serverInfo} = useContext(ServerContext);
 
   const dataRows = [
@@ -49,7 +49,7 @@ export const EsServerPaths = () => {
     <Card>
       <CardContent>
         <Stack spacing={2}>
-          <EsTitle content="COMMON.PATHS" isFirst variant="h6" />
+          <EsTitle content="COMMON.PATHS" isFirst={true} variant="h6" />
           <Table>
             <TableBody>
               {dataRows.map((item) => (<EsTextRow key={item.label} label={item.label} value={item.value} />))}
@@ -59,4 +59,4 @@ export const EsServerPaths = () => {
       </CardContent>
     </Card>
   );
-};
+}

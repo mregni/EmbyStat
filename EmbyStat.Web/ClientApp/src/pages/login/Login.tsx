@@ -5,9 +5,9 @@ import {Card, CardContent, Grid} from '@mui/material';
 
 import SmallLogo from '../../shared/assets/images/logo-small.png';
 import {UserContext} from '../../shared/context/user';
-import {LoginForm, RecoverPasswordForm} from './';
+import {LoginForm, RecoverPasswordForm} from '.';
 
-export const Login = () => {
+export function Login() {
   const [inRecoveryMode, setInRecoveryMode] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const userContext = useContext(UserContext);
@@ -20,12 +20,12 @@ export const Login = () => {
   }, []);
 
   if (isLoggedIn) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/" replace={true} />;
   }
 
   return (
     <Grid
-      container
+      container={true}
       justifyContent="center"
       alignItems="center"
       sx={{
@@ -38,14 +38,14 @@ export const Login = () => {
             paddingTop: '20px',
           }}>
           <Grid
-            container
+            container={true}
             direction="column"
             justifyContent="space-between"
           >
-            <Grid item container justifyContent="center">
+            <Grid item={true} container={true} justifyContent="center">
               <img src={SmallLogo} width={250} alt="EmbyStat logo" style={{marginBottom: 10}}/>
             </Grid>
-            <Grid item>
+            <Grid item={true}>
               {
                 inRecoveryMode ?
                   <RecoverPasswordForm openLoginForm={() => setInRecoveryMode((prev) => !prev)} /> :
@@ -57,4 +57,4 @@ export const Login = () => {
       </Card>
     </Grid>
   );
-};
+}

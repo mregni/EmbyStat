@@ -20,7 +20,7 @@ export interface ResetDialogProps {
   onSave: (reset: boolean) => void;
 }
 
-const ResetDialog = (props: ResetDialogProps) => {
+function ResetDialog(props: ResetDialogProps) {
   const {onCancel, onSave, open} = props;
   const {t} = useTranslation();
 
@@ -58,7 +58,7 @@ const ResetDialog = (props: ResetDialogProps) => {
       </DialogActions>
     </Dialog>
   );
-};
+}
 
 
 type MediaServerForm = {
@@ -66,7 +66,7 @@ type MediaServerForm = {
   apiKey: string;
 }
 
-export const EsMediaServerCard = () => {
+export function EsMediaServerCard() {
   const {serverType} = useServerType();
   const {settings, save, resetFinished, resetLogLine} = useContext(SettingsContext);
   const [openBackdrop, setOpenBackdrop] = useState(false);
@@ -174,4 +174,4 @@ export const EsMediaServerCard = () => {
       </Backdrop>
     </EsSaveCard>
   );
-};
+}

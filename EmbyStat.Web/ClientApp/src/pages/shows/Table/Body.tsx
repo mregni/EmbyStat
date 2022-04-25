@@ -4,13 +4,13 @@ import {TableBody} from '@mui/material';
 
 import {TablePage} from '../../../shared/models/common';
 import {ShowRow} from '../../../shared/models/show';
-import {Row} from './';
+import {Row} from '.';
 
 type BodyProps = {
   page: TablePage<ShowRow>;
 };
 
-export const Body = (props: BodyProps) => {
+export function Body(props: BodyProps) {
   const {page} = props;
 
   return (
@@ -18,4 +18,4 @@ export const Body = (props: BodyProps) => {
       {page.data.map((row) => (<Row row={row} key={row.id} />))}
     </TableBody>
   );
-};
+}

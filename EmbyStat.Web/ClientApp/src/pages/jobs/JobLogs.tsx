@@ -8,7 +8,7 @@ import {JobsContext} from '../../shared/context/jobs';
 import {useLocale} from '../../shared/hooks';
 import {JobLogLine} from '../../shared/models/jobs';
 
-export const JobLogs = () => {
+export function JobLogs() {
   const {logLines, jobs} = useContext(JobsContext);
   const {locale} = useLocale();
 
@@ -47,4 +47,4 @@ export const JobLogs = () => {
       </Paper>
     </Zoom>
   );
-};
+}

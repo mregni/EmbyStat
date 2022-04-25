@@ -8,7 +8,7 @@ interface Props {
   card: Card;
 }
 
-export const EsBasicCard = (props: Props) => {
+export function EsBasicCard(props: Props) {
   const {card} = props;
   const {t} = useTranslation();
 
@@ -80,4 +80,4 @@ export const EsBasicCard = (props: Props) => {
       </Box>
     </Paper>
   );
-};
+}

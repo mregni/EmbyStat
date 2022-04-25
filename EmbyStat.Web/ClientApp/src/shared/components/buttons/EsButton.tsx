@@ -10,7 +10,7 @@ type Props = {
   color?: 'primary' |'secondary';
 }
 
-export const EsButton = (props: Props) => {
+export function EsButton(props: Props) {
   const {
     disabled = false,
     fullWidth = true,
@@ -32,4 +32,4 @@ export const EsButton = (props: Props) => {
       {children}
     </Button>
   );
-};
+}

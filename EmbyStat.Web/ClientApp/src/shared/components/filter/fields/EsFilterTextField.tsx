@@ -11,7 +11,7 @@ interface Props {
   register: Function;
 }
 
-export const EsFilterTextField = (props: Props) => {
+export function EsFilterTextField(props: Props) {
   const {onValueChanged, errors, register} = props;
   const {t} = useTranslation();
   const [value, setValue] = useState('');
@@ -38,4 +38,4 @@ export const EsFilterTextField = (props: Props) => {
       />
     </Box>
   );
-};
+}

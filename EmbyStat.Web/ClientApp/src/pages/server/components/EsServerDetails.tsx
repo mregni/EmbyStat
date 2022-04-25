@@ -12,7 +12,7 @@ import {EsChipTitle} from '../../../shared/components/esTitle';
 import {ServerContext} from '../../../shared/context/server';
 import {useServerType} from '../../../shared/hooks';
 
-export const EsServerDetails = () => {
+export function EsServerDetails() {
   const {serverInfo} = useContext(ServerContext);
   const {t} = useTranslation();
   const {serverType} = useServerType();
@@ -41,7 +41,7 @@ export const EsServerDetails = () => {
             <EsChipTitle
               variant="h4"
               content={serverInfo.serverName}
-              isFirst
+              isFirst={true}
               chipContent={serverInfo.version}
               icon={<OpenInNewIcon />}
               onClick={openServer}
@@ -68,4 +68,4 @@ export const EsServerDetails = () => {
       </CardContent>
     </Card>
   );
-};
+}

@@ -18,7 +18,7 @@ import {Users} from './pages/users';
 import {Wizard} from './pages/wizard';
 import {SettingsContext} from './shared/context/settings';
 
-const RoutesContainer = () => {
+function RoutesContainer() {
   const {settings, load} = useContext(SettingsContext);
   const navigate = useNavigate();
 
@@ -54,9 +54,9 @@ const RoutesContainer = () => {
       <Route path="/users" element={<RequireAuth><Users /></RequireAuth>} />
       <Route path="/about" element={<RequireAuth><About /></RequireAuth>} />
       <Route path="/wizard" element={<Wizard />} />
-      <Route path="/" element={<Navigate to="/home" replace />} />
+      <Route path="/" element={<Navigate to="/home" replace={true} />} />
     </Routes>
   );
-};
+}
 
 export default RoutesContainer;

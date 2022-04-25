@@ -14,7 +14,7 @@ interface Props {
   enableBackground: boolean;
 }
 
-export const EsTopListCard = (props: Props) => {
+export function EsTopListCard(props: Props) {
   const {data, enableBackground} = props;
   const {t} = useTranslation();
   const [hoveredItem, setHoveredItem] = useState<TopCardItem>(data.values[0]);
@@ -73,14 +73,14 @@ export const EsTopListCard = (props: Props) => {
             onError={addDefaultSrc} />
         </Box>
         <Grid
-          container
+          container={true}
           direction="column"
           justifyContent="flex-start"
           sx={{m: 1}}
         >
           <Grid
-            item
-            container
+            item={true}
+            container={true}
             direction="row"
             justifyContent="space-between"
             sx={{
@@ -90,8 +90,8 @@ export const EsTopListCard = (props: Props) => {
               mb: 1,
             }}
           >
-            <Grid item>{t(data.title)}</Grid>
-            <Grid item>
+            <Grid item={true}>{t(data.title)}</Grid>
+            <Grid item={true}>
               <Typography variant="body1" color="secondary" fontWeight="700">
                 {data.unitNeedsTranslation ? t(data.unit) : data.unit}
               </Typography>
@@ -101,8 +101,8 @@ export const EsTopListCard = (props: Props) => {
 
           {data.values.map((pair) => (
             <Grid
-              item
-              container
+              item={true}
+              container={true}
               justifyContent="space-between"
               key={pair.mediaId}
               sx={{
@@ -112,7 +112,7 @@ export const EsTopListCard = (props: Props) => {
               onMouseOver={() => setHoveredItem(pair)}
             >
               <Grid
-                item
+                item={true}
                 sx={{
                   'cursor': 'pointer',
                   '&:hover': {
@@ -131,7 +131,7 @@ export const EsTopListCard = (props: Props) => {
                   {pair.label.length > 30 ? t(pair.label).substr(0, 30) + '...' : t(pair.label)}
                 </a>
               </Grid>
-              <Grid item>
+              <Grid item={true}>
                 <Typography variant="body1" color="secondary" fontWeight="700">
                   {data.valueType === 0 ? pair.value : null}
                   {data.valueType === 1 ? calculateMinutes(pair.value) : null}
@@ -145,4 +145,4 @@ export const EsTopListCard = (props: Props) => {
       </Stack>
     </Paper>
   );
-};
+}

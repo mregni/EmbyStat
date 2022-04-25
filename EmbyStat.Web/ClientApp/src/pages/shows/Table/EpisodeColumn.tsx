@@ -8,7 +8,7 @@ type EpisodeColumnProps = {
   row: ShowRow;
 }
 
-export const EpisodeColumn = (props: EpisodeColumnProps) => {
+export function EpisodeColumn(props: EpisodeColumnProps) {
   const {row} = props;
   let value = `${row.episodeCount} / ${row.episodeCount + row.missingEpisodeCount}`;
   if (row.specialEpisodeCount > 0) {
@@ -18,13 +18,13 @@ export const EpisodeColumn = (props: EpisodeColumnProps) => {
   const percentage = row.episodeCount / (row.episodeCount + row.missingEpisodeCount) * 100;
 
   return (
-    <Grid container direction="column">
-      <Grid item>
+    <Grid container={true} direction="column">
+      <Grid item={true}>
         {value}
       </Grid>
-      <Grid item>
+      <Grid item={true}>
         <LinearProgress value={percentage} variant="determinate" color={percentage >= 90 ? 'primary' : 'secondary'} />
       </Grid>
     </Grid>
   );
-};
+}

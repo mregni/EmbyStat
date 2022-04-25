@@ -5,20 +5,20 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {Collapse, IconButton, TableCell, TableRow} from '@mui/material';
 
-import {MovieDetailRow} from '../';
+import {MovieDetailRow} from '..';
 import {EsHyperLinkButton} from '../../../../shared/components/buttons';
 import {EsChipList} from '../../../../shared/components/esChipList';
 import {EsFlagList} from '../../../../shared/components/esFlagList';
 import {useMediaServerUrls, useServerType} from '../../../../shared/hooks';
 import {MovieRow} from '../../../../shared/models/movie';
 import {calculateFileSize} from '../../../../shared/utils';
-import {SmallStreamList} from './';
+import {SmallStreamList} from '.';
 
 type RowProps = {
   row: MovieRow;
 }
 
-export const Row = (props: RowProps) => {
+export function Row(props: RowProps) {
   const {row} = props;
   const [open, setOpen] = React.useState(false);
   const {t} = useTranslation();
@@ -27,7 +27,7 @@ export const Row = (props: RowProps) => {
 
   return (
     <>
-      <TableRow key={row.id} hover>
+      <TableRow key={row.id} hover={true}>
         <TableCell>
           <IconButton size="small" onClick={() => setOpen(!open)}>
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -53,11 +53,11 @@ export const Row = (props: RowProps) => {
       </TableRow>
       <TableRow>
         <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={10}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
+          <Collapse in={open} timeout="auto" unmountOnExit={true}>
             <MovieDetailRow id={row.id} />
           </Collapse>
         </TableCell>
       </TableRow>
     </>
   );
-};
+}

@@ -6,7 +6,7 @@ interface Props {
   children: ReactElement | ReactElement[];
 }
 
-export const MoviesContextProvider = (props: Props): ReactElement => {
+export function MoviesContextProvider(props: Props): ReactElement {
   const {children} = props;
   const moviesContext = useMoviesContext();
 
@@ -15,4 +15,4 @@ export const MoviesContextProvider = (props: Props): ReactElement => {
       {children}
     </MoviesContext.Provider>
   );
-};
+}

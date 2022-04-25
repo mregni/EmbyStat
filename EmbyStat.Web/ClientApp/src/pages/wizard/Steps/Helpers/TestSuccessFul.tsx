@@ -10,7 +10,7 @@ import {EsTextInput} from '../../../../shared/components/esTextInput';
 import {WizardContext} from '../../../../shared/context/wizard/WizardState';
 import {ValidationHandleWithSave} from '../../Interfaces';
 
-export const TestSuccessFul = forwardRef<ValidationHandleWithSave>(function TestSuccessFul(props, ref) {
+export const TestSuccessFul = forwardRef<ValidationHandleWithSave>((props, ref) => {
   const {wizard, setMediaServerNetworkInfo, setAdministrator} = useContext(WizardContext);
   const {t} = useTranslation();
 
@@ -83,11 +83,11 @@ export const TestSuccessFul = forwardRef<ValidationHandleWithSave>(function Test
   }, [selectedAddress, clearErrors]);
 
   return (
-    <Grid item container xs={12} direction="column">
-      <Grid item>
+    <Grid item={true} container={true} xs={12} direction="column">
+      <Grid item={true}>
         <Card
           elevation={7}
-          square
+          square={true}
           sx={{
             mt: 4,
             display: 'flex',
@@ -96,8 +96,8 @@ export const TestSuccessFul = forwardRef<ValidationHandleWithSave>(function Test
           }}
         >
           <CardContent>
-            <Grid container direction="column" spacing={2}>
-              <Grid item>
+            <Grid container={true} direction="column" spacing={2}>
+              <Grid item={true}>
                 {t('WIZARD.LANWANCHOISE', {
                   type: wizard.serverType === 0 ?
                     'Emby' :
@@ -105,7 +105,7 @@ export const TestSuccessFul = forwardRef<ValidationHandleWithSave>(function Test
                 },
                 )}
               </Grid>
-              <Grid item>
+              <Grid item={true}>
                 <FormControl style={{width: '100%'}}>
                   <Controller
                     name="selectedAddress"
@@ -150,7 +150,7 @@ export const TestSuccessFul = forwardRef<ValidationHandleWithSave>(function Test
                   />
                 </FormControl>
               </Grid>
-              <Grid item>
+              <Grid item={true}>
                 <EsTextInput
                   readonly={selectedAddress !== 'other'}
                   inputRef={addressRegister}
@@ -170,10 +170,10 @@ export const TestSuccessFul = forwardRef<ValidationHandleWithSave>(function Test
         </Card>
       </Grid>
       {wizard.serverType === 1 ? (
-        <Grid item>
+        <Grid item={true}>
           <Card
             elevation={7}
-            square
+            square={true}
             sx={{
               mt: 4,
               display: 'flex',
@@ -182,13 +182,13 @@ export const TestSuccessFul = forwardRef<ValidationHandleWithSave>(function Test
             }}
           >
             <CardContent>
-              <Grid container direction="column" spacing={2}>
-                <Grid item>
-                  <Typography gutterBottom>
+              <Grid container={true} direction="column" spacing={2}>
+                <Grid item={true}>
+                  <Typography gutterBottom={true}>
                     {t('WIZARD.JELLYFIN.ADMINTEXT')}
                   </Typography>
                 </Grid>
-                <Grid item>
+                <Grid item={true}>
                   <Controller
                     name="selectedAdmin"
                     control={control}

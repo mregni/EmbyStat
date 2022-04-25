@@ -17,7 +17,7 @@ type Props = {
   show: Show
 ;}
 
-export const MissingEpisodeList = (props: Props) => {
+export function MissingEpisodeList(props: Props) {
   const {show} = props;
   const {jsonToCSV} = usePapaParse();
   const {t} = useTranslation();
@@ -53,7 +53,7 @@ export const MissingEpisodeList = (props: Props) => {
       <EsTitle
         content={t('SHOWS.MISSINGEPISODES')}
         variant="h6"
-        isFirst
+        isFirst={true}
         icon={<FileDownloadIcon/>}
         tooltip={t('COMMON.DOWNLOADCSV')}
         onClick={generateCsv}
@@ -74,7 +74,7 @@ export const MissingEpisodeList = (props: Props) => {
                 {
                   show.missingSeasons.map((season) => (
                     season.episodes.map((episode) => (
-                      <TableRow key={episode.id} hover>
+                      <TableRow key={episode.id} hover={true}>
                         <TableCell>{season.indexNumber}</TableCell>
                         <TableCell>{episode.indexNumber}</TableCell>
                         <TableCell>{episode.name}</TableCell>
@@ -92,4 +92,4 @@ export const MissingEpisodeList = (props: Props) => {
       }
     </Stack>
   );
-};
+}

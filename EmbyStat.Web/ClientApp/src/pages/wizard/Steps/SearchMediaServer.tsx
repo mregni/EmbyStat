@@ -11,7 +11,7 @@ import {StepProps, ValidationHandleWithSave} from '../Interfaces';
 import {NewServerCard, ServerCard} from './Helpers';
 
 export const SearchMediaServer =
-forwardRef<ValidationHandleWithSave, StepProps>(function SearchMediaServer(props: StepProps, ref) {
+forwardRef<ValidationHandleWithSave, StepProps>((props: StepProps, ref) => {
   // eslint-disable-next-line react/prop-types
   const {handleNext} = props;
   const {t} = useTranslation();
@@ -63,11 +63,11 @@ forwardRef<ValidationHandleWithSave, StepProps>(function SearchMediaServer(props
         width='100%'
         height='200px'
       >
-        <Grid container direction="column" sx={{minHeigt: 115}}>
+        <Grid container={true} direction="column" sx={{minHeigt: 115}}>
           <Typography variant="body1" sx={{mb: 3}}>
             {wizard.foundServers.length > 0 ? t('WIZARD.FOUNDTEXT') : t('WIZARD.NOTFOUNDTEXT')}
           </Typography>
-          <Grid item container direction="row" xs={12} spacing={2}>
+          <Grid item={true} container={true} direction="row" xs={12} spacing={2}>
             {wizard.foundServers.map((x: MediaServerUdpBroadcast) => (
               <ServerCard server={x} key={x.id} onClick={onServerCardClick} />
             ))}

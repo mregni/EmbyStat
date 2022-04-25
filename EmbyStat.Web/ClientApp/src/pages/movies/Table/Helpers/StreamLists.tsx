@@ -11,18 +11,18 @@ type StreamListProps = {
   tooltip: string;
 }
 
-export const StreamList = (props: StreamListProps) => {
+export function StreamList(props: StreamListProps) {
   const {list, icon, tooltip} = props;
   const {t} = useTranslation();
 
   return (
-    <Grid container item alignItems="flex-start" spacing={1}>
-      <Grid item>
+    <Grid container={true} item={true} alignItems="flex-start" spacing={1}>
+      <Grid item={true}>
         <Tooltip title={t(tooltip) ?? ''}>
           {icon}
         </Tooltip>
       </Grid>
-      <Grid item>
+      <Grid item={true}>
         <Stack direction="row">
           {list
             .filter((x) => ![null, 'und', 'src'].includes(x.language))
@@ -40,22 +40,22 @@ export const StreamList = (props: StreamListProps) => {
       </Grid>
     </Grid>
   );
-};
+}
 
 type SmallStreamListProps = {
   streams: VideoStream[];
 }
 
-export const SmallStreamList = (props: SmallStreamListProps) => {
+export function SmallStreamList(props: SmallStreamListProps) {
   const {streams} = props;
   if (streams && streams.length) {
     const count = streams.length;
     return (
-      <Grid container justifyContent="flex-end">
+      <Grid container={true} justifyContent="flex-end">
         {streams.slice(0, 1).map((stream) =>
           <Chip key={stream.id} size='small' label={generateStreamChipLabel(stream)} sx={{mr: '4px'}} />)}
         {count > 1 ? (
-          <Grid item>
+          <Grid item={true}>
             <Chip size='small' label={`+${count - 1}`} sx={{mr: '4px'}} />
           </Grid>
         ) : null}
@@ -64,4 +64,4 @@ export const SmallStreamList = (props: SmallStreamListProps) => {
   }
 
   return <div />;
-};
+}

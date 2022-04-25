@@ -13,7 +13,7 @@ type Props = {
   chipContent: string;
 }
 
-export const EsChipTitle = (props: Props) => {
+export function EsChipTitle(props: Props) {
   const {content, isFirst = false, variant = 'h4', onClick, icon, tooltip = '', chipContent} = props;
   const {t} = useTranslation();
 
@@ -34,7 +34,7 @@ export const EsChipTitle = (props: Props) => {
                 color="primary"
                 component="span"
                 onClick={onClick}
-                disableRipple
+                disableRipple={true}
               >
                 {(icon)}
               </IconButton>
@@ -44,4 +44,4 @@ export const EsChipTitle = (props: Props) => {
       }
     </Stack>
   );
-};
+}

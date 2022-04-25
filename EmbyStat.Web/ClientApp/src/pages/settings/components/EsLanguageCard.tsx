@@ -15,7 +15,7 @@ type LanguageForm = {
   language: string;
 }
 
-export const EsLanguageCard = () => {
+export function EsLanguageCard() {
   const {settings, languages, save} = useContext(SettingsContext);
   const {getLocale} = useLocale();
   const [privateLocale, setPrivateLocale] = useState(getLocale(settings.language));
@@ -50,8 +50,8 @@ export const EsLanguageCard = () => {
           field: {onChange, onBlur, value, ref},
         }) => (
           <TextField
-            select
-            fullWidth
+            select={true}
+            fullWidth={true}
             label={t('SETTINGS.LANGUAGE.LABEL')}
             value={value}
             onChange={(event) => {
@@ -87,4 +87,4 @@ export const EsLanguageCard = () => {
       </Stack>
     </EsSaveCard>
   );
-};
+}

@@ -4,12 +4,12 @@ import {JobItem} from '.';
 import {JobsContext} from '../../shared/context/jobs';
 import {Job} from '../../shared/models/jobs';
 
-export const JobList = () => {
+export function JobList() {
   const {jobs} = useContext(JobsContext);
 
   return (
     <Stack direction="column" spacing={2}>
-      {jobs.map((job: Job, i: number) => (<JobItem key={job.id} job={job} i={i} ></JobItem>))}
+      {jobs.map((job: Job, i: number) => (<JobItem key={job.id} job={job} i={i} />))}
     </Stack>
   );
-};
+}

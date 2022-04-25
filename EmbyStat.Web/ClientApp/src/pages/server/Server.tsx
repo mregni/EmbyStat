@@ -8,7 +8,7 @@ import {ServerContext, ServerContextProvider} from '../../shared/context/server'
 import {ServerInfo} from './ServerInfo';
 import {ServerPlugins} from './ServerPlugins';
 
-const ServerContainer = () => {
+function ServerContainer() {
   const {t} = useTranslation();
   const {isLoaded, load} = useContext(ServerContext);
 
@@ -22,18 +22,18 @@ const ServerContainer = () => {
 
   return (
     <Stack spacing={2}>
-      <EsTitle content={t('SERVER.INFO')} isFirst />
+      <EsTitle content={t('SERVER.INFO')} isFirst={true} />
       <ServerInfo />
       <EsTitle content={t('SERVER.PLUGINS')} />
       <ServerPlugins />
     </Stack>
   );
-};
+}
 
-export const Server = () => {
+export function Server() {
   return (
     <ServerContextProvider>
       <ServerContainer />
     </ServerContextProvider>
   );
-};
+}

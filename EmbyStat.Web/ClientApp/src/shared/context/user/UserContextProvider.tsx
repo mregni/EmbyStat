@@ -5,7 +5,7 @@ interface Props {
   children: ReactElement | ReactElement[];
 }
 
-export const UserContextProvider = (props: Props): ReactElement => {
+export function UserContextProvider(props: Props): ReactElement {
   const {children} = props;
   const userContext = useUserContext();
 
@@ -14,4 +14,4 @@ export const UserContextProvider = (props: Props): ReactElement => {
       {children}
     </UserContext.Provider>
   );
-};
+}

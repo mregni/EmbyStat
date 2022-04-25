@@ -6,7 +6,7 @@ import {EsTitle} from '../../../shared/components/esTitle';
 import {EsBoolRow} from '../../../shared/components/table/EsBoolRow';
 import {ServerContext} from '../../../shared/context/server';
 
-export const EsServerFeatures = () => {
+export function EsServerFeatures() {
   const {serverInfo} = useContext(ServerContext);
 
   const dataRows = [
@@ -24,7 +24,7 @@ export const EsServerFeatures = () => {
     <Card>
       <CardContent>
         <Stack spacing={2}>
-          <EsTitle content="SERVER.FEATURES" isFirst variant="h6" />
+          <EsTitle content="SERVER.FEATURES" isFirst={true} variant="h6" />
           <Table>
             <TableBody>
               {dataRows.map((item) => (<EsBoolRow key={item.label} label={item.label} value={item.value} />))}
@@ -34,4 +34,4 @@ export const EsServerFeatures = () => {
       </CardContent>
     </Card>
   );
-};
+}

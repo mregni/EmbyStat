@@ -10,7 +10,7 @@ interface Props {
   height?: string | number;
 }
 
-export const EsLoading = (props: Props): ReactElement => {
+export function EsLoading(props: Props): ReactElement {
   const {
     children,
     loading,
@@ -22,17 +22,17 @@ export const EsLoading = (props: Props): ReactElement => {
   if (loading) {
     return (
       <Grid
-        container
+        container={true}
         justifyContent="center"
         alignItems="center"
         sx={{
-          width: width,
-          height: height,
+          width,
+          height,
         }}
       >
         <Grid
-          item
-          container
+          item={true}
+          container={true}
           direction="column"
           justifyContent="center"
           spacing={2}
@@ -40,10 +40,10 @@ export const EsLoading = (props: Props): ReactElement => {
             maxWidth: 400,
           }}
         >
-          <Grid item>
+          <Grid item={true}>
             <Typography align='center' variant="body1">{label}</Typography>
           </Grid>
-          <Grid item>
+          <Grid item={true}>
             <LinearProgress />
           </Grid>
         </Grid>
@@ -52,4 +52,4 @@ export const EsLoading = (props: Props): ReactElement => {
   }
 
   return (<>{children}</>);
-};
+}

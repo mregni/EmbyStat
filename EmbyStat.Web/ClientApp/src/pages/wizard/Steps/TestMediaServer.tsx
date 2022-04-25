@@ -13,7 +13,7 @@ import {StepProps, ValidationHandleWithSave} from '../Interfaces';
 import {TestFailed, TestSuccessFul} from './Helpers';
 
 export const TestMediaServer =
-forwardRef<ValidationHandleWithSave, StepProps>(function TestMediaServer(props, ref) {
+forwardRef<ValidationHandleWithSave, StepProps>((props, ref) => {
   const {t} = useTranslation();
   const {wizard, setMediaServerInfo,
     setAdministrators} = useContext(WizardContext);
@@ -86,16 +86,16 @@ forwardRef<ValidationHandleWithSave, StepProps>(function TestMediaServer(props, 
 
   return (
     <Grid
-      container
+      container={true}
       direction="column"
       spacing={2}
     >
-      <Grid item>
+      <Grid item={true}>
         <Typography variant="h4" color="primary">
           {t('WIZARD.SERVERCONFIGURATIONTEST')}
         </Typography>
       </Grid>
-      <Grid item>
+      <Grid item={true}>
         <EsLoading
           width='100%'
           height='200px'

@@ -8,7 +8,7 @@ type Props = {
   onClick?: ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined;
 }
 
-export const EsSaveButton = (props: Props) => {
+export function EsSaveButton(props: Props) {
   const {
     disabled = false,
     isSaving = false,
@@ -31,4 +31,4 @@ export const EsSaveButton = (props: Props) => {
       )}
     </Button>
   );
-};
+}

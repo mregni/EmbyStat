@@ -14,7 +14,7 @@ type LibraryCardProps = {
   fallbackServerUrl?: string;
 }
 
-export const EsLibraryCard = (props: LibraryCardProps) => {
+export function EsLibraryCard(props: LibraryCardProps) {
   const {library, fallbackServerUrl = ''} = props;
   const {toggleLibrary, selected} = useContext(LibrariesContext);
   const {getPrimaryImageLink} = useMediaServerUrls();
@@ -26,7 +26,7 @@ export const EsLibraryCard = (props: LibraryCardProps) => {
 
   return (
     <Grid
-      item
+      item={true}
       xs={12}
       md={6}
       lg={4}
@@ -66,7 +66,7 @@ export const EsLibraryCard = (props: LibraryCardProps) => {
       </Box>
     </Grid>
   );
-};
+}
 
 type Props = {
   fetch: () => Promise<Library[]>;
@@ -74,7 +74,7 @@ type Props = {
   push: (libraryIds: string[]) => Promise<void>;
 }
 
-const EsLibrarySelectorContainer = (props: Props) => {
+function EsLibrarySelectorContainer(props: Props) {
   const {fetch, type, push} = props;
   const {load, libraries, save} = useContext(LibrariesContext);
   const {handleSubmit} = useForm();
@@ -100,7 +100,7 @@ const EsLibrarySelectorContainer = (props: Props) => {
         {t('SETTINGS.LIBRARIES.CONTENT', {type: t(type)})}
       </Typography>
       <Box>
-        <Grid container spacing={1}>
+        <Grid container={true} spacing={1}>
           {
             libraries.map((lib) => (<EsLibraryCard key={lib.id} library={lib} />))
           }
@@ -108,13 +108,13 @@ const EsLibrarySelectorContainer = (props: Props) => {
       </Box>
     </EsSaveCard>
   );
-};
+}
 
-export const EsLibrarySelector = (props: Props) => {
+export function EsLibrarySelector(props: Props) {
   return (
     <LibrariesContextProvider>
       <EsLibrarySelectorContainer {...props} />
     </LibrariesContextProvider>
   );
-};
+}
 

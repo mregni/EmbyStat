@@ -9,7 +9,7 @@ type EsFlagMenuItemprops = {
   item: LabelValuePair;
 }
 
-export const EsFlagMenuItem = (props: EsFlagMenuItemprops) => {
+export function EsFlagMenuItem(props: EsFlagMenuItemprops) {
   const {item} = props;
   return (
     <Stack
@@ -23,4 +23,4 @@ export const EsFlagMenuItem = (props: EsFlagMenuItemprops) => {
       {item.label}
     </Stack>
   );
-};
+}

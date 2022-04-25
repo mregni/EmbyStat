@@ -15,7 +15,7 @@ type Password = {
   currentPassword: string;
 }
 
-export const EsPasswordCard = () => {
+export function EsPasswordCard() {
   const {changePassword, user, login} = useContext(UserContext);
   const {t} = useTranslation();
 
@@ -90,4 +90,4 @@ export const EsPasswordCard = () => {
       />
     </EsSaveCard>
   );
-};
+}

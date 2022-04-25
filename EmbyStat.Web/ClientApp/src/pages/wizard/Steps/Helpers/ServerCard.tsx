@@ -12,7 +12,7 @@ interface Props {
   onClick: (server: MediaServerUdpBroadcast) => void;
 }
 
-export const ServerCard = (props: Props) => {
+export function ServerCard(props: Props) {
   const {server, onClick} = props;
   const [elevation, setElevation] = useState(7);
 
@@ -24,11 +24,11 @@ export const ServerCard = (props: Props) => {
   };
 
   return (
-    <Grid item xs={12} sm={6} md={4} lg={3} onClick={() => onClick(server)}>
+    <Grid item={true} xs={12} sm={6} md={4} lg={3} onClick={() => onClick(server)}>
       <Zoom in={true} style={{transitionDelay: '100ms'}}>
         <Card
           elevation={elevation}
-          square
+          square={true}
           onMouseEnter={() => setElevation(12)}
           onMouseLeave={() => setElevation(7)}
           sx={{
@@ -52,7 +52,7 @@ export const ServerCard = (props: Props) => {
             image={server.type === 0 ? Emby : Jellyfin}
             title="Media server logo"
           />
-          <Grid item container direction="column" justifyContent="center">
+          <Grid item={true} container={true} direction="column" justifyContent="center">
             <Typography
               variant="body1"
               sx={{
@@ -80,4 +80,4 @@ export const ServerCard = (props: Props) => {
       </Zoom>
     </Grid>
   );
-};
+}

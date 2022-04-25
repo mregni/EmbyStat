@@ -162,7 +162,7 @@ type Props = {
   isDefault?: boolean;
 }
 
-export const EsFlag = (props: Props) => {
+export function EsFlag(props: Props) {
   const {language, height = 20, width = 'auto', isDefault = false} = props;
   const {t} = useTranslation();
   const flag = convertToIcon(language);
@@ -183,4 +183,4 @@ export const EsFlag = (props: Props) => {
       />
     </Tooltip>
   );
-};
+}

@@ -8,16 +8,16 @@ interface Props {
 }
 
 
-export const NewServerCard = (props: Props) => {
+export function NewServerCard(props: Props) {
   const {onClick} = props;
   const [elevation, setElevation] = useState(7);
 
   return (
-    <Grid item xs={12} sm={6} md={4} lg={3} onClick={onClick}>
+    <Grid item={true} xs={12} sm={6} md={4} lg={3} onClick={onClick}>
       <Zoom in={true} style={{transitionDelay: '100ms'}}>
         <Card
           elevation={elevation}
-          square
+          square={true}
           onMouseEnter={() => setElevation(12)}
           onMouseLeave={() => setElevation(7)}
           sx={{
@@ -32,8 +32,8 @@ export const NewServerCard = (props: Props) => {
             },
           }}
         >
-          <Grid container justifyContent="center" alignItems="center">
-            <Grid item>
+          <Grid container={true} justifyContent="center" alignItems="center">
+            <Grid item={true}>
               <AddToQueueIcon style={{fontSize: 35}} />
             </Grid>
           </Grid>
@@ -41,4 +41,4 @@ export const NewServerCard = (props: Props) => {
       </Zoom>
     </Grid>
   );
-};
+}

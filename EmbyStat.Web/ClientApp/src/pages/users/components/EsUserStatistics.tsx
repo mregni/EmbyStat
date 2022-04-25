@@ -8,7 +8,7 @@ import {Card} from '../../../shared/models/common';
 
 type Props = {}
 
-export const EsUserStatistics = (props: Props) => {
+export function EsUserStatistics(props: Props) {
   const {loaded, statistics} = useContext(MediaServerUserContext);
 
   if (!loaded) {
@@ -17,14 +17,14 @@ export const EsUserStatistics = (props: Props) => {
 
   return (
     <Box>
-      <Grid container spacing={2}>
+      <Grid container={true} spacing={2}>
         {statistics?.cards != null && statistics.cards.length > 0 ?
           statistics.cards.map((card: Card) => (
-            <Grid item key={card.title} xs={12} sm={6} md={4} lg={3} xl={2}>
+            <Grid item={true} key={card.title} xs={12} sm={6} md={4} lg={3} xl={2}>
               <EsBasicCard card={card} />
             </Grid>
           )) : null}
       </Grid>
     </Box>
   );
-};
+}

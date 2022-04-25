@@ -9,20 +9,20 @@ type DataLineProps = {
   tooltip: string;
 }
 
-export const DataLine = (props: DataLineProps) => {
+export function DataLine(props: DataLineProps) {
   const {icon, value, tooltip} = props;
   const {t} = useTranslation();
 
   return (
-    <Grid container item alignItems="flex-start" spacing={1}>
-      <Grid item>
+    <Grid container={true} item={true} alignItems="flex-start" spacing={1}>
+      <Grid item={true}>
         <Tooltip title={t(tooltip) ?? ''}>
           {icon}
         </Tooltip>
       </Grid>
-      <Grid item>
+      <Grid item={true}>
         <Typography>{value}</Typography>
       </Grid>
     </Grid>
   );
-};
+}

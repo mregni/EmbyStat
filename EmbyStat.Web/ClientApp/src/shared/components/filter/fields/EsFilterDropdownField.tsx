@@ -3,7 +3,7 @@ import {useTranslation} from 'react-i18next';
 
 import {Box, LinearProgress, MenuItem, Select, SelectChangeEvent} from '@mui/material';
 
-import {EsFlagMenuItem} from '../';
+import {EsFlagMenuItem} from '..';
 import {LabelValuePair} from '../../../models/common';
 import {FilterOperation} from '../../../models/filter';
 import {getFilterValues} from '../../../services/filterService';
@@ -13,7 +13,7 @@ type Props = {
   operation: FilterOperation;
 }
 
-export const EsFilterDropdownField = (props: Props) => {
+export function EsFilterDropdownField(props: Props) {
   const {onValueChanged, operation} = props;
   const [value, setValue] = useState<string>('u');
   const [values, setValues] = useState<LabelValuePair[]>([]);
@@ -58,7 +58,7 @@ export const EsFilterDropdownField = (props: Props) => {
       variant="standard"
       size='small'
     >
-      <MenuItem value="u" disabled>
+      <MenuItem value="u" disabled={true}>
         {t('COMMON.SELECTVALUE')}
       </MenuItem>
       {operation.itemType === 'static' ?
@@ -76,5 +76,5 @@ export const EsFilterDropdownField = (props: Props) => {
         ))}
     </Select>
   );
-};
+}
 
