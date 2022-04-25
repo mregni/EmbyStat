@@ -42,4 +42,5 @@ steps:
         **\*.trx
         **\*.coverage
         **\report.json
+        **\lcov.info
       TargetFolder: '$(Common.TestResultsDirectory)'
