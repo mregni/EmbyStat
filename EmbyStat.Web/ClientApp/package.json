@@ -50,7 +50,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:ci": "npm run test -- --coverage --ci --testResultsProcessor=\"jest-sonar-reporter\" --watchAll=false",
-    "lint": "eslint --ext .tsx --color -f json -o report.json src",
+    "lint": "eslint --ext .tsx --color src",
     "lint-fix": "eslint --ext .tsx src --color --fix",
     "eject": "react-scripts eject"
   },
