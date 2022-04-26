@@ -310,3 +310,5 @@ EmbyStat.Web/ClientApp/.eslintcache
 *.db-wal
 
 EmbyStat.Web/ClientApp/junit.xml
+
+EmbyStat.Web/ClientApp/report.json
