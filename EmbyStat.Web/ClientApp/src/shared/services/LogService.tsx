@@ -12,7 +12,8 @@ export const getLogList = (): Promise<LogFile[]> => {
 export const downloadLogFile = (filename: string, anonymised: boolean): void => {
   axiosInstance
     .get(`${domain}download/${filename}`, {params: {anonymous: anonymised}})
-    .then((response) => saveFile(response));
+    .then((response) => saveFile(response))
+    .catch(() => {});
 };
 
 const saveFile = (response: any) => {

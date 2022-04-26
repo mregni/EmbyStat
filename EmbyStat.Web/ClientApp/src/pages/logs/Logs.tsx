@@ -14,7 +14,9 @@ export function Logs() {
   const {t} = useTranslation();
 
   useEffect(() => {
-    getLogList().then((response: LogFile[]) => setLogs(response));
+    getLogList()
+      .then((response: LogFile[]) => setLogs(response))
+      .catch(() => {});
   }, []);
 
   const convertToSize = (value: number): string => {

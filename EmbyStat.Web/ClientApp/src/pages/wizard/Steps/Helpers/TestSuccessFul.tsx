@@ -10,7 +10,7 @@ import {EsTextInput} from '../../../../shared/components/esTextInput';
 import {WizardContext} from '../../../../shared/context/wizard/WizardState';
 import {ValidationHandleWithSave} from '../../Interfaces';
 
-export const TestSuccessFul = forwardRef<ValidationHandleWithSave>((props, ref) => {
+export const TestSuccessFul = forwardRef<ValidationHandleWithSave>(function TestSuccessFul(props, ref) {
   const {wizard, setMediaServerNetworkInfo, setAdministrator} = useContext(WizardContext);
   const {t} = useTranslation();
 

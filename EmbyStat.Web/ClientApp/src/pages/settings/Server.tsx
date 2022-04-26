@@ -12,7 +12,7 @@ export function Server() {
   const {settings} = useContext(SettingsContext);
 
   if (settings === null) {
-    return <></>;
+    return (null);
   }
 
   return (

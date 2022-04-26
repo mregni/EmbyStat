@@ -25,7 +25,7 @@ export function EsTopListCard(props: Props) {
   };
 
   const calculateMinutes = (ticks: string): number => {
-    return Math.round(parseInt(ticks) / 600000000);
+    return Math.round(parseInt(ticks, 10) / 600000000);
   };
 
   const addDefaultSrc = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
@@ -136,7 +136,7 @@ export function EsTopListCard(props: Props) {
                   {data.valueType === 0 ? pair.value : null}
                   {data.valueType === 1 ? calculateMinutes(pair.value) : null}
                   {data.valueType === 2 ? calculateTime(pair.value) : null}
-                  {data.valueType === 3 ? calculateFileSize(parseInt(pair.value)) : null}
+                  {data.valueType === 3 ? calculateFileSize(parseInt(pair.value, 10)) : null}
                 </Typography>
               </Grid>
             </Grid>

@@ -1,8 +1,7 @@
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 
-import {TableSortLabel} from '@mui/material';
-import {Box} from '@mui/system';
+import {Box, TableSortLabel} from '@mui/material';
 
 type Props = {
   field: string,

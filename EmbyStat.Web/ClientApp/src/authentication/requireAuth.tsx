@@ -1,12 +1,13 @@
 import React, {ReactElement, useContext, useEffect, useState} from 'react';
 import {Navigate} from 'react-router';
+
 import {Box} from '@mui/material';
 
 import {EsAppBar} from '../shared/components/esAppBar';
-import {UserContext} from '../shared/context/user';
-import {EsPageLoader} from '../shared/components/esPageLoader';
-import {useEsLocation} from '../shared/hooks';
 import {EsMenuDrawer} from '../shared/components/esMenuDrawer';
+import {EsPageLoader} from '../shared/components/esPageLoader';
+import {UserContext} from '../shared/context/user';
+import {useEsLocation} from '../shared/hooks';
 
 interface Props {
   children: ReactElement | ReactElement[];
@@ -15,16 +16,17 @@ interface Props {
 export function RequireAuth(props: Props): ReactElement {
   const {children} = props;
   const location = useEsLocation();
-  const userContext = useContext(UserContext);
+  const {isUserLoggedIn} = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     (async () => {
-      const result = await userContext.isUserLoggedIn();
+      const result = await isUserLoggedIn();
       setIsLoggedIn(result);
       setLoading(false);
     })();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {

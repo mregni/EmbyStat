@@ -1,14 +1,16 @@
 import {OptionsObject, useSnackbar, WithSnackbarProps} from 'notistack';
-import React from 'react';
+import React, {FunctionComponent, ReactElement} from 'react';
 
 interface IProps {
   setUseSnackbarRef: (showSnackbar: WithSnackbarProps) => void;
 }
 
-const InnerSnackbarUtilsConfigurator: React.FC<IProps> = (props: IProps) => {
+function InnerSnackbarUtilsConfigurator(props: IProps): ReactElement<IProps> |null {
   props.setUseSnackbarRef(useSnackbar());
-  return null;
-};
+  return (null);
+}
+
+;
 
 let useSnackbarRef: WithSnackbarProps;
 const setUseSnackbarRef = (useSnackbarRefProp: WithSnackbarProps) => {

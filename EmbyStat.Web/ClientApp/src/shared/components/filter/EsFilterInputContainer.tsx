@@ -38,6 +38,6 @@ export function EsFilterInputContainer(props: EsFilterInputContainerProps) {
   case 'dropdown':
     return (<EsFilterDropdownField onValueChanged={onValueChanged} operation={operation} />);
   case 'none':
-  default: return <></>;
+  default: return null;
   }
 }

@@ -26,7 +26,8 @@ export function EsFilterDropdownField(props: Props) {
       getFilterValues(operation.itemUrl).then((response) => {
         setValues(response.values);
         setIsLoading(false);
-      });
+      })
+        .catch(() => setIsLoading(false));
     }
   }, [operation]);
 

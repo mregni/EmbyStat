@@ -12,8 +12,8 @@ export const useShowDetails = () => {
       setLoading(true);
       fetchShowDetails(id)
         .then((show) => setShow(show))
-        .catch(() => setShow(null!))
-        .finally(() => setLoading(false));
+        .finally(() => setLoading(false))
+        .catch(() => setShow(null!));
     }
   };
 

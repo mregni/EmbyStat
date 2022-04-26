@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import {createContext, useEffect, useState} from 'react';
 
 import {useSearchMediaServers} from '../../../shared/hooks';

@@ -11,7 +11,7 @@ export function ServerPlugins(props: Props) {
   const {isLoaded, plugins} = useContext(ServerContext);
 
   if (!isLoaded) {
-    return (<></>);
+    return (null);
   }
 
   const headers = [

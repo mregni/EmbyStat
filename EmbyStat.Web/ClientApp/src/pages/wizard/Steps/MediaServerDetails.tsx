@@ -16,7 +16,7 @@ import {useServerType} from '../../../shared/hooks';
 import {MediaServer} from '../../../shared/models/mediaServer';
 
 export const MediaServerDetails =
-forwardRef<ValidationHandleWithSave, StepProps>((props, ref) => {
+forwardRef<ValidationHandleWithSave, StepProps>(function MediaServerDetails(props, ref) {
   const {wizard, setMediaServerNetworkInfo} = useContext(WizardContext);
   const {getMediaServerTypeStringFromNumber} = useServerType();
   const {t} = useTranslation();

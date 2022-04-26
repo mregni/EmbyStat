@@ -10,7 +10,7 @@ import {EsRoundIconButton} from '../../shared/components/buttons';
 import {JobsContext} from '../../shared/context/jobs';
 import {useServerType} from '../../shared/hooks';
 import {Job} from '../../shared/models/jobs';
-import {JobSettingsDialog} from '.';
+import {JobSettingsDialog} from './JobSettingsDialog';
 
 type Props = {
   job: Job;
@@ -67,9 +67,10 @@ export function JobItem(props: Props) {
     case 1:
       return t('JOB.PROCESSING');
     case 2:
-    case 3:
+    case 3: {
       const distance = formatDistanceToNow(new Date(job.endTimeUtcIso), {addSuffix: true, includeSeconds: true});
       return `${t('JOB.LASTRUN')} ${distance}`;
+    }
     default:
       return '';
     }

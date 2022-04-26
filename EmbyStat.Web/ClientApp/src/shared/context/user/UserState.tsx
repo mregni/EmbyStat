@@ -133,11 +133,12 @@ export const useUserContext = (): UserContextProps => {
     return false;
   };
 
-  const changePassword = async (password: string, oldPassword: string): Promise<boolean> => {
+  const changePassword = (password: string, oldPassword: string)
+    : Promise<boolean> => {
     if (user != null) {
-      return await userChangePassword(oldPassword, password, user.username);
+      return userChangePassword(oldPassword, password, user.username);
     }
-    return false;
+    return Promise.resolve(false);
   };
 
   return {

@@ -69,62 +69,61 @@ export function JobSettingsDialog(props: Props) {
   const errorText = {__html: t('DIALOGS.EDIT_TRIGGER.FORMAT_ERROR')};
   const cronRegister = register('cron', {pattern: cronPattern});
 
+  if (!openSettings) {
+    return (null);
+  }
+
+
   return (
-    <>
-      {
-        openSettings ?
-          <Dialog open={openSettings} onClose={() => handleClose()} >
-            <form autoComplete="off" onSubmit={handleSubmit(safeChanges)}>
-              <DialogTitle>
-                {t(`JOB.INFO.${job.title}`, {type: serverType})}
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  {t(`JOB.INFO.${job.description}`)}
-                </DialogContentText>
-                <EsTextInput
-                  inputRef={cronRegister}
-                  defaultValue={getValues('cron')}
-                  helperText={<Box sx={{
-                    '& a': {
-                      color:
+    <Dialog open={openSettings} onClose={() => handleClose()} >
+      <form autoComplete="off" onSubmit={handleSubmit(safeChanges)}>
+        <DialogTitle>
+          {t(`JOB.INFO.${job.title}`, {type: serverType})}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {t(`JOB.INFO.${job.description}`)}
+          </DialogContentText>
+          <EsTextInput
+            inputRef={cronRegister}
+            defaultValue={getValues('cron')}
+            helperText={<Box sx={{
+              '& a': {
+                color:
                   (theme: Theme) => theme.palette.mode === 'dark' ?
                     theme.palette.secondary.light : theme.palette.secondary.dark,
-                    },
-                  }} dangerouslySetInnerHTML={helperText} />
-                  }
-                  error={errors.cron}
-                  errorText={{pattern: <Box
-                    sx={{
-                      '& a': {
-                        color:
+              },
+            }} dangerouslySetInnerHTML={helperText} />
+            }
+            error={errors.cron}
+            errorText={{pattern: <Box
+              sx={{
+                '& a': {
+                  color:
                     (theme: Theme) => theme.palette.mode === 'dark' ?
                       theme.palette.secondary.light : theme.palette.secondary.dark,
-                      },
-                    }} dangerouslySetInnerHTML={errorText} />,
-                  }}
-                  label="FORMLABELS.CRON"
-                  onChange={handleChange}
-                  readonly={isSaving}
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  onClick={() => handleClose()}
-                  color="error"
-                  disabled={isSaving}
-                >
-                  {changed ? t('COMMON.DISCARD') : t('COMMON.CANCEL')}
-                </Button>
-                <EsSaveButton
-                  disabled={!!errors.cron}
-                  isSaving={isSaving}
-                />
-              </DialogActions>
-            </form>
-          </Dialog> :
-          null
-      }
-    </>
+                },
+              }} dangerouslySetInnerHTML={errorText} />,
+            }}
+            label="FORMLABELS.CRON"
+            onChange={handleChange}
+            readonly={isSaving}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => handleClose()}
+            color="error"
+            disabled={isSaving}
+          >
+            {changed ? t('COMMON.DISCARD') : t('COMMON.CANCEL')}
+          </Button>
+          <EsSaveButton
+            disabled={!!errors.cron}
+            isSaving={isSaving}
+          />
+        </DialogActions>
+      </form>
+    </Dialog>
   );
 }

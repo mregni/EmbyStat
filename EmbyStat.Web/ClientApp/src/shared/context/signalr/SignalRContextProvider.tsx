@@ -7,7 +7,5 @@ type Props = {
 export function SignalRContextProvider(props: Props) {
   const {children} = props;
 
-  return (
-    <>{children}</>
-  );
+  return ({children});
 }

@@ -13,9 +13,9 @@ export const getSettings = async (): Promise<Settings> => {
   return response.data;
 };
 
-export const updateSettings = async (userSettings: Settings): Promise<Settings | void> => {
+export const updateSettings = (userSettings: Settings): Promise<Settings | void> => {
   const config = {headers: {'Content-Type': 'application/json'}};
-  return await axiosInstance.put<Settings>(`${domain}`, userSettings, config)
+  return axiosInstance.put<Settings>(`${domain}`, userSettings, config)
     .then((response) => {
       if (response.status === 200) {
         SnackbarUtils.success(i18n.t('SETTINGS.SAVED'));
@@ -27,6 +27,6 @@ export const updateSettings = async (userSettings: Settings): Promise<Settings |
     });
 };
 
-export const getLanguages = async (): Promise<AxiosResponse<Language[]>> => {
-  return await axiosInstance.get<Language[]>(`${domain}languages`);
+export const getLanguages = (): Promise<AxiosResponse<Language[]>> => {
+  return axiosInstance.get<Language[]>(`${domain}languages`);
 };

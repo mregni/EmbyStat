@@ -5,18 +5,20 @@ import {Card, CardContent, Grid} from '@mui/material';
 
 import SmallLogo from '../../shared/assets/images/logo-small.png';
 import {UserContext} from '../../shared/context/user';
-import {LoginForm, RecoverPasswordForm} from '.';
+import {LoginForm} from './LoginForm';
+import {RecoverPasswordForm} from './RecoverPasswordForm';
 
 export function Login() {
   const [inRecoveryMode, setInRecoveryMode] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const userContext = useContext(UserContext);
+  const {isUserLoggedIn} = useContext(UserContext);
 
   useEffect(() => {
     (async () => {
-      const result = await userContext.isUserLoggedIn();
+      const result = await isUserLoggedIn();
       setIsLoggedIn(result);
     })();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (isLoggedIn) {

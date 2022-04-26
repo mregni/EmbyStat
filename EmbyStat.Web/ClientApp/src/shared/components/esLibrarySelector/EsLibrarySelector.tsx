@@ -82,7 +82,7 @@ function EsLibrarySelectorContainer(props: Props) {
 
   useEffect(() => {
     (async () => {
-      load(fetch);
+      await load(fetch);
     })();
   }, [fetch]);
 

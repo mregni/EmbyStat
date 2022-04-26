@@ -6,8 +6,8 @@ import {Box, Paper, Table, TableContainer} from '@mui/material';
 import {EsLoading} from '../../../shared/components/esLoading';
 import {EsTableHeader, EsTablePagination, Header} from '../../../shared/components/table';
 import {MoviesContext} from '../../../shared/context/movies';
-import {useMovieTable} from '.';
 import {Body} from './Helpers';
+import {useMovieTable} from './useMovieTable';
 
 export function MovieTable() {
   const {activeFilters} = useContext(MoviesContext);
@@ -26,7 +26,7 @@ export function MovieTable() {
         value: x.value,
       })));
     fetchRows(pageNumber, rowsPerPage, order, orderedBy, filtersJson);
-  }, [pageNumber, rowsPerPage, order, orderedBy, activeFilters]);
+  }, [pageNumber, rowsPerPage, order, orderedBy, activeFilters, fetchRows]);
 
   const sortHandler = (property: string) => {
     const isAsc = orderedBy === property && order === 'asc';

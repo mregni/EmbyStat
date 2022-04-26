@@ -88,7 +88,7 @@ export function EsMediaServerCard() {
   }, [resetFinished]);
 
 
-  const processForm = async (data: MediaServerForm) => {
+  const processForm = (data: MediaServerForm) => {
     setOpenWarningDialog(true);
   };
 
@@ -108,7 +108,7 @@ export function EsMediaServerCard() {
   const addressRegister = register('address', {required: true});
   const apiKeyRegister = register('apiKey', {required: true});
 
-  const openMediaServer = async () => {
+  const openMediaServer = () => {
     const {address} = getValues();
     const htmlSuffix = serverType !== 'Emby' ? '.html' : '';
     window.open(`${address}/web/index.html#!/apikeys${htmlSuffix}`, '_blank');

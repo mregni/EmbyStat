@@ -34,8 +34,8 @@ export const useLibrariesContext = (): LibrariesContextProps => {
 
   const toggleLibrary = (id: string) => {
     const index = selected.indexOf(id);
-    if (index != -1) {
-      setSelected((prev) => prev.filter((x) => x != id));
+    if (index !== -1) {
+      setSelected((prev) => prev.filter((x) => x !== id));
     } else {
       setSelected((prev) => [...prev, id]);
     }

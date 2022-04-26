@@ -3,10 +3,8 @@ env:
   es2021: true
 extends:
   - plugin:react/recommended
-  - plugin:react-hooks/recommended
   - plugin:jest-react/recommended
   - plugin:jsx-a11y/recommended
-  - plugin:promise/recommended
   - google
   - sonarqube
 parser: '@typescript-eslint/parser'
@@ -23,8 +21,12 @@ plugins:
   - jest-react
   - '@typescript-eslint'
   - jsx-a11y
-  - promise
 rules: {
+  'react-hooks/exhaustive-deps': 'off',
+  'react/jsx-no-useless-fragment': ['error', {'allowExpressions': true}],
+  'jest/prefer-to-be-null': 'off',
+  'jest/prefer-to-be-undefined': 'off',
+  'prefer-arrow-callback': 'off',
   'linebreak-style': ['error', 'windows'],
   'indent': ['error', 2],
   'semi': ['error', 'always'],

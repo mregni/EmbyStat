@@ -13,7 +13,7 @@ import {StepProps, ValidationHandleWithSave} from '../Interfaces';
 import {TestFailed, TestSuccessFul} from './Helpers';
 
 export const TestMediaServer =
-forwardRef<ValidationHandleWithSave, StepProps>((props, ref) => {
+forwardRef<ValidationHandleWithSave, StepProps>(function TestMediaServer(props, ref) {
   const {t} = useTranslation();
   const {wizard, setMediaServerInfo,
     setAdministrators} = useContext(WizardContext);
@@ -60,7 +60,7 @@ forwardRef<ValidationHandleWithSave, StepProps>((props, ref) => {
           setCurrentStep(3);
           setLoadingLabel('WIZARD.STEPTHREE');
           const admins = await getAdministrators();
-          if (admins == []) {
+          if (admins === []) {
             setIsLoading(false);
             return;
           }
@@ -68,7 +68,7 @@ forwardRef<ValidationHandleWithSave, StepProps>((props, ref) => {
           setCurrentStep(4);
           setLoadingLabel('WIZARD.STEPFOUR');
           const libs = await getLibraries();
-          if (libs == []) {
+          if (libs === []) {
             setIsLoading(false);
             return;
           }

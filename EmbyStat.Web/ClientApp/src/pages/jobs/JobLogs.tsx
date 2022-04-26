@@ -20,6 +20,7 @@ export function JobLogs() {
             {
               logLines.slice(0).reverse().map((line: JobLogLine, i: number) => (
                 <TableRow
+                  // eslint-disable-next-line react/no-array-index-key
                   key={i}
                   sx={{
                     fontWeight: line.type === 0 ? 'normal' : 'bold',

@@ -9,7 +9,7 @@ export function ServerInfo() {
   const {serverInfo} = useContext(ServerContext);
 
   if (serverInfo === null) {
-    return (<></>);
+    return (null);
   }
 
   return (

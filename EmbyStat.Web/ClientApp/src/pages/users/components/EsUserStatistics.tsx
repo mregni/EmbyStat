@@ -12,7 +12,7 @@ export function EsUserStatistics(props: Props) {
   const {loaded, statistics} = useContext(MediaServerUserContext);
 
   if (!loaded) {
-    return (<></>);
+    return (null);
   }
 
   return (

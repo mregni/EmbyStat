@@ -12,8 +12,7 @@ import {fetchLibraries as fetchShowLibraries} from '../../../shared/services/sho
 import {LibraryStepProps, ValidationHandle} from '../Interfaces';
 
 export const ConfigureLibrary =
-forwardRef<ValidationHandle, LibraryStepProps>((props, ref) => {
-  // eslint-disable-next-line react/prop-types
+forwardRef<ValidationHandle, LibraryStepProps>(function ConfigureLibrary(props, ref) {
   const {type} = props;
   const {setMovieLibraryIds, setShowLibraryIds} = useContext(WizardContext);
   if (type === 'movie') {
@@ -47,7 +46,7 @@ type Props = {
 }
 
 export const ConfigureLibraryContainer =
-forwardRef<ValidationHandle, Props>((props, ref) => {
+forwardRef<ValidationHandle, Props>(function ConfigureLibraryContainer(props, ref) {
   // eslint-disable-next-line react/prop-types
   const {fetch, type, push} = props;
   const {t} = useTranslation();
@@ -56,7 +55,7 @@ forwardRef<ValidationHandle, Props>((props, ref) => {
 
   useEffect(() => {
     (async () => {
-      load(fetch);
+      await load(fetch);
     })();
   }, []);
 

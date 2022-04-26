@@ -12,7 +12,7 @@ import {WizardContext} from '../../../shared/context/wizard/WizardState';
 import {Language} from '../../../shared/models/language';
 import {ValidationHandleWithSave} from '../Interfaces';
 
-export const Intro = forwardRef<ValidationHandleWithSave, StepProps>((props, ref) => {
+export const Intro = forwardRef<ValidationHandleWithSave, StepProps>(function Intro(props, ref) {
   const {t} = useTranslation();
   const {setLanguage, setMonitoring} = useContext(WizardContext);
   const {languages} = useContext(SettingsContext);

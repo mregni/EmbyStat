@@ -16,9 +16,8 @@ export const useShowTable = () => {
       .then((data: TablePage<ShowRow>) => {
         setPageData(data);
       })
-      .finally(() => {
-        setLoading(false);
-      });
+      .finally(() => setLoading(false))
+      .catch(() => setLoading(false));
   };
 
   return {fetchRows, loading, pageData};

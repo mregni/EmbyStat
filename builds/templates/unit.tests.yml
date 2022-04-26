@@ -24,7 +24,7 @@ steps:
     displayName: 'Run eslint'
     inputs:
       script: |
-        npx eslint --ext .tsx --color -f json -o report.json src
+        npm run lint:ci
       workingDirectory: 'EmbyStat.Web/ClientApp'
 
   - task: CmdLine@2

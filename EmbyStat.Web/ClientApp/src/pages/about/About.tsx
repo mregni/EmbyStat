@@ -13,7 +13,7 @@ export function About() {
   const {t} = useTranslation();
 
   if (!loaded) {
-    return (<></>);
+    return (null);
   }
 
   const links = [
@@ -68,20 +68,3 @@ export function About() {
     </Stack>
   );
 }
-
-{/* <mat-list-item>
-  <a href="{{ environment.urls.featureupvote }}" mat-raised-button color="primary"
-    target="_blank">{{ 'ABOUT.REQUESTFEATURE' | translate }}</a>
-</mat-list-item>
-<mat-list-item>
-  <a href="{{ environment.urls.github }}" mat-raised-button color="primary"
-    target="_black">{{ 'ABOUT.LOGBUG' | translate }}</a>
-</mat-list-item>
-<mat-list-item>
-  <a href="{{ environment.urls.crowdin }}" mat-raised-button color="primary"
-      target="_blank">{{ 'ABOUT.HELPTRANSLATE' | translate }}</a>
-</mat-list-item>
-<mat-list-item>
-  <a href="{{ environment.urls.githubRelease }}" mat-raised-button color="primary"
-      target="_blank">{{ 'ABOUT.GITHUBRELEASE' | translate }}</a>
-</mat-list-item> */}

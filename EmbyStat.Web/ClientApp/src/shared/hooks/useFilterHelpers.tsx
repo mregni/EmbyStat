@@ -39,10 +39,11 @@ export const useFilterHelpers = () => {
     }
 
     switch (operation.operation) {
-    case 'between':
+    case 'between': {
       const unit = operation.unit != null ? t(operation.unit) : '';
       return `
       ${value.split('|')[0]}${unit} ${t('COMMON.AND')} ${value.split('|')[1]}${unit}`;
+    }
     case 'null':
       return '';
     default:

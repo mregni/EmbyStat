@@ -18,7 +18,8 @@ export const useUserTable = () => {
       })
       .finally(() => {
         setLoading(false);
-      });
+      })
+      .catch(() => setLoading(false));
   };
 
   return {fetchRows, loading, pageData};

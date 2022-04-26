@@ -106,7 +106,7 @@ export function EsUserTable() {
   ];
 
   if (loading) {
-    return (<></>);
+    return (null);
   }
 
   return (

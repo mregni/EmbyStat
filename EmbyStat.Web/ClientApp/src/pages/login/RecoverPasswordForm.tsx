@@ -42,7 +42,8 @@ export function RecoverPasswordForm(props: Props) {
       }))
       .finally(() => {
         setIsLoading(false);
-      });
+      })
+      .catch(() => setIsLoading(false));
   };
 
   const usernameRegister = register('username');

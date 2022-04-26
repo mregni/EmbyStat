@@ -1,6 +1,4 @@
-/* eslint-disable no-unused-vars */
-// TODO: remove eslint disable lines
-
+/* eslint-disable no-unused-expressions */
 import {t} from 'i18next';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
@@ -104,7 +102,7 @@ function WizardContainer() {
     }
   };
 
-  const handleBack = async () => {
+  const handleBack = () => {
     setDisableControls(true);
 
     window.scrollTo(0, 0);

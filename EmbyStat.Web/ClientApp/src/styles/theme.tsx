@@ -60,8 +60,8 @@ const themeOptions: ThemeOptions = {
   },
 };
 
+// eslint-disable-next-line import/no-mutable-exports
 let theme = createTheme(themeOptions);
-
 theme = createTheme(theme, {
   components: {
     MuiListItemButton: {

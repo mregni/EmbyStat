@@ -39,7 +39,7 @@ export const getPlugins = (): Promise<MediaServerPlugin[]> => {
     .then((response) => response.data);
 };
 
-export const searchMediaServers = async (): Promise<MediaServerUdpBroadcast[]> => {
+export const searchMediaServers = (): Promise<MediaServerUdpBroadcast[]> => {
   const embySearch = axiosInstance.get<MediaServerUdpBroadcast[]>(`${domain}server/search?serverType=0`);
   const jellyfinSearch = axiosInstance.get<MediaServerUdpBroadcast[]>(`${domain}server/search?serverType=1`);
 

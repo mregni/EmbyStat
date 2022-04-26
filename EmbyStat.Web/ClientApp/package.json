@@ -11,13 +11,6 @@
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.4.0",
-    "@types/node": "^16.11.24",
-    "@types/react": "^17.0.39",
-    "@types/react-dom": "^17.0.11",
-    "@types/recharts": "^1.8.23",
-    "@types/uuid": "^8.3.4",
-    "@types/webpack-env": "^1.16.3",
     "axios": "^0.25.0",
     "date-fns": "^2.28.0",
     "date-fns-tz": "^1.2.2",
@@ -50,8 +43,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:ci": "npm run test -- --coverage --ci --testResultsProcessor=\"jest-sonar-reporter\" --watchAll=false",
-    "lint": "eslint --ext .tsx --color src",
-    "lint-fix": "eslint --ext .tsx src --color --fix",
+    "lint:ci": "eslint --ext .tsx --format json --output-file report.json --fix src",
+    "lint": "eslint --ext .tsx src",
+    "lint-fix": "eslint --ext .tsx --fix src",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -74,6 +68,13 @@
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.5",
+    "@types/jest": "^27.4.0",
+    "@types/node": "^16.11.24",
+    "@types/react": "^17.0.39",
+    "@types/react-dom": "^17.0.11",
+    "@types/recharts": "^1.8.23",
+    "@types/uuid": "^8.3.4",
+    "@types/webpack-env": "^1.16.3",
     "@typescript-eslint/eslint-plugin": "^5.11.0",
     "@typescript-eslint/parser": "^5.11.0",
     "eslint": "^8.8.0",
@@ -83,7 +84,6 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.28.0",
-    "eslint-plugin-react-hooks": "^4.4.0",
     "eslist": "^1.0.0-beta.1",
     "jest-sonar-reporter": "^2.0.0"
   }

@@ -28,7 +28,7 @@ export function EsRollbarCard() {
   });
 
   if (settings === null) {
-    return <></>;
+    return (null);
   }
 
   return (

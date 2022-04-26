@@ -11,7 +11,7 @@ import {StepProps, ValidationHandleWithSave} from '../Interfaces';
 import {NewServerCard, ServerCard} from './Helpers';
 
 export const SearchMediaServer =
-forwardRef<ValidationHandleWithSave, StepProps>((props: StepProps, ref) => {
+forwardRef<ValidationHandleWithSave, StepProps>(function SearchMediaServer(props: StepProps, ref) {
   // eslint-disable-next-line react/prop-types
   const {handleNext} = props;
   const {t} = useTranslation();

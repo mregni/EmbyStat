@@ -29,7 +29,7 @@ function RoutesContainer() {
         navigate('/wizard');
       }
     }
-  }, [load, settings]);
+  }, [load, settings, navigate]);
 
   return (
     <Routes>
