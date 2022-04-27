@@ -17,10 +17,7 @@ export function useServerType() {
   };
 
   const getMediaServerTypeStringFromNumber = (serverType: 0 | 1): string => {
-    if (settings != null) {
-      return serverType === 0 ? 'Emby' : 'Jellyfin';
-    }
-    return 'Emby';
+    return serverType === 0 ? 'Emby' : 'Jellyfin';
   };
 
   return {serverType, getMediaServerTypeString, getMediaServerTypeStringFromNumber};
