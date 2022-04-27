@@ -121,7 +121,7 @@ export function EsUserTable() {
           pageSizeSteps={[10, 20, 50, 100]}
         />
         <TableContainer>
-          <Table stickyHeader={true} size="small">
+          <Table stickyHeader size="small">
             <EsTableHeader orderedBy={orderedBy} order={order} sortHandler={sortHandler} headers={headers} />
             <TableBody>
               { pageData.data.map((user) => <EsUserRow key={user.id} user={user} /> )}

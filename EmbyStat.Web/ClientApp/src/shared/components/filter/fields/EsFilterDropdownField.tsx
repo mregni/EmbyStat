@@ -3,10 +3,10 @@ import {useTranslation} from 'react-i18next';
 
 import {Box, LinearProgress, MenuItem, Select, SelectChangeEvent} from '@mui/material';
 
-import {EsFlagMenuItem} from '..';
 import {LabelValuePair} from '../../../models/common';
 import {FilterOperation} from '../../../models/filter';
 import {getFilterValues} from '../../../services/filterService';
+import {EsFlagMenuItem} from '../EsFlagMenuItem';
 
 type Props = {
   onValueChanged: (val0: string) => void;
@@ -59,7 +59,7 @@ export function EsFilterDropdownField(props: Props) {
       variant="standard"
       size='small'
     >
-      <MenuItem value="u" disabled={true}>
+      <MenuItem value="u" disabled>
         {t('COMMON.SELECTVALUE')}
       </MenuItem>
       {operation.itemType === 'static' ?

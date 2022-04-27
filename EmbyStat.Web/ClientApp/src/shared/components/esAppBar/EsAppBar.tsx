@@ -1,14 +1,15 @@
-import {AppBar, Toolbar, IconButton, Menu, MenuItem, Stack, Typography} from '@mui/material';
 import React, {useContext, useEffect, useState} from 'react';
-import {AccountCircle} from '@mui/icons-material';
 import {useTranslation} from 'react-i18next';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import LogoutIcon from '@mui/icons-material/Logout';
 import {useNavigate} from 'react-router';
 
-import {UserContext} from '../../context/user';
+import {AccountCircle} from '@mui/icons-material';
+import LogoutIcon from '@mui/icons-material/Logout';
+import {AppBar, IconButton, Menu, MenuItem, Stack, Toolbar, Typography} from '@mui/material';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+
 import SmallLogo from '../../assets/images/logo-small.png';
+import {UserContext} from '../../context/user';
 
 export function EsAppBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -61,7 +62,7 @@ export function EsAppBar() {
                 vertical: 'top',
                 horizontal: 'right',
               }}
-              keepMounted={true}
+              keepMounted
               transformOrigin={{
                 vertical: 'top',
                 horizontal: 'right',

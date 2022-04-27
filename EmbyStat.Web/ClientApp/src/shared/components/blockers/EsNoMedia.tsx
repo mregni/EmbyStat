@@ -1,6 +1,8 @@
-import {Card, CardContent, Typography, Button, CardActions, Box, Stack} from '@mui/material';
 import {t} from 'i18next';
 import React, {ReactElement, useContext} from 'react';
+
+import {Box, Button, Card, CardActions, CardContent, Stack, Typography} from '@mui/material';
+
 import {JobsContext} from '../../context/jobs';
 import {useServerType} from '../../hooks';
 
@@ -42,7 +44,7 @@ export function EsNoMedia(props: Props) {
         <CardContent>
           <Stack direction="column" justifyContent="space-between" >
             <Box>
-              <Typography variant="h5" color="primary" gutterBottom={true}>
+              <Typography variant="h5" color="primary" gutterBottom>
                 {t(title)}
               </Typography>
               <Typography variant="body1">

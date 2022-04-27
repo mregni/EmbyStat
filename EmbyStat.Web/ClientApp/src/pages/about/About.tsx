@@ -25,7 +25,7 @@ export function About() {
 
   return (
     <Stack direction="column" spacing={2}>
-      <EsTitle content="ABOUT.SERVERINFO" isFirst={true} />
+      <EsTitle content="ABOUT.SERVERINFO" isFirst />
       <Stack spacing={1}>
         <Typography>
         EmbyStat {t('COMMON.VERSION')}: {settings.version}

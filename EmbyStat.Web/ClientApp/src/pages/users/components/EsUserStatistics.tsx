@@ -17,10 +17,10 @@ export function EsUserStatistics(props: Props) {
 
   return (
     <Box>
-      <Grid container={true} spacing={2}>
+      <Grid container spacing={2}>
         {statistics?.cards != null && statistics.cards.length > 0 ?
           statistics.cards.map((card: Card) => (
-            <Grid item={true} key={card.title} xs={12} sm={6} md={4} lg={3} xl={2}>
+            <Grid item key={card.title} xs={12} sm={6} md={4} lg={3} xl={2}>
               <EsBasicCard card={card} />
             </Grid>
           )) : null}

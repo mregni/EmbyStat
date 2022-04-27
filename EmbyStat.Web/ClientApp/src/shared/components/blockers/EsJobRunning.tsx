@@ -1,7 +1,8 @@
-import {Card, CardContent, Stack, Typography, LinearProgress, Box} from '@mui/material';
-import {} from 'devextreme-react';
 import {t} from 'i18next';
-import React, {ReactElement, useContext, useState, useEffect} from 'react';
+import React, {ReactElement, useContext, useEffect, useState} from 'react';
+
+import {Box, Card, CardContent, LinearProgress, Stack, Typography} from '@mui/material';
+
 import {JobsContext} from '../../context/jobs';
 import {Job} from '../../models/jobs';
 
@@ -60,7 +61,7 @@ export function EsJobRunning(props: Props) {
             }}
           >
             <Box>
-              <Typography variant="h5" color="primary" gutterBottom={true}>
+              <Typography variant="h5" color="primary" gutterBottom>
                 {t(title)}
               </Typography>
               <Typography variant="body1">

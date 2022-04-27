@@ -22,7 +22,7 @@ export function EsSaveCard<T, >(props: Props<T>) {
           <Typography
             variant="h5"
             color="primary"
-            gutterBottom={true}
+            gutterBottom
             sx={{textTransform: 'capitalize', mb: 2}}
           >
             {t(title)}

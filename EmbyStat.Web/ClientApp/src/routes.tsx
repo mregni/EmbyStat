@@ -3,11 +3,11 @@ import {Navigate, Route, Routes, useNavigate} from 'react-router';
 
 import {RequireAuth} from './authentication';
 import i18n from './i18n';
-import {About} from './pages/about';
+import About from './pages/about';
 import {Home} from './pages/home';
-import {Jobs} from './pages/jobs';
-import {Login} from './pages/login';
-import {Logs} from './pages/logs';
+import Jobs from './pages/jobs';
+import Login from './pages/login';
+import Logs from './pages/logs';
 import {General as MovieGeneral, List as MovieList, Movies} from './pages/movies';
 import {Server} from './pages/server';
 import {
@@ -15,7 +15,7 @@ import {
 } from './pages/settings';
 import {General as ShowGeneral, List as ShowList, Shows} from './pages/shows';
 import {Users} from './pages/users';
-import {Wizard} from './pages/wizard';
+import Wizard from './pages/wizard';
 import {SettingsContext} from './shared/context/settings';
 
 function RoutesContainer() {

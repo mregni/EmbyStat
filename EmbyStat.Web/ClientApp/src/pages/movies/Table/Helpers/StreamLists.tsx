@@ -1,9 +1,11 @@
-import {Grid, Stack, Chip, Tooltip} from '@mui/material';
 import React, {ReactElement} from 'react';
 import {useTranslation} from 'react-i18next';
-import {generateStreamChipLabel} from '../../../../shared/utils';
-import {Stream, VideoStream} from '../../../../shared/models/common';
+
+import {Chip, Grid, Stack, Tooltip} from '@mui/material';
+
 import {EsFlag} from '../../../../shared/components/esFlag';
+import {Stream, VideoStream} from '../../../../shared/models/common';
+import {generateStreamChipLabel} from '../../../../shared/utils';
 
 type StreamListProps = {
   list: Stream[];
@@ -16,13 +18,13 @@ export function StreamList(props: StreamListProps) {
   const {t} = useTranslation();
 
   return (
-    <Grid container={true} item={true} alignItems="flex-start" spacing={1}>
-      <Grid item={true}>
+    <Grid container item alignItems="flex-start" spacing={1}>
+      <Grid item>
         <Tooltip title={t(tooltip) ?? ''}>
           {icon}
         </Tooltip>
       </Grid>
-      <Grid item={true}>
+      <Grid item>
         <Stack direction="row">
           {list
             .filter((x) => ![null, 'und', 'src'].includes(x.language))
@@ -51,11 +53,11 @@ export function SmallStreamList(props: SmallStreamListProps) {
   if (streams && streams.length) {
     const count = streams.length;
     return (
-      <Grid container={true} justifyContent="flex-end">
+      <Grid container justifyContent="flex-end">
         {streams.slice(0, 1).map((stream) =>
           <Chip key={stream.id} size='small' label={generateStreamChipLabel(stream)} sx={{mr: '4px'}} />)}
         {count > 1 ? (
-          <Grid item={true}>
+          <Grid item>
             <Chip size='small' label={`+${count - 1}`} sx={{mr: '4px'}} />
           </Grid>
         ) : null}

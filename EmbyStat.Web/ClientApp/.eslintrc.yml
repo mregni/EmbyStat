@@ -24,6 +24,7 @@ plugins:
 rules: {
   'react-hooks/exhaustive-deps': 'off',
   'react/jsx-no-useless-fragment': ['error', {'allowExpressions': true}],
+  'react/jsx-boolean-value':'off',
   'jest/prefer-to-be-null': 'off',
   'jest/prefer-to-be-undefined': 'off',
   'prefer-arrow-callback': 'off',

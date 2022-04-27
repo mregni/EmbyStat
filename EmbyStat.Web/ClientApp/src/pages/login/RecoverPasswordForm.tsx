@@ -51,13 +51,13 @@ export function RecoverPasswordForm(props: Props) {
   return (
     <form>
       <Grid
-        container={true}
+        container
         direction="column"
         spacing={4}
       >
-        <Grid item={true}>
-          <Grid container={true} direction="column">
-            <Grid item={true}>
+        <Grid item>
+          <Grid container direction="column">
+            <Grid item>
               <EsTextInput
                 inputRef={usernameRegister}
                 label={t('SETTINGS.ACCOUNT.USERNAME')}
@@ -68,16 +68,16 @@ export function RecoverPasswordForm(props: Props) {
           </Grid>
         </Grid>
 
-        <Grid item={true}>
-          <Grid container={true} spacing={1} direction="column" alignItems="center">
-            <Grid item={true}
+        <Grid item>
+          <Grid container spacing={1} direction="column" alignItems="center">
+            <Grid item
               sx={{
                 marginBottom: resetFailed ? 0 : '23px',
               }}>
               <Typography variant="body1" color="error">{resetFailed ? t('LOGIN.RESETFAILED') : null}</Typography>
             </Grid>
-            <Grid item={true} container={true} direction="row" justifyContent="space-between">
-              <Grid item={true}>
+            <Grid item container direction="row" justifyContent="space-between">
+              <Grid item>
                 <Button
                   variant="text"
                   onClick={openLoginForm}
@@ -87,7 +87,7 @@ export function RecoverPasswordForm(props: Props) {
                   {t('COMMON.BACK')}
                 </Button>
               </Grid>
-              <Grid item={true}>
+              <Grid item>
                 <Button
                   variant="contained"
                   onClick={recoverPassword}

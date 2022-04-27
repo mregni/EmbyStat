@@ -24,11 +24,11 @@ export function ServerCard(props: Props) {
   };
 
   return (
-    <Grid item={true} xs={12} sm={6} md={4} lg={3} onClick={() => onClick(server)}>
-      <Zoom in={true} style={{transitionDelay: '100ms'}}>
+    <Grid item xs={12} sm={6} md={4} lg={3} onClick={() => onClick(server)}>
+      <Zoom in style={{transitionDelay: '100ms'}}>
         <Card
           elevation={elevation}
-          square={true}
+          square
           onMouseEnter={() => setElevation(12)}
           onMouseLeave={() => setElevation(7)}
           sx={{
@@ -52,7 +52,7 @@ export function ServerCard(props: Props) {
             image={server.type === 0 ? Emby : Jellyfin}
             title="Media server logo"
           />
-          <Grid item={true} container={true} direction="column" justifyContent="center">
+          <Grid item container direction="column" justifyContent="center">
             <Typography
               variant="body1"
               sx={{

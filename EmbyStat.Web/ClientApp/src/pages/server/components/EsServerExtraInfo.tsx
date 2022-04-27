@@ -22,9 +22,9 @@ export function EsServerExtraInfo() {
 
   return (
     <Box>
-      <Grid container={true} spacing={2}>
+      <Grid container spacing={2}>
         {cards.map((card)=> (
-          <Grid key={card.title} item={true} xs={12} sm={6} md={4} lg={3} xl={2}>
+          <Grid key={card.title} item xs={12} sm={6} md={4} lg={3} xl={2}>
             <EsBasicCard card={card} />
           </Grid>
         ))}

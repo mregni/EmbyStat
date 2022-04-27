@@ -15,7 +15,7 @@ function UserContainer() {
   return (
     <EsLoading label={t('USERS.LOADER')} loading={false}>
       <Stack spacing={2}>
-        <EsTitle content={t('COMMON.NUMBERS')} isFirst={true} />
+        <EsTitle content={t('COMMON.NUMBERS')} isFirst />
         <EsUserStatistics />
         <EsTitle content={t('USERS.USERS')} />
         <EsUserTable/>

@@ -26,7 +26,7 @@ export function EsLibraryCard(props: LibraryCardProps) {
 
   return (
     <Grid
-      item={true}
+      item
       xs={12}
       md={6}
       lg={4}
@@ -100,7 +100,7 @@ function EsLibrarySelectorContainer(props: Props) {
         {t('SETTINGS.LIBRARIES.CONTENT', {type: t(type)})}
       </Typography>
       <Box>
-        <Grid container={true} spacing={1}>
+        <Grid container spacing={1}>
           {
             libraries.map((lib) => (<EsLibraryCard key={lib.id} library={lib} />))
           }

@@ -10,7 +10,8 @@ import {EsChipList} from '../../../shared/components/esChipList';
 import {useMediaServerUrls, useServerType} from '../../../shared/hooks';
 import {ShowRow} from '../../../shared/models/show';
 import {calculateFileSize} from '../../../shared/utils';
-import {EpisodeColumn, ShowDetailRow} from '.';
+import {EpisodeColumn} from './EpisodeColumn';
+import {ShowDetailRow} from './ShowDetailRow';
 
 type Props = {
   row: ShowRow;
@@ -25,7 +26,7 @@ export function Row(props: Props) {
 
   return (
     <>
-      <TableRow key={row.id} hover={true}>
+      <TableRow key={row.id} hover>
         <TableCell>
           <IconButton size="small" onClick={() => setOpen(!open)}>
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
@@ -46,7 +47,7 @@ export function Row(props: Props) {
       </TableRow>
       <TableRow>
         <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={11}>
-          <Collapse in={open} timeout="auto" unmountOnExit={true}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
             <ShowDetailRow id={row.id} />
           </Collapse>
         </TableCell>

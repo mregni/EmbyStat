@@ -22,7 +22,7 @@ function ServerContainer() {
 
   return (
     <Stack spacing={2}>
-      <EsTitle content={t('SERVER.INFO')} isFirst={true} />
+      <EsTitle content={t('SERVER.INFO')} isFirst />
       <ServerInfo />
       <EsTitle content={t('SERVER.PLUGINS')} />
       <ServerPlugins />

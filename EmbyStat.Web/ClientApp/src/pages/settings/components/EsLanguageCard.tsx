@@ -50,8 +50,8 @@ export function EsLanguageCard() {
           field: {onChange, onBlur, value, ref},
         }) => (
           <TextField
-            select={true}
-            fullWidth={true}
+            select
+            fullWidth
             label={t('SETTINGS.LANGUAGE.LABEL')}
             value={value}
             onChange={(event) => {

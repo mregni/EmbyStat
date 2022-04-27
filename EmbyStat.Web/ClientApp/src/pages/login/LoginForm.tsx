@@ -56,20 +56,20 @@ export function LoginForm(props: Props) {
 
   return (
     <Grid
-      container={true}
+      container
       direction="column"
       spacing={3}
     >
-      <Grid item={true}>
-        <Grid container={true} direction="column" spacing={1} >
-          <Grid item={true}>
+      <Grid item>
+        <Grid container direction="column" spacing={1} >
+          <Grid item>
             <EsTextInput
               inputRef={usernameRegister}
               label={t('SETTINGS.ACCOUNT.USERNAME')}
               defaultValue={getValues('username')}
             />
           </Grid>
-          <Grid item={true}>
+          <Grid item>
             <EsTextInput
               inputRef={passwordRegister}
               label={t('SETTINGS.PASSWORD.PASSWORD')}
@@ -79,16 +79,16 @@ export function LoginForm(props: Props) {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item={true}>
-        <Grid container={true} spacing={1} direction="column" alignItems="center">
-          <Grid item={true}
+      <Grid item>
+        <Grid container spacing={1} direction="column" alignItems="center">
+          <Grid item
             sx={{
               marginBottom: failedLogin ? 0 : '23px',
             }}>
             <Typography variant="body1" color="error">{failedLogin ? t('LOGIN.ERROR') : null}</Typography>
           </Grid>
-          <Grid item={true} container={true} direction="row" justifyContent="space-between">
-            <Grid item={true}>
+          <Grid item container direction="row" justifyContent="space-between">
+            <Grid item>
               <EsButton
                 variant="text"
                 onClick={() => openForgotPasswordForm()}
@@ -97,7 +97,7 @@ export function LoginForm(props: Props) {
                 {t('LOGIN.RECOVERPASSWORD')}
               </EsButton>
             </Grid>
-            <Grid item={true}>
+            <Grid item>
               <EsButton
                 onClick={loginUser}
                 disabled={isLoading}

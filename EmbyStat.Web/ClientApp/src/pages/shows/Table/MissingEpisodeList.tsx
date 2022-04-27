@@ -53,7 +53,7 @@ export function MissingEpisodeList(props: Props) {
       <EsTitle
         content={t('SHOWS.MISSINGEPISODES')}
         variant="h6"
-        isFirst={true}
+        isFirst
         icon={<FileDownloadIcon/>}
         tooltip={t('COMMON.DOWNLOADCSV')}
         onClick={generateCsv}
@@ -74,7 +74,7 @@ export function MissingEpisodeList(props: Props) {
                 {
                   show.missingSeasons.map((season) => (
                     season.episodes.map((episode) => (
-                      <TableRow key={episode.id} hover={true}>
+                      <TableRow key={episode.id} hover>
                         <TableCell>{season.indexNumber}</TableCell>
                         <TableCell>{episode.indexNumber}</TableCell>
                         <TableCell>{episode.name}</TableCell>

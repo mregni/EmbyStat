@@ -22,12 +22,12 @@ export function Login() {
   }, []);
 
   if (isLoggedIn) {
-    return <Navigate to="/" replace={true} />;
+    return <Navigate to="/" replace />;
   }
 
   return (
     <Grid
-      container={true}
+      container
       justifyContent="center"
       alignItems="center"
       sx={{
@@ -40,14 +40,14 @@ export function Login() {
             paddingTop: '20px',
           }}>
           <Grid
-            container={true}
+            container
             direction="column"
             justifyContent="space-between"
           >
-            <Grid item={true} container={true} justifyContent="center">
+            <Grid item container justifyContent="center">
               <img src={SmallLogo} width={250} alt="EmbyStat logo" style={{marginBottom: 10}}/>
             </Grid>
-            <Grid item={true}>
+            <Grid item>
               {
                 inRecoveryMode ?
                   <RecoverPasswordForm openLoginForm={() => setInRecoveryMode((prev) => !prev)} /> :

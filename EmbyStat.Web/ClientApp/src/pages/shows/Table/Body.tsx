@@ -4,7 +4,7 @@ import {TableBody} from '@mui/material';
 
 import {TablePage} from '../../../shared/models/common';
 import {ShowRow} from '../../../shared/models/show';
-import {Row} from '.';
+import {Row} from './Row';
 
 type BodyProps = {
   page: TablePage<ShowRow>;

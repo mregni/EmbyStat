@@ -112,17 +112,17 @@ function WizardContainer() {
 
 
   return (
-    <Grid container={true} justifyContent="center" sx={{mt: 8}}>
-      <Grid item={true} xs={12} md={10} lg={8} xl={6}>
+    <Grid container justifyContent="center" sx={{mt: 8}}>
+      <Grid item xs={12} md={10} lg={8} xl={6}>
         <Paper sx={{minHeight: 500, p: 4}}>
           <Grid
-            container={true}
+            container
             direction="column"
             spacing={2}
             justifyContent="space-between"
             sx={{minHeight: 500}}
           >
-            <Grid item={true}>
+            <Grid item>
               {activeStep === 0 && <Intro ref={introRef} />}
               {activeStep === 1 && <UserDetails ref={userDetailRef} />}
               {activeStep === 2 && <SearchMediaServer handleNext={handleNext} ref={searchMediaServerRef} />}
@@ -132,7 +132,7 @@ function WizardContainer() {
               {activeStep === 6 && <ConfigureLibrary type="show" ref={configureShowLibraryRef} />}
               {activeStep === 7 && <Finish />}
             </Grid>
-            <Grid item={true}>
+            <Grid item>
               <MobileStepper
                 steps={steps}
                 position="static"

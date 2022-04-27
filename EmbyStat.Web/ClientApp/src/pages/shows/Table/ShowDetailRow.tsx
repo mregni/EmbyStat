@@ -13,7 +13,7 @@ import {EsDetailRowSkeleton, EsFetchFailedRow} from '../../../shared/components/
 import {useLocale, useMediaServerUrls, useServerType, useShowDetails} from '../../../shared/hooks';
 import {calculateFileSize} from '../../../shared/utils';
 import {DataLine} from '../../movies/Table/Helpers';
-import {MissingEpisodeList} from '.';
+import {MissingEpisodeList} from './MissingEpisodeList';
 
 type Props = {
   id: string;
@@ -61,49 +61,49 @@ export function ShowDetailRow(props: Props) {
         </Box>
         <Box sx={{flexGrow: 1, pl: 2}}>
           <Grid
-            container={true}
+            container
             direction="column"
             spacing={2}>
             <Grid
-              item={true}
+              item
               spacing={1}
-              container={true}
+              container
               direction="column"
             >
               <Grid
-                item={true}
+                item
                 spacing={2}
                 direction="row"
-                container={true}
+                container
                 alignItems="center"
               >
-                <Grid item={true}>
+                <Grid item>
                   <Typography variant="h5">
                     {show.name}
                   </Typography>
                 </Grid>
-                <Grid item={true}>
+                <Grid item>
                   <Tooltip title={`${show.communityRating}/10`}>
                     <Box>
-                      <Rating defaultValue={(show.communityRating ?? 0)/2} precision={0.1} readOnly={true} />
+                      <Rating defaultValue={(show.communityRating ?? 0)/2} precision={0.1} readOnly />
                     </Box>
                   </Tooltip>
                 </Grid>
               </Grid>
-              <Grid item={true}>
+              <Grid item>
                 <Stack spacing={1} direction="row">
                   {show.genres.map((genre) => <Chip label={genre} key={genre} size="small" /> ) }
                 </Stack>
               </Grid>
             </Grid>
-            <Grid item={true}>
+            <Grid item>
               <Stack direction="row" spacing={2} >
                 <Box
                   sx={{
                     minWidth: 200,
                     borderRight: 'solid 1px #aaaaaa',
                   }}>
-                  <Grid container={true} direction="column" >
+                  <Grid container direction="column" >
                     <DataLine
                       icon={<StorageIcon />}
                       value={calculateFileSize(show.sizeInMb)}

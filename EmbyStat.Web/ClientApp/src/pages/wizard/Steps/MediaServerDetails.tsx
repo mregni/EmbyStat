@@ -7,13 +7,13 @@ import {
   Box, FormControl, FormHelperText, Grid, IconButton, MenuItem, Select, Stack, Typography,
 } from '@mui/material';
 
-import {StepProps, ValidationHandleWithSave} from '..';
 import embyLogo from '../../../shared/assets/images/emby.png';
 import jellyfinLogo from '../../../shared/assets/images/jellyfin.png';
 import {EsTextInput} from '../../../shared/components/esTextInput';
 import {WizardContext} from '../../../shared/context/wizard/WizardState';
 import {useServerType} from '../../../shared/hooks';
 import {MediaServer} from '../../../shared/models/mediaServer';
+import {StepProps, ValidationHandleWithSave} from '../Interfaces';
 
 export const MediaServerDetails =
 forwardRef<ValidationHandleWithSave, StepProps>(function MediaServerDetails(props, ref) {
@@ -92,11 +92,11 @@ forwardRef<ValidationHandleWithSave, StepProps>(function MediaServerDetails(prop
             >
               {serverTypeList.map((x) => (
                 <MenuItem key={x.id} value={x.value}>
-                  <Grid container={true} spacing={1} alignItems="center">
-                    <Grid item={true}>
+                  <Grid container spacing={1} alignItems="center">
+                    <Grid item>
                       <img src={x.logo} height={20} alt="mediaserver logo" />
                     </Grid>
-                    <Grid item={true}>
+                    <Grid item>
                       {x.label}
                     </Grid>
                   </Grid>

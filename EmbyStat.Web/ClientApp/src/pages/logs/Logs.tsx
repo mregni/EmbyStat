@@ -29,7 +29,7 @@ export function Logs() {
   };
 
   return (
-    <Grid container={true} item={true} xs={12} lg={6} xl={3}>
+    <Grid container item xs={12} lg={6} xl={3}>
       <TableContainer component={Paper} sx={{p: 2}}>
         <Table size="small">
           <TableHead>

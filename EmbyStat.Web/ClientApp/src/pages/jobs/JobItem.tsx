@@ -77,7 +77,7 @@ export function JobItem(props: Props) {
   };
 
   return (
-    <Zoom in={true} style={{transitionDelay: `${25 * i + 100}ms`}}>
+    <Zoom in style={{transitionDelay: `${25 * i + 100}ms`}}>
       <Paper sx={{p: 1}}>
         <Stack direction="row" spacing={2}>
           <Box>

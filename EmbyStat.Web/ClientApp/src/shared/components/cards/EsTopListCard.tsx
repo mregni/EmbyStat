@@ -73,14 +73,14 @@ export function EsTopListCard(props: Props) {
             onError={addDefaultSrc} />
         </Box>
         <Grid
-          container={true}
+          container
           direction="column"
           justifyContent="flex-start"
           sx={{m: 1}}
         >
           <Grid
-            item={true}
-            container={true}
+            item
+            container
             direction="row"
             justifyContent="space-between"
             sx={{
@@ -90,8 +90,8 @@ export function EsTopListCard(props: Props) {
               mb: 1,
             }}
           >
-            <Grid item={true}>{t(data.title)}</Grid>
-            <Grid item={true}>
+            <Grid item>{t(data.title)}</Grid>
+            <Grid item>
               <Typography variant="body1" color="secondary" fontWeight="700">
                 {data.unitNeedsTranslation ? t(data.unit) : data.unit}
               </Typography>
@@ -101,8 +101,8 @@ export function EsTopListCard(props: Props) {
 
           {data.values.map((pair) => (
             <Grid
-              item={true}
-              container={true}
+              item
+              container
               justifyContent="space-between"
               key={pair.mediaId}
               sx={{
@@ -112,7 +112,7 @@ export function EsTopListCard(props: Props) {
               onMouseOver={() => setHoveredItem(pair)}
             >
               <Grid
-                item={true}
+                item
                 sx={{
                   'cursor': 'pointer',
                   '&:hover': {
@@ -131,7 +131,7 @@ export function EsTopListCard(props: Props) {
                   {pair.label.length > 30 ? t(pair.label).substr(0, 30) + '...' : t(pair.label)}
                 </a>
               </Grid>
-              <Grid item={true}>
+              <Grid item>
                 <Typography variant="body1" color="secondary" fontWeight="700">
                   {data.valueType === 0 ? pair.value : null}
                   {data.valueType === 1 ? calculateMinutes(pair.value) : null}

@@ -1,4 +1,1 @@
-export * from './JobLogs';
-export * from './JobItem';
-export * from './Jobs';
-export * from './JobList';
+export {Jobs as default} from './Jobs';

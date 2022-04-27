@@ -6,7 +6,8 @@ import {Box, Paper, Table, TableContainer} from '@mui/material';
 import {EsLoading} from '../../../shared/components/esLoading';
 import {EsTableHeader, EsTablePagination, Header} from '../../../shared/components/table';
 import {ShowsContext} from '../../../shared/context/shows';
-import {Body, useShowTable} from '.';
+import {Body} from './Body';
+import {useShowTable} from './useShowTable';
 
 export function ShowTable() {
   const {activeFilters} = useContext(ShowsContext);
@@ -68,7 +69,7 @@ export function ShowTable() {
             handleChangeRowsPerPage={handleChangeRowsPerPage}
           />
           <TableContainer>
-            <Table stickyHeader={true} size="small">
+            <Table stickyHeader size="small">
               <EsTableHeader orderedBy={orderedBy} order={order} sortHandler={sortHandler} headers={headers} />
               <Body page={pageData} />
             </Table>

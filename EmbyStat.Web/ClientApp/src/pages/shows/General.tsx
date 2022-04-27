@@ -15,40 +15,40 @@ export function General(props: Props) {
 
   return (
     <Stack direction="column" spacing={2}>
-      <EsTitle content="Numbers" isFirst={true} />
+      <EsTitle content="Numbers" isFirst />
       <Box>
-        <Grid container={true} spacing={2}>
+        <Grid container spacing={2}>
           {statistics?.cards != null && statistics.cards.length > 0 ?
             statistics.cards.map((card: Card) => (
-              <Grid item={true} key={card.title} xs={12} sm={6} md={4} lg={3} xl={2}>
+              <Grid item key={card.title} xs={12} sm={6} md={4} lg={3} xl={2}>
                 <EsBasicCard card={card} />
               </Grid>
             )) : null}
         </Grid>
       </Box>
       <Box>
-        <Grid container={true} spacing={2}>
+        <Grid container spacing={2}>
           {statistics.topCards != null && statistics.topCards.length > 0 ?
             statistics.topCards.map((card: TopCard) => (
-              <Grid item={true} key={card.title}>
-                <EsTopListCard data={card} enableBackground={true} />
+              <Grid item key={card.title}>
+                <EsTopListCard data={card} enableBackground />
               </Grid>
             )) : null}
         </Grid>
       </Box>
       <EsTitle content="COMMON.GRAPHS" />
       <Box>
-        <Grid container={true} spacing={2}>
+        <Grid container spacing={2}>
           {statistics.barCharts != null && statistics.barCharts.length > 0 ?
             statistics.barCharts.map((chart) => (
-              <Grid item={true} xs={12} xl={6} key={chart.title}>
+              <Grid item xs={12} xl={6} key={chart.title}>
                 <EsBarGraph chart={chart} />
               </Grid>
             )) : null}
           {statistics.pieCharts != null && statistics.pieCharts.length > 0 ?
             statistics.pieCharts.map((chart) => (
-              <Grid item={true} xs={6} xl={3} key={chart.title}>
-                <EsPieGraph chart={chart} />
+              <Grid item xs={6} xl={3} key={chart.title}>
+                <EsPieGraph chart={chart} height={250} />
               </Grid>
             )) : null}
         </Grid>

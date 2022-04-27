@@ -11,30 +11,30 @@ export function EsDetailRowSkeleton() {
         </Box>
         <Box sx={{flexGrow: 1, pl: 2}}>
           <Grid
-            container={true}
+            container
             direction="column"
             spacing={2}>
             <Grid
-              item={true}
+              item
               spacing={1}
-              container={true}
+              container
               direction="column"
             >
               <Grid
-                item={true}
+                item
                 spacing={2}
                 direction="row"
-                container={true}
+                container
                 alignItems="center"
               >
-                <Grid item={true}>
+                <Grid item>
                   <Skeleton variant="text" width={200} height={30} animation="wave" />
                 </Grid>
-                <Grid item={true}>
+                <Grid item>
                   <Skeleton variant="text" width={120} height={30} animation="wave" />
                 </Grid>
               </Grid>
-              <Grid item={true}>
+              <Grid item>
                 <Stack spacing={1} direction="row">
                   <Skeleton variant="text" width={60} height={24} animation="wave" />
                   <Skeleton variant="text" width={60} height={24} animation="wave" />
@@ -42,13 +42,13 @@ export function EsDetailRowSkeleton() {
                 </Stack>
               </Grid>
             </Grid>
-            <Grid item={true}>
+            <Grid item>
               <Stack
                 direction="row"
                 spacing={2}
               >
                 <Box sx={{minWidth: 200, borderRight: 'solid 1px #aaaaaa'}}>
-                  <Grid container={true} direction="column" >
+                  <Grid container direction="column" >
                     <Skeleton variant="text" width={180} height={24} animation="wave" />
                     <Skeleton variant="text" width={60} height={24} animation="wave" style={{marginTop: 2}} />
                     <Skeleton variant="text" width={180} height={24} animation="wave" style={{marginTop: 2}} />
@@ -58,7 +58,7 @@ export function EsDetailRowSkeleton() {
                 </Box>
                 <Box>
                   <Grid
-                    container={true}
+                    container
                     direction="column"
                     justifyContent="flex-start"
                   >

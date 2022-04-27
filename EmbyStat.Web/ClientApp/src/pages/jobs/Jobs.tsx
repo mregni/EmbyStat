@@ -1,14 +1,17 @@
-import {Grid} from '@mui/material';
 import React from 'react';
-import {JobList, JobLogs} from '.';
+
+import {Grid} from '@mui/material';
+
+import {JobList} from './JobList';
+import {JobLogs} from './JobLogs';
 
 export function Jobs() {
   return (
-    <Grid container={true} spacing={2}>
-      <Grid item={true} xs={12} lg={6} xl={4}>
+    <Grid container spacing={2}>
+      <Grid item xs={12} lg={6} xl={4}>
         <JobList />
       </Grid>
-      <Grid item={true} xs={12} lg={6} xl={8}>
+      <Grid item xs={12} lg={6} xl={8}>
         <JobLogs />
       </Grid>
     </Grid>);

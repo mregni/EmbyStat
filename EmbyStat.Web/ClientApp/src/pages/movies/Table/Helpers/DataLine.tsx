@@ -14,13 +14,13 @@ export function DataLine(props: DataLineProps) {
   const {t} = useTranslation();
 
   return (
-    <Grid container={true} item={true} alignItems="flex-start" spacing={1}>
-      <Grid item={true}>
+    <Grid container item alignItems="flex-start" spacing={1}>
+      <Grid item>
         <Tooltip title={t(tooltip) ?? ''}>
           {icon}
         </Tooltip>
       </Grid>
-      <Grid item={true}>
+      <Grid item>
         <Typography>{value}</Typography>
       </Grid>
     </Grid>

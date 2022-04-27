@@ -1,1 +1,1 @@
-export * from './Logs';
+export {Logs as default} from './Logs';

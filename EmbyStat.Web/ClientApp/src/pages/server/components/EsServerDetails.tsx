@@ -41,7 +41,7 @@ export function EsServerDetails() {
             <EsChipTitle
               variant="h4"
               content={serverInfo.serverName}
-              isFirst={true}
+              isFirst
               chipContent={serverInfo.version}
               icon={<OpenInNewIcon />}
               onClick={openServer}

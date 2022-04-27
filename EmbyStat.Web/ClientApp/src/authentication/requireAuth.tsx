@@ -34,7 +34,7 @@ export function RequireAuth(props: Props): ReactElement {
   }
 
   if (!isLoggedIn) {
-    return <Navigate to="/login" state={{from: location}} replace={true} />;
+    return <Navigate to="/login" state={{from: location}} replace />;
   }
 
   return (

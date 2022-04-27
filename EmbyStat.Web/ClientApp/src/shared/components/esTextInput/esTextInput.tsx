@@ -50,7 +50,7 @@ export function EsTextInput(props: Props) {
       error={!!error}
       size="small"
       color={color}
-      fullWidth={true}
+      fullWidth
       autoComplete={'' + Math.random()}
       type={type}
       disabled={readonly}

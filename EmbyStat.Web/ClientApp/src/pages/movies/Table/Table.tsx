@@ -68,7 +68,7 @@ export function MovieTable() {
             handleChangeRowsPerPage={handleChangeRowsPerPage}
           />
           <TableContainer>
-            <Table stickyHeader={true} size="small">
+            <Table stickyHeader size="small">
               <EsTableHeader orderedBy={orderedBy} order={order} sortHandler={sortHandler} headers={headers} />
               <Body page={pageData} />
             </Table>

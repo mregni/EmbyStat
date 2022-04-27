@@ -1,5 +1,6 @@
-import {CircularProgress, Grid, Paper} from '@mui/material';
 import React, {ReactNode} from 'react';
+
+import {CircularProgress, Grid, Paper} from '@mui/material';
 
 type Props = {
   Icon: ReactNode;
@@ -37,7 +38,7 @@ export function EsRoundIconButton(props: Props) {
     >
       {loading ? (
         <Grid
-          container={true}
+          container
           justifyContent="center"
           alignItems="center"
           sx={{mt: (theme) => theme.spacing(1)}}
@@ -46,7 +47,7 @@ export function EsRoundIconButton(props: Props) {
         </Grid>
       ) : (
         <Grid
-          container={true}
+          container
           justifyContent="center"
           alignItems="center"
           sx={{

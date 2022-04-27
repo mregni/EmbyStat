@@ -11,7 +11,7 @@ export function TestFailed() {
   const [type] = useState(wizard.serverType === 0 ? 'Emby' : 'Jellyfin');
 
   return (
-    <Grid container={true} direction="column">
+    <Grid container direction="column">
       <Typography variant="body1" className="m-t-16">
         {t('WIZARD.APIKEYFAILED', {type, address: wizard.address, key: wizard.apiKey})}
       </Typography>

@@ -9,10 +9,10 @@ import {fetchLibraries, pushLibraries} from '../../shared/services/showService';
 export function Shows() {
   return (
     <Stack spacing={2}>
-      <EsTitle content='SETTINGS.SHOWS.TITLE' isFirst={true} />
+      <EsTitle content='SETTINGS.SHOWS.TITLE' isFirst />
       <Box>
-        <Grid container={true} spacing={2}>
-          <Grid item={true} xs={12} lg={6} xl={4}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} lg={6} xl={4}>
             <EsLibrarySelector
               fetch={fetchLibraries}
               push={pushLibraries}

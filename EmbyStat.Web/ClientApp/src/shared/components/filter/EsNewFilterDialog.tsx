@@ -10,7 +10,7 @@ import {
 
 import {useFilterHelpers} from '../../hooks';
 import {ActiveFilter, FilterDefinition, FilterOperation} from '../../models/filter';
-import {EsFilterInputContainer} from '.';
+import {EsFilterInputContainer} from './EsFilterInputContainer';
 
 type EsNewFilterDialogProps = {
   open: boolean;
@@ -151,7 +151,7 @@ export function EsNewFilterDialog(props: EsNewFilterDialogProps) {
         <Button onClick={closeDialog} variant="text" color="error">
           {t('COMMON.CANCEL')}
         </Button>
-        <Button onClick={handleCreate} autoFocus={true} color="primary" variant="contained">
+        <Button onClick={handleCreate} autoFocus color="primary" variant="contained">
           {t('COMMON.CREATE')}
         </Button>
       </DialogActions>

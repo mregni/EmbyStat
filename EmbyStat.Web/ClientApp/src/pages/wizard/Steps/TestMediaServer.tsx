@@ -86,16 +86,16 @@ forwardRef<ValidationHandleWithSave, StepProps>(function TestMediaServer(props, 
 
   return (
     <Grid
-      container={true}
+      container
       direction="column"
       spacing={2}
     >
-      <Grid item={true}>
+      <Grid item>
         <Typography variant="h4" color="primary">
           {t('WIZARD.SERVERCONFIGURATIONTEST')}
         </Typography>
       </Grid>
-      <Grid item={true}>
+      <Grid item>
         <EsLoading
           width='100%'
           height='200px'

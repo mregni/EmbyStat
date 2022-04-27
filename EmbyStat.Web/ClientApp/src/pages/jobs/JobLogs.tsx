@@ -13,7 +13,7 @@ export function JobLogs() {
   const {locale} = useLocale();
 
   return (
-    <Zoom in={true} style={{transitionDelay: `${25 * jobs.length + 100}ms`}}>
+    <Zoom in style={{transitionDelay: `${25 * jobs.length + 100}ms`}}>
       <Paper sx={{p: 2, minHeight: 482}}>
         <Table size="small">
           <TableBody>

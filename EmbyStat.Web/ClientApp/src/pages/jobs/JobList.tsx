@@ -1,8 +1,10 @@
-import {Stack} from '@mui/material';
 import React, {useContext} from 'react';
-import {JobItem} from '.';
+
+import {Stack} from '@mui/material';
+
 import {JobsContext} from '../../shared/context/jobs';
 import {Job} from '../../shared/models/jobs';
+import {JobItem} from './JobItem';
 
 export function JobList() {
   const {jobs} = useContext(JobsContext);

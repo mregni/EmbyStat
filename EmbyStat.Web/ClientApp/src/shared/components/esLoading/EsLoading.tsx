@@ -22,7 +22,7 @@ export function EsLoading(props: Props): ReactElement {
   if (loading) {
     return (
       <Grid
-        container={true}
+        container
         justifyContent="center"
         alignItems="center"
         sx={{
@@ -31,8 +31,8 @@ export function EsLoading(props: Props): ReactElement {
         }}
       >
         <Grid
-          item={true}
-          container={true}
+          item
+          container
           direction="column"
           justifyContent="center"
           spacing={2}
@@ -40,10 +40,10 @@ export function EsLoading(props: Props): ReactElement {
             maxWidth: 400,
           }}
         >
-          <Grid item={true}>
+          <Grid item>
             <Typography align='center' variant="body1">{label}</Typography>
           </Grid>
-          <Grid item={true}>
+          <Grid item>
             <LinearProgress />
           </Grid>
         </Grid>

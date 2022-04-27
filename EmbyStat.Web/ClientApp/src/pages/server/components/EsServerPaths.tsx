@@ -49,7 +49,7 @@ export function EsServerPaths() {
     <Card>
       <CardContent>
         <Stack spacing={2}>
-          <EsTitle content="COMMON.PATHS" isFirst={true} variant="h6" />
+          <EsTitle content="COMMON.PATHS" isFirst variant="h6" />
           <Table>
             <TableBody>
               {dataRows.map((item) => (<EsTextRow key={item.label} label={item.label} value={item.value} />))}

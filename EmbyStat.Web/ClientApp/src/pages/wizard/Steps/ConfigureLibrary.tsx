@@ -75,7 +75,7 @@ forwardRef<ValidationHandle, Props>(function ConfigureLibraryContainer(props, re
         {t('SETTINGS.LIBRARIES.CONTENT', {type: t(type)})}
       </Typography>
       <Box>
-        <Grid container={true} spacing={1}>
+        <Grid container spacing={1}>
           {
             libraries.map((lib) => (
               <EsLibraryCard

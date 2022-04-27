@@ -83,11 +83,11 @@ export const TestSuccessFul = forwardRef<ValidationHandleWithSave>(function Test
   }, [selectedAddress, clearErrors]);
 
   return (
-    <Grid item={true} container={true} xs={12} direction="column">
-      <Grid item={true}>
+    <Grid item container xs={12} direction="column">
+      <Grid item>
         <Card
           elevation={7}
-          square={true}
+          square
           sx={{
             mt: 4,
             display: 'flex',
@@ -96,8 +96,8 @@ export const TestSuccessFul = forwardRef<ValidationHandleWithSave>(function Test
           }}
         >
           <CardContent>
-            <Grid container={true} direction="column" spacing={2}>
-              <Grid item={true}>
+            <Grid container direction="column" spacing={2}>
+              <Grid item>
                 {t('WIZARD.LANWANCHOISE', {
                   type: wizard.serverType === 0 ?
                     'Emby' :
@@ -105,7 +105,7 @@ export const TestSuccessFul = forwardRef<ValidationHandleWithSave>(function Test
                 },
                 )}
               </Grid>
-              <Grid item={true}>
+              <Grid item>
                 <FormControl style={{width: '100%'}}>
                   <Controller
                     name="selectedAddress"
@@ -150,7 +150,7 @@ export const TestSuccessFul = forwardRef<ValidationHandleWithSave>(function Test
                   />
                 </FormControl>
               </Grid>
-              <Grid item={true}>
+              <Grid item>
                 <EsTextInput
                   readonly={selectedAddress !== 'other'}
                   inputRef={addressRegister}
@@ -170,10 +170,10 @@ export const TestSuccessFul = forwardRef<ValidationHandleWithSave>(function Test
         </Card>
       </Grid>
       {wizard.serverType === 1 ? (
-        <Grid item={true}>
+        <Grid item>
           <Card
             elevation={7}
-            square={true}
+            square
             sx={{
               mt: 4,
               display: 'flex',
@@ -182,13 +182,13 @@ export const TestSuccessFul = forwardRef<ValidationHandleWithSave>(function Test
             }}
           >
             <CardContent>
-              <Grid container={true} direction="column" spacing={2}>
-                <Grid item={true}>
-                  <Typography gutterBottom={true}>
+              <Grid container direction="column" spacing={2}>
+                <Grid item>
+                  <Typography gutterBottom>
                     {t('WIZARD.JELLYFIN.ADMINTEXT')}
                   </Typography>
                 </Grid>
-                <Grid item={true}>
+                <Grid item>
                   <Controller
                     name="selectedAdmin"
                     control={control}

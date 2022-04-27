@@ -33,7 +33,7 @@ export function EsTitle(props: Props) {
                 color="primary"
                 component="span"
                 onClick={onClick}
-                disableRipple={true}
+                disableRipple
               >
                 {(icon)}
               </IconButton>

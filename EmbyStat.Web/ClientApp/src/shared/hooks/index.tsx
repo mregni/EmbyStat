@@ -5,3 +5,4 @@ export * from './useMediaServerUrls';
 export * from './useFilterHelpers';
 export * from './useShowDetails';
 export * from './useSearchMediaServers';
+export * from './usePalette';
