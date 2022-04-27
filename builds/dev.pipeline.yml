@@ -65,3 +65,104 @@ stages:
       - template: './docker-containers/linux.pipeline.yml'
       - template: './docker-containers/arm64.pipeline.yml'
       - template: './docker-containers/build.pipeline.yml'
+
+  - stage: publish
+    dependsOn: build_artifacts
+    condition: succeeded()
+    displayName: 'Publish artifacts'
+    variables:
+      GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
+      GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ] 
+    jobs:
+      - job: win_docker_publish
+        displayName: 'Publish Windows docker images'
+        steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download Windows Artifact'
+            inputs:
+              buildType: specific
+              project: '60c279c7-80b3-445f-8d2e-45e07778a9e6'
+              definition: 10
+              artifactName: 'EmbyStat-docker-win-v$(GitVersion.SemVer)'
+          - task: Docker@2
+            displayName: Login
+            inputs:
+              containerRegistry: 'Docker hub'
+              command: login
+          - task: Docker@2
+            displayName: 'Build and Push container'
+            inputs:
+              containerRegistry: 'Docker hub'
+              repository: uping/embystat
+              Dockerfile: '$(System.DefaultWorkingDirectory)/_DEV/EmbyStat-dockerfiles/win.dockerfile'
+              buildContext: '$(System.DefaultWorkingDirectory)/_DEV/EmbyStat-docker-win-v$(Release.Artifacts._DEV.BuildNumber)'
+              tags: 'nightly-win-x64'
+          - task: Docker@2
+            displayName: Logout
+            inputs:
+              containerRegistry: 'Docker hub'
+              command: logout
+      - job: ubuntu_docker_publish
+        displayName: 'Publish Ubuntu docker images'
+        steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download Ubuntu Artifact'
+            inputs:
+              buildType: specific
+              project: '60c279c7-80b3-445f-8d2e-45e07778a9e6'
+              definition: 10
+              artifactName: 'EmbyStat-docker-linux-v$(GitVersion.SemVer)'
+          - task: Docker@2
+            displayName: Login
+            inputs:
+              containerRegistry: 'Docker hub'
+              command: login
+          - task: Docker@2
+            displayName: 'Build and Push container'
+            inputs:
+              containerRegistry: 'Docker hub'
+              repository: uping/embystat
+              Dockerfile: '$(System.DefaultWorkingDirectory)/_DEV/EmbyStat-dockerfiles/win.dockerfile'
+              buildContext: '$(System.DefaultWorkingDirectory)/_DEV/EmbyStat-docker-win-v$(Release.Artifacts._DEV.BuildNumber)'
+              tags: 'nightly-win-x64'
+          - task: Docker@2
+            displayName: Logout
+            inputs:
+              containerRegistry: 'Docker hub'
+              command: logout
+      - job: docker_manifest_publish
+        displayName: 'Publish manifest data'
+        dependsOn: 
+          - ubuntu_docker_publish
+          - win_docker_publish
+        condition: succeeded()
+        steps:
+          - task: Docker@2
+            displayName: Login
+            inputs:
+              containerRegistry: 'Docker hub'
+              command: login
+          - script: 'manifest-tool-windows-amd64.exe push from-spec manifest-nightly.yaml'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/_DEV/EmbyStat-dockerfiles'
+            displayName: 'Pushing manifest file to Docker Hub'
+          - task: Docker@2
+            displayName: Logout
+            inputs:
+              containerRegistry: 'Docker hub'
+              command: logout
+      - job: rollbar_publish
+        displayName: 'Publish info to Rollbar'
+        dependsOn: docker_manifest_publish
+        condition: succeeded()
+        steps:
+          - powershell: |
+              $environment = "dev"
+              $postParams = @{
+                  access_token="$(rollbar.key)";
+                  environment="$environment";
+                  revision="$(Release.Artifacts._DEV.BuildNumber)";
+                  local_username="Mikhaël Regni";
+                  status="succeeded";
+                }
+                Invoke-WebRequest -Uri https://api.rollbar.com/api/1/deploy -Method POST -UseBasicParsing -Body $postParams
+            displayName: 'Publishing deploy on Rollbar'
