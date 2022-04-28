@@ -1,410 +1,6 @@
 {
-  "COMMON": {
-    "SERVERNAME": "服务器名",
-    "DOWNLOAD": "下载",
-    "NEXT": "下一个",
-    "BACK": "返回",
-    "FINISH": "完成",
-    "SAVE": "保存",
-    "DISCARD": "放弃",
-    "CANCEL": "取消",
-    "CLOSE": "关闭",
-    "DAYSABBR": "日",
-    "HOURSABBR": "时",
-    "MINUTESABBR": "分",
-    "MIN": "分",
-    "GB": "GB",
-    "AND": "和",
-    "PIXELS": "像素",
-    "TITLE": "标题",
-    "ADDEDON": "添加时间",
-    "QUALITY": "画质",
-    "NEVER": "从未",
-    "OPEN": "打开",
-    "REASON": "原因",
-    "BYIMDB": "相同的imdb id",
-    "BYTITLE": "相同的标题",
-    "MOVIES": "*电影*",
-    "MOVIE": "电影",
-    "SHOW": "节目",
-    "GENRES": "类型",
-    "COMMUNITYRATING": "社区评分",
-    "OFFICIALRATING": "官方评分",
-    "COLLECTEDPERCENTAGE": "收集百分比",
-    "EMBY": "Emby",
-    "GENERAL": "常规",
-    "DURATION": "片长",
-    "GRAPHS": "图表",
-    "PEOPLE": "人员",
-    "FILTERS": "筛选器",
-    "SUSPICIOUS": "可疑",
-    "SHOWS": "表演",
-    "TOTALACTORS": "演员总数",
-    "TOTALDIRECTORS": "导演总数",
-    "TOTALWRITERS": "编剧总数",
-    "MOSTFEATUREDACTOR": "最具特色的演员",
-    "MOSTFEATUREDDIRECTOR": "最具特色的导演",
-    "MOSTFEATUREDWRITER": "最具特色的作家",
-    "CURRENT": "当前",
-    "TOTALRUNTIME": "总运行时间",
-    "LIBRARIES": "库",
-    "PREMIEREDATE": "首播日期",
-    "STATUS": "状态",
-    "EPISODES": "集",
-    "PERCENTAGE": "百分比",
-    "COLLECTED": "已收藏",
-    "UPDATES": "更新",
-    "VERSION": "版本",
-    "ACTORSPERGENRE": "每个类型的最具特色的演员",
-    "MINUTES": "分钟",
-    "DISKSIZE": "磁盘空间",
-    "TOTALDISKSIZE": "总磁盘空间",
-    "EMBYSERVER": "Emby服务器",
-    "JELLYFINSERVER": "Jellyfin 服务器",
-    "OS": "操作系统",
-    "WANADDRESS": "WAN 地址",
-    "LANADDRESS": "LAN 地址",
-    "UPDATELEVEL": "更新等级",
-    "SELECTVALUE": "选择数值",
-    "ADD": "添加",
-    "DATE": "日期",
-    "OTHER": "其他",
-    "FPS": "帧/秒",
-    "LINKS": "链接",
-    "PROTOCOL": "协议",
-    "AUDIO": "音频",
-    "SUBTITLES": "字幕",
-    "RATING": "等级",
-    "RESOLUTION": "分辨率",
-    "RUNTIME": "时长",
-    "TABLE": "列表",
-    "LIBRARYERROR": "无法获取库",
-    "LOADING": "正在载入 {{item}}",
-    "STATISTICS": "统计信息",
-    "NAME": "名称",
-    "COUNT": "总计",
-    "SIZE": "文件大小",
-    "HEIGHT": "高",
-    "WIDTH": "宽",
-    "TOTALGENRES": "所有类型",
-    "BITRATE": "比特率",
-    "BIT": "比特",
-    "SIZEINMB": "大小（MB）",
-    "BITDEPTH": "位深",
-    "CODEC": "编码器",
-    "VIDEORANGE": "视频范围",
-    "CONTAINER": "容器"
-  },
-  "LOGS": {
-    "ANONYMISED": "匿名的",
-    "CREATIONDATE": "创建日期",
-    "ACTIONS": "操作"
-  },
-  "FORMERRORS": {
-    "EMPTY": "该栏不能为空",
-    "REQUIRED": "必填项"
-  },
-  "EXCEPTIONS": {
-    "INTERNAL_ERROR": "呃。。。后台出错了，请再试一次。如果它一直不行，请查看日志以获取更多详细信息。",
-    "NO_CONFIGURATION_FOUND": "没有找到配置文件",
-    "NOT_FOUND": "抱歉，找不到您想要的东西。",
-    "TOKEN_FAILED": "获取 Emby 令牌失败。请检查您的凭据和地址。",
-    "EMBY_CALL_FAILED": "对 Emby 服务器的调用失败，请检查 Emby 是否在运行，以及凭据是否仍然正确。",
-    "UNHANDLED": "未处理的后端异常",
-    "MOVIENOTFOUND": "未找到电影，启动媒体同步任务可以解决这个问题。",
-    "EPISODENOTFOUND": "未找到剧集，启动媒体同步任务可以解决这个问题。",
-    "CANTCONNECTTOGITHUB": "无法连接到 GitHub 检查更新。请稍后再试。",
-    "NOUPDATEFILE": "无法定位更新应用程序，不执行更新",
-    "UPDATEUNPACKERROR": "解压更新包时出错。请再试一次。",
-    "TVDBLOGINFAILED": "TheTVDB 登录失败，请检查 API 密钥。"
-  },
-  "FORMLABELS": {
-    "CRON": "Cron 字符串"
-  },
-  "MENU": {
-    "DASHBOARD": "仪表盘",
-    "MOVIES": "电影",
-    "SHOWS": "演出",
-    "SETTINGS": "设置",
-    "PLUGINS": "插件",
-    "JOBS": "作业",
-    "SERVER": "服务器",
-    "LOGS": "日志",
-    "ABOUT": "关于",
-    "USERS": "用户"
-  },
-  "WIZARD": {
-    "WIZARDLABEL": "向导",
-    "USERDETAILTEXT": "提供您的管理员用户名和密码",
-    "SERVERCONFIGURATION": "服务器参数设置",
-    "SERVERCONFIGURATIONTEST": "服务器配置测试",
-    "CONFIGURELIBRARIES": "配置 {{type}} 库",
-    "STEPONE": "检查API密钥是否有效 ({{step}}/{{total}})",
-    "STEPTWO": "获取服务器信息 ({{step}}/{{total}})",
-    "STEPTHREE": "获取管理员账户 ({{step}}/{{total}})",
-    "STEPFOUR": "获取资料库 ({{step}}/{{total}})",
-    "SERVERTYPELABEL": "服务器类型",
-    "FINALLABEL": "最后",
-    "SEARCHSERVERS": "正在搜索服务器",
-    "SERVERTYPEGHELPER": "选择正确的服务器类型（Emby/Jellyfin）。",
-    "OPENSERVERAPIPAGE": "打开 {{type}} API 密钥页面",
-    "CROWDINHELP": "如果您的语言未提及或不完整，请随时帮助我在 <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
-    "INTROTEXT": "欢迎使用 EmbyStat 服务器向导。<br/><br/>通过这个向导，我们将会进行基本的设置，以便您可以简单的让 EmbyStat 开始工作。 向导完成后，您可以享受服务器的所有功能。 如果你想要调整服务器，你可以随时转到设置页面。<br/><br/>现在，我们需要知道如何称呼您，以及您想要查看用户界面的语言。",
-    "NOTFOUNDTEXT": "现在，我们将设置您的 {{type}} 连接。我们尝试自动检测网络中的Emby服务器，但失败了。填写所有字段，以便EmbyStat可以找到您的Emby服务器。",
-    "FOUNDTEXT": "我们在您的网络中找到了以下服务器。请选择您想要连接的服务器。 如果您的服务器未显示，您可以手动创建服务器连接。",
-    "SERVERRUNNING": "{{type}} 服务器正在运行",
-    "KEYISVALID": "API密钥有效",
-    "SELECTLIBRARIES": "选择您想要在 {{type}} 统计计算中包含的所有库。 所有 {{type}} 库是默认选择的。如果您想要在设置页面稍后更改它。",
-    "FINISHED": "所有设置都已保存，您现在可以开始使用 Emby 服务器。享受您的新统计！",
-    "FINISHEXPLANATION": "首先做的事情是开始电影和节目的同步任务。EmbyStat将开始从您的 {{type}} 服务器下载所有数据。 请记住，这些任务可能需要很长时间，取决于您的媒体库大小。 您可以在登录后通过导航到任务页面手动启动任务。",
-    "JELLYFIN": {
-      "ADMINTEXT": "因为您正在使用 Jellyfin ，您必须提供一个管理员帐户，您想要用它来从服务器获取数据。 请从下拉列表中选择管理员。"
-    },
-    "APIKEYFAILED": "访问 {{type}} 服务器失败，请检查配置并重试。",
-    "ADDRESSUSED": "地址： {{address}}",
-    "APIKEYUSED": "API密钥： {{api}}",
-    "LANWANCHOISE": "选择用于连接到 {{type}} 服务器的正确地址。",
-    "ADMINCREATEFAILED": "创建管理员帐户失败，请检查日志获取更多详情。"
-  },
-  "MOVIES": {
-    "TOTALMOVIES": "电影总数",
-    "TOTALPLAYLENGTH": "总可观看时间",
-    "HIGHESTRATED": "评分最高",
-    "LOWESTRATED": "评分最低",
-    "OLDESTPREMIERED": "最早首映",
-    "NEWESTPREMIERED": "最新首映",
-    "SHORTEST": "最短",
-    "LONGEST": "最长的",
-    "LATESTADDED": "最近添加",
-    "MOSTFEATUREDPERGENRE": "每个类型的最具特色的演员",
-    "DUPLICATEMOVIES": "重复的电影",
-    "TOSHORTMOVIES": "非常短的电影",
-    "NOPOSTER": "缺少海报",
-    "NOIMDB": "缺少IMDB ID",
-    "LOADER": "加载电影统计"
-  },
-  "SHOWS": {
-    "TOTALSHOWS": "总演出数",
-    "TOTALEPISODES": "总剧集数",
-    "TOTALMISSINGEPISODES": "缺少剧集总数",
-    "TOTALSPECIALEPISODES": "总特别剧集数",
-    "TOTALPLAYLENGTH": "总可观看时间",
-    "HIGHESTRATEDSHOW": "评分最高",
-    "LOWESTRATEDSHOW": "评分最低",
-    "OLDESTPREMIERED": "最早首映",
-    "NEWESTPREMIERED": "最新首映",
-    "LATESTADDED": "最近添加",
-    "WITHMOESTEPISODES": "大部分剧集",
-    "SHOWSTATUSGRAPH": "显示状态",
-    "SEASONS": "季数",
-    "CONTINUING": "继续",
-    "ENDED": "结束",
-    "OVERVIEW": "概览",
-    "MISSINGEPISODES": "缺少剧集",
-    "LOADER": "加载节目统计"
-  },
-  "SETTINGS": {
-    "SAVED": "设置已保存",
-    "SAVEFAILED": "保存设置失败，请检查日志文件以获取更多信息。",
-    "TITLES": {
-      "EMBYSTAT": "Embystat",
-      "TMDB": "电影数据库",
-      "EMBY": "Emby"
-    },
-    "TMDB": {
-      "TITLE": "TMDb 连接",
-      "APIKEYLABEL": "TMDb API 密钥",
-      "APIKEYWARNING": "你可以在此处填入自己的 TheTVDB API 密钥。确保你提供的API密钥有效，如果密钥失效，同步任务也将失败。",
-      "NOAPIKEY": "API 密钥不能为空",
-      "SAVING": "正在保存 TVDB 密钥"
-    },
-    "ROLLBAR": {
-      "TITLE": "Rollbar 日志",
-      "ENABLEROLLBAR": "启用异常日志",
-      "EXCEPTIONLOGGING": "启用/禁用到在线Rollbar服务的异常日志记录。通过此日志记录，开发者可以更快地调试和修复应用程序。日志中不包含任何个人数据，仅记录了异常消息，堆栈跟踪，操作系统名称和版本号。",
-      "SAVING": "正在保存Rollbar日志设置"
-    },
-    "LANGUAGE": {
-      "TITLE": "语言",
-      "LABEL": "选择您的偏好语言",
-      "SAVING": "将更新语言为 {{lang}}"
-    },
-    "ACCOUNT": {
-      "TITLE": "用户详情",
-      "USERNAME": "用户名",
-      "NOUSERNAME": "需要用户名",
-      "PASSWORD": "密码",
-      "NEWPASSWORD": "新密码",
-      "REPEATNEWPASSWORD": "重复新密码",
-      "CURRENTPASSWORD": "当前密码",
-      "NOPASSWORD": "密码（必填）",
-      "PASSWORDNOTEQUAL": "密码不一致",
-      "PASSWORDMINLENGTH": "密码长度最少 6 个字符",
-      "PASSWORDWARNING": "如果您想更改当前密码，您只需填写一个新密码。",
-      "WRONGPASSWORD": "密码错误或用户无效",
-      "USERNAMEUPDATED": "用户名更新成功",
-      "USERNAMEUPDATEFAILED": "用户名更新失败，请检查日志获取更多信息"
-    },
-    "STATISTICS": {
-      "TOSHORTTEXT": "要查找可疑短片，我们需要知道您对短电影分钟数的定义。默认设置为10分钟，但您可以根据需要进行更改。",
-      "SAVING": "正在保存所有 {{type}} 统计设置",
-      "TOSHORTMINUTES": "分钟",
-      "ENABLETOSHORTSCAN": "启用短片搜索"
-    },
-    "MOVIE": {
-      "LIBRARY": {
-        "SAVING": "保存电影库"
-      },
-      "COLLECTIONTYPES": "选择您希望能够在电影统计页面的集合下拉列表中选择的所有Emby集合类型。"
-    },
-    "SHOW": {
-      "COLLECTIONTYPES": "在合集下来列表中选择您希望能够在 节目统计 页面的所有Emby合集类型。"
-    },
-    "MEDIASERVER": {
-      "ADDRESS": "IP/域名",
-      "NOADDRESS": "需要 IP/域名",
-      "APIKEY": "API密钥",
-      "NOAPIKEY": "需要API密钥",
-      "PORT": "端口",
-      "NOPORT": "需要端口号",
-      "BASEURL": "主机 URL",
-      "NOBASEURL": "基本网址为必填项，且应以/开头",
-      "EMBYADDRESSREQUIRED": "需要 {{type}} IP/域",
-      "EMBYPORTREQUIRED": "需要{{type}} 端口。",
-      "EMBYAPIKEYREQUIRED": "需要{{type}} API密钥",
-      "APIKEYHINT": "转到你的 {{type}} 服务器上的高级-> 安全以生成一个新的 API 令牌。",
-      "BASEURLHINT": "基本网址必须以/开头",
-      "BASEURLNEEDED": "我需要设置基本网址",
-      "BASEURLNEEDEDTOOLTIP": "如果您没有反向代理，那么您可能不需要此！",
-      "WRONGAPIKEY": "提供的API密钥无效",
-      "CHANGESERVERTYPE": "您配置了一个 {{currentType}} 服务器，如果要切换到 {{newType}} ，则必须重新安装该应用程序。"
-    },
-    "UPDATE": {
-      "MASTER": "主干",
-      "BETA": "测试版",
-      "AUTO": "启用自动更新",
-      "CHECK": "立即检查并更新服务器",
-      "UPDATE:": "现在更新服务器",
-      "TRAIN": "如果要选择测试版更新, 请更改更新计划。",
-      "ONBETA": "你已经不在用稳定版上了, 所以你不能再退回去了。如果您想返回稳定版, 请重新安装服务器。",
-      "TRAINWARNING": "您可以在此从稳定版变更到测试版。如果您不知道您正在做什么事情，请先使用稳定版。如果您想要切换到测试版，请在这里修改设定。但之后想返回稳定版则您必须重新安装服务器。",
-      "CURRENTVERSION": "当前版本: {{version}}",
-      "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
-      "NOUPDATE": "无可用更新",
-      "NEWVERSION": "版本 {{version}} 可供下载！",
-      "DISABLED": "此服务器的更新被禁用，可能会被外部服务更新。 如果这是一个错误，请不要使用 --no-update 选项启动服务器。"
-    }
-  },
-  "LOGIN": {
-    "LOGIN": "登录",
-    "ERROR": "用户名或密码未知",
-    "LOGOUT": "注销",
-    "FORGOTPASSWORD": "忘记密码？",
-    "RECOVERPASSWORD": "找回密码",
-    "RESETCOMPLETED": "检查日志以获取新密码",
-    "RESETFAILED": "重置用户名失败"
-  },
-  "USERS": {
-    "ISADMIN": "是管理员",
-    "ISHIDDEN": "从登录界面隐藏",
-    "ISDISABLED": "已禁用",
-    "DELETED": "已删除的用户",
-    "ACTIVE": "活动用户",
-    "LASTACTIVE": "上次登录:",
-    "SORTING": {
-      "USERNAMEASC": "用户名 (A-Z)",
-      "USERNAMEDESC": "用户名 (Z-A)",
-      "LASTACTIVEASC": "最后活动日期 (升序)",
-      "LASTACTIVEDESC": "最后活动日期 (降序)"
-    },
-    "TOOVERVIEW": "概述",
-    "DETAILS": {
-      "TITLE": "{{name}} 的详细信息",
-      "WATCHEDTITLE": "上次观看的项目"
-    },
-    "WATCHEDTABLE": {
-      "TITLE": "标题",
-      "TIME": "时间",
-      "WATCHED": "已观看",
-      "START": "开始",
-      "ACTION": "操作"
-    },
-    "STATS": {
-      "TOTALWATCHEDMOVIES": "看过的电影",
-      "TOTALWATCHEDEPISODES": "已观看的剧集"
-    }
-  },
-  "JOB": {
-    "LASTRUN": "上次运行",
-    "BUTFAILED": "但之后失败了",
-    "NORUN": "尚未运行",
-    "PROCESSING": "正在处理",
-    "JOBLOGS": "作业日志",
-    "CRONUPDATED": "Cron 值已更新",
-    "OPENJOBPAGE": "转到工作页面",
-    "STARTMEDIASYNC": "开始媒体同步",
-    "INFO": {
-      "PING": "检查 {{type}} 连接",
-      "PINGDESCRIPTION": "Ping Emby服务器来检查他是否仍然在线。",
-      "SYSTEM-SYNCDESCRIPTION": "与 Emby 服务器执行小型同步。这只是一个快速而小型的系统更新。",
-      "SYSTEM-SYNC": "同步 {{type}} 信息",
-      "SYSTEM-SYNCSTART": "开始小同步",
-      "SHOW-SYNCDESCRIPTION": "为您的媒体进行增量同步。这可能需要一些时间才能运行！",
-      "SHOW-SYNC": "节目同步",
-      "MOVIE-SYNCDESCRIPTION": "为您的电影收藏进行增量同步。这可能需要一些时间才能运行！",
-      "MOVIE-SYNC": "影片同步",
-      "DATABASE-CLEANUP": "数据库清理",
-      "DATABASE-CLEANUPDESCRIPTION": "清理数据库中不必要的数据。",
-      "UPDATE-CHECKER": "检查更新",
-      "UPDATE-CHECKERDESCRIPTION": "检查所选更新列上的新更新。"
-    }
-  },
-  "DIALOGS": {
-    "NOMOVIETYPEFOUND": {
-      "TITLE": "未找到电影",
-      "BODY": "我们在 EmbyStat 数据库中找不到任何电影。如果您在 Emby 中有电影，请尝试启动新的媒体同步任务。"
-    },
-    "NOSHOWTYPEFOUND": {
-      "TITLE": "找不到演出节目",
-      "BODY": "我们在 EmbyStat 数据库中找不到任何演出节目。如果您在 Emby 中有演出节目的话，请尝试启动一个新的媒体同步任务。"
-    },
-    "MEDIASYNCTASKRUNNING": {
-      "TITLE": "媒体同步任务正在运行",
-      "BODY": "媒体同步任务正在后台运行。所有统计页面均被阻止，因为只要同步运行，计算将完全错误。"
-    },
-    "EDIT_TRIGGER": {
-      "FORMAT_ERROR": "提交的CRON字符串格式错误。在<a href=\"https://crontab.guru/\" target=\"_blank\">此处</a>查看详细格式规则。仅允许使用数字，空格，\"*\"，\"/\"和\"-\"。",
-      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">在这里</a> 你可以找到更多关于如何格式化CRON字符串的信息。只允许数字，\"*\"，\"/\"和\"-\"。"
-    },
-    "NOUSERSFOUND": {
-      "TITLE": "未找到相应的用户",
-      "BODY": "本地数据库中没有找到用户。这意味着没有运行中的小同步作业。您想现在运行吗？"
-    }
-  },
-  "LOADER": {
-    "UPDATING": "正在更新 EmbyStat",
-    "UPDATINGSUB": "更新完成后页面将刷新。"
-  },
-  "COLLECTIONTYPES": {
-    "MIXED": "混合/其他",
-    "MUSIC": "音乐",
-    "MUSICVIDEOS": "音乐视频",
-    "TRAILERS": "预告片",
-    "HOMEVIDEOS": "家庭影片",
-    "BOXSETS": "盒装套装",
-    "BOOKS": "图书",
-    "PHOTOS": "图片",
-    "GAMES": "游戏",
-    "LIVETV": "电视直播",
-    "PLAYLISTS": "播放列表",
-    "FOLDERS": "文件夹"
-  },
-  "STATUS": {
-    "TITLE": "{{type}} 状态",
-    "ONLINE": "服务器在线",
-    "OFFLINE": "{{count}} 错过的 ping"
-  },
   "ABOUT": {
+    "OS": "操作系统",
     "SERVERINFO": "服务器信息",
     "GITHUBRELEASE": "在 Github 上发布",
     "REQUESTFEATURE": "请求功能",
@@ -412,46 +8,377 @@
     "HELPTRANSLATE": "帮助翻译这个程序",
     "THANKS": {
       "TITLE": "谢谢",
-      "TEXT": "非常感谢感谢以下人翻译本应用程序为本地语言："
+      "TEXT": "A big thanks to the following people for translating the app in their native language or helping to test the application:",
+      "MISSINGNAME": "If your name is missing from this list, send me a message on Crowdin!"
     },
-    "ACTIONS": {
-      "TITLE": "操作"
+    "ACTIONS": "操作"
+  },
+  "COMMON": {
+    "AND": "和",
+    "AUDIO": "音频",
+    "BACK": "Back",
+    "BIT": "比特",
+    "BITDEPTH": "位深",
+    "CANCEL": "取消",
+    "CODEC": "编码器",
+    "COLLECTEDPERCENTAGE": "Amount collected",
+    "COMMUNITYRATING": "社区评分",
+    "CONTAINER": "容器",
+    "COUNT": "总计",
+    "CREATE": "Create",
+    "CREATEDDATE": "Media added",
+    "DATE": "Date",
+    "DAYSABBR": "日",
+    "DESCRIPTION": "Description",
+    "DISCARD": "放弃",
+    "DISKSPACE": "Disk space",
+    "DOWNLOAD": "Download",
+    "DOWNLOADCSV": "Download list as CSV",
+    "EPISODE": "Episode",
+    "EPISODES": "集",
+    "FILTERS": "筛选器",
+    "FPS": "帧/秒",
+    "GB": "Gb",
+    "GENRES": "类型",
+    "GRAPHS": "图表",
+    "HEIGHT": "高",
+    "HOURSABBR": "时",
+    "HTTPPORT": "HTTP port",
+    "HTTPSPORT": "HTTPS port",
+    "ID": "ID",
+    "ISDEFAULT": "is default",
+    "LINKS": "链接",
+    "LIST": "List",
+    "MIN": "分",
+    "MINUTESABBR": "分",
+    "MOVIE": "电影",
+    "MOVIES": "*电影*",
+    "NAME": "名称",
+    "NUMBERS": "Numbers",
+    "OFFICIALRATING": "官方评分",
+    "OS": "操作系统",
+    "OTHER": "Other",
+    "PATHS": "Paths",
+    "PIXELS": "像素",
+    "PREMIEREDATE": "首播日期",
+    "PROTOCOL": "协议",
+    "RUNTIME": "时长",
+    "SAVE": "保存",
+    "SEASON": "Season",
+    "SEASONS": "Seasons",
+    "SELECTVALUE": "选择数值",
+    "SHOW": "节目",
+    "SHOWS": "演出",
+    "SIZE": "文件大小",
+    "SIZEINMB": "Size in Mb",
+    "STATUS": "状态",
+    "STREAMS": "Streams",
+    "SUBTITLES": "字幕",
+    "TIME": "Time",
+    "TITLE": "标题",
+    "TOTAL": "Total",
+    "TOTALACTORS": "演员总数",
+    "TOTALDIRECTORS": "导演总数",
+    "TOTALDISKSIZE": "总磁盘空间",
+    "TOTALGENRES": "所有类型",
+    "TOTALRUNTIME": "总运行时间",
+    "TOTALWRITERS": "编剧总数",
+    "UNKNOWN": "Unknown",
+    "UPDATELEVEL": "更新等级",
+    "VERSION": "版本",
+    "VIDEORANGE": "视频范围",
+    "WIDTH": "宽"
+  },
+  "DIALOGS": {
+    "EDIT_TRIGGER": {
+      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">在这里</a> 你可以找到更多关于如何格式化CRON字符串的信息。只允许数字，\"*\"，\"/\"和\"-\"。",
+      "FORMAT_ERROR": "提交的CRON字符串格式错误。在<a href=\"https://crontab.guru/\" target=\"_blank\">此处</a>查看详细格式规则。仅允许使用数字，空格，\"*\"，\"/\"和\"-\"。"
+    },
+    "MOVIEJOBRUNNING": {
+      "BODY": "Movie job is running, please wait until it is finished",
+      "TITLE": "Movie job running"
+    },
+    "NOMOVIETYPEFOUND": {
+      "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in {{type}} you should try starting a new movie syncronisation task.",
+      "TITLE": "未找到电影"
+    },
+    "NOSHOWTYPEFOUND": {
+      "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in {{type}} you should try starting a new show syncronisation task.",
+      "TITLE": "找不到演出节目"
+    },
+    "SHOWJOBRUNNING": {
+      "BODY": "Show job is running, please wait until it is finished",
+      "TITLE": "Show job running"
     }
   },
   "FILTERS": {
-    "CLEARALL": "全部清除",
-    "CONTAINS": "包含",
-    "NOTCONTAINS": "不包含",
-    "EQUAL": "相等",
-    "STARTSWITH": "开头是",
-    "ENDSWITH": "结尾是",
-    "IS": "是",
-    "ISNULL": "为空",
-    "ISNOT": "不是",
-    "HAS": "包含",
-    "HASNO": "不包含",
-    "HASNONE": "不包含",
-    "BETWEEN": "之间",
-    "SHORTER": "更短",
-    "LONGER": "更长",
-    "ISZERO": "为 0",
-    "LARGER": "大于",
-    "SMALLER": "小于",
-    "BEFORE": "早于",
-    "AFTER": "之后",
+    "DIALOG": {
+      "CONTENT": "Select field on which you want to add a new filter",
+      "TITLE": "Add new filter"
+    },
+    "OPERATIONS": {
+      "BETWEEN": "is between",
+      "CONTAINS": "contains",
+      "ENDSWITH": "ends with",
+      "EQUAL": "equals",
+      "HAS": "has",
+      "HASNO": "has no",
+      "HASNONE": "has none",
+      "IS": "is",
+      "ISNOT": "is not",
+      "ISNULL": "is null",
+      "ISZERO": "is 0",
+      "LARGER": "is larger then",
+      "LONGER": "is longer then",
+      "NOTCONTAINS": "does not contain",
+      "SHORTER": "is shorter then",
+      "SMALLER": "is smaller then",
+      "STARTSWITH": "starts with"
+    },
     "TITLES": {
-      "TITLE": "标题",
-      "IMDB": "IMDB",
-      "TMDB": "Tmdb",
-      "IMAGES": "图片",
-      "GENRES": "类型",
+      "CONTAINER": "容器",
       "FRAMERATE": "帧速率",
-      "CONTAINER": "容器"
+      "GENRES": "类型",
+      "IMAGES": "图片",
+      "IMDB": "IMDB",
+      "TITLE": "标题",
+      "TMDB": "Tmdb"
     }
+  },
+  "FORMLABELS": {
+    "CRON": "Cron 字符串",
+    "FIELD": "Field",
+    "OPERATION": "Operation"
+  },
+  "JOB": {
+    "BUTFAILED": "但之后失败了",
+    "CRONUPDATED": "Cron 值已更新",
+    "INFO": {
+      "DATABASE-CLEANUP": "数据库清理",
+      "DATABASE-CLEANUPDESCRIPTION": "清理数据库中不必要的数据。",
+      "MOVIE-SYNC": "影片同步",
+      "MOVIE-SYNCDESCRIPTION": "为您的电影收藏进行增量同步。这可能需要一些时间才能运行！",
+      "PING": "检查 {{type}} 连接",
+      "PINGDESCRIPTION": "Ping Emby服务器来检查他是否仍然在线。",
+      "SHOW-SYNC": "节目同步",
+      "SHOW-SYNCDESCRIPTION": "为您的媒体进行增量同步。这可能需要一些时间才能运行！",
+      "SYSTEM-SYNC": "同步 {{type}} 信息",
+      "SYSTEM-SYNCDESCRIPTION": "与 Emby 服务器执行小型同步。这只是一个快速而小型的系统更新。",
+      "UPDATE-CHECKER": "检查更新",
+      "UPDATE-CHECKERDESCRIPTION": "检查所选更新列上的新更新。"
+    },
+    "JOBLOGS": "作业日志",
+    "LASTRUN": "上次运行",
+    "NORUN": "尚未运行",
+    "OPENJOBPAGE": "转到工作页面",
+    "PROCESSING": "正在处理",
+    "STARTMEDIASYNC": "开始媒体同步"
+  },
+  "LOGIN": {
+    "ERROR": "用户名或密码未知",
+    "LOGIN": "登录",
+    "LOGOUT": "注销",
+    "RECOVERPASSWORD": "找回密码",
+    "RESETCOMPLETED": "检查日志以获取新密码",
+    "RESETFAILED": "重置用户名失败"
+  },
+  "LOGS": {
+    "ACTIONS": "操作",
+    "ANONYMISED": "匿名的"
+  },
+  "MENU": {
+    "ABOUT": "关于",
+    "DASHBOARD": "仪表盘",
+    "JOBS": "作业",
+    "LOGS": "日志",
+    "MOVIES": "电影",
+    "SERVER": "服务器",
+    "SETTINGS": "设置",
+    "SHOWS": "演出",
+    "USERS": "用户"
+  },
+  "MOVIES": {
+    "HIGHESTRATED": "评分最高",
+    "LATESTADDED": "最近添加",
+    "LOADER": "加载电影统计",
+    "LOADINGLIST": "Loading movie list",
+    "LONGEST": "最长的",
+    "LOWESTRATED": "评分最低",
+    "MOSTWATCHED": "Most watched",
+    "NEWESTPREMIERED": "最新首映",
+    "OLDESTPREMIERED": "最早首映",
+    "SHORTEST": "最短",
+    "TOTALMOVIES": "电影总数",
+    "TOTALPLAYLENGTH": "总可观看时间",
+    "TOTALWATCHED": "Total watched movies"
   },
   "PAGINATION": {
     "NEXTPAGE": "下一页",
     "PREVIOUSPAGE": "上一页",
     "ROWSPERPAGE": "每页行数"
+  },
+  "SERVER": {
+    "ACTIVEDEVICES": "ACtive devices",
+    "AUTORUNSUPPORT": "Supports auto run at startup",
+    "CACHEPATH": "Cache path",
+    "CANLAUNCHBROWSER": "Can launch browser",
+    "CANSELFRESTART": "Can self restart",
+    "CANSELFUPDATE": "Can self update",
+    "FEATURES": "Features",
+    "HTTPSSUPPORT": "HTTPS support",
+    "IDLEDEVICES": "Idle devices",
+    "INFO": "服务器信息",
+    "ITEMSBYNAMEPATH": "Items by name path",
+    "LANADDRESS": "LAN",
+    "LOGPATH": "Log path",
+    "METADATAPATH": "Internal metadata path",
+    "MONITORSUPPORT": "Supports library monitoring",
+    "OPENSERVER": "Open server page",
+    "PENDINGRESTART": "Has pending restart",
+    "PLUGINS": "Plugins",
+    "PROGRAMDATAPATH": "Program data path",
+    "TRANSCODINGPATH": "Transcoding path",
+    "UPDATEAVAILABLE": "Has update available",
+    "WANADDRESS": "WAN",
+    "WEBSOCKETPORT": "Websocket port"
+  },
+  "SETTINGS": {
+    "ACCOUNT": {
+      "CONTENT": "Change your admin username here. New username will be required on next login.",
+      "NOUSERNAME": "需要用户名",
+      "USERNAME": "用户名",
+      "USERNAMEUPDATED": "用户名更新成功",
+      "USERNAMEUPDATEFAILED": "Username update failed, check the logs for more info"
+    },
+    "LANGUAGE": {
+      "LABEL": "Select language",
+      "LANGUAGEUPDATED": "Updating language to {{lang}}",
+      "SAMPLES": "Localisation examples",
+      "TITLE": "语言"
+    },
+    "LIBRARIES": {
+      "CONTENT": "Select here all {{type}} libraries that should be synced with EmbyStat ",
+      "TITLE": "Libraries"
+    },
+    "MEDIASERVER": {
+      "ADDRESS": "Full server URL",
+      "ADDRESSHINT": "Example: https://example.com:8096/base",
+      "APIKEY": "API密钥",
+      "APIKEYHINT": "转到你的 {{type}} 服务器上的高级-> 安全以生成一个新的 API 令牌。",
+      "DIALOG": {
+        "CONTENT": "Because you are changing the server configuration it might be a good idea to also reset the EmbyStat statistics. Do this only when you are connecting to a new server with different media/users/... If you are still connecting to the same server you don't need to reset the EmbyStat statistics.",
+        "RESET": "Save and reset",
+        "TITLE": "Reset database?"
+      },
+      "NOADDRESS": "Server URL is required",
+      "NOAPIKEY": "需要API密钥",
+      "RESETINFO": "Starting the EmbyStat reset process. This can take some time depending on the size of the database. Please wait until it is finished.",
+      "TITLE": "{{type}} settings"
+    },
+    "PASSWORD": {
+      "CONTENT": "For changing your password, fill in the current one and your new one twice.",
+      "CURRENTPASSWORD": "Current password",
+      "NEWPASSWORD": "New password",
+      "NOCURRENTPASSWORD": "Current password is required",
+      "NOPASSWORD": "Password is required",
+      "PASSWORD": "Password",
+      "PASSWORDMINLENGTH": "Password length must be minimal 6 characters",
+      "PASSWORDNOTEQUAL": "Passwords are not equal",
+      "PASSWORDUPDATED": "Password updated succesfully",
+      "PASSWORDUPDATEFAILED": "Password update failed",
+      "REPEATNEWPASSWORD": "Repeat new password",
+      "TITLE": "Password"
+    },
+    "ROLLBAR": {
+      "ENABLEROLLBAR": "启用异常日志",
+      "EXCEPTIONLOGGING": "启用/禁用到在线Rollbar服务的异常日志记录。通过此日志记录，开发者可以更快地调试和修复应用程序。日志中不包含任何个人数据，仅记录了异常消息，堆栈跟踪，操作系统名称和版本号。",
+      "TITLE": "Rollbar 日志"
+    },
+    "SAVED": "设置已保存",
+    "SAVEFAILED": "Updating settings failed",
+    "SERVER": {
+      "CONNECTIONS": "Connection settings",
+      "USER": "User settings"
+    },
+    "SHOWS": {
+      "TITLE": "Show settings"
+    },
+    "TMDB": {
+      "APIKEYWARNING": "你可以在此处填入自己的 TheTVDB API 密钥。确保你提供的API密钥有效，如果密钥失效，同步任务也将失败。",
+      "LABEL": "TMDb API key",
+      "NOAPIKEY": "API 密钥不能为空",
+      "TITLE": "TMDb 连接"
+    }
+  },
+  "SHOWS": {
+    "COMPLETECOLLECTEDSHOWS": "Full collected shows",
+    "HIGHESTRATED": "评分最高",
+    "LATESTADDED": "Latest added",
+    "LOADER": "加载节目统计",
+    "LOADINGLIST": "Loading show list",
+    "LOWESTRATED": "评分最低",
+    "MISSINGEPISODES": "缺少剧集",
+    "MOSTDISKSPACE": "Most used disk space",
+    "MOSTWATCHED": "Most watched",
+    "NEWESTPREMIERED": "最新首映",
+    "NOMISSINGEPS": "No missing episodes",
+    "OLDESTPREMIERED": "最早首映",
+    "SHOWSTATUS": "Show status",
+    "TOTALEPISODES": "总剧集数",
+    "TOTALEPISODESWATCHED": "Total watched episodes",
+    "TOTALMISSINGEPISODES": "缺少剧集总数",
+    "TOTALPLAYLENGTH": "Total play length",
+    "TOTALSHOWS": "Total shows",
+    "WITHMOESTEPISODES": "With most episodes"
+  },
+  "USERS": {
+    "ACTIVEUSERS": "Active users",
+    "ADMIN": "Admin",
+    "DISABLED": "Disabled",
+    "HIDDEN": "Hidden",
+    "IDLEUSERS": "Idle users",
+    "LASTACTIVE": "上次登录:",
+    "LOADER": "Loading user info",
+    "USERS": "用户",
+    "WATCHED": {
+      "EPISODES": "Episodes watched",
+      "MOVIES": "Movies watched",
+      "TOTAL": "Total watched"
+    }
+  },
+  "WIZARD": {
+    "ACCOUNT": "User details",
+    "ADDRESSUSED": "地址： {{address}}",
+    "APIKEYFAILED": "访问 {{type}} 服务器失败，请检查配置并重试。",
+    "APIKEYUSED": "API密钥： {{api}}",
+    "CROWDINHELP": "如果您的语言未提及或不完整，请随时帮助我在 <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
+    "EXCEPTIONLOGGING": "Exception logging",
+    "FINALTITLE": "Final",
+    "FINISHED": "所有设置都已保存，您现在可以开始使用 Emby 服务器。享受您的新统计！",
+    "FINISHEXPLANATION": "首先做的事情是开始电影和节目的同步任务。EmbyStat将开始从您的 {{type}} 服务器下载所有数据。 请记住，这些任务可能需要很长时间，取决于您的媒体库大小。 您可以在登录后通过导航到任务页面手动启动任务。",
+    "FOUNDTEXT": "我们在您的网络中找到了以下服务器。请选择您想要连接的服务器。 如果您的服务器未显示，您可以手动创建服务器连接。",
+    "INTROTEXT": "欢迎使用 EmbyStat 服务器向导。<br/><br/>通过这个向导，我们将会进行基本的设置，以便您可以简单的让 EmbyStat 开始工作。 向导完成后，您可以享受服务器的所有功能。 如果你想要调整服务器，你可以随时转到设置页面。<br/><br/>现在，我们需要知道如何称呼您，以及您想要查看用户界面的语言。",
+    "JELLYFIN": {
+      "ADMINTEXT": "因为您正在使用 Jellyfin ，您必须提供一个管理员帐户，您想要用它来从服务器获取数据。 请从下拉列表中选择管理员。"
+    },
+    "LANGUAGE": "语言",
+    "LANWANCHOISE": "选择用于连接到 {{type}} 服务器的正确地址。",
+    "LIBRARIES": {
+      "TITLE": "Select {{type}} libraries"
+    },
+    "NOTFOUNDTEXT": "现在，我们将设置您的 {{type}} 连接。我们尝试自动检测网络中的Emby服务器，但失败了。填写所有字段，以便EmbyStat可以找到您的Emby服务器。",
+    "SEARCHSERVERS": "Searching media servers",
+    "SELECTLANGUAGE": "Select your prefered language",
+    "SELECTLIBRARIES": "选择您想要在 {{type}} 统计计算中包含的所有库。 所有 {{type}} 库是默认选择的。如果您想要在设置页面稍后更改它。",
+    "SERVERCONFIGURATION": "服务器参数设置",
+    "SERVERCONFIGURATIONTEST": "服务器配置测试",
+    "SERVERTYPEGHELPER": "选择正确的服务器类型（Emby/Jellyfin）。",
+    "SERVERTYPELABEL": "服务器类型",
+    "STEPFOUR": "获取资料库 ({{step}}/{{total}})",
+    "STEPONE": "检查API密钥是否有效 ({{step}}/{{total}})",
+    "STEPTHREE": "获取管理员账户 ({{step}}/{{total}})",
+    "STEPTWO": "获取服务器信息 ({{step}}/{{total}})",
+    "TITLE": "Wizard",
+    "USERDETAILTEXT": "提供您的管理员用户名和密码"
   }
 }
