@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:6.0.4-alpine3.15-amd64 AS base
+FROM mcr.microsoft.com/dotnet/runtime:6.0-bullseye-slim-amd64 AS base
 LABEL author="UPing"
 LABEL maintainer="mikhael@uping.be"
 

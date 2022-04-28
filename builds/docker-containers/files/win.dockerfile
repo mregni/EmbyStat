@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:6.0.4-nanoserver-20H2 AS base
+FROM mcr.microsoft.com/dotnet/runtime:6.0-nanoserver-ltsc2022 AS base
 LABEL author="UPing"
 LABEL maintainer="mikhael@uping.be"
 

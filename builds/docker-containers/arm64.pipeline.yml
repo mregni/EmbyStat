@@ -17,22 +17,22 @@ jobs:
       arguments: '$(package.ubuntu-x64) $(rollbar.key) $(GitVersion.SemVer)'
 
   - task: DotNetCoreCLI@2
-    displayName: 'Make linux-x64 package'
+    displayName: 'Make arm-x64 package'
     inputs:
       command: publish
       publishWebProjects: false
       projects: '$(webapp.project)'
-      arguments: '-c Release -r linux-x64 -o publish -f $(publish.framework) $(publish.parameters)'
+      arguments: '-c Release -r linux-arm64 -o publish -f $(publish.framework) $(publish.parameters)'
       zipAfterPublish: false
       modifyOutputPath: false
     
   - task: DotNetCoreCLI@2
-    displayName: 'Make linux-x64 updater package'
+    displayName: 'Make arm-x64 updater package'
     inputs:
       command: publish
       publishWebProjects: false
       projects: '$(updater.project)'
-      arguments: '-c Release -r linux-x64 -o publish/updater -f $(publish.framework) $(publish.parameters)'
+      arguments: '-c Release -r linux-arm64 -o publish/updater -f $(publish.framework) $(publish.parameters)'
       zipAfterPublish: false
       modifyOutputPath: false
       
