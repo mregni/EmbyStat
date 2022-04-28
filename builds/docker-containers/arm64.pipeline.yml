@@ -3,9 +3,9 @@ jobs:
   displayName: 'Create ARM64 docker build'
   pool:
     vmImage: $(LinuxPool)
-  variables:
-    GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
-    GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
+    variables:
+      GitVersion.AssemblySemVer: $[stageDependencies.test_stage.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
+      GitVersion.SemVer: $[stageDependencies.test_stage.main_build.outputs['setSemVer.SemVer'] ]
   steps:
   - template: '../templates/update.version.yml'
 

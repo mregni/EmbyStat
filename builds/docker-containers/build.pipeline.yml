@@ -4,8 +4,8 @@ jobs:
   condition: succeeded()
   displayName: 'Copy Docker files'
   variables:
-    GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
-    GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
+    GitVersion.AssemblySemVer: $[stageDependencies.test_stage.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
+    GitVersion.SemVer: $[stageDependencies.test_stage.main_build.outputs['setSemVer.SemVer'] ]
   steps:
   - task: PowerShell@2
     displayName: 'Copy Docker files'
