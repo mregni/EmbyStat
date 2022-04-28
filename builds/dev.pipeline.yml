@@ -71,8 +71,8 @@ stages:
     condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop'))
     displayName: 'Publish artifacts'
     variables:
-      GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
-      GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ] 
+      GitVersion.AssemblySemVer: $[stageDependencies.test_stage.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
+      GitVersion.SemVer: $[stageDependencies.test_stage.main_build.outputs['setSemVer.SemVer'] ]  
     jobs:
       - job: win_docker_publish
         displayName: 'Publish Windows docker images'
