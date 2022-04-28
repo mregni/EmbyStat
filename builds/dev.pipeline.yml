@@ -68,7 +68,7 @@ stages:
 
   - stage: publish
     dependsOn: build_artifacts
-    condition: succeeded()
+    condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop'))
     displayName: 'Publish artifacts'
     variables:
       GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
@@ -83,7 +83,7 @@ stages:
               buildType: specific
               project: '60c279c7-80b3-445f-8d2e-45e07778a9e6'
               definition: 10
-              artifactName: 'EmbyStat-docker-win-v$(GitVersion.SemVer)'
+              artifactName: 'EmbyStat-$(package.win10-x64)-v$(GitVersion.SemVer)'
           - task: Docker@2
             displayName: Login
             inputs:
@@ -94,8 +94,8 @@ stages:
             inputs:
               containerRegistry: 'Docker hub'
               repository: uping/embystat
-              Dockerfile: '$(System.DefaultWorkingDirectory)/_DEV/EmbyStat-dockerfiles/win.dockerfile'
-              buildContext: '$(System.DefaultWorkingDirectory)/_DEV/EmbyStat-docker-win-v$(Release.Artifacts._DEV.BuildNumber)'
+              Dockerfile: '$(System.DefaultWorkingDirectory)/builds/docker-containers/win.dockerfile'
+              buildContext: '$(System.DefaultWorkingDirectory)/EmbyStat-$(package.win10-x64)-v$(GitVersion.SemVer)'
               tags: 'nightly-win-x64'
           - task: Docker@2
             displayName: Logout
@@ -122,8 +122,8 @@ stages:
             inputs:
               containerRegistry: 'Docker hub'
               repository: uping/embystat
-              Dockerfile: '$(System.DefaultWorkingDirectory)/_DEV/EmbyStat-dockerfiles/win.dockerfile'
-              buildContext: '$(System.DefaultWorkingDirectory)/_DEV/EmbyStat-docker-win-v$(Release.Artifacts._DEV.BuildNumber)'
+              Dockerfile: '$(System.DefaultWorkingDirectory)/builds/docker-containers/win.dockerfile'
+              buildContext: '$(System.DefaultWorkingDirectory)/EmbyStat-docker-linux-v$(GitVersion.SemVer)'
               tags: 'nightly-win-x64'
           - task: Docker@2
             displayName: Logout
@@ -143,7 +143,7 @@ stages:
               containerRegistry: 'Docker hub'
               command: login
           - script: 'manifest-tool-windows-amd64.exe push from-spec manifest-nightly.yaml'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/_DEV/EmbyStat-dockerfiles'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/builds/docker-containers/files'
             displayName: 'Pushing manifest file to Docker Hub'
           - task: Docker@2
             displayName: Logout
@@ -160,7 +160,7 @@ stages:
               $postParams = @{
                   access_token="$(rollbar.key)";
                   environment="$environment";
-                  revision="$(Release.Artifacts._DEV.BuildNumber)";
+                  revision="$(GitVersion.SemVer)";
                   local_username="Mikhaël Regni";
                   status="succeeded";
                 }
