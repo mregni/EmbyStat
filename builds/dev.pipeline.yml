@@ -101,6 +101,8 @@ stages:
               command: logout
       - job: ubuntu_docker_publish
         displayName: 'Publish Ubuntu docker images'
+        pool:
+          vmImage: $(LinuxPool)
         steps:
           - task: DownloadBuildArtifacts@1
             displayName: 'Download Ubuntu Artifact'
