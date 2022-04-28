@@ -64,18 +64,16 @@ stages:
       - template: './docker-containers/win.pipeline.yml'
       - template: './docker-containers/linux.pipeline.yml'
       - template: './docker-containers/arm64.pipeline.yml'
-      - template: './docker-containers/build.pipeline.yml'
 
   - stage: publish
-    dependsOn: build_artifacts
+    dependsOn: 
+      - build_artifacts
+      - test_stage
     condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop'))
     displayName: 'Publish artifacts'
     jobs:
       - job: win_docker_publish
         displayName: 'Publish Windows docker images'
-        variables:
-          GitVersion.AssemblySemVer: $[stageDependencies.test_stage.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
-          GitVersion.SemVer: $[stageDependencies.test_stage.main_build.outputs['setSemVer.SemVer'] ]     
         steps:
           - task: DownloadPipelineArtifact@2
             displayName: 'Download Windows Artifact'
@@ -83,7 +81,7 @@ stages:
               buildType: specific
               project: '60c279c7-80b3-445f-8d2e-45e07778a9e6'
               definition: 10
-              artifactName: 'EmbyStat-$(package.win10-x64)-v$(GitVersion.SemVer)'
+              artifactName: 'EmbyStat-docker-$(package.win10-x64)-v$(Build.BuildNumber)'
           - task: Docker@2
             displayName: Login
             inputs:
@@ -94,8 +92,8 @@ stages:
             inputs:
               containerRegistry: 'Docker hub'
               repository: uping/embystat
-              Dockerfile: '$(System.DefaultWorkingDirectory)/builds/docker-containers/win.dockerfile'
-              buildContext: '$(System.DefaultWorkingDirectory)/EmbyStat-$(package.win10-x64)-v$(GitVersion.SemVer)'
+              Dockerfile: '$(System.DefaultWorkingDirectory)/builds/docker-containers/files/win.dockerfile'
+              buildContext: '$(System.DefaultWorkingDirectory)/EmbyStat-docker-$(package.win10-x64)-v$(Build.BuildNumber)'
               tags: 'nightly-win-x64'
           - task: Docker@2
             displayName: Logout
@@ -104,9 +102,6 @@ stages:
               command: logout
       - job: ubuntu_docker_publish
         displayName: 'Publish Ubuntu docker images'
-        variables:
-          GitVersion.AssemblySemVer: $[stageDependencies.test_stage.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
-          GitVersion.SemVer: $[stageDependencies.test_stage.main_build.outputs['setSemVer.SemVer'] ]
         steps:
           - task: DownloadPipelineArtifact@2
             displayName: 'Download Ubuntu Artifact'
@@ -114,7 +109,7 @@ stages:
               buildType: specific
               project: '60c279c7-80b3-445f-8d2e-45e07778a9e6'
               definition: 10
-              artifactName: 'EmbyStat-docker-linux-v$(GitVersion.SemVer)'
+              artifactName: 'EmbyStat-docker-linux-v$(Build.BuildNumber)'
           - task: Docker@2
             displayName: Login
             inputs:
@@ -125,9 +120,9 @@ stages:
             inputs:
               containerRegistry: 'Docker hub'
               repository: uping/embystat
-              Dockerfile: '$(System.DefaultWorkingDirectory)/builds/docker-containers/win.dockerfile'
-              buildContext: '$(System.DefaultWorkingDirectory)/EmbyStat-docker-linux-v$(GitVersion.SemVer)'
-              tags: 'nightly-win-x64'
+              Dockerfile: '$(System.DefaultWorkingDirectory)/builds/docker-containers/files/linux.dockerfile'
+              buildContext: '$(System.DefaultWorkingDirectory)/EmbyStat-docker-linux-v$(Build.BuildNumber)'
+              tags: 'nightly-linux-x64'
           - task: Docker@2
             displayName: Logout
             inputs:
@@ -158,7 +153,6 @@ stages:
         dependsOn: docker_manifest_publish
         condition: succeeded()
         variables:
-          GitVersion.AssemblySemVer: $[stageDependencies.test_stage.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
           GitVersion.SemVer: $[stageDependencies.test_stage.main_build.outputs['setSemVer.SemVer'] ]
         steps:
           - powershell: |

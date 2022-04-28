@@ -44,4 +44,4 @@ jobs:
     displayName: 'Publish Linux Docker Artifact'
     inputs:
       PathtoPublish: 'publish'
-      ArtifactName: 'EmbyStat-docker-linux-v$(GitVersion.SemVer)'
+      ArtifactName: 'EmbyStat-docker-linux-v$(Build.BuildNumber)'
