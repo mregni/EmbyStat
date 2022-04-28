@@ -1,33 +1,32 @@
 ﻿using System;
 
-namespace EmbyStat.Common.Extensions
+namespace EmbyStat.Common.Extensions;
+
+public static class RoundExtensions
 {
-    public static class RoundExtension
+    public static int? RoundToFiveYear(this DateTime? date)
     {
-        public static int? RoundToFiveYear(this DateTime? date)
+        if (date.HasValue)
         {
-            if (date.HasValue)
-            {
-                var result = (int)Math.Floor((double)date.Value.Year / 5) * 5;
-                return result;
-            }
-
-            return null;
+            var result = (int)Math.Floor((double)date.Value.Year / 5) * 5;
+            return result;
         }
 
-        public static int? RoundToFive(this double count)
+        return null;
+    }
+
+    public static int? RoundToFive(this double count)
+    {
+        return (int)Math.Floor(count * 20) * 5;
+    }
+
+    public static double? RoundToHalf(this decimal? rating)
+    {
+        if (rating.HasValue)
         {
-            return (int)Math.Floor(count * 20) * 5;
+            return Math.Round((double)rating.Value * 2, MidpointRounding.AwayFromZero) / 2;
         }
 
-        public static double? RoundToHalf(this float? rating)
-        {
-            if (rating.HasValue)
-            {
-                return Math.Round((double)rating.Value * 2, MidpointRounding.AwayFromZero) / 2;
-            }
-
-            return null;
-        }
+        return null;
     }
 }

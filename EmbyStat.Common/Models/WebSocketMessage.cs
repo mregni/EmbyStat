@@ -1,8 +1,7 @@
-﻿namespace EmbyStat.Common.Models
+﻿namespace EmbyStat.Common.Models;
+
+public class WebSocketMessage<T>
 {
-    public class WebSocketMessage<T>
-    {
-        public string MessageType { get; set; }
-        public T Data { get; set; }
-    }
+    public string MessageType { get; set; }
+    public T Data { get; set; }
 }

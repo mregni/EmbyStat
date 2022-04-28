@@ -1,46 +1,28 @@
-import React, { forwardRef, useContext, useImperativeHandle } from 'react';
-import { useTranslation } from "react-i18next";
-import { makeStyles } from "@material-ui/core/styles";
-import { Controller, useForm } from 'react-hook-form';
-import moment from "moment";
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import React, {forwardRef, useContext, useImperativeHandle} from 'react';
+import {Controller, useForm} from 'react-hook-form';
+import {useTranslation} from 'react-i18next';
+
+import {
+  Checkbox, FormControlLabel, Grid, MenuItem, Select, SelectChangeEvent, StepProps, Typography,
+} from '@mui/material';
+
 import i18n from '../../../i18n';
+import {SettingsContext} from '../../../shared/context/settings';
+import {WizardContext} from '../../../shared/context/wizard/WizardState';
+import {Language} from '../../../shared/models/language';
+import {ValidationHandleWithSave} from '../Interfaces';
 
-import { StepProps, ValidationHandleWithSave } from '.';
-import { WizardContext } from '../Context/WizardState';
-import { Language } from '../../../shared/models/language';
-import { FetchState, useLanguages } from '../../../shared/hooks';
+export const Intro = forwardRef<ValidationHandleWithSave, StepProps>(function Intro(props, ref) {
+  const {t} = useTranslation();
+  const {setLanguage, setMonitoring} = useContext(WizardContext);
+  const {languages} = useContext(SettingsContext);
 
-const useStyles = makeStyles((theme) => ({
-  link: {
-    fontStyle: "italic",
-    fontSize: "0.8rem",
-    "& a": {
-      color:
-        theme.palette.type === "dark"
-          ? theme.palette.secondary.light
-          : theme.palette.secondary.dark,
-    },
-  },
-}));
-
-export const Intro = forwardRef<ValidationHandleWithSave, StepProps>((props, ref) => {
-  const classes = useStyles();
-  const { t } = useTranslation();
-  const { setLanguage, setMonitoring, wizard } = useContext(WizardContext);
-  const { languageList, state } = useLanguages();
-
-  const { trigger, getValues, control, formState: { isValid } } = useForm({
-    mode: "onBlur",
+  const {trigger, getValues, control, formState: {isValid}} = useForm({
+    mode: 'onBlur',
     defaultValues: {
-      language: wizard.language ?? 'en-US',
-      enableMonitoring: wizard.enableRollbarLogging
-    }
+      language: 'en-US',
+      enableMonitoring: false,
+    },
   });
 
   useImperativeHandle(ref, () => ({
@@ -50,49 +32,55 @@ export const Intro = forwardRef<ValidationHandleWithSave, StepProps>((props, ref
     },
     saveChanges(): void {
       if (isValid) {
-        const { language, enableMonitoring } = getValues();
+        const {language, enableMonitoring} = getValues();
         setLanguage(language);
         setMonitoring(enableMonitoring);
       }
-    }
+    },
   }));
 
-  const handleLanguageChange = (event) => {
+  const handleLanguageChange = (event: SelectChangeEvent<string>) => {
     const lang = event.target.value;
     i18n.changeLanguage(lang);
-    moment.locale(lang);
   };
 
-  const crowdinText = { __html: t("WIZARD.CROWDINHELP") };
-  const introText = { __html: t("WIZARD.INTROTEXT") };
+  const crowdinText = {__html: t('WIZARD.CROWDINHELP')};
+  const introText = {__html: t('WIZARD.INTROTEXT')};
 
   return (
-    <Grid container direction="column" spacing={7}>
+    <Grid container direction="column" spacing={4}>
       <Grid item>
         <Typography variant="h4" color="primary">
-          {t("WIZARD.WIZARDLABEL")}
+          {t('WIZARD.TITLE')}
         </Typography>
+        <Typography variant="body1" dangerouslySetInnerHTML={introText} />
       </Grid>
       <Grid item container direction="column" spacing={1}>
         <Grid item>
-          <Typography variant="body1" dangerouslySetInnerHTML={introText} />
+          <Typography variant="h6" color="primary">
+            {t('WIZARD.LANGUAGE')}
+          </Typography>
+          <Typography>
+            {t('WIZARD.SELECTLANGUAGE')}
+          </Typography>
         </Grid>
         <Grid item>
           <Controller
             name="language"
             control={control}
             defaultValue={getValues('language')}
-            render={({ field }) => (
+            render={({field}) => (
               <Select
                 className="max-width"
-                variant="standard"
+                variant="outlined"
+                sx={{minWidth: 250}}
                 {...field}
                 onChange={(value) => {
                   field.onChange(value);
                   handleLanguageChange(value);
                 }}
               >
-                {state === FetchState.success && languageList.map((x: Language) => (
+                {languages.map((x: Language) => (
                   <MenuItem key={x.code} value={x.code}>
                     {x.name}
                   </MenuItem>
@@ -105,14 +93,26 @@ export const Intro = forwardRef<ValidationHandleWithSave, StepProps>((props, ref
           <Typography
             variant="body1"
             dangerouslySetInnerHTML={crowdinText}
-            className={classes.link}
+            sx={{
+              'fontStyle': 'italic',
+              'fontSize': '0.8rem',
+              '& a': {
+                color:
+                (theme) => theme.palette.mode === 'dark' ?
+                  theme.palette.secondary.light :
+                  theme.palette.secondary.dark,
+              },
+            }}
           />
         </Grid>
       </Grid>
       <Grid item container direction="column" spacing={1}>
         <Grid item>
+          <Typography variant="h6" color="primary">
+            {t('WIZARD.EXCEPTIONLOGGING')}
+          </Typography>
           <Typography variant="body1">
-            {t("SETTINGS.ROLLBAR.EXCEPTIONLOGGING")}
+            {t('SETTINGS.ROLLBAR.EXCEPTIONLOGGING')}
           </Typography>
         </Grid>
         <Grid item>
@@ -120,10 +120,20 @@ export const Intro = forwardRef<ValidationHandleWithSave, StepProps>((props, ref
             name="enableMonitoring"
             control={control}
             defaultValue={getValues('enableMonitoring')}
-            render={({ field }) => <FormControlLabel control={<Checkbox {...field} checked={getValues('enableMonitoring')} disableRipple color="primary" />} label={t("SETTINGS.ROLLBAR.ENABLEROLLBAR")} />}
+            render={({field}) =>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    {...field}
+                    checked={getValues('enableMonitoring')}
+                    disableRipple color="primary" />
+                }
+                label={t('SETTINGS.ROLLBAR.ENABLEROLLBAR') as string}
+              />
+            }
           />
         </Grid>
       </Grid>
     </Grid>
   );
-})
+});

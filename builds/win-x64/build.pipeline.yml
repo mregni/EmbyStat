@@ -1,13 +1,10 @@
 jobs:
 - job: windows_x64
-  dependsOn: main_build
   displayName: 'Build Win10-x64 package'
-  condition: succeeded()
-  pool:
-    name: Hosted Windows 2019 with VS2019
   variables:
-    GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
-    GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
+    GitVersion.AssemblySemVer: $[stageDependencies.test_stage.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
+    GitVersion.SemVer: $[stageDependencies.test_stage.main_build.outputs['setSemVer.SemVer'] ]
+  
   steps:
   - template: '../templates/update.version.yml'
 

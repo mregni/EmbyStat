@@ -1,391 +1,382 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using EmbyStat.Clients.Base.Converters;
-using EmbyStat.Common.Converters;
+using AutoMapper;
+using EmbyStat.Clients.Base.Api;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Net;
-using EmbyStat.Logging;
+using EmbyStat.Common.Models.Entities.Shows;
+using EmbyStat.Common.Models.Entities.Users;
 using MediaBrowser.Model.Entities;
-using MediaBrowser.Model.IO;
 using MediaBrowser.Model.Querying;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json.Linq;
-using RestSharp;
+using Microsoft.Extensions.Logging;
+using MoreLinq.Extensions;
 
-namespace EmbyStat.Clients.Base.Http
+namespace EmbyStat.Clients.Base.Http;
+
+public abstract class BaseHttpClient
 {
-    public abstract class BaseHttpClient
+    private readonly IHttpContextAccessor _accessor;
+    private readonly IRefitHttpClientFactory<IMediaServerApi> _refitFactory;
+    private readonly ILogger<BaseHttpClient> _logger;
+    private readonly IMapper _mapper;
+
+    private string DeviceName { get; set; }
+    private string ApplicationVersion { get; set; }
+    private string DeviceId { get; set; }
+    private string UserId { get; set; }
+    public string BaseUrl { get; set; }
+    public string ApiKey { get; set; }
+    private string AuthorizationScheme { get; set; }
+
+    private string AuthorizationParameter =>
+        $"RestClient=\"other\", DeviceId=\"{DeviceId}\", Device=\"{DeviceName}\", Version=\"{ApplicationVersion}\"";
+
+    private string AuthorizationString => $"{AuthorizationScheme} {AuthorizationParameter}";
+
+    protected BaseHttpClient(IHttpContextAccessor accessor, ILogger<BaseHttpClient> logger,
+        IRefitHttpClientFactory<IMediaServerApi> refitFactory, IMapper mapper)
     {
-        private readonly IHttpContextAccessor _accessor;
-        protected readonly Logger Logger;
-        protected string DeviceName { get; set; }
-        protected string ApplicationVersion { get; set; }
-        protected string DeviceId { get; set; }
-        protected string UserId { get; set; }
-        protected string apiKey { get; set; }
-        public string ApiKey
+        _accessor = accessor;
+        _refitFactory = refitFactory;
+        _mapper = mapper;
+        _logger = logger;
+    }
+
+    public void SetDeviceInfo(string deviceName, string authorizationScheme, string applicationVersion, string deviceId,
+        string userId)
+    {
+        AuthorizationScheme = authorizationScheme;
+        ApplicationVersion = applicationVersion;
+        DeviceId = deviceId;
+        DeviceName = deviceName;
+        UserId = userId;
+    }
+
+    protected async Task<IEnumerable<MediaServerUdpBroadcast>> SearchServer(string message)
+    {
+        var list = new List<MediaServerUdpBroadcast>();
+        var ownIp = _accessor.HttpContext?.Connection.RemoteIpAddress ?? IPAddress.Any;
+        _logger.LogDebug($"Own IP detected: {ownIp.MapToIPv4()}");
+        _logger.LogDebug($"Sending \"{message}\" to following broadcast IPs:");
+        foreach (var ip in GetBroadCastIps(ownIp))
         {
-            get => apiKey;
-            set => apiKey = string.IsNullOrWhiteSpace(value) ? string.Empty : value;
-        }
-
-        public string BaseUrl
-        {
-            get => RestClient.BaseUrl?.ToString() ?? string.Empty;
-            set => RestClient.BaseUrl = string.IsNullOrWhiteSpace(value) ? null : new Uri(value);
-        }
-
-        protected string AuthorizationScheme { get; set; }
-        protected string AuthorizationParameter => $"RestClient=\"other\", DeviceId=\"{DeviceId}\", Device=\"{DeviceName}\", Version=\"{ApplicationVersion}\"";
-
-        protected readonly IRestClient RestClient;
-
-        protected BaseHttpClient(IRestClient client, IHttpContextAccessor accessor)
-        {
-            _accessor = accessor;
-            RestClient = client.Initialize();
-            Logger = LogFactory.CreateLoggerForType(typeof(BaseHttpClient), "BASE-HTTP-CLIENT");
-        }
-
-        public void SetDeviceInfo(string deviceName, string authorizationScheme, string applicationVersion, string deviceId, string userId)
-        {
-            AuthorizationScheme = authorizationScheme;
-            ApplicationVersion = applicationVersion;
-            DeviceId = deviceId;
-            DeviceName = deviceName;
-            UserId = userId;
-        }
-
-        protected string ExecuteCall(IRestRequest request)
-        {
-            request.AddHeader("X-Emby-Authorization", $"{AuthorizationScheme} {AuthorizationParameter}");
-
-            Logger.Debug($"External call: [{request.Method}]{RestClient.BaseUrl}/{request.Resource}");
-            var result = RestClient.Execute(request);
-
-            if (!result.IsSuccessful)
+            _logger.LogDebug($"\t{ip.MapToIPv4()}");
+            await Task.Run(async () =>
             {
-                Logger.Debug($"Call failed => StatusCode:{result.StatusCode}, Content:{result.Content}");
-            }
+                var to = new IPEndPoint(ip, 7359);
+                using var client = new ServerSearcher(to);
 
-            return result.Content;
+                client.MediaServerFound += (_, broadcast) => { list.Add(broadcast); };
+
+                client.Send(message);
+                await Task.Run(() => Task.Delay(3000));
+            });
         }
 
-        protected T ExecuteCall<T>(IRestRequest request) where T : new()
+        return list;
+    }
+
+    private IEnumerable<IPAddress> GetBroadCastIps(IPAddress ip)
+    {
+        _logger.LogDebug($"{ip.MapToIPv4()})");
+        var interfaces = NetworkInterface.GetAllNetworkInterfaces();
+        foreach (var adapter in interfaces)
         {
-            request.AddHeader("X-Emby-Authorization", $"{AuthorizationScheme} {AuthorizationParameter}");
-
-            Logger.Debug($"External call: [{request.Method}]{RestClient.BaseUrl}{request.Resource}");
-            var result = RestClient.Execute<T>(request);
-
-            if (!result.IsSuccessful)
+            foreach (var uniCastInfo in adapter.GetIPProperties().UnicastAddresses)
             {
-                Logger.Debug($"Call failed => StatusCode:{result.StatusCode}, Content:{result.Content}");
-            }
-
-            if (result.Data == null)
-            {
-                Logger.Debug($"Returned object cant be parsed to {typeof(T).Name}");
-                Logger.Debug($"RAW content: {result.Content}");
-            }
-
-            return result.Data;
-        }
-
-        protected T ExecuteAuthenticatedCall<T>(IRestRequest request) where T : new()
-        {
-            request.AddHeader("X-Emby-Token", ApiKey);
-            return ExecuteCall<T>(request);
-        }
-
-
-        protected async Task<IEnumerable<MediaServerUdpBroadcast>> SearchServer(string message)
-        {
-            var list = new List<MediaServerUdpBroadcast>();
-            var ownIp = _accessor.HttpContext?.Connection.RemoteIpAddress ?? IPAddress.Any;
-            Logger.Debug($"Own IP detected: {ownIp.MapToIPv4()}");
-            Logger.Debug($"Sending \"{message}\" to following broadcast IPs:");
-            foreach (var ip in GetBroadCastIps(ownIp))
-            {
-                Logger.Debug($"\t{ip.MapToIPv4()}");
-                await Task.Run(async () =>
+                if (uniCastInfo.Address.AddressFamily != AddressFamily.InterNetwork
+                    || uniCastInfo.Address.MapToIPv4().Equals(IPAddress.Parse("127.0.0.1")))
                 {
-                    var to = new IPEndPoint(ip, 7359);
-                    using var client = new ServerSearcher(to);
-
-                    client.MediaServerFound += (sender, broadcast) =>
-                    {
-                        list.Add(broadcast);
-                    };
-
-                    client.Send(message);
-                    await Task.Run(() => Task.Delay(3000));
-                });
-            }
-
-            return list;
-        }
-
-        private IEnumerable<IPAddress> GetBroadCastIps(IPAddress ip)
-        {
-            Logger.Debug($"{ip.MapToIPv4()})");
-            var interfaces = NetworkInterface.GetAllNetworkInterfaces();
-            foreach (var adapter in interfaces)
-            {
-                foreach (var unicastInfo in adapter.GetIPProperties().UnicastAddresses)
-                {
-                    if (unicastInfo.Address.AddressFamily != AddressFamily.InterNetwork
-                    || unicastInfo.Address.MapToIPv4().Equals(IPAddress.Parse("127.0.0.1")))
-                    {
-                        continue;
-                    }
-
-                    if (CheckWhetherInSameNetwork(unicastInfo.Address, unicastInfo.IPv4Mask, ip))
-                        yield return GetBroadcastAddress(unicastInfo);
+                    continue;
                 }
+
+                yield return GetBroadcastAddress(uniCastInfo);
             }
         }
+    }
 
-        private bool CheckWhetherInSameNetwork(IPAddress firstIp, IPAddress subNet, IPAddress secondIp)
+    private IPAddress GetBroadcastAddress(UnicastIPAddressInformation uniCastAddress)
+    {
+        return GetBroadcastAddress(uniCastAddress.Address, uniCastAddress.IPv4Mask);
+    }
+
+    private IPAddress GetBroadcastAddress(IPAddress address, IPAddress mask)
+    {
+        var ipAddress = BitConverter.ToUInt32(address.GetAddressBytes(), 0);
+        var ipMaskV4 = BitConverter.ToUInt32(mask.GetAddressBytes(), 0);
+        var broadCastIpAddress = ipAddress | ~ipMaskV4;
+
+        return new IPAddress(BitConverter.GetBytes(broadCastIpAddress));
+    }
+
+    protected async Task<bool> Ping(string message)
+    {
+        var client = _refitFactory.CreateClient(BaseUrl);
+        var result = await client.Ping(ApiKey, AuthorizationString);
+        _logger.LogDebug($"Ping returned: {result}");
+        return result == message;
+    }
+
+    public async Task<MediaServerInfo> GetServerInfo()
+    {
+        var client = _refitFactory.CreateClient(BaseUrl);
+        var response = await client.GetServerInfo(ApiKey, AuthorizationString);
+
+        return response.IsSuccessStatusCode ? response.Content : null;
+    }
+
+    public async Task<IEnumerable<Person>> GetPeople(int startIndex, int limit)
+    {
+        var query = new ItemQuery
         {
-            var subnetmaskInInt = ConvertIpToUint(subNet);
-            var firstIpInInt = ConvertIpToUint(firstIp);
-            var secondIpInInt = ConvertIpToUint(secondIp);
-            var networkPortionofFirstIp = firstIpInInt & subnetmaskInInt;
-            var networkPortionofSecondIp = secondIpInInt & subnetmaskInInt;
-            return networkPortionofFirstIp == networkPortionofSecondIp;
-        }
+            Recursive = true,
+            StartIndex = startIndex,
+            Limit = limit
+        };
 
-        private static uint ConvertIpToUint(IPAddress ipAddress)
+        var client = _refitFactory.CreateClient(BaseUrl);
+        var people = await client.GetPeople(ApiKey, AuthorizationString, query);
+        return _mapper.Map<IList<Person>>(people.Items);
+    }
+
+    public async Task<int> GetPeopleCount()
+    {
+        var query = new ItemQuery
         {
-            var byteIp = ipAddress.GetAddressBytes();
-            var ipInUint = (uint)byteIp[3] << 24;
-            ipInUint += (uint)byteIp[2] << 16;
-            ipInUint += (uint)byteIp[1] << 8;
-            ipInUint += byteIp[0];
-            return ipInUint;
-        }
+            Recursive = true,
+            Limit = 0,
+            EnableTotalRecordCount = true,
+        };
 
-        private IPAddress GetBroadcastAddress(UnicastIPAddressInformation unicastAddress)
+        var client = _refitFactory.CreateClient(BaseUrl);
+        var result = await client.GetPeople(ApiKey, AuthorizationString, query);
+        return result.TotalRecordCount;
+    }
+
+    public async Task<Library[]> GetLibraries()
+    {
+        var client = _refitFactory.CreateClient(BaseUrl);
+        var result = await client.GetMediaFolders(ApiKey, AuthorizationString);
+        return _mapper.Map<Library[]>(result.Items);
+    }
+
+    public Task<List<PluginInfo>> GetInstalledPlugins()
+    {
+        var client = _refitFactory.CreateClient(BaseUrl);
+        return client.GetPlugins(ApiKey, AuthorizationString);
+    }
+
+    public async Task<MediaServerUser[]> GetUsers()
+    {
+        var client = _refitFactory.CreateClient(BaseUrl);
+        var result = await client.GetUsers(ApiKey, AuthorizationString);
+
+        return _mapper.Map<MediaServerUser[]>(result);
+    }
+
+    public async Task<IEnumerable<Device>> GetDevices()
+    {
+        var client = _refitFactory.CreateClient(BaseUrl);
+        var result = await client.GetDevices(ApiKey, AuthorizationString);
+        return result.Items;
+    }
+
+    public async Task<IEnumerable<Genre>> GetGenres()
+    {
+        var query = new ItemQuery();
+        var client = _refitFactory.CreateClient(BaseUrl);
+        var baseItems = await client.GetGenres(ApiKey, AuthorizationString, query);
+        return _mapper.Map<IList<Genre>>(baseItems.Items);
+    }
+
+    public async Task<T[]> GetMedia<T>(string parentId, int startIndex, int limit, DateTime? lastSynced,
+        string itemType)
+    {
+        var query = new ItemQuery
         {
-            return GetBroadcastAddress(unicastAddress.Address, unicastAddress.IPv4Mask);
-        }
-
-        private IPAddress GetBroadcastAddress(IPAddress address, IPAddress mask)
-        {
-            var ipAddress = BitConverter.ToUInt32(address.GetAddressBytes(), 0);
-            var ipMaskV4 = BitConverter.ToUInt32(mask.GetAddressBytes(), 0);
-            var broadCastIpAddress = ipAddress | ~ipMaskV4;
-
-            return new IPAddress(BitConverter.GetBytes(broadCastIpAddress));
-        }
-
-        public bool Ping(string message)
-        {
-            var request = new RestRequest("System/Ping", Method.POST) { Timeout = 5000 };
-
-            try
+            UserId = UserId,
+            EnableImageTypes = new[] {ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo},
+            ParentId = parentId,
+            Recursive = true,
+            LocationTypes = new[] {LocationType.FileSystem},
+            IncludeItemTypes = new[] {itemType},
+            StartIndex = startIndex,
+            Limit = limit,
+            EnableImages = true,
+            MediaTypes = new[] {"Video"},
+            MinDateLastSaved = lastSynced,
+            Fields = new[]
             {
-                var result = ExecuteCall(request);
-                Logger.Debug($"Ping returned: {result}");
-                return result == message;
+                ItemFields.Genres, ItemFields.DateCreated, ItemFields.MediaSources, ItemFields.ExternalUrls,
+                ItemFields.OriginalTitle, ItemFields.Studios, ItemFields.MediaStreams, ItemFields.Path,
+                ItemFields.Overview, ItemFields.ProviderIds, ItemFields.SortName, ItemFields.ParentId,
+                ItemFields.People, ItemFields.PremiereDate, ItemFields.CommunityRating, ItemFields.OfficialRating,
+                ItemFields.ProductionYear, ItemFields.RunTimeTicks
             }
-            catch (System.Exception e)
+        };
+
+        var paramList = query.ConvertToStringDictionary();
+        var client = _refitFactory.CreateClient(BaseUrl);
+        var result = await client.GetItems(ApiKey, AuthorizationString, paramList);
+
+        return _mapper.Map<T[]>(result.Items);
+    }
+
+    public async Task<Show[]> GetShows(string parentId, int startIndex, int limit, DateTime? lastSynced)
+    {
+        var query = new ItemQuery
+        {
+            UserId = UserId,
+            EnableImageTypes = new[] {ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo},
+            ParentId = parentId,
+            LocationTypes = new[] {LocationType.FileSystem},
+            Recursive = true,
+            StartIndex = startIndex,
+            Limit = limit,
+            IncludeItemTypes = new[] {"Series"},
+            MinDateLastSaved = lastSynced,
+            Fields = new[]
             {
-                Logger.Error(e, "Ping failed");
-                return false;
+                ItemFields.OriginalTitle, ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
+                ItemFields.Studios, ItemFields.Path, ItemFields.ProviderIds,
+                ItemFields.SortName, ItemFields.ParentId, ItemFields.People, ItemFields.PremiereDate,
+                ItemFields.CommunityRating, ItemFields.OfficialRating, ItemFields.ProductionYear,
+                ItemFields.Status, ItemFields.RunTimeTicks
             }
-        }
+        };
 
-        public ServerInfo GetServerInfo()
+        var paramList = query.ConvertToStringDictionary();
+        var client = _refitFactory.CreateClient(BaseUrl);
+        var result = await client.GetItems(ApiKey, AuthorizationString, paramList);
+
+        var shows = _mapper.Map<Show[]>(result.Items);
+        return shows;
+    }
+
+    public async Task<Season[]> GetSeasons(string parentId, DateTime? lastSynced)
+    {
+        var query = new ItemQuery
         {
-            var request = new RestRequest("System/Info", Method.GET);
-            var result = ExecuteAuthenticatedCall<ServerInfoDto>(request);
-
-            return result.ConvertToInfo();
-        }
-
-        public Person GetPersonByName(string personName)
-        {
-            var request = new RestRequest($"persons/{personName}", Method.GET);
-            request.AddItemQueryAsParameters(new ItemQuery { Fields = new[] { ItemFields.PremiereDate } }, UserId);
-            var baseItem = ExecuteAuthenticatedCall<BaseItemDto>(request);
-            return baseItem != null ? PersonConverter.Convert(baseItem, Logger) : null;
-        }
-
-        public QueryResult<BaseItemDto> GetMediaFolders()
-        {
-            var request = new RestRequest("Library/MediaFolders", Method.GET);
-            return ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
-        }
-
-        public List<PluginInfo> GetInstalledPlugins()
-        {
-            var request = new RestRequest("Plugins", Method.GET);
-            return ExecuteAuthenticatedCall<List<PluginInfo>>(request);
-        }
-
-        public List<FileSystemEntryInfo> GetLocalDrives()
-        {
-            var request = new RestRequest("Environment/Drives", Method.GET);
-            return ExecuteAuthenticatedCall<List<FileSystemEntryInfo>>(request);
-        }
-
-        public JArray GetUsers()
-        {
-            var request = new RestRequest("Users", Method.GET);
-            return ExecuteAuthenticatedCall<JArray>(request);
-        }
-
-        public JObject GetDevices()
-        {
-            var request = new RestRequest("Devices", Method.GET);
-            return ExecuteAuthenticatedCall<JObject>(request);
-        }
-
-        public List<Movie> GetMovies(string parentId, string collectionId, int startIndex, int limit)
-        {
-            var query = new ItemQuery
+            UserId = UserId,
+            EnableImageTypes = new[] {ImageType.Primary},
+            ParentId = parentId,
+            LocationTypes = new[] {LocationType.FileSystem},
+            Recursive = true,
+            IncludeItemTypes = new[] {nameof(Season)},
+            MinDateLastSaved = lastSynced,
+            Fields = new[]
             {
-                EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
-                ParentId = parentId,
-                Recursive = true,
-                LocationTypes = new[] { LocationType.FileSystem },
-                IncludeItemTypes = new[] { nameof(Movie) },
-                StartIndex = startIndex,
-                Limit = limit,
-                EnableImages = true,
-                Fields = new[] {
-                    ItemFields.Genres, ItemFields.DateCreated, ItemFields.MediaSources, ItemFields.ExternalUrls,
-                    ItemFields.OriginalTitle, ItemFields.Studios, ItemFields.MediaStreams, ItemFields.Path,
-                    ItemFields.Overview, ItemFields.ProviderIds, ItemFields.SortName, ItemFields.ParentId,
-                    ItemFields.People, ItemFields.PremiereDate, ItemFields.CommunityRating, ItemFields.OfficialRating,
-                    ItemFields.ProductionYear, ItemFields.RunTimeTicks
-                }
-            };
-
-            var request = new RestRequest($"Items", Method.GET);
-            request.AddItemQueryAsParameters(query, UserId);
-            var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
-            return baseItems?.Items != null
-                ? baseItems.Items.Select(x => x.ConvertToMovie(collectionId, Logger)).ToList()
-                : new List<Movie>(0);
-        }
-
-        public List<Show> GetShows(string parentId)
-        {
-            var query = new ItemQuery
-            {
-                SortBy = new[] { "SortName" },
-                SortOrder = SortOrder.Ascending,
-                EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
-                ParentId = parentId,
-                LocationTypes = new[] { LocationType.FileSystem },
-                Recursive = true,
-                IncludeItemTypes = new[] { "Series" },
-                Fields = new[] {
-                    ItemFields.OriginalTitle, ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
-                    ItemFields.Studios, ItemFields.Path, ItemFields.ProviderIds,
-                    ItemFields.SortName, ItemFields.ParentId, ItemFields.People, ItemFields.PremiereDate,
-                    ItemFields.CommunityRating, ItemFields.OfficialRating, ItemFields.ProductionYear,
-                    ItemFields.Status, ItemFields.RunTimeTicks
-                }
-            };
-
-            var request = new RestRequest($"Items", Method.GET);
-            request.AddItemQueryAsParameters(query, UserId);
-            var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
-            return baseItems?.Items != null
-                ? baseItems.Items.Select(x => x.ConvertToShow(parentId, Logger)).ToList()
-                : new List<Show>(0);
-        }
-
-        public List<Season> GetSeasons(string parentId)
-        {
-            var query = new ItemQuery
-            {
-                EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
-                ParentId = parentId,
-                LocationTypes = new[] { LocationType.FileSystem },
-                Recursive = true,
-                IncludeItemTypes = new[] { nameof(Season) },
-                Fields = new[]
-                {
-                    ItemFields.OriginalTitle,ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
-                    ItemFields.Studios, ItemFields.Path, ItemFields.Overview, ItemFields.ProviderIds,
-                    ItemFields.SortName, ItemFields.ParentId, ItemFields.People, ItemFields.MediaSources,
-                    ItemFields.MediaStreams, ItemFields.PremiereDate, ItemFields.CommunityRating,
-                    ItemFields.OfficialRating, ItemFields.ProductionYear, ItemFields.Status, ItemFields.RunTimeTicks
-                }
-            };
-
-            var request = new RestRequest($"Items", Method.GET);
-            request.AddItemQueryAsParameters(query, UserId);
-            var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
-            return baseItems?.Items != null
-                ? baseItems.Items.Select(x => x.ConvertToSeason(Logger)).ToList()
-                : new List<Season>(0);
-        }
-
-        public List<Episode> GetEpisodes(IEnumerable<string> parentIds, string showId)
-        {
-            var episodes = new List<Episode>();
-            foreach (var parentId in parentIds)
-            {
-                var query = new ItemQuery
-                {
-                    EnableImageTypes = new[] { ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo },
-                    ParentId = parentId,
-                    LocationTypes = new[] { LocationType.FileSystem },
-                    Recursive = true,
-                    IncludeItemTypes = new[] { nameof(Episode) },
-                    Fields = new[]
-                    {
-                        ItemFields.OriginalTitle,ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
-                        ItemFields.Studios, ItemFields.Path, ItemFields.Overview, ItemFields.ProviderIds,
-                        ItemFields.SortName, ItemFields.ParentId, ItemFields.People, ItemFields.MediaSources,
-                        ItemFields.MediaStreams, ItemFields.PremiereDate, ItemFields.CommunityRating,
-                        ItemFields.OfficialRating, ItemFields.ProductionYear, ItemFields.Status, ItemFields.RunTimeTicks
-                    }
-                };
-
-                var request = new RestRequest($"Items", Method.GET);
-                request.AddItemQueryAsParameters(query, UserId);
-                var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
-                if (baseItems?.Items != null)
-                {
-                    episodes
-                        .AddRange(baseItems.Items.Select(x => x.ConvertToEpisode(showId, Logger))
-                        .Where(x => x != null));
-                }
+                ItemFields.OriginalTitle, ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
+                ItemFields.Studios, ItemFields.Path, ItemFields.Overview, ItemFields.ProviderIds,
+                ItemFields.SortName, ItemFields.ParentId, ItemFields.People, ItemFields.MediaSources,
+                ItemFields.MediaStreams, ItemFields.PremiereDate, ItemFields.CommunityRating,
+                ItemFields.OfficialRating, ItemFields.ProductionYear, ItemFields.Status, ItemFields.RunTimeTicks
             }
+        };
 
-            return episodes;
-        }
+        var paramList = query.ConvertToStringDictionary();
+        var client = _refitFactory.CreateClient(BaseUrl);
+        var result = await client.GetItems(ApiKey, AuthorizationString, paramList);
 
-        public int GetMovieCount(string parentId)
+        var seasons = _mapper.Map<Season[]>(result.Items);
+        return seasons;
+    }
+
+    public async Task<Episode[]> GetEpisodes(string parentId, DateTime? lastSynced)
+    {
+        var query = new ItemQuery
         {
-            var query = new ItemQuery
+            UserId = UserId,
+            EnableImageTypes = new[] {ImageType.Banner, ImageType.Primary, ImageType.Thumb, ImageType.Logo},
+            ParentId = parentId,
+            LocationTypes = new[] {LocationType.FileSystem},
+            Recursive = true,
+            IncludeItemTypes = new[] {nameof(Episode)},
+            MinDateLastSaved = lastSynced,
+            Fields = new[]
             {
-                ParentId = parentId,
-                Recursive = true,
-                IncludeItemTypes = new[] { nameof(Movie) },
-                StartIndex = 0,
-                Limit = 1,
-                EnableTotalRecordCount = true
-            };
+                ItemFields.OriginalTitle, ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
+                ItemFields.Studios, ItemFields.Path, ItemFields.Overview, ItemFields.ProviderIds,
+                ItemFields.SortName, ItemFields.ParentId, ItemFields.MediaSources,
+                ItemFields.MediaStreams, ItemFields.PremiereDate, ItemFields.CommunityRating,
+                ItemFields.OfficialRating, ItemFields.ProductionYear, ItemFields.Status, ItemFields.RunTimeTicks
+            }
+        };
 
-            var request = new RestRequest($"Items", Method.GET);
-            request.AddItemQueryAsParameters(query, UserId);
-            var baseItems = ExecuteAuthenticatedCall<QueryResult<BaseItemDto>>(request);
-            return baseItems?.TotalRecordCount ?? 0;
-        }
+        var paramList = query.ConvertToStringDictionary();
+        var client = _refitFactory.CreateClient(BaseUrl);
+        var result = await client.GetItems(ApiKey, AuthorizationString, paramList);
+
+        var episodes = _mapper.Map<Episode[]>(result.Items);
+        return episodes;
+    }
+
+    public async Task<int> GetMediaCount(string parentId, DateTime? lastSynced, string mediaType)
+    {
+        var query = new ItemQuery
+        {
+            UserId = UserId,
+            ParentId = parentId,
+            Recursive = true,
+            IncludeItemTypes = new[] {mediaType},
+            ExcludeLocationTypes = new[] {LocationType.Virtual},
+            Limit = 0,
+            EnableTotalRecordCount = true,
+            MinDateLastSaved = lastSynced
+        };
+
+        var paramList = query.ConvertToStringDictionary();
+        var client = _refitFactory.CreateClient(BaseUrl);
+        var result = await client.GetItems(ApiKey, AuthorizationString, paramList);
+        return result.TotalRecordCount;
+    }
+
+    public async Task<MediaServerUserView[]> GetPlayedMediaForUser(string userId, int startIndex, int limit)
+    {
+        var query = new ItemQuery
+        {
+            Recursive = true,
+            IsPlayed = true,
+            EnableImages = false,
+            EnableUserData = true,
+            EnableTotalRecordCount = false,
+            StartIndex = startIndex,
+            Limit = limit
+        };
+        
+        var paramList = query.ConvertToStringDictionary();
+        var client = _refitFactory.CreateClient(BaseUrl);
+        var result = await client.GetPlayedItemForUser(ApiKey, AuthorizationString, userId, paramList);
+        
+        var views = _mapper.Map<MediaServerUserView[]>(result.Items, 
+            opt =>
+            {
+                opt.AfterMap((src, dest) => dest.ForEach(y => y.UserId = userId));
+            });
+        return views;
+    }
+    
+    public async Task<int> GetPlayedMediaCountForUser(string userId)
+    {
+        var query = new ItemQuery
+        {
+            Recursive = true,
+            IsPlayed = true,
+            EnableImages = false,
+            EnableUserData = true,
+            Limit = 0,
+            EnableTotalRecordCount = true
+        };
+        
+        var paramList = query.ConvertToStringDictionary();
+        var client = _refitFactory.CreateClient(BaseUrl);
+        var result = await client.GetPlayedItemForUser(ApiKey, AuthorizationString, userId, paramList);
+        return result.TotalRecordCount;
     }
 }

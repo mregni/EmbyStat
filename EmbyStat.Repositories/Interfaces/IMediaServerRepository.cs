@@ -1,45 +1,62 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
-using Device = EmbyStat.Common.Models.Entities.Device;
+using EmbyStat.Common.Models.Entities.Movies;
+using EmbyStat.Common.Models.Entities.Shows;
+using EmbyStat.Common.Models.Entities.Users;
+using EmbyStat.Common.Models.MediaServer;
 
-namespace EmbyStat.Repositories.Interfaces
+namespace EmbyStat.Repositories.Interfaces;
+
+public interface IMediaServerRepository
 {
-    public interface IMediaServerRepository
-    {
-        #region MediaServer Status
-        EmbyStatus GetEmbyStatus();
-        void IncreaseMissedPings();
-        void ResetMissedPings();
-        void RemoveAllMediaServerData();
+    #region MediaServer Status
+    Task<MediaServerStatus> GetEmbyStatus();
+    Task IncreaseMissedPings();
+    Task ResetMissedPings();
+    #endregion
 
-        #endregion
+    #region MediaServer Plugins
+    Task<List<PluginInfo>>  GetAllPlugins();
+    Task InsertPlugins(IEnumerable<PluginInfo> plugins);
+    Task DeleteAllPlugins();
+    #endregion
 
-        #region MediaServer Plugins
-        List<PluginInfo> GetAllPlugins();
-        void RemoveAllAndInsertPluginRange(IEnumerable<PluginInfo> plugins);
-        #endregion
+    #region MediaServer Server Info
+    Task<MediaServerInfo> GetServerInfo();
+    Task DeleteAndInsertServerInfo(MediaServerInfo entity);
+    Task DeleteServerInfo();
+    #endregion
 
-        #region MediaServer Server Info
-        ServerInfo GetServerInfo();
-        void UpsertServerInfo(ServerInfo entity);
-        #endregion
+    #region MediaServer Users
+    Task DeleteAndInsertUsers(IEnumerable<MediaServerUser> users);
+    Task<IEnumerable<MediaServerUserRow>> GetUserPage(int skip, int take, string sortField, string sortOrder);
+    Task<MediaServerUser[]> GetAllUsers();
+    Task<MediaServerUser[]>  GetAllAdministrators();
+    Task<MediaServerUser> GetUserById(string id);
+    Task DeleteAllUsers();
+    Task InsertOrUpdateUserViews(List<MediaServerUserView> views);
+    Task<int> GetUserCount();
+    int GetUserViewsForType(string type);
+    Task<Dictionary<Show, int>> GetMostWatchedShows(int count);
+    Task<Dictionary<Movie, int>> GetMostWatchedMovies(int count);
+    #endregion
 
-        #region MediaServer Users
-        void UpsertUsers(IEnumerable<EmbyUser> users);
-        List<EmbyUser> GetAllUsers();
-        List<EmbyUser> GetAllAdministrators();
-        void MarkUsersAsDeleted(IEnumerable<EmbyUser> users);
-        EmbyUser GetUserById(string id);
+    #region Devices
+    Task<List<Device>> GetAllDevices();
+    Task DeleteAndInsertDevices(IEnumerable<Device> devices);
+    Task DeleteAllDevices();
+    #endregion
 
-        #endregion
-
-        #region Devices
-        List<Device> GetAllDevices();
-        List<Device> GetDeviceById(IEnumerable<string> ids);
-        void MarkDevicesAsDeleted(IEnumerable<Device> devices);
-        void UpsertDevices(IEnumerable<Device> devices);
-
-        #endregion
-
-    }
+    #region Libraries
+    Task<List<Library>> GetAllLibraries();
+    Task<List<Library>> GetAllLibraries(LibraryType type);
+    Task<List<Library>> GetAllLibraries(LibraryType type, bool synced);
+    Task SetLibraryAsSynced(string[] libraryIds, LibraryType type);
+    Task DeleteAndInsertLibraries(Library[] libraries);
+    Task DeleteAllLibraries();
+    Task UpdateLibrarySyncDate(string libraryId, DateTime date);
+    #endregion
 }

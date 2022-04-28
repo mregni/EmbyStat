@@ -1,9 +1,8 @@
 export interface MediaServerInfo {
   id: string;
-  systemUpdateLevel: number;
+  systemUpdateLevel: string;
   operatingSystemDisplayName: string;
   hasPendingRestart: boolean;
-  isShuttingDown: boolean;
   supportsLibraryMonitor: boolean;
   webSocketPortNumber: string;
   canSelfRestart: boolean;
@@ -26,36 +25,8 @@ export interface MediaServerInfo {
   serverName: string;
   version: string;
   operatingSystem: string;
-  isLoaded: boolean;
-}
-
-export const initialMediaServerInfoState: MediaServerInfo = {
-  id: '',
-  systemUpdateLevel: 0,
-  operatingSystemDisplayName: '',
-  hasPendingRestart: false,
-  isShuttingDown: false,
-  supportsLibraryMonitor: false,
-  webSocketPortNumber: '',
-  canSelfRestart: false,
-  canSelfUpdate: false,
-  canLaunchWebBrowser: false,
-  programDataPath: '',
-  itemsByNamePath: '',
-  cachePath: '',
-  logPath: '',
-  internalMetadataPath: '',
-  transcodingTempPath: '',
-  httpServerPortNumber: 0,
-  supportsHttps: false,
-  httpsPortNumber: '',
-  hasUpdateAvailable: false,
-  supportsAutoRunAtStartup: false,
-  hardwareAccelerationRequiresPremiere: false,
-  localAddress: '',
-  wanAddress: '',
-  serverName: '',
-  version: '',
-  operatingSystem: '',
-  isLoaded: false
+  activeUserCount: number;
+  idleUserCount: number;
+  activeDeviceCount: number;
+  idleDeviceCount: number;
 }

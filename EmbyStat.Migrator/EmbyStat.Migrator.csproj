@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <Version>0.0.0.0</Version>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
@@ -10,6 +10,10 @@
     <SonarQubeExclude>true</SonarQubeExclude>
     <ProjectGuid>{A28AF54B-0002-4BA7-9EC8-E71E777ABA31}</ProjectGuid>
   </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Services\EmbyStat.Services.csproj" />

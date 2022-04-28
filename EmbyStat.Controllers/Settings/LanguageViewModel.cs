@@ -1,9 +1,8 @@
-﻿namespace EmbyStat.Controllers.Settings
+﻿namespace EmbyStat.Controllers.Settings;
+
+public class LanguageViewModel
 {
-    public class LanguageViewModel
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string Code { get; set; }
-    }
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public string Code { get; set; }
 }

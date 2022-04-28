@@ -1,0 +1,12 @@
+export const is = 'FILTERS.OPERATIONS.IS';
+export const min = 'COMMON.MIN';
+export const isNull = 'FILTERS.OPERATIONS.ISNULL';
+export const has = 'FILTERS.OPERATIONS.HAS';
+export const hasNo = 'FILTERS.OPERATIONS.HASNO';
+export const between = 'FILTERS.OPERATIONS.BETWEEN';
+export const isZero = 'FILTERS.OPERATIONS.ISZERO';
+export const larger = 'FILTERS.OPERATIONS.LARGER';
+export const smaller = 'FILTERS.OPERATIONS.SMALLER';
+export const bit = 'COMMON.BIT';
+export const pixels = 'COMMON.PIXELS';
+export const fps = 'COMMON.FPS';

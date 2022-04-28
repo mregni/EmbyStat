@@ -1,7 +1,6 @@
-﻿namespace EmbyStat.Controllers.Movie
+﻿namespace EmbyStat.Controllers.Movie;
+
+public class ShortMovieViewModel : SuspiciousMovieViewModel
 {
-    public class ShortMovieViewModel : SuspiciousMovieViewModel
-    {
-        public double Duration { get; set; }
-    }
+    public double Duration { get; set; }
 }

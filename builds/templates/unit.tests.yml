@@ -24,11 +24,24 @@ steps:
     displayName: 'Run eslint'
     inputs:
       script: |
-        npm run lint
+        npm run lint:ci
+      workingDirectory: 'EmbyStat.Web/ClientApp'
+
+  - task: CmdLine@2
+    displayName: 'Run jest'
+    inputs:
+      script: |
+        npm run test:ci
+      workingDirectory: 'EmbyStat.Web/ClientApp'
+
+  - task: CmdLine@2
+    displayName: 'Tree command'
+    inputs:
+      script: 'tree'
       workingDirectory: 'EmbyStat.Web/ClientApp'
 
   - task: CopyFiles@2
-    displayName: 'Copy Test result files'
+    displayName: 'Copy test result files'
     inputs:
       SourceFolder: '$(Agent.TempDirectory)'
       Contents: |

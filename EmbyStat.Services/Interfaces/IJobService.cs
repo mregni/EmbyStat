@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
 
-namespace EmbyStat.Services.Interfaces
+namespace EmbyStat.Services.Interfaces;
+
+public interface IJobService
 {
-    public interface IJobService
-    {
-        IEnumerable<Job> GetAll();
-        Job GetById(Guid id);
-        bool UpdateTrigger(Guid id, string trigger);
-        void ResetAllJobs();
-    }
+    IEnumerable<Job> GetAll();
+    Job GetById(Guid id);
+    Task<bool> UpdateTrigger(Guid id, string trigger);
+    Task ResetAllJobs();
 }

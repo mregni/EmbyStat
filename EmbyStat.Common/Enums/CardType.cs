@@ -1,9 +1,8 @@
-﻿namespace EmbyStat.Common.Enums
+﻿namespace EmbyStat.Common.Enums;
+
+public enum CardType
 {
-    public enum CardType
-    {
-        Text = 0,
-        Size = 1,
-        Time = 2,
-    }
+    Text = 0,
+    Size = 1,
+    Time = 2,
 }

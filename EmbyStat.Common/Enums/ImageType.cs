@@ -1,19 +1,18 @@
-﻿namespace EmbyStat.Common.Enums
+﻿namespace EmbyStat.Common.Enums;
+
+public enum ImageType
 {
-    public enum ImageType
-    {
-        Primary,
-        Art,
-        Backdrop,
-        Banner,
-        Logo,
-        Thumb,
-        Disc,
-        Box,
-        Screenshot,
-        Menu,
-        Chapter,
-        BoxRear,
-        Thumbnail,
-    }
+    Primary,
+    Art,
+    Backdrop,
+    Banner,
+    Logo,
+    Thumb,
+    Disc,
+    Box,
+    Screenshot,
+    Menu,
+    Chapter,
+    BoxRear,
+    Thumbnail,
 }

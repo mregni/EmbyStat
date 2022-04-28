@@ -1,1 +1,1 @@
-export * from "./LogFile";
+export * from './LogFile';

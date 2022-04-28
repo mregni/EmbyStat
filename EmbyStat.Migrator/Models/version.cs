@@ -1,14 +1,13 @@
 ﻿using System;
 
-namespace EmbyStat.Migrator.Models
+namespace EmbyStat.Migrator.Models;
+
+[AttributeUsage(AttributeTargets.Class, Inherited = false)]
+public class MigrationAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    public class MigrationAttribute : Attribute
+    public readonly int Version;
+    public MigrationAttribute(int version)
     {
-        public readonly int Version;
-        public MigrationAttribute(int version)
-        {
-            Version = version;
-        }
+        Version = version;
     }
 }

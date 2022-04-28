@@ -1,289 +1,294 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
-using EmbyStat.Clients.Base.Converters;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Clients.Tmdb;
 using EmbyStat.Common;
-using EmbyStat.Common.Converters;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extensions;
-using EmbyStat.Common.Hubs.Job;
+using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Show;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
 using MediaBrowser.Model.Net;
-using MoreLinq;
+using Microsoft.Extensions.Logging;
 
-namespace EmbyStat.Jobs.Jobs.Sync
+namespace EmbyStat.Jobs.Jobs.Sync;
+
+[DisableConcurrentExecution(60 * 60)]
+public class ShowSyncJob : BaseJob, IShowSyncJob
 {
-    [DisableConcurrentExecution(60 * 60)]
-    public class ShowSyncJob : BaseJob, IShowSyncJob
+    private readonly IBaseHttpClient _baseHttpClient;
+    private readonly IShowRepository _showRepository;
+    private readonly IStatisticsRepository _statisticsRepository;
+    private readonly IShowService _showService;
+    private readonly ITmdbClient _tmdbClient;
+    private readonly IGenreRepository _genreRepository;
+    private readonly IPersonRepository _personRepository;
+    private readonly IMediaServerRepository _mediaServerRepository;
+    private readonly IFilterRepository _filterRepository;
+
+    public ShowSyncJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
+        IClientStrategy clientStrategy, IShowRepository showRepository,
+        IStatisticsRepository statisticsRepository, IShowService showService, ITmdbClient tmdbClient,
+        IGenreRepository genreRepository, IPersonRepository personRepository, 
+        IMediaServerRepository mediaServerRepository, IFilterRepository filterRepository, ILogger<ShowSyncJob> logger)
+        : base(hubHelper, jobRepository, settingsService, logger)
     {
-        private readonly IHttpClient _httpClient;
-        private readonly IShowRepository _showRepository;
-        private readonly ILibraryRepository _libraryRepository;
-        private readonly IStatisticsRepository _statisticsRepository;
-        private readonly IShowService _showService;
-        private readonly ITmdbClient _tmdbClient;
+        _showRepository = showRepository;
+        _statisticsRepository = statisticsRepository;
+        _showService = showService;
+        _tmdbClient = tmdbClient;
+        _genreRepository = genreRepository;
+        _personRepository = personRepository;
+        _mediaServerRepository = mediaServerRepository;
+        _filterRepository = filterRepository;
 
-        public ShowSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
-            IClientStrategy clientStrategy, IShowRepository showRepository,
-            ILibraryRepository libraryRepository, IStatisticsRepository statisticsRepository, IShowService showService, ITmdbClient tmdbClient) 
-            : base(hubHelper, jobRepository, settingsService, typeof(ShowSyncJob), Constants.LogPrefix.ShowSyncJob)
+        var settings = settingsService.GetUserSettings();
+        _baseHttpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.Type ?? ServerType.Emby);
+    }
+
+    protected sealed override Guid Id => Constants.JobIds.ShowSyncId;
+    protected override string JobPrefix => Constants.LogPrefix.ShowSyncJob;
+
+    protected override async Task RunJobAsync()
+    {
+        if (!await IsMediaServerOnline())
         {
-            _showRepository = showRepository;
-            _libraryRepository = libraryRepository;
-            _statisticsRepository = statisticsRepository;
-            _showService = showService;
-            _tmdbClient = tmdbClient;
-            Title = jobRepository.GetById(Id).Title;
-
-            var settings = settingsService.GetUserSettings();
-            _httpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.ServerType ?? ServerType.Emby);
+            await LogWarning(
+                $"Halting task because we can't contact the server on {Settings.MediaServer.Address}, please check the connection and try again.");
+            return;
         }
 
-        public sealed override Guid Id => Constants.JobIds.ShowSyncId;
-        public override string JobPrefix => Constants.LogPrefix.ShowSyncJob;
-        public override string Title { get; }
+        await ProcessPeopleAsync();
+        await LogProgress(7);
+        await ProcessGenresAsync();
+        await LogProgress(15);
 
-        public override async Task RunJobAsync()
+        await ProcessShowsAsync();
+        await LogProgress(75);
+
+        await CalculateStatistics();
+        await LogProgress(100);
+    }
+
+    private async Task ProcessGenresAsync()
+    {
+        var genres = await _baseHttpClient.GetGenres();
+        await LogInformation("Processing genres");
+        await _genreRepository.UpsertRange(genres);
+    }
+
+    private async Task ProcessPeopleAsync()
+    {
+        var totalCount = await _baseHttpClient.GetPeopleCount();
+        await LogInformation($"Processing information from {totalCount} people");
+
+        const int limit = 25000;
+        var processed = 0;
+        var j = 0;
+
+        do
         {
-            var cancellationToken = new CancellationToken(false);
+            var people = await _baseHttpClient.GetPeople(j * limit, limit);
+            await _personRepository.UpsertRange(people);
 
+            processed += limit;
+            j++;
+        } while (processed < totalCount);
+    }
 
-            if (!Settings.WizardFinished)
+    private async Task ProcessShowsAsync()
+    {
+        var librariesToProcess = await _mediaServerRepository.GetAllLibraries(LibraryType.TvShow, true);
+        await LogInformation("Processing shows");
+        await LogInformation(
+            $"{librariesToProcess.Count} libraries are selected, getting ready for processing");
+
+        var logIncrementBase = Math.Round(60 / (double) librariesToProcess.Count, 1);
+        var genres = await _genreRepository.GetAll();
+
+        foreach (var library in librariesToProcess)
+        {
+            var totalCount = await _baseHttpClient.GetMediaCount(library.Id, library.LastSynced, "Series");
+            if (totalCount == 0)
             {
-                await LogWarning("Media sync task not running because wizard is not yet finished!");
-                return;
+                continue;
             }
 
-            if (!IsMediaServerOnline())
+            var increment = logIncrementBase / (totalCount / (double) 100);
+
+            await LogInformation($"Found {totalCount} changed shows since last sync in {library.Name}");
+            var processed = 0;
+            var j = 0;
+            const int limit = 50;
+            do
             {
-                await LogWarning($"Halting task because we can't contact the server on {Settings.MediaServer.FullMediaServerAddress}, please check the connection and try again.");
-                return;
-            }
+                await ProcessShowBlock(library, genres, j, limit);
 
-            await LogInformation("First delete all existing media and root media libraries from database so we have a clean start.");
-            await LogProgress(3);
+                processed += limit;
+                j++;
 
-            var libraries = await GetLibrariesAsync();
-            _libraryRepository.AddOrUpdateRange(libraries);
-            await LogInformation($"Found {libraries.Count} root items, getting ready for processing");
-            await LogProgress(15);
+                var logProcessed = processed < totalCount ? processed : totalCount;
+                await LogInformation($"Processed {logProcessed} / {totalCount} shows");
+                await LogProgressIncrement(increment);
+            } while (processed < totalCount);
 
-            await ProcessShowsAsync(libraries, cancellationToken);
-            await LogProgress(95);
-
-            await CalculateStatistics();
-            await LogProgress(100);
+            await _mediaServerRepository.UpdateLibrarySyncDate(library.Id, DateTime.UtcNow);
         }
+    }
 
-        #region Shows
-        private async Task ProcessShowsAsync(IEnumerable<Library> libraries, CancellationToken cancellationToken)
+    private async Task ProcessShowBlock(Library library, IEnumerable<Genre> genres, int index, int limit)
+    {
+        var shows = await _baseHttpClient.GetShows(library.Id, index * limit, limit, library.LastSynced);
+        shows.AddGenres(genres);
+
+        foreach (var show in shows)
         {
-            await LogInformation("Lets start processing show");
-            var updateStartTime = DateTime.Now;
+            var seasons = await _baseHttpClient.GetSeasons(show.Id, library.LastSynced);
+            var episodes = await _baseHttpClient.GetEpisodes(show.Id, library.LastSynced);
 
-            var neededLibraries = libraries.Where(x => Settings.ShowLibraries.Any(y => y == x.Id)).ToList();
-            var logIncrementBase = Math.Round(40 / (double)neededLibraries.Count, 1);
-            foreach (var library in neededLibraries)
+            foreach (var season in seasons)
             {
-                cancellationToken.ThrowIfCancellationRequested();
-                await PerformShowSyncAsync(library, updateStartTime, logIncrementBase);
+                season.Episodes.AddRange(episodes.Where(x => x.SeasonId == season.Id));
             }
 
-            await LogInformation("Removing shows that are no longer present on your server (if any)");
-            _showRepository.RemoveShowsThatAreNotUpdated(updateStartTime);
-        }
+            show.Seasons = seasons.ToList();
+            show.CumulativeRunTimeTicks = show.GetShowRunTimeTicks();
+            show.SizeInMb = show.GetShowSize();
 
-        private async Task PerformShowSyncAsync(Library library, DateTime updateStartTime, double logIncrementBase)
-        {
-            var showList = _httpClient.GetShows(library.Id);
-
-            var grouped = showList.GroupBy(x => x.TVDB).ToList();
-            await LogInformation($"Found {grouped.Count} show for {library.Name} library");
-
-            for (var i = 0; i < grouped.Count; i++)
+            var localShow = await _showRepository.GetShowByIdWithEpisodes(show.Id);
+            if (!show.TMDB.HasValue)
             {
-                var showGroup = grouped[i];
-
-                var show = showGroup.First();
-                foreach (var showDto in showGroup)
-                {
-                    var seasons = _httpClient.GetSeasons(showDto.Id);
-                    var episodes = _httpClient.GetEpisodes(seasons.Select(x => x.Id), show.Id);
-
-                    show.Seasons.AddRange(seasons.Where(x => show.Seasons.All(y => y.Id != x.Id)));
-
-                    episodes.ForEach(x => x.SeasonIndexNumber = seasons.FirstOrDefault(y => y.Id == x.ParentId)?.IndexNumber );
-                    show.Episodes.AddRange(episodes.Where(x => show.Episodes.All(y => y.Id != x.Id)));
-
-                }
-
-                show.CumulativeRunTimeTicks = show.Episodes.Sum(x => x.RunTimeTicks ?? 0);
-                show.LastUpdated = updateStartTime;
-                show.SizeInMb = show.GetShowSize();
-
-                var oldShow = _showRepository.GetShowById(show.Id);
-
-                if (oldShow != null)
-                {
-                    show.ExternalSyncFailed = oldShow.ExternalSyncFailed;
-                    show.ExternalSynced = oldShow.ExternalSynced;
-                }
-
-                if (show.TMDB.HasValue)
-                {
-                    if (show.HasShowChangedEpisodes(oldShow) 
-                             || oldShow != null && oldShow.NeedsShowSync())
-                    {
-                        show = await GetMissingEpisodesFromProviderAsync(show);
-                    }
-                }
-
-                _showRepository.InsertShow(show);
-                await LogInformation($"Processed ({i + 1}/{grouped.Count}) {show.Name} => {show.Seasons.Count} seasons, {show.GetEpisodeCount(true, LocationType.Disk)} episodes, (Size in GB: {Math.Round(show.SizeInMb / 1024, 2)})");
-                await LogProgressIncrement(logIncrementBase / grouped.Count);
+                continue;
             }
-        }
 
-        private async Task<Show> GetMissingEpisodesFromProviderAsync(Show show)
-        {
-            try
+            if (show.HasShowChangedEpisodes(localShow) || localShow is {ExternalSynced: false})
             {
-                return await ProcessMissingEpisodesAsync(show);
-            }
-            catch (HttpException e)
-            {
-                show.ExternalSyncFailed = true;
-
-                if (e.Message.Contains("404 Not Found"))
-                {
-                    await LogWarning($"Can't seem to find {show.Name} on Imdb, skipping show for now");
-                }
-                return show;
-            }
-            catch (Exception e)
-            {
-                await LogError($"Can't seem to process show {show.Name}, check the logs for more details!");
-                Logger.Error(e);
-                show.ExternalSyncFailed = true;
-                return show;
+                await GetMissingEpisodesFromProviderAsync(show);
             }
         }
 
-        private async Task<Show> ProcessMissingEpisodesAsync(Show show)
+        await _showRepository.UpsertShows(shows);
+    }
+
+    private async Task GetMissingEpisodesFromProviderAsync(Show show)
+    {
+        try
         {
-            var missingEpisodesCount = 0;
-            var externalEpisodes = await _tmdbClient.GetEpisodesAsync(show.TMDB);
+            await ProcessMissingEpisodesAsync(show);
+        }
+        catch (HttpException e)
+        {
+            show.ExternalSynced = false;
 
-            if (externalEpisodes == null)
+            if (e.Message.Contains("404 Not Found"))
             {
-                await LogWarning($"Could not find show {show.Name} with id {show.TMDB}");
-                return show;
+                await LogWarning($"Can't seem to find {show.Name} on Imdb, skipping show for now");
             }
+        }
+        catch (Exception e)
+        {
+            await LogError($"Can't seem to process show {show.Name}, check the logs for more details!");
+            Logger.LogError(e, "Exception details");
+            show.ExternalSynced = false;
+        }
+    }
 
+    private async Task ProcessMissingEpisodesAsync(Show show)
+    {
+        var missingEpisodesCount = 0;
+        var externalEpisodes = await _tmdbClient.GetEpisodesAsync(show.TMDB);
 
-            foreach (var externalEpisode in externalEpisodes)
-            {
-                var season = show.Seasons.FirstOrDefault(x => x.IndexNumber == externalEpisode.SeasonNumber);
-
-                if (season == null)
-                {
-                    Logger.Debug($"No season with index {externalEpisode.SeasonNumber} found for missing episode ({show.Name}), so we need to create one first");
-                    season = externalEpisode.SeasonNumber.ConvertToSeason(show);
-                    show.Seasons.Add(season);
-                }
-
-                if (IsEpisodeMissing(show.Episodes, season, externalEpisode))
-                {
-                    var episode = externalEpisode.ConvertToEpisode(show, season);
-                    Logger.Debug($"Episode missing: { episode.Id } - {episode.ParentId} - {episode.ShowId} - {episode.ShowName}");
-                    show.Episodes.Add(episode);
-                    missingEpisodesCount++;
-                }
-            }
-
-            await LogInformation($"Found {missingEpisodesCount} missing episodes for show {show.Name}");
-
-            show.Episodes = show.Episodes.Where(x => show.Seasons.Any(y => y.Id.ToString() == x.ParentId)).ToList();
-            show.ExternalSynced = true;
-            return show;
+        if (externalEpisodes == null)
+        {
+            throw new NotFoundException($"Could not find show {show.Name} with id {show.TMDB}");
         }
 
-        private static bool IsEpisodeMissing(IEnumerable<Episode> localEpisodes, Season season, VirtualEpisode tvdbEpisode)
+        foreach (var externalEpisode in externalEpisodes.Where(x => x.SeasonNumber != 0))
         {
+            var season = show.Seasons.FirstOrDefault(x => x.IndexNumber == externalEpisode.SeasonNumber);
             if (season == null)
             {
-                return true;
+                Logger.LogDebug(
+                    $"No season with index {externalEpisode.SeasonNumber} found for missing episode ({show.Name}), so we need to create one first");
+                season = externalEpisode.SeasonNumber.ConvertToVirtualSeason(show);
+                show.Seasons.Add(season);
             }
 
-            foreach (var localEpisode in localEpisodes)
+            var localEpisodes = show.Seasons
+                .Where(x => x.Episodes != null)
+                .SelectMany(x => x.Episodes);
+            if (IsEpisodeMissing(localEpisodes, season, externalEpisode))
             {
-                if (localEpisode.ParentId != season.Id) continue;
-                if (!localEpisode.IndexNumberEnd.HasValue)
-                {
-                    if (localEpisode.IndexNumber == tvdbEpisode.EpisodeNumber)
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    if (localEpisode.IndexNumber <= tvdbEpisode.EpisodeNumber &&
-                        localEpisode.IndexNumberEnd >= tvdbEpisode.EpisodeNumber)
-                    {
-                        return false;
-                    }
-                }
+                var episode = externalEpisode.ConvertToVirtualEpisode(season);
+                Logger.LogDebug($"Episode missing: {episode.Id} - {season.Id} - {show.Id} - {show.Name}");
+                show.Seasons.Single(x => x.Id == season.Id).Episodes.Add(episode);
+                missingEpisodesCount++;
             }
+        }
 
+        await LogInformation($"Found {missingEpisodesCount} missing episodes for show {show.Name}");
+
+        show.ExternalSynced = true;
+    }
+
+    private static bool IsEpisodeMissing(IEnumerable<Episode> localEpisodes, Season season,
+        VirtualEpisode tvdbEpisode)
+    {
+        if (season == null || localEpisodes == null)
+        {
             return true;
         }
 
-        #endregion
-
-        #region Helpers
-
-        private bool IsMediaServerOnline()
+        foreach (var localEpisode in localEpisodes)
         {
-            _httpClient.BaseUrl = Settings.MediaServer.FullMediaServerAddress;
-            return _httpClient.Ping();
+            if (localEpisode.SeasonId != season.Id) continue;
+            if (!localEpisode.IndexNumberEnd.HasValue)
+            {
+                if (localEpisode.IndexNumber == tvdbEpisode.EpisodeNumber)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (localEpisode.IndexNumber <= tvdbEpisode.EpisodeNumber &&
+                    localEpisode.IndexNumberEnd >= tvdbEpisode.EpisodeNumber)
+                {
+                    return false;
+                }
+            }
         }
 
-        private async Task CalculateStatistics()
-        {
-            await LogInformation("Calculating show statistics");
-            _statisticsRepository.MarkShowTypesAsInvalid();
-            _showService.CalculateShowStatistics(new List<string>(0));
-            _showService.CalculateCollectedRows(new List<string>(0));
-
-            await LogInformation($"Calculations done");
-            await LogProgress(100);
-        }
-
-        private async Task<List<Library>> GetLibrariesAsync()
-        {
-            await LogInformation("Asking MediaServer for all root folders");
-            var rootItems = _httpClient.GetMediaFolders();
-
-            Logger.Debug("Following root items are found:");
-            rootItems.Items.ForEach(x => Logger.Debug(x.ToString()));
-
-            return rootItems.Items
-                .Where(x => x.CollectionType.ToLibraryType() == LibraryType.TvShow)
-                .Select(LibraryConverter.ConvertToLibrary)
-                .Where(x => x.Type != LibraryType.BoxSets)
-                .ToList();
-        }
-
-        #endregion
+        return true;
     }
+
+    #region Helpers
+
+    private async Task<bool> IsMediaServerOnline()
+    {
+        _baseHttpClient.BaseUrl = Settings.MediaServer.Address;
+        return await _baseHttpClient.Ping();
+    }
+
+    private async Task CalculateStatistics()
+    {
+        await LogInformation("Calculating show statistics");
+        await _statisticsRepository.MarkTypesAsInvalid(StatisticType.Show);
+        await _showService.CalculateShowStatistics();
+        await _filterRepository.DeleteAll(LibraryType.TvShow);
+
+        await LogInformation("Calculations done");
+        await LogProgress(100);
+    }
+
+    #endregion
 }
