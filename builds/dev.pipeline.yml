@@ -75,13 +75,9 @@ stages:
       - job: win_docker_publish
         displayName: 'Publish Windows docker images'
         steps:
-          - task: DownloadPipelineArtifact@2
+          - download: current
             displayName: 'Download Windows Artifact'
-            inputs:
-              buildType: specific
-              project: '60c279c7-80b3-445f-8d2e-45e07778a9e6'
-              definition: 10
-              artifactName: 'EmbyStat-docker-$(package.win10-x64)-v$(Build.BuildNumber)'
+            artifact: 'EmbyStat-docker-$(package.win10-x64)-v$(Build.BuildNumber)'
           - task: Docker@2
             displayName: Login
             inputs:
@@ -93,7 +89,7 @@ stages:
               containerRegistry: 'Docker hub'
               repository: uping/embystat
               Dockerfile: '$(System.DefaultWorkingDirectory)/builds/docker-containers/files/win.dockerfile'
-              buildContext: '$(System.DefaultWorkingDirectory)/EmbyStat-docker-$(package.win10-x64)-v$(Build.BuildNumber)'
+              buildContext: '$(Pipeline.Workspace)/EmbyStat-docker-$(package.win10-x64)-v$(Build.BuildNumber)'
               tags: 'nightly-win-x64'
           - task: Docker@2
             displayName: Logout
@@ -103,13 +99,9 @@ stages:
       - job: ubuntu_docker_publish
         displayName: 'Publish Ubuntu docker images'
         steps:
-          - task: DownloadPipelineArtifact@2
+          - download: current
             displayName: 'Download Ubuntu Artifact'
-            inputs:
-              buildType: specific
-              project: '60c279c7-80b3-445f-8d2e-45e07778a9e6'
-              definition: 10
-              artifactName: 'EmbyStat-docker-linux-v$(Build.BuildNumber)'
+            artifact: 'EmbyStat-docker-linux-v$(Build.BuildNumber)'
           - task: Docker@2
             displayName: Login
             inputs:
@@ -121,7 +113,7 @@ stages:
               containerRegistry: 'Docker hub'
               repository: uping/embystat
               Dockerfile: '$(System.DefaultWorkingDirectory)/builds/docker-containers/files/linux.dockerfile'
-              buildContext: '$(System.DefaultWorkingDirectory)/EmbyStat-docker-linux-v$(Build.BuildNumber)'
+              buildContext: '$(Pipeline.Workspace)/EmbyStat-docker-linux-v$(Build.BuildNumber)'
               tags: 'nightly-linux-x64'
           - task: Docker@2
             displayName: Logout
