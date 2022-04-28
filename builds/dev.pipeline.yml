@@ -70,12 +70,12 @@ stages:
     dependsOn: build_artifacts
     condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop'))
     displayName: 'Publish artifacts'
-    variables:
-      GitVersion.AssemblySemVer: $[stageDependencies.test_stage.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
-      GitVersion.SemVer: $[stageDependencies.test_stage.main_build.outputs['setSemVer.SemVer'] ]  
     jobs:
       - job: win_docker_publish
         displayName: 'Publish Windows docker images'
+        variables:
+          GitVersion.AssemblySemVer: $[stageDependencies.test_stage.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
+          GitVersion.SemVer: $[stageDependencies.test_stage.main_build.outputs['setSemVer.SemVer'] ]     
         steps:
           - task: DownloadPipelineArtifact@2
             displayName: 'Download Windows Artifact'
@@ -104,6 +104,9 @@ stages:
               command: logout
       - job: ubuntu_docker_publish
         displayName: 'Publish Ubuntu docker images'
+        variables:
+          GitVersion.AssemblySemVer: $[stageDependencies.test_stage.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
+          GitVersion.SemVer: $[stageDependencies.test_stage.main_build.outputs['setSemVer.SemVer'] ]
         steps:
           - task: DownloadPipelineArtifact@2
             displayName: 'Download Ubuntu Artifact'
@@ -154,6 +157,9 @@ stages:
         displayName: 'Publish info to Rollbar'
         dependsOn: docker_manifest_publish
         condition: succeeded()
+        variables:
+          GitVersion.AssemblySemVer: $[stageDependencies.test_stage.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
+          GitVersion.SemVer: $[stageDependencies.test_stage.main_build.outputs['setSemVer.SemVer'] ]
         steps:
           - powershell: |
               $environment = "dev"
