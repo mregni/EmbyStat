@@ -1,0 +1,33 @@
+parameters:
+  - name: systemName
+    type: string
+  - name: artifactName
+    type: string
+  - name: dockerFile
+    type: string
+  - name: tag
+    type: string
+
+steps:
+  - template: '../../templates/download.artifact.yml'
+    parameters:
+      systemName: ${{ parameters.systemName }}
+      artifactName: ${{ parameters.artifactName }}
+  - task: Docker@2
+    displayName: Login
+    inputs:
+      containerRegistry: 'Docker hub'
+      command: login
+  - task: Docker@2
+    displayName: 'Build and Push container'
+    inputs:
+      containerRegistry: 'Docker hub'
+      repository: uping/embystat
+      Dockerfile: '$(System.DefaultWorkingDirectory)/builds/docker-containers/files/${{ parameters.dockerFile }}'
+      buildContext: '$(System.ArtifactsDirectory)/${{ parameters.artifactName }}'
+      tags: ${{ parameters.tags }}
+  - task: Docker@2
+    displayName: Logout
+    inputs:
+      containerRegistry: 'Docker hub'
+      command: logout

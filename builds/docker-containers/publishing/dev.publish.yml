@@ -1,0 +1,28 @@
+jobs:
+  - job: win_docker_publish
+    displayName: 'Publish Windows docker images'
+    steps:
+      - template: publish.yml
+        parameters:
+          systemName: 'Windows'
+          artifactName: 'EmbyStat-docker-ARM64-v$(Build.BuildNumber)'
+          dockerFile: '../files/win.dockerfile'
+          tag: 'nightly-win-x64'
+  - job: ubuntu_docker_publish
+    displayName: 'Publish Ubuntu docker images'
+    pool:
+      vmImage: $(LinuxPool)
+    steps:
+      - template: publish.yml
+        parameters:
+          systemName: 'Ubuntu'
+          artifactName: 'EmbyStat-docker-linux-v$(Build.BuildNumber)'
+          dockerFile: '../files/linux.dockerfile'
+          tag: 'nightly-linux-x64'
+  - template: finish.yml
+    parameters:
+      dependsOn: [ ubuntu_docker_publish, win_docker_publish ]
+      manifestFile: '../files/manifest-nightly.yaml'
+      env: 'dev'
+
+  
