@@ -37,7 +37,7 @@ jobs:
       GitVersion.SemVer: $[stageDependencies.test_stage.main_build.outputs['setSemVer.SemVer'] ]
     steps:
       - powershell: |
-          $environment = ${{ parameters.env }}
+          $environment = '${{ parameters.env }}'
           $postParams = @{
               access_token="$(rollbar.key)";
               environment="$environment";
