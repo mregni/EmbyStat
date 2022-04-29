@@ -41,7 +41,7 @@ stages:
     condition: succeeded()
     displayName: 'Publish Docker artifacts'
     jobs:
-    - template: './docker-container/publish/beta.publish.yml'
+    - template: './docker-containers/publish/beta.publish.yml'
 
   - stage: github_publish
     dependsOn: 

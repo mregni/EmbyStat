@@ -41,4 +41,4 @@ stages:
     condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop'))
     displayName: 'Publish docker artifacts'
     jobs:
-    - template: './docker-container/publish/dev.publish.yml'
+    - template: './docker-containers/publish/dev.publish.yml'
