@@ -3,10 +3,10 @@ jobs:
   dependsOn: main_build
   displayName: 'Build Win10-x64 installer'
   variables:
-    GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
-    GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
-    GitVersion.MajorMinorPatch: $[ dependencies.main_build.outputs['setMajorMinorPatch.MajorMinorPatch'] ]
-    GitVersion.PreReleaseNumber: $[ dependencies.main_build.outputs['setPreReleaseNumber.PreReleaseNumber'] ]
+    GitVersion.AssemblySemVer: $[stageDependencies.test_stage.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
+    GitVersion.SemVer: $[stageDependencies.test_stage.main_build.outputs['setSemVer.SemVer'] ]
+    GitVersion.MajorMinorPatch: $[ stageDependencies.test_stage.main_build.outputs['setMajorMinorPatch.MajorMinorPatch'] ]
+    GitVersion.PreReleaseNumber: $[ stageDependencies.test_stage.main_build.outputs['setPreReleaseNumber.PreReleaseNumber'] ]
   steps:
   - template: '../templates/update.version.yml'
 
