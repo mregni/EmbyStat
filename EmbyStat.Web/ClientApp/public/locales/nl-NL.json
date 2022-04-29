@@ -1,410 +1,6 @@
 {
-  "COMMON": {
-    "SERVERNAME": "Server naam",
-    "DOWNLOAD": "download",
-    "NEXT": "volgende",
-    "BACK": "vorige",
-    "FINISH": "voltooien",
-    "SAVE": "opslaan",
-    "DISCARD": "negeren",
-    "CANCEL": "annuleren",
-    "CLOSE": "sluiten",
-    "DAYSABBR": "d",
-    "HOURSABBR": "h",
-    "MINUTESABBR": "m",
-    "MIN": "min",
-    "GB": "GB",
-    "AND": "en",
-    "PIXELS": "px",
-    "TITLE": "Titel",
-    "ADDEDON": "toegevoegd op",
-    "QUALITY": "kwaliteit",
-    "NEVER": "nooit",
-    "OPEN": "Open",
-    "REASON": "reden",
-    "BYIMDB": "dezelfde imdb id",
-    "BYTITLE": "dezelfde titel",
-    "MOVIES": "films",
-    "MOVIE": "film",
-    "SHOW": "serie",
-    "GENRES": "Genres",
-    "COMMUNITYRATING": "Communautaire beoordeling",
-    "OFFICIALRATING": "Officiële beoordeling",
-    "COLLECTEDPERCENTAGE": "Verzameld percentage",
-    "EMBY": "Emby",
-    "GENERAL": "algemeen",
-    "DURATION": "duur",
-    "GRAPHS": "grafieken",
-    "PEOPLE": "mensen",
-    "FILTERS": "Filters",
-    "SUSPICIOUS": "verdacht",
-    "SHOWS": "series",
-    "TOTALACTORS": "Totaal acteurs",
-    "TOTALDIRECTORS": "Totaal regisseurs",
-    "TOTALWRITERS": "Totale schrijvers",
-    "MOSTFEATUREDACTOR": "Meest Uitgelichte Acteur",
-    "MOSTFEATUREDDIRECTOR": "Meest Uitgelichte directeur",
-    "MOSTFEATUREDWRITER": "Meest Uitgelichte schrijver",
-    "CURRENT": "Current",
-    "TOTALRUNTIME": "Total runtime",
-    "LIBRARIES": "Bibliotheken",
-    "PREMIEREDATE": "première datum",
-    "STATUS": "Status",
-    "EPISODES": "Episodes",
-    "PERCENTAGE": "percentage",
-    "COLLECTED": "verzameld",
-    "UPDATES": "Updates",
-    "VERSION": "Versie",
-    "ACTORSPERGENRE": "Meest Uitgelichte Acteur Per Genre",
-    "MINUTES": "minuten",
-    "DISKSIZE": "Schijfgrootte",
-    "TOTALDISKSIZE": "Totale schijfruimte",
-    "EMBYSERVER": "Emby server",
-    "JELLYFINSERVER": "Jellyfin server",
-    "OS": "Besturingssysteem",
-    "WANADDRESS": "WAN-adres",
-    "LANADDRESS": "LAN-adres",
-    "UPDATELEVEL": "Update niveau",
-    "SELECTVALUE": "Selecteer waarde",
-    "ADD": "Toevoegen",
-    "DATE": "datum",
-    "OTHER": "other",
-    "FPS": "fps",
-    "LINKS": "Links",
-    "PROTOCOL": "Protocol",
-    "AUDIO": "Audio",
-    "SUBTITLES": "Ondertitels",
-    "RATING": "Beoordeling",
-    "RESOLUTION": "Resolutie",
-    "RUNTIME": "Looptijd",
-    "TABLE": "Tafel",
-    "LIBRARYERROR": "Kan bibliotheken niet ophalen",
-    "LOADING": "Bezig met laden {{item}}",
-    "STATISTICS": "Statistieken",
-    "NAME": "Naam",
-    "COUNT": "Hoeveelheid",
-    "SIZE": "Grootte",
-    "HEIGHT": "Hoogte",
-    "WIDTH": "Breedte",
-    "TOTALGENRES": "Totaal aantal genres",
-    "BITRATE": "Bitrate",
-    "BIT": "bit",
-    "SIZEINMB": "Grootte in MB",
-    "BITDEPTH": "Bit depth",
-    "CODEC": "Codec",
-    "VIDEORANGE": "Videobereik",
-    "CONTAINER": "Container"
-  },
-  "LOGS": {
-    "ANONYMISED": "Geanonimiseerd",
-    "CREATIONDATE": "Aanmaakdatum",
-    "ACTIONS": "Acties"
-  },
-  "FORMERRORS": {
-    "EMPTY": "Veld mag niet leeg zijn",
-    "REQUIRED": "Verplicht"
-  },
-  "EXCEPTIONS": {
-    "INTERNAL_ERROR": "Woeps, er is iets mis gelopen in de backend, gelieve opnieuw te proberen. Als de fout blijft voorkomen kan u de logs nazien voor meer details.",
-    "NO_CONFIGURATION_FOUND": "Er is geen configuratie gevonden.",
-    "NOT_FOUND": "Oeps, niet gevonden waar je naar zoekt.",
-    "TOKEN_FAILED": "Emby token opvragen is gefaald. Gelieve uw login gegevens en Emby url na te zien.",
-    "EMBY_CALL_FAILED": "Oproep naar Emby server mislukt, controleer of Emby actief is en of de inloggegevens nog correct zijn.",
-    "UNHANDLED": "Niet-verwerkte backend-uitzondering",
-    "MOVIENOTFOUND": "Film niet gevonden, het starten van een media synchronisatie taak kan dit oplossen.",
-    "EPISODENOTFOUND": "Film niet gevonden, het starten van een media synchronisatie taak kan dit oplossen.",
-    "CANTCONNECTTOGITHUB": "Kan geen verbinding maken met GitHub om te controleren op updates. Probeer het later opnieuw.",
-    "NOUPDATEFILE": "Kan de update applicatie niet vinden, geen update uitgevoerd",
-    "UPDATEUNPACKERROR": "Er is iets misgegaan tijdens het uitpakken van het updatepakket. Probeer het opnieuw.",
-    "TVDBLOGINFAILED": "TheTVDB login mislukt, controleer de API-sleutel."
-  },
-  "FORMLABELS": {
-    "CRON": "Cron-tekenreeks"
-  },
-  "MENU": {
-    "DASHBOARD": "Dashboard",
-    "MOVIES": "Films",
-    "SHOWS": "Series",
-    "SETTINGS": "Instellingen",
-    "PLUGINS": "Plugins",
-    "JOBS": "Taken",
-    "SERVER": "Server",
-    "LOGS": "Logs",
-    "ABOUT": "Over",
-    "USERS": "Gebruikers"
-  },
-  "WIZARD": {
-    "WIZARDLABEL": "Wizard",
-    "USERDETAILTEXT": "Geef een gebruikersnaam en wachtwoord op voor uw admin-gebruiker",
-    "SERVERCONFIGURATION": "Server configuratie",
-    "SERVERCONFIGURATIONTEST": "Serverconfiguratietest",
-    "CONFIGURELIBRARIES": "Configureer {{type}} bibliotheken",
-    "STEPONE": "Controleren of API-sleutel is geldig ({{step}}/{{total}})",
-    "STEPTWO": "Fetching serverinformatie ({{step}}/{{total}})",
-    "STEPTHREE": "Ophalen beheerdersaccounts ({{step}}/{{total}})",
-    "STEPFOUR": "Ophalen server bibliotheken ({{step}}/{{total}})",
-    "SERVERTYPELABEL": "Server type",
-    "FINALLABEL": "Laatste",
-    "SEARCHSERVERS": "Servers zoeken",
-    "SERVERTYPEGHELPER": "Select the correct server type (Emby/Jellyfin).",
-    "OPENSERVERAPIPAGE": "Open {{type}} API-sleutelpagina",
-    "CROWDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
-    "INTROTEXT": "Welkom op de EmbyStat server wizard.<br/><br/>Met deze wizard gaan we de basic instellingen klaar zetten voor gebruik zodat u EmbyStat kunt beginnen gebruiken zonder koppijn. Wanneer de wizard klaar is kan u alle features van de server in gebruik nemen. Als u later de server verder wilt instellen kan u altijd naar de instellingen pagina gaan.<br/><br/>Voor nu is het genoeg om te weten hoe we u kunnen noemen en wat uw gewenste UI taal is.",
-    "NOTFOUNDTEXT": "Now we will setup your {{type}} connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
-    "FOUNDTEXT": "We found the following servers in your network. Select the one you want to connect to. If your server is not displayed you can create a server connection manually.",
-    "SERVERRUNNING": "{{type}} server is running",
-    "KEYISVALID": "API-sleutel is geldig",
-    "SELECTLIBRARIES": "Selecteer alle bibliotheken die u wilt opnemen in de berekeningen met {{type}} statistieken. Alle {{type}} bibliotheken zijn standaard geselecteerd. Als je wilt, kun je dit later op de instellingenpagina wijzigen.",
-    "FINISHED": "All settings are saved and you can start using your EmbyStat server now. Enjoy your new statistics!",
-    "FINISHEXPLANATION": "Best thing to do first is start a movie and show synchronization job. EmbyStat will start downloading all data from your {{type}} server. Keep in mind that these tasks can take a long time depending on your collection size. You can start the jobs manually by navigating to the Jobs page after login.",
-    "JELLYFIN": {
-      "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Please select the wanted administrator from the dropdown list."
-    },
-    "APIKEYFAILED": "We hebben geprobeerd contact op te nemen met uw {{type}} server, maar het lijkt te mislukken. Ga terug, corrigeer de configuratie en probeer het opnieuw.",
-    "ADDRESSUSED": "Address: {{address}}",
-    "APIKEYUSED": "API key: {{api}}",
-    "LANWANCHOISE": "Kies het juiste adres voor uw verbinding met {{type}} server.",
-    "ADMINCREATEFAILED": "Creating the admin account failed, check the logs for more details."
-  },
-  "MOVIES": {
-    "TOTALMOVIES": "Totale Films",
-    "TOTALPLAYLENGTH": "Totale Kijk Duur",
-    "HIGHESTRATED": "Hoogste Score",
-    "LOWESTRATED": "Laagste Score",
-    "OLDESTPREMIERED": "Oudste in Première",
-    "NEWESTPREMIERED": "Nieuwste in Première",
-    "SHORTEST": "Kortste",
-    "LONGEST": "Langste",
-    "LATESTADDED": "Onlangs Toegevoegd",
-    "MOSTFEATUREDPERGENRE": "Meest Uitgelichte Acteur Per Genre",
-    "DUPLICATEMOVIES": "Dubbele Films",
-    "TOSHORTMOVIES": "Films die zeer kort zijn",
-    "NOPOSTER": "Ontbrekende Poster",
-    "NOIMDB": "Ontbrekende IMDB-ID",
-    "LOADER": "Filmstatistieken laden"
-  },
-  "SHOWS": {
-    "TOTALSHOWS": "Totale Series",
-    "TOTALEPISODES": "Total episodes",
-    "TOTALMISSINGEPISODES": "Total missing episodes",
-    "TOTALSPECIALEPISODES": "Total special episodes",
-    "TOTALPLAYLENGTH": "Totale Kijk Duur",
-    "HIGHESTRATEDSHOW": "Hoogste Score",
-    "LOWESTRATEDSHOW": "Laagste Score",
-    "OLDESTPREMIERED": "Oudste in Première",
-    "NEWESTPREMIERED": "Nieuwste in Première",
-    "LATESTADDED": "Onlangs toegevoegd",
-    "WITHMOESTEPISODES": "Met de meeste afleveringen",
-    "SHOWSTATUSGRAPH": "Serie Status",
-    "SEASONS": "Seizoenen",
-    "CONTINUING": "Doorgaan",
-    "ENDED": "Geëindigd",
-    "OVERVIEW": "Overzicht",
-    "MISSINGEPISODES": "Missende afleveringen",
-    "LOADER": "Seriestatistieken laden"
-  },
-  "SETTINGS": {
-    "SAVED": "Instellingen opgeslagen",
-    "SAVEFAILED": "Saving settings failed, check log files for more info.",
-    "TITLES": {
-      "EMBYSTAT": "Embystat",
-      "TMDB": "The Movie Database",
-      "EMBY": "Emby"
-    },
-    "TMDB": {
-      "TITLE": "TMDb connection",
-      "APIKEYLABEL": "TMDb API key",
-      "APIKEYWARNING": "If you want you can supply EmbyStat with your own TMDb API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
-      "NOAPIKEY": "API key can not be empty",
-      "SAVING": "Saving TMDb key"
-    },
-    "ROLLBAR": {
-      "TITLE": "Rollbar",
-      "ENABLEROLLBAR": "Uitgebreide logboekregistratie voor foutmeldingen inschakelen",
-      "EXCEPTIONLOGGING": "Schakel de exceptie logging in / uit voor de online Rollbar-service. Met deze logging kan ik de applicatie sneller debuggen en repareren. Er worden nooit persoonlijke gegevens vastgelegd, alleen crash berichten, stacktrace, OS-naam en versienummer.",
-      "SAVING": "Rollbar-instellingen opslaan"
-    },
-    "LANGUAGE": {
-      "TITLE": "Taal",
-      "LABEL": "Selecteer uw voorkeurstaal",
-      "SAVING": "Taal bijwerken naar {{lang}}"
-    },
-    "ACCOUNT": {
-      "TITLE": "Gebruikersdetails",
-      "USERNAME": "Gebruikersnaam",
-      "NOUSERNAME": "gebruikersnaam is vereist",
-      "PASSWORD": "Wachtwoord",
-      "NEWPASSWORD": "Nieuw paswoord",
-      "REPEATNEWPASSWORD": "Herhaal nieuw wachtwoord",
-      "CURRENTPASSWORD": "Huidig wachtwoord",
-      "NOPASSWORD": "Een wachtwoord is verplicht",
-      "PASSWORDNOTEQUAL": "Wachtwoorden zijn niet gelijk",
-      "PASSWORDMINLENGTH": "De lengte van het wachtwoord moet minimaal 6 tekens zijn",
-      "PASSWORDWARNING": "U hoeft alleen een nieuw wachtwoord in te vullen als u uw huidige wachtwoord wilt wijzigen.",
-      "WRONGPASSWORD": "Verkeerd wachtwoord voor ingelogde gebruiker",
-      "USERNAMEUPDATED": "Gebruikersnaam succesvol bijgewerkt",
-      "USERNAMEUPDATEFAILED": "Update van gebruikersnaam mislukt, controleer logging voor meer info"
-    },
-    "STATISTICS": {
-      "TOSHORTTEXT": "Om de verdacht korte films te vinden, moeten we weten hoeveel minuten je te kort vindt voor een film. Standaard is dit ingesteld op 10 minuten, maar u kunt dit indien nodig wijzigen.",
-      "SAVING": "Alle {{type}} statistische instellingen worden opgeslagen",
-      "TOSHORTMINUTES": "Minuten",
-      "ENABLETOSHORTSCAN": "Zoeken naar korte films inschakelen"
-    },
-    "MOVIE": {
-      "LIBRARY": {
-        "SAVING": "Filmbibliotheken opslaan"
-      },
-      "COLLECTIONTYPES": "Selecteer alle soorten Emby collecties die u wilt kunnen selecteren in de vervolgkeuzelijst met collecties op de pagina met filmstatistieken."
-    },
-    "SHOW": {
-      "COLLECTIONTYPES": "Selecteer alle soorten Emby collecties die u wilt kunnen selecteren in de vervolgkeuzelijst met collecties op de pagina met seriestatistieken."
-    },
-    "MEDIASERVER": {
-      "ADDRESS": "IP / domein",
-      "NOADDRESS": "IP / domein is vereist",
-      "APIKEY": "API sleutel",
-      "NOAPIKEY": "API-sleutel is vereist",
-      "PORT": "Poort",
-      "NOPORT": "Poort is vereist",
-      "BASEURL": "Base URL",
-      "NOBASEURL": "Base URL is required and should start with /",
-      "EMBYADDRESSREQUIRED": "{{type}} IP / domein vereist.",
-      "EMBYPORTREQUIRED": "{{type}} poort vereist.",
-      "EMBYAPIKEYREQUIRED": "{{type}} API-sleutel vereist",
-      "APIKEYHINT": "Ga naar geavanceerd -> beveiliging op uw {{type}} server om een nieuw API-token te genereren.",
-      "BASEURLHINT": "Basis-URL moet beginnen met een /",
-      "BASEURLNEEDED": "Ik moet een basis-URL instellen",
-      "BASEURLNEEDEDTOOLTIP": "Je hebt dit waarschijnlijk niet nodig als je niet achter een reverse proxy zit!",
-      "WRONGAPIKEY": "De opgegeven API-sleutel is niet geldig",
-      "CHANGESERVERTYPE": "U heeft een {{currentType}} server geconfigureerd, als u wilt overschakelen naar {{newType}} moet u de applicatie opnieuw installeren."
-    },
-    "UPDATE": {
-      "MASTER": "Master",
-      "BETA": "Beta",
-      "AUTO": "Schakel automatische updates in",
-      "CHECK": "Check and update server now",
-      "UPDATE:": "Server nu bijwerken",
-      "TRAIN": "Change the update train if you want to have beta updates.",
-      "ONBETA": "Je bent niet meer op de Master train, dus je kunt er niet naar kijken. Als je terug wilt gaan op de master trein, installeer dan de server opnieuw.",
-      "TRAINWARNING": "Hier kunt u de update trein veranderen van master naar beta. Als u niet weet wat u doet, laat deze instelling gewoon op Master. Als u de Beta updates wilt ontvangen, dan moet u ervan op aan dat u later niet terug kunt gaan naar de Master. U moet de server opnieuw installeren.",
-      "CURRENTVERSION": "Huidige versie: {{version}}",
-      "CANTCHECK": "Can't check for updates now, no connection to GitHub could me created.",
-      "NOUPDATE": "Geen update beschikbaar",
-      "NEWVERSION": "Versie {{version}} beschikbaar om te downloaden!",
-      "DISABLED": "Updates zijn uitgeschakeld voor deze server en zullen waarschijnlijk worden bijgewerkt door een externe service. Als dit een fout is, start de server dan niet met de optie --no-updates."
-    }
-  },
-  "LOGIN": {
-    "LOGIN": "Log in",
-    "ERROR": "Gebruikersnaam of wachtwoord onbekend",
-    "LOGOUT": "Uitloggen",
-    "FORGOTPASSWORD": "Wachtwoord vergeten",
-    "RECOVERPASSWORD": "Herstel wachtwoord",
-    "RESETCOMPLETED": "Controleer logs voor nieuw wachtwoord",
-    "RESETFAILED": "Het resetten van de gebruikersnaam is mislukt"
-  },
-  "USERS": {
-    "ISADMIN": "Is beheerder",
-    "ISHIDDEN": "Is verborgen voor het inlogscherm",
-    "ISDISABLED": "Is uitgeschakeld",
-    "DELETED": "Verwijderde gebruikers",
-    "ACTIVE": "Actieve gebruikers",
-    "LASTACTIVE": "Laatst actief",
-    "SORTING": {
-      "USERNAMEASC": "Gebruikersnaam (A - Z)",
-      "USERNAMEDESC": "Gebruikersnaam (Z - A)",
-      "LASTACTIVEASC": "Datum Laatst Actief (oplopend)",
-      "LASTACTIVEDESC": "Datum Laatst Actief (aflopend)"
-    },
-    "TOOVERVIEW": "Naar overzicht",
-    "DETAILS": {
-      "TITLE": "Details voor {{name}}",
-      "WATCHEDTITLE": "Laatst Bekeken items"
-    },
-    "WATCHEDTABLE": {
-      "TITLE": "Titel",
-      "TIME": "Tijd",
-      "WATCHED": "Bekeken",
-      "START": "Begin",
-      "ACTION": "Actie"
-    },
-    "STATS": {
-      "TOTALWATCHEDMOVIES": "Films bekeken",
-      "TOTALWATCHEDEPISODES": "Afleveringen bekeken"
-    }
-  },
-  "JOB": {
-    "LASTRUN": "Laatst uitgevoerd",
-    "BUTFAILED": "maar is gefaald na",
-    "NORUN": "Nog niet gestart",
-    "PROCESSING": "Verwerken",
-    "JOBLOGS": "Taaklogboeken",
-    "CRONUPDATED": "Cron waarde bijgewerkt",
-    "OPENJOBPAGE": "Ga naar job pagina",
-    "STARTMEDIASYNC": "Start mediasynchronisatie",
-    "INFO": {
-      "PING": "Controleer {{type}} verbinding",
-      "PINGDESCRIPTION": "Ping de Emby-server om te controleren of hij nog online is.",
-      "SYSTEM-SYNCDESCRIPTION": "Voer een kleine synchronisatie uit met de Emby-server. Dit is alleen een snelle en kleine systeemupdate.",
-      "SYSTEM-SYNC": "Synchroniseer {{type}} info",
-      "SYSTEM-SYNCSTART": "Start kleine synchronisatie",
-      "SHOW-SYNCDESCRIPTION": "Perform an incremental sync for your show collection. This can take some time to run!",
-      "SHOW-SYNC": "Show synchronization",
-      "MOVIE-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
-      "MOVIE-SYNC": "Movie synchronization",
-      "DATABASE-CLEANUP": "Database opschonen",
-      "DATABASE-CLEANUPDESCRIPTION": "Database opschonen met onnodige gegevens.",
-      "UPDATE-CHECKER": "Controleer op nieuwe updates",
-      "UPDATE-CHECKERDESCRIPTION": "Controleert op nieuwe updates op uw geselecteerde updatetrein."
-    }
-  },
-  "DIALOGS": {
-    "NOMOVIETYPEFOUND": {
-      "TITLE": "Geen films gevonden",
-      "BODY": "We konden geen films vinden in de EmbyStat database. Als je films in Emby hebt, moet je proberen een nieuwe media synchronisatie taak te starten."
-    },
-    "NOSHOWTYPEFOUND": {
-      "TITLE": "Geen series gevonden",
-      "BODY": "We konden geen series vinden in de EmbyStat database. Als je series hebt in Emby, probeer dan een nieuwe media synchronisatie taak te starten."
-    },
-    "MEDIASYNCTASKRUNNING": {
-      "TITLE": "Media synchronisatie taak wordt uitgevoerd",
-      "BODY": "De media synchronisatie taak wordt op de achtergrond uitgevoerd. Hierdoor worden alle statistiekenpagina's geblokkeerd omdat de berekeningen volledig fout zouden zijn zolang de synchronisatie actief is."
-    },
-    "EDIT_TRIGGER": {
-      "FORMAT_ERROR": "De cron string is in een verkeerd formaat. Controleer <a href=\"https://crontab.guru/\" target=\"_blank\">hier</a> voor opmaakregels. Alleen cijfers, spaties, *, / en - zijn toegestaan.",
-      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">Hier</a> vindt u meer informatie over het opmaken van een CRON-reeks. Alleen cijfers, *, / en - zijn toegestaan."
-    },
-    "NOUSERSFOUND": {
-      "TITLE": "Geen gebruikers gevonden",
-      "BODY": "Er zijn geen gebruikers gevonden in de lokale database. Dit betekent dat er geen kleine synchronisatie taak is uitgevoerd. Wil je het nu uitvoeren?"
-    }
-  },
-  "LOADER": {
-    "UPDATING": "EmbyStat bijwerken",
-    "UPDATINGSUB": "Pagina wordt vernieuwd wanneer de update is voltooid."
-  },
-  "COLLECTIONTYPES": {
-    "MIXED": "Gemengd / Overige",
-    "MUSIC": "Muziek",
-    "MUSICVIDEOS": "Muziekvideo 's",
-    "TRAILERS": "Trailers",
-    "HOMEVIDEOS": "Home Video 's",
-    "BOXSETS": "Boxsets",
-    "BOOKS": "Boeken",
-    "PHOTOS": "Foto’s",
-    "GAMES": "Spellen",
-    "LIVETV": "Live tv",
-    "PLAYLISTS": "Afspeellijsten",
-    "FOLDERS": "Mappen"
-  },
-  "STATUS": {
-    "TITLE": "{{type}} status",
-    "ONLINE": "Server online",
-    "OFFLINE": "{{count}} gemiste pings"
-  },
   "ABOUT": {
+    "OS": "Besturingssysteem",
     "SERVERINFO": "Server info",
     "GITHUBRELEASE": "Releases op Github",
     "REQUESTFEATURE": "Functie aanvragen",
@@ -412,46 +8,377 @@
     "HELPTRANSLATE": "Help deze app te vertalen",
     "THANKS": {
       "TITLE": "Bedankt",
-      "TEXT": "Grote dank aan de volgende personen voor het vertalen van de app in hun moedertaal:"
+      "TEXT": "A big thanks to the following people for translating the app in their native language or helping to test the application:",
+      "MISSINGNAME": "If your name is missing from this list, send me a message on Crowdin!"
     },
-    "ACTIONS": {
-      "TITLE": "Actie"
+    "ACTIONS": "Acties"
+  },
+  "COMMON": {
+    "AND": "en",
+    "AUDIO": "Audio",
+    "BACK": "Back",
+    "BIT": "bit",
+    "BITDEPTH": "Bit depth",
+    "CANCEL": "annuleren",
+    "CODEC": "Codec",
+    "COLLECTEDPERCENTAGE": "Amount collected",
+    "COMMUNITYRATING": "Communautaire beoordeling",
+    "CONTAINER": "Container",
+    "COUNT": "Hoeveelheid",
+    "CREATE": "Create",
+    "CREATEDDATE": "Media added",
+    "DATE": "Date",
+    "DAYSABBR": "d",
+    "DESCRIPTION": "Description",
+    "DISCARD": "negeren",
+    "DISKSPACE": "Disk space",
+    "DOWNLOAD": "Download",
+    "DOWNLOADCSV": "Download list as CSV",
+    "EPISODE": "Episode",
+    "EPISODES": "Afleveringen",
+    "FILTERS": "Filters",
+    "FPS": "fps",
+    "GB": "Gb",
+    "GENRES": "Genres",
+    "GRAPHS": "grafieken",
+    "HEIGHT": "Hoogte",
+    "HOURSABBR": "h",
+    "HTTPPORT": "HTTP port",
+    "HTTPSPORT": "HTTPS port",
+    "ID": "ID",
+    "ISDEFAULT": "is default",
+    "LINKS": "Links",
+    "LIST": "List",
+    "MIN": "min",
+    "MINUTESABBR": "m",
+    "MOVIE": "film",
+    "MOVIES": "films",
+    "NAME": "Naam",
+    "NUMBERS": "Numbers",
+    "OFFICIALRATING": "Officiële beoordeling",
+    "OS": "Besturingssysteem",
+    "OTHER": "Other",
+    "PATHS": "Paths",
+    "PIXELS": "px",
+    "PREMIEREDATE": "première datum",
+    "PROTOCOL": "Protocol",
+    "RUNTIME": "Looptijd",
+    "SAVE": "opslaan",
+    "SEASON": "Season",
+    "SEASONS": "Seasons",
+    "SELECTVALUE": "Selecteer waarde",
+    "SHOW": "serie",
+    "SHOWS": "Series",
+    "SIZE": "Grootte",
+    "SIZEINMB": "Size in Mb",
+    "STATUS": "Status",
+    "STREAMS": "Streams",
+    "SUBTITLES": "Ondertitels",
+    "TIME": "Time",
+    "TITLE": "Titel",
+    "TOTAL": "Total",
+    "TOTALACTORS": "Totaal acteurs",
+    "TOTALDIRECTORS": "Totaal regisseurs",
+    "TOTALDISKSIZE": "Totale schijfruimte",
+    "TOTALGENRES": "Totaal aantal genres",
+    "TOTALRUNTIME": "Totale runtime",
+    "TOTALWRITERS": "Totale schrijvers",
+    "UNKNOWN": "Unknown",
+    "UPDATELEVEL": "Update niveau",
+    "VERSION": "Versie",
+    "VIDEORANGE": "Videobereik",
+    "WIDTH": "Breedte"
+  },
+  "DIALOGS": {
+    "EDIT_TRIGGER": {
+      "CRON_HELPER": "<a href=\"https://crontab.guru/\" target=\"_blank\">Hier</a> vindt u meer informatie over het opmaken van een CRON-reeks. Alleen cijfers, *, / en - zijn toegestaan.",
+      "FORMAT_ERROR": "De cron string is in een verkeerd formaat. Controleer <a href=\"https://crontab.guru/\" target=\"_blank\">hier</a> voor opmaakregels. Alleen cijfers, spaties, *, / en - zijn toegestaan."
+    },
+    "MOVIEJOBRUNNING": {
+      "BODY": "Movie job is running, please wait until it is finished",
+      "TITLE": "Movie job running"
+    },
+    "NOMOVIETYPEFOUND": {
+      "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in {{type}} you should try starting a new movie syncronisation task.",
+      "TITLE": "Geen films gevonden"
+    },
+    "NOSHOWTYPEFOUND": {
+      "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in {{type}} you should try starting a new show syncronisation task.",
+      "TITLE": "Geen series gevonden"
+    },
+    "SHOWJOBRUNNING": {
+      "BODY": "Show job is running, please wait until it is finished",
+      "TITLE": "Show job running"
     }
   },
   "FILTERS": {
-    "CLEARALL": "Alles wissen",
-    "CONTAINS": "bevat",
-    "NOTCONTAINS": "bevat niet",
-    "EQUAL": "gelijk aan",
-    "STARTSWITH": "begint met",
-    "ENDSWITH": "eindigt op",
-    "IS": "is",
-    "ISNULL": "is null",
-    "ISNOT": "is niet",
-    "HAS": "heeft",
-    "HASNO": "heeft geen",
-    "HASNONE": "heeft geen enkele",
-    "BETWEEN": "tussen",
-    "SHORTER": "korter",
-    "LONGER": "langer",
-    "ISZERO": "is 0",
-    "LARGER": "groter",
-    "SMALLER": "kleiner",
-    "BEFORE": "voor",
-    "AFTER": "na",
+    "DIALOG": {
+      "CONTENT": "Select field on which you want to add a new filter",
+      "TITLE": "Add new filter"
+    },
+    "OPERATIONS": {
+      "BETWEEN": "is between",
+      "CONTAINS": "contains",
+      "ENDSWITH": "ends with",
+      "EQUAL": "equals",
+      "HAS": "has",
+      "HASNO": "has no",
+      "HASNONE": "has none",
+      "IS": "is",
+      "ISNOT": "is not",
+      "ISNULL": "is null",
+      "ISZERO": "is 0",
+      "LARGER": "is larger then",
+      "LONGER": "is longer then",
+      "NOTCONTAINS": "does not contain",
+      "SHORTER": "is shorter then",
+      "SMALLER": "is smaller then",
+      "STARTSWITH": "starts with"
+    },
     "TITLES": {
-      "TITLE": "Titel",
-      "IMDB": "Imdb",
-      "TMDB": "Tmdb",
-      "IMAGES": "Afbeeldingen",
-      "GENRES": "Genres",
+      "CONTAINER": "Container",
       "FRAMERATE": "Framerate",
-      "CONTAINER": "Container"
+      "GENRES": "Genres",
+      "IMAGES": "Afbeeldingen",
+      "IMDB": "Imdb",
+      "TITLE": "Titel",
+      "TMDB": "Tmdb"
     }
+  },
+  "FORMLABELS": {
+    "CRON": "Cron-tekenreeks",
+    "FIELD": "Field",
+    "OPERATION": "Operation"
+  },
+  "JOB": {
+    "BUTFAILED": "maar is gefaald na",
+    "CRONUPDATED": "Cron waarde bijgewerkt",
+    "INFO": {
+      "DATABASE-CLEANUP": "Database opschonen",
+      "DATABASE-CLEANUPDESCRIPTION": "Database opschonen met onnodige gegevens.",
+      "MOVIE-SYNC": "Movie synchronization",
+      "MOVIE-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
+      "PING": "Controleer {{type}} verbinding",
+      "PINGDESCRIPTION": "Ping de Emby-server om te controleren of hij nog online is.",
+      "SHOW-SYNC": "Show synchronization",
+      "SHOW-SYNCDESCRIPTION": "Perform an incremental sync for your show collection. This can take some time to run!",
+      "SYSTEM-SYNC": "Synchroniseer {{type}} info",
+      "SYSTEM-SYNCDESCRIPTION": "Voer een kleine synchronisatie uit met de Emby-server. Dit is alleen een snelle en kleine systeemupdate.",
+      "UPDATE-CHECKER": "Controleer op nieuwe updates",
+      "UPDATE-CHECKERDESCRIPTION": "Controleert op nieuwe updates op uw geselecteerde updatetrein."
+    },
+    "JOBLOGS": "Taaklogboeken",
+    "LASTRUN": "Laatst uitgevoerd",
+    "NORUN": "Nog niet gestart",
+    "OPENJOBPAGE": "Ga naar job pagina",
+    "PROCESSING": "Verwerken",
+    "STARTMEDIASYNC": "Start mediasynchronisatie"
+  },
+  "LOGIN": {
+    "ERROR": "Gebruikersnaam of wachtwoord onbekend",
+    "LOGIN": "Log in",
+    "LOGOUT": "Uitloggen",
+    "RECOVERPASSWORD": "Herstel wachtwoord",
+    "RESETCOMPLETED": "Controleer logs voor nieuw wachtwoord",
+    "RESETFAILED": "Het resetten van de gebruikersnaam is mislukt"
+  },
+  "LOGS": {
+    "ACTIONS": "Acties",
+    "ANONYMISED": "Geanonimiseerd"
+  },
+  "MENU": {
+    "ABOUT": "Over",
+    "DASHBOARD": "Dashboard",
+    "JOBS": "Taken",
+    "LOGS": "Logs",
+    "MOVIES": "Films",
+    "SERVER": "Server",
+    "SETTINGS": "Instellingen",
+    "SHOWS": "Series",
+    "USERS": "Gebruikers"
+  },
+  "MOVIES": {
+    "HIGHESTRATED": "Hoogste Score",
+    "LATESTADDED": "Onlangs Toegevoegd",
+    "LOADER": "Filmstatistieken laden",
+    "LOADINGLIST": "Loading movie list",
+    "LONGEST": "Langste",
+    "LOWESTRATED": "Laagste Score",
+    "MOSTWATCHED": "Most watched",
+    "NEWESTPREMIERED": "Nieuwste in Première",
+    "OLDESTPREMIERED": "Oudste in Première",
+    "SHORTEST": "Kortste",
+    "TOTALMOVIES": "Totale Films",
+    "TOTALPLAYLENGTH": "Totale Kijk Duur",
+    "TOTALWATCHED": "Total watched movies"
   },
   "PAGINATION": {
     "NEXTPAGE": "Next page",
     "PREVIOUSPAGE": "Previous page",
     "ROWSPERPAGE": "Rows per page"
+  },
+  "SERVER": {
+    "ACTIVEDEVICES": "ACtive devices",
+    "AUTORUNSUPPORT": "Supports auto run at startup",
+    "CACHEPATH": "Cache path",
+    "CANLAUNCHBROWSER": "Can launch browser",
+    "CANSELFRESTART": "Can self restart",
+    "CANSELFUPDATE": "Can self update",
+    "FEATURES": "Features",
+    "HTTPSSUPPORT": "HTTPS support",
+    "IDLEDEVICES": "Idle devices",
+    "INFO": "Server info",
+    "ITEMSBYNAMEPATH": "Items by name path",
+    "LANADDRESS": "LAN",
+    "LOGPATH": "Log path",
+    "METADATAPATH": "Internal metadata path",
+    "MONITORSUPPORT": "Supports library monitoring",
+    "OPENSERVER": "Open server page",
+    "PENDINGRESTART": "Has pending restart",
+    "PLUGINS": "Plugins",
+    "PROGRAMDATAPATH": "Program data path",
+    "TRANSCODINGPATH": "Transcoding path",
+    "UPDATEAVAILABLE": "Has update available",
+    "WANADDRESS": "WAN",
+    "WEBSOCKETPORT": "Websocket port"
+  },
+  "SETTINGS": {
+    "ACCOUNT": {
+      "CONTENT": "Change your admin username here. New username will be required on next login.",
+      "NOUSERNAME": "gebruikersnaam is vereist",
+      "USERNAME": "Gebruikersnaam",
+      "USERNAMEUPDATED": "Gebruikersnaam succesvol bijgewerkt",
+      "USERNAMEUPDATEFAILED": "Username update failed, check the logs for more info"
+    },
+    "LANGUAGE": {
+      "LABEL": "Select language",
+      "LANGUAGEUPDATED": "Updating language to {{lang}}",
+      "SAMPLES": "Localisation examples",
+      "TITLE": "Taal"
+    },
+    "LIBRARIES": {
+      "CONTENT": "Select here all {{type}} libraries that should be synced with EmbyStat ",
+      "TITLE": "Libraries"
+    },
+    "MEDIASERVER": {
+      "ADDRESS": "Full server URL",
+      "ADDRESSHINT": "Example: https://example.com:8096/base",
+      "APIKEY": "API sleutel",
+      "APIKEYHINT": "Ga naar geavanceerd -> beveiliging op uw {{type}} server om een nieuw API-token te genereren.",
+      "DIALOG": {
+        "CONTENT": "Because you are changing the server configuration it might be a good idea to also reset the EmbyStat statistics. Do this only when you are connecting to a new server with different media/users/... If you are still connecting to the same server you don't need to reset the EmbyStat statistics.",
+        "RESET": "Save and reset",
+        "TITLE": "Reset database?"
+      },
+      "NOADDRESS": "Server URL is required",
+      "NOAPIKEY": "API-sleutel is vereist",
+      "RESETINFO": "Starting the EmbyStat reset process. This can take some time depending on the size of the database. Please wait until it is finished.",
+      "TITLE": "{{type}} settings"
+    },
+    "PASSWORD": {
+      "CONTENT": "For changing your password, fill in the current one and your new one twice.",
+      "CURRENTPASSWORD": "Current password",
+      "NEWPASSWORD": "New password",
+      "NOCURRENTPASSWORD": "Current password is required",
+      "NOPASSWORD": "Password is required",
+      "PASSWORD": "Password",
+      "PASSWORDMINLENGTH": "Password length must be minimal 6 characters",
+      "PASSWORDNOTEQUAL": "Passwords are not equal",
+      "PASSWORDUPDATED": "Password updated succesfully",
+      "PASSWORDUPDATEFAILED": "Password update failed",
+      "REPEATNEWPASSWORD": "Repeat new password",
+      "TITLE": "Password"
+    },
+    "ROLLBAR": {
+      "ENABLEROLLBAR": "Uitgebreide logboekregistratie voor foutmeldingen inschakelen",
+      "EXCEPTIONLOGGING": "Schakel de exceptie logging in / uit voor de online Rollbar-service. Met deze logging kan ik de applicatie sneller debuggen en repareren. Er worden nooit persoonlijke gegevens vastgelegd, alleen crash berichten, stacktrace, OS-naam en versienummer.",
+      "TITLE": "Rollbar"
+    },
+    "SAVED": "Instellingen opgeslagen",
+    "SAVEFAILED": "Updating settings failed",
+    "SERVER": {
+      "CONNECTIONS": "Connection settings",
+      "USER": "User settings"
+    },
+    "SHOWS": {
+      "TITLE": "Show settings"
+    },
+    "TMDB": {
+      "APIKEYWARNING": "If you want you can supply EmbyStat with your own TMDb API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
+      "LABEL": "TMDb API key",
+      "NOAPIKEY": "API key can not be empty",
+      "TITLE": "TMDb connection"
+    }
+  },
+  "SHOWS": {
+    "COMPLETECOLLECTEDSHOWS": "Full collected shows",
+    "HIGHESTRATED": "Hoogste Score",
+    "LATESTADDED": "Latest added",
+    "LOADER": "Seriestatistieken laden",
+    "LOADINGLIST": "Loading show list",
+    "LOWESTRATED": "Laagste Score",
+    "MISSINGEPISODES": "Missende afleveringen",
+    "MOSTDISKSPACE": "Most used disk space",
+    "MOSTWATCHED": "Most watched",
+    "NEWESTPREMIERED": "Nieuwste in Première",
+    "NOMISSINGEPS": "No missing episodes",
+    "OLDESTPREMIERED": "Oudste in Première",
+    "SHOWSTATUS": "Show status",
+    "TOTALEPISODES": "Total episodes",
+    "TOTALEPISODESWATCHED": "Total watched episodes",
+    "TOTALMISSINGEPISODES": "Total missing episodes",
+    "TOTALPLAYLENGTH": "Total play length",
+    "TOTALSHOWS": "Total shows",
+    "WITHMOESTEPISODES": "With most episodes"
+  },
+  "USERS": {
+    "ACTIVEUSERS": "Active users",
+    "ADMIN": "Admin",
+    "DISABLED": "Disabled",
+    "HIDDEN": "Hidden",
+    "IDLEUSERS": "Idle users",
+    "LASTACTIVE": "Laatst actief",
+    "LOADER": "Loading user info",
+    "USERS": "Gebruikers",
+    "WATCHED": {
+      "EPISODES": "Episodes watched",
+      "MOVIES": "Movies watched",
+      "TOTAL": "Total watched"
+    }
+  },
+  "WIZARD": {
+    "ACCOUNT": "User details",
+    "ADDRESSUSED": "Address: {{address}}",
+    "APIKEYFAILED": "We hebben geprobeerd contact op te nemen met uw {{type}} server, maar het lijkt te mislukken. Ga terug, corrigeer de configuratie en probeer het opnieuw.",
+    "APIKEYUSED": "API key: {{api}}",
+    "CROWDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
+    "EXCEPTIONLOGGING": "Exception logging",
+    "FINALTITLE": "Final",
+    "FINISHED": "All settings are saved and you can start using your EmbyStat server now. Enjoy your new statistics!",
+    "FINISHEXPLANATION": "Best thing to do first is start a movie and show synchronization job. EmbyStat will start downloading all data from your {{type}} server. Keep in mind that these tasks can take a long time depending on your collection size. You can start the jobs manually by navigating to the Jobs page after login.",
+    "FOUNDTEXT": "We found the following servers in your network. Select the one you want to connect to. If your server is not displayed you can create a server connection manually.",
+    "INTROTEXT": "Welkom op de EmbyStat server wizard.<br/><br/>Met deze wizard gaan we de basic instellingen klaar zetten voor gebruik zodat u EmbyStat kunt beginnen gebruiken zonder koppijn. Wanneer de wizard klaar is kan u alle features van de server in gebruik nemen. Als u later de server verder wilt instellen kan u altijd naar de instellingen pagina gaan.<br/><br/>Voor nu is het genoeg om te weten hoe we u kunnen noemen en wat uw gewenste UI taal is.",
+    "JELLYFIN": {
+      "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Please select the wanted administrator from the dropdown list."
+    },
+    "LANGUAGE": "Taal",
+    "LANWANCHOISE": "Kies het juiste adres voor uw verbinding met {{type}} server.",
+    "LIBRARIES": {
+      "TITLE": "Select {{type}} libraries"
+    },
+    "NOTFOUNDTEXT": "Now we will setup your {{type}} connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
+    "SEARCHSERVERS": "Searching media servers",
+    "SELECTLANGUAGE": "Select your prefered language",
+    "SELECTLIBRARIES": "Selecteer alle bibliotheken die u wilt opnemen in de berekeningen met {{type}} statistieken. Alle {{type}} bibliotheken zijn standaard geselecteerd. Als je wilt, kun je dit later op de instellingenpagina wijzigen.",
+    "SERVERCONFIGURATION": "Server configuratie",
+    "SERVERCONFIGURATIONTEST": "Serverconfiguratietest",
+    "SERVERTYPEGHELPER": "Select the correct server type (Emby/Jellyfin).",
+    "SERVERTYPELABEL": "Server type",
+    "STEPFOUR": "Ophalen server bibliotheken ({{step}}/{{total}})",
+    "STEPONE": "Controleren of API-sleutel is geldig ({{step}}/{{total}})",
+    "STEPTHREE": "Ophalen beheerdersaccounts ({{step}}/{{total}})",
+    "STEPTWO": "Fetching serverinformatie ({{step}}/{{total}})",
+    "TITLE": "Wizard",
+    "USERDETAILTEXT": "Geef een gebruikersnaam en wachtwoord op voor uw admin-gebruiker"
   }
 }
