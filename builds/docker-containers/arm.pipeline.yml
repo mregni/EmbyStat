@@ -1,9 +1,9 @@
 jobs:
-  - job: linux_arm
+  - job: linux_arm_docker_container
     dependsOn: main_build
     displayName: 'Build Linux-ARM package'
     pool:
-      vmImage: ubuntu-18.04
+      vmImage: $(LinuxPool)
     variables:
       GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
       GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
