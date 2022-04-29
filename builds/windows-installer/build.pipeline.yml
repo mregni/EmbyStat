@@ -44,7 +44,7 @@ jobs:
     displayName: 'Create NSIS package'
     inputs:
       targetType: filePath
-      filePath: './builds/windows/installer-build.ps1'
+      filePath: './builds/windows-installer/installer-build.ps1'
       arguments: '-InstallNSSM -InstallNSIS -MakeNSIS -version $(GitVersion.MajorMinorPatch).$(GitVersion.PreReleaseNumber)'
       
   - task: CopyFiles@2
