@@ -5,7 +5,7 @@ jobs:
       - template: publish.yml
         parameters:
           systemName: 'Windows'
-          artifactName: 'EmbyStat-docker-ARM64-v$(Build.BuildNumber)'
+          artifactName: 'EmbyStat-docker-$(package.win10-x64)-v$(Build.BuildNumber)'
           dockerFile: '../files/win.dockerfile'
           tag: 'nightly-win-x64'
   - job: ubuntu_docker_publish
