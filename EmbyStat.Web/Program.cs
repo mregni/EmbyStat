@@ -149,6 +149,7 @@ public class Program
             .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Connection", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.EntityFrameworkCore.ChangeTracking", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore", minimumLevel) 
+            .MinimumLevel.Override("Microsoft.EntityFrameworkCore", minimumLevel)
             .MinimumLevel.Override("Microsoft.AspNetCore.SpaServices", LogEventLevel.Warning) 
             .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning) 
             .MinimumLevel.Override("Microsoft.AspNetCore.StaticFiles", LogEventLevel.Warning) 

@@ -21,37 +21,7 @@ pool:
   vmImage: $(WinPool)
 
 stages:
-  - stage: test_stage
-    displayName: Test
-    jobs:
-    - job: main_build
-      displayName: 'Test application'
-      steps:
-      - template: './templates/version.variables.yml'
-      - template: './templates/update.version.yml'
-      - template: './templates/sonarcloud.start.yml'
-
-      - task: PowerShell@2
-        displayName: 'Update appsettings.json file'
-        inputs:
-          targetType: filePath
-          filePath: $(paths.script)/appsettings.ps1
-          arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
-    
-      - task: DotNetCoreCLI@2
-        displayName: 'Restore NuGet packages'
-        inputs:
-          command: 'restore'
-          projects: '$(webapp.project)'
-
-      - task: DotNetCoreCLI@2
-        displayName: 'Build web app'
-        inputs:
-          projects: '$(webapp.project)'
-          arguments: '--output publish'
-    
-      - template: './templates/unit.tests.yml'
-      - template: './templates/sonarcloud.end.yml'
+  - template: 'templates/test.stage.yml'
 
   - stage: build_artifacts
     dependsOn: test_stage
@@ -61,109 +31,14 @@ stages:
     - template: './win-x64/build.pipeline.yml'
 
     - ${{ if eq(variables['Build.SourceBranchName'], 'develop') }}:
-      - template: './docker-containers/win.pipeline.yml'
-      - template: './docker-containers/linux.pipeline.yml'
+      - template: docker-containers/win.pipeline.yml
+      - template: docker-containers/linux.pipeline.yml
 
   - stage: publish
     dependsOn: 
       - build_artifacts
       - test_stage
     condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop'))
-    displayName: 'Publish artifacts'
+    displayName: 'Publish docker artifacts'
     jobs:
-      - job: win_docker_publish
-        displayName: 'Publish Windows docker images'
-        steps:
-          - task: DownloadBuildArtifacts@1
-            displayName: 'Download Windows Artifact'
-            inputs:
-              buildType: 'current'
-              downloadType: 'single'
-              artifactName: 'EmbyStat-docker-$(package.win10-x64)-v$(Build.BuildNumber)'
-              downloadPath: '$(System.ArtifactsDirectory)'
-          - task: Docker@2
-            displayName: Login
-            inputs:
-              containerRegistry: 'Docker hub'
-              command: login
-          - task: Docker@2
-            displayName: 'Build and Push container'
-            inputs:
-              containerRegistry: 'Docker hub'
-              repository: uping/embystat
-              Dockerfile: '$(System.DefaultWorkingDirectory)/builds/docker-containers/files/win.dockerfile'
-              buildContext: '$(System.ArtifactsDirectory)/EmbyStat-docker-$(package.win10-x64)-v$(Build.BuildNumber)'
-              tags: 'nightly-win-x64'
-          - task: Docker@2
-            displayName: Logout
-            inputs:
-              containerRegistry: 'Docker hub'
-              command: logout
-      - job: ubuntu_docker_publish
-        displayName: 'Publish Ubuntu docker images'
-        pool:
-          vmImage: $(LinuxPool)
-        steps:
-          - task: DownloadBuildArtifacts@1
-            displayName: 'Download Ubuntu Artifact'
-            inputs:
-              buildType: 'current'
-              downloadType: 'single'
-              artifactName: 'EmbyStat-docker-linux-v$(Build.BuildNumber)'
-              downloadPath: '$(System.ArtifactsDirectory)'
-          - task: Docker@2
-            displayName: Login
-            inputs:
-              containerRegistry: 'Docker hub'
-              command: login
-          - task: Docker@2
-            displayName: 'Build and Push container'
-            inputs:
-              containerRegistry: 'Docker hub'
-              repository: uping/embystat
-              Dockerfile: '$(System.DefaultWorkingDirectory)/builds/docker-containers/files/linux.dockerfile'
-              buildContext: '$(System.ArtifactsDirectory)/EmbyStat-docker-linux-v$(Build.BuildNumber)'
-              tags: 'nightly-linux-x64'
-          - task: Docker@2
-            displayName: Logout
-            inputs:
-              containerRegistry: 'Docker hub'
-              command: logout
-      - job: docker_manifest_publish
-        displayName: 'Publish manifest data'
-        dependsOn: 
-          - ubuntu_docker_publish
-          - win_docker_publish
-        condition: succeeded()
-        steps:
-          - task: Docker@2
-            displayName: Login
-            inputs:
-              containerRegistry: 'Docker hub'
-              command: login
-          - script: 'manifest-tool-windows-amd64.exe push from-spec manifest-nightly.yaml'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/builds/docker-containers/files'
-            displayName: 'Pushing manifest file to Docker Hub'
-          - task: Docker@2
-            displayName: Logout
-            inputs:
-              containerRegistry: 'Docker hub'
-              command: logout
-      - job: rollbar_publish
-        displayName: 'Publish info to Rollbar'
-        dependsOn: docker_manifest_publish
-        condition: succeeded()
-        variables:
-          GitVersion.SemVer: $[stageDependencies.test_stage.main_build.outputs['setSemVer.SemVer'] ]
-        steps:
-          - powershell: |
-              $environment = "dev"
-              $postParams = @{
-                  access_token="$(rollbar.key)";
-                  environment="$environment";
-                  revision="$(GitVersion.SemVer)";
-                  local_username="Mikhaël Regni";
-                  status="succeeded";
-                }
-                Invoke-WebRequest -Uri https://api.rollbar.com/api/1/deploy -Method POST -UseBasicParsing -Body $postParams
-            displayName: 'Publishing deploy on Rollbar'
+    - template: './docker-container/publish/dev.publish.yml'

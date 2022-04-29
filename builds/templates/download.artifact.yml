@@ -1,0 +1,14 @@
+parameters:
+  - name: artifactName
+    type: string
+  - name: systemName
+    type: string
+
+steps:
+  - task: DownloadBuildArtifacts@1
+    displayName: 'Download ${{ parameters.systemName }} Artifact'
+    inputs:
+      buildType: 'current'
+      downloadType: 'single'
+      artifactName: ${{ parameters.artifactName }}
+      downloadPath: '$(System.ArtifactsDirectory)'
