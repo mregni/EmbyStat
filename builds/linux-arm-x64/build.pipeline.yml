@@ -1,6 +1,5 @@
 jobs:
 - job: linux_arm_x64
-  dependsOn: main_build
   displayName: 'Build Linux-ARM-x64 package'
   pool:
     vmImage: $(LinuxPool)

@@ -1,6 +1,5 @@
 jobs:
 - job: ubuntu_x64
-  dependsOn: main_build
   displayName: 'Build Ubuntu-x64 package'
   pool:
     vmImage: ubuntu-18.04

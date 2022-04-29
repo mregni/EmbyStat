@@ -1,6 +1,5 @@
 jobs:
 - job: fedora_x64
-  dependsOn: main_build
   displayName: 'Build Fedora x64 package'
   pool:
     vmImage: ubuntu-18.04

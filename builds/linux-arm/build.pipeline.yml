@@ -1,6 +1,5 @@
 jobs:
 - job: linux_arm
-  dependsOn: main_build
   displayName: 'Build Linux-ARM package'
   pool:
     vmImage: ubuntu-18.04
