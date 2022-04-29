@@ -1,3 +1,2 @@
-export * from "./ShowStatistics";
-export * from "./ShowStatisticsContainer";
-export * from "./ShowRow";
+export * from './ShowStatistics';
+export * from './ShowRow';

@@ -1,26 +1,30 @@
-import React, { ReactElement } from 'react';
-import Button from '@material-ui/core/Button';
+import {Button} from '@mui/material';
+import React, {ReactElement} from 'react';
 
-export interface Props {
+type Props = {
   disabled?: boolean;
   onClick: ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void) | undefined;
   children: ReactElement | ReactElement[];
   fullWidth?: boolean;
+  variant?: 'text'| 'contained';
+  color?: 'primary' |'secondary';
 }
 
-export const EsButton = (props: Props) => {
+export function EsButton(props: Props) {
   const {
     disabled = false,
     fullWidth = true,
     children,
-    onClick
+    onClick,
+    variant = 'contained',
+    color = 'primary',
   } = props;
 
   return (
     <Button
       type="submit"
-      color="primary"
-      variant="contained"
+      color={color}
+      variant={variant}
       disabled={disabled}
       onClick={onClick}
       fullWidth={fullWidth}
@@ -28,4 +32,4 @@ export const EsButton = (props: Props) => {
       {children}
     </Button>
   );
-};
+}

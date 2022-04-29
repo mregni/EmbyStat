@@ -1,47 +1,67 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EmbyStat.Common;
-using EmbyStat.Common.Hubs.Job;
+using EmbyStat.Common.Hubs;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
+using Microsoft.Extensions.Logging;
 
-namespace EmbyStat.Jobs.Jobs.Sync
+namespace EmbyStat.Jobs.Jobs.Sync;
+
+[DisableConcurrentExecution(60)]
+public class SmallSyncJob : BaseJob, ISmallSyncJob
 {
-    [DisableConcurrentExecution(60)]
-    public class SmallSyncJob : BaseJob, ISmallSyncJob
+    private readonly IMediaServerService _mediaServerService;
+
+    public SmallSyncJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
+        IMediaServerService mediaServerService, ILogger<SmallSyncJob> logger) 
+        : base(hubHelper, jobRepository, settingsService, logger)
     {
-        private readonly IMediaServerService _mediaServerService;
+        _mediaServerService = mediaServerService;
+    }
 
-        public SmallSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
-            IMediaServerService mediaServerService) 
-            : base(hubHelper, jobRepository, settingsService, typeof(SmallSyncJob), Constants.LogPrefix.SmallMediaServerSyncJob)
+    protected sealed override Guid Id => Constants.JobIds.SmallSyncId;
+    protected override string JobPrefix => Constants.LogPrefix.SmallMediaServerSyncJob;
+
+    protected override async Task RunJobAsync()
+    {
+        await _mediaServerService.GetAndProcessServerInfo();
+        await LogInformation("Server info downloaded");
+        await LogProgress(35);
+
+        await _mediaServerService.GetAndProcessPluginInfo();
+        await LogInformation("Server plugins downloaded");
+        await LogProgress(45);
+
+        await _mediaServerService.GetAndProcessUsers();
+        await LogInformation("Server users downloaded");
+        await LogProgress(55);
+
+        await ProcessUserViews();
+        await LogProgress(80);
+
+        await _mediaServerService.GetAndProcessDevices();
+        await LogInformation("Server devices downloaded");
+        await LogProgress(90);
+
+        await _mediaServerService.GetAndProcessLibraries();
+        await LogInformation("Server libraries downloaded");
+    }
+
+    private async Task ProcessUserViews()
+    {
+        var users = await _mediaServerService.GetAllUsers();
+        var stepPerUser = 25d / users.Length;
+        foreach (var user in users)
         {
-            _mediaServerService = mediaServerService;
-            Title = jobRepository.GetById(Id).Title;
+            var viewCount = await _mediaServerService.ProcessViewsForUser(user.Id);
+            await LogInformation($"Processed {viewCount} views for {user.Name}");
+            await LogProgressIncrement(stepPerUser);
         }
 
-        public sealed override Guid Id => Constants.JobIds.SmallSyncId;
-        public override string JobPrefix => Constants.LogPrefix.SmallMediaServerSyncJob;
-        public override string Title { get; }
-
-        public override async Task RunJobAsync()
-        {
-            _mediaServerService.GetAndProcessServerInfo();
-            await LogInformation("Server info downloaded");
-            await LogProgress(35);
-
-            _mediaServerService.GetAndProcessPluginInfo();
-            await LogInformation("Server plugins downloaded");
-            await LogProgress(55);
-
-            _mediaServerService.GetAndProcessUsers();
-            await LogInformation("Server users downloaded");
-            await LogProgress(80);
-
-            _mediaServerService.GetAndProcessDevices();
-            await LogInformation("Server devices downloaded");
-        }
+        await LogInformation($"Calculating user statistics");
+        await _mediaServerService.CalculateMediaServerUserStatistics();
     }
 }

@@ -1,9 +1,8 @@
-﻿namespace EmbyStat.Common.Models.Query
+﻿namespace EmbyStat.Common.Models.Query;
+
+public class Filter
 {
-    public class Filter
-    {
-        public string Value { get; set; }
-        public string Operation { get; set; }
-        public string Field { get; set; }
-    }
+    public string Value { get; init; }
+    public string Operation { get; init; }
+    public string Field { get; init; }
 }

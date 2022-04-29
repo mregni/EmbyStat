@@ -1,8 +1,7 @@
-﻿namespace EmbyStat.Controllers.MediaServer
+﻿namespace EmbyStat.Controllers.MediaServer;
+
+public class UserIdViewModel
 {
-    public class UserIdViewModel
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-    }
+    public string Id { get; set; }
+    public string Name { get; set; }
 }

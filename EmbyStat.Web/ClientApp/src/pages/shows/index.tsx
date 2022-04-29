@@ -1,4 +1,3 @@
-export * from './ShowGeneral';
-export * from './ShowsGraphs';
-export * from './ShowsList/ShowsList';
-export * from './Helpers/ShowsLoader';
+export * from './Shows';
+export * from './General';
+export * from './List';

@@ -1,63 +1,39 @@
-import React, { ReactElement, useContext, useEffect } from 'react';
-import { StylesProvider, ThemeProvider } from '@material-ui/core/styles';
-import { useDispatch, useStore } from 'react-redux';
-import i18n from './i18n';
-import moment from 'moment';
-import { SnackbarProvider } from 'notistack';
-import theme from './styles/theme';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { useHistory } from 'react-router';
+import {SnackbarProvider} from 'notistack';
+import React, {useContext, useEffect} from 'react';
 
-import { SnackbarUtilsConfigurator } from './shared/utils/SnackbarUtilsConfigurator';
-import LoggedIn from './container/LoggedIn';
-import { loadJobs } from './store/JobSlice';
-import SignalRConnectionProvider from './shared/providers/SignalRConnectionProvider';
-import PageLoader from './shared/components/pageLoader';
-import { SettingsContext } from './shared/context/settings';
+import {CssBaseline, ThemeProvider} from '@mui/material';
 
-function App(): ReactElement {
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const store = useStore();
-  const { settings, loadSettings } = useContext(SettingsContext);
+import RoutesContainer from './routes';
+import {EsPageLoader} from './shared/components/esPageLoader';
+import {SettingsContext} from './shared/context/settings';
+import {useSignalR} from './shared/context/signalr';
+import {SnackbarUtilsConfigurator} from './shared/utils/SnackbarUtilsConfigurator';
+import {theme} from './styles/theme';
+
+function App() {
+  const {settings, load} = useContext(SettingsContext);
+  useSignalR();
 
   useEffect(() => {
-    if (!settings.isLoaded) {
-      loadSettings();
-    } else {
-      i18n.changeLanguage(settings.language);
-      moment.locale(settings.language);
+    if (!settings?.isLoaded) {
+      load();
     }
-  }, [loadSettings, settings]);
-
-  useEffect(() => {
-    dispatch(loadJobs());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (settings.isLoaded && !settings.wizardFinished) {
-      history.push('/wizard');
-    }
-  }, [history, settings.isLoaded, settings.wizardFinished])
+  }, [load, settings]);
 
   return (
     <ThemeProvider theme={theme}>
-      <StylesProvider injectFirst>
-        <SignalRConnectionProvider store={store}>
-          <CssBaseline />
-          <SnackbarProvider
-            maxSnack={3}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-          >
-            <SnackbarUtilsConfigurator />
-            {!settings.isLoaded && <PageLoader />}
-            {settings.isLoaded && <LoggedIn />}
-          </SnackbarProvider>
-        </SignalRConnectionProvider>
-      </StylesProvider>
+      <CssBaseline />
+      <SnackbarProvider
+        maxSnack={3}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+      >
+        {settings === null && <EsPageLoader />}
+        {settings !== null && <RoutesContainer />}
+        <SnackbarUtilsConfigurator />
+      </SnackbarProvider>
     </ThemeProvider>
   );
 }

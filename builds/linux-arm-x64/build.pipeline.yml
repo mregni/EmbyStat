@@ -3,7 +3,7 @@ jobs:
   dependsOn: main_build
   displayName: 'Build Linux-ARM-x64 package'
   pool:
-    vmImage: ubuntu-18.04
+    vmImage: $(LinuxPool)
   variables:
     GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
     GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]

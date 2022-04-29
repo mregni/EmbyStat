@@ -1,38 +1,40 @@
-import React from 'react';
-import { useSnackbar, OptionsObject, WithSnackbarProps } from 'notistack';
+import {OptionsObject, useSnackbar, WithSnackbarProps} from 'notistack';
+import React, {FunctionComponent, ReactElement} from 'react';
 
 interface IProps {
   setUseSnackbarRef: (showSnackbar: WithSnackbarProps) => void;
 }
 
-const InnerSnackbarUtilsConfigurator: React.FC<IProps> = (props: IProps) => {
+function InnerSnackbarUtilsConfigurator(props: IProps): ReactElement<IProps> |null {
   props.setUseSnackbarRef(useSnackbar());
-  return null;
-};
+  return (null);
+}
+
+;
 
 let useSnackbarRef: WithSnackbarProps;
 const setUseSnackbarRef = (useSnackbarRefProp: WithSnackbarProps) => {
   useSnackbarRef = useSnackbarRefProp;
 };
 
-export const SnackbarUtilsConfigurator = () => {
+export function SnackbarUtilsConfigurator() {
   return (
     <InnerSnackbarUtilsConfigurator setUseSnackbarRef={setUseSnackbarRef} />
   );
-};
+}
 
 export default {
   success(msg: string, options: OptionsObject = {}) {
-    this.toast(msg, { ...options, variant: 'success' });
+    this.toast(msg, {...options, variant: 'success'});
   },
   warning(msg: string, options: OptionsObject = {}) {
-    this.toast(msg, { ...options, variant: 'warning' });
+    this.toast(msg, {...options, variant: 'warning'});
   },
   info(msg: string, options: OptionsObject = {}) {
-    this.toast(msg, { ...options, variant: 'info' });
+    this.toast(msg, {...options, variant: 'info'});
   },
   error(msg: string, options: OptionsObject = {}) {
-    this.toast(msg, { ...options, variant: 'error' });
+    this.toast(msg, {...options, variant: 'error'});
   },
   toast(msg: string, options: OptionsObject = {}) {
     useSnackbarRef.enqueueSnackbar(msg, options);

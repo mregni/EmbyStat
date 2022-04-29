@@ -5,39 +5,38 @@ using EmbyStat.Clients.Base.Http;
 using EmbyStat.Clients.Base.WebSocket;
 using EmbyStat.Common.Enums;
 
-namespace EmbyStat.Clients.Base
+namespace EmbyStat.Clients.Base;
+
+public class ClientStrategy : IClientStrategy
 {
-    public class ClientStrategy : IClientStrategy
+    private readonly IEnumerable<IClientFactory> _httpFactories;
+
+    public ClientStrategy(IEnumerable<IClientFactory> httpFactories)
     {
-        private readonly IEnumerable<IClientFactory> _httpFactories;
+        _httpFactories = httpFactories;
+    }
 
-        public ClientStrategy(IEnumerable<IClientFactory> httpFactories)
+    public IBaseHttpClient CreateHttpClient(ServerType type)
+    {
+        var factory = _httpFactories.FirstOrDefault(x => x.AppliesTo(type));
+
+        if (factory == null)
         {
-            _httpFactories = httpFactories;
+            throw new TypeLoadException("type not registered");
         }
 
-        public IHttpClient CreateHttpClient(ServerType type)
+        return factory.CreateHttpClient();
+    }
+
+    public IWebSocketClient CreateWebSocketClient(ServerType type)
+    {
+        var factory = _httpFactories.FirstOrDefault(x => x.AppliesTo(type));
+
+        if (factory == null)
         {
-            var factory = _httpFactories.FirstOrDefault(x => x.AppliesTo(type));
-
-            if (factory == null)
-            {
-                throw new TypeLoadException("type not registered");
-            }
-
-            return factory.CreateHttpClient();
+            throw new TypeLoadException("type not registered");
         }
 
-        public IWebSocketClient CreateWebSocketClient(ServerType type)
-        {
-            var factory = _httpFactories.FirstOrDefault(x => x.AppliesTo(type));
-
-            if (factory == null)
-            {
-                throw new TypeLoadException("type not registered");
-            }
-
-            return factory.CreateWebSocketClient();
-        }
+        return factory.CreateWebSocketClient();
     }
 }

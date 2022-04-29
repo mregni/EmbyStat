@@ -4,47 +4,52 @@ import SnackbarUtils from '../utils/SnackbarUtilsConfigurator';
 import i18n from '../../i18n';
 
 const axiosInstance = axios.create({
-  baseURL: '/api/',
+  baseURL: 'http://localhost:6555/api/',
   timeout: 30000,
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 });
 
 axiosInstance.interceptors.request.use(
-  function (request) {
-    var accessToken = localStorage.getItem('accessToken');
+  (request) => {
+    const accessToken = localStorage.getItem('accessToken');
     if (!['undefined', null].includes(accessToken)) {
+      if (request.headers === undefined) {
+        request.headers = {};
+      }
+
       request.headers.common['Authorization'] = `Bearer ${accessToken}`;
     }
     return request;
-  }
+  },
 );
 
 axiosInstance.interceptors.response.use(
-  function (response) {
+  (response) => {
     return response;
   },
-  function (error) {
+  (error) => {
     if (error.response == null) {
       SnackbarUtils.error(i18n.t('EXCEPTIONS.UNHANDLED'));
       return Promise.reject(error.response);
     }
 
-    if (error.response?.status === 500)
+    if (error.response?.status === 500) {
       if (error.response.data.isError) {
         SnackbarUtils.error(
-          i18n.t(`EXCEPTIONS.${error.response.data.message}`)
+          i18n.t(`EXCEPTIONS.${error.response.data.message}`),
         );
       } else {
         SnackbarUtils.error(i18n.t('EXCEPTIONS.UNHANDLED'));
       }
+    }
 
     if (error.response.status === 404) {
       SnackbarUtils.error(i18n.t('EXCEPTIONS.NOT_FOUND'));
     }
     return Promise.reject(error.response);
-  }
+  },
 );
 
-export { axiosInstance };
+export {axiosInstance};

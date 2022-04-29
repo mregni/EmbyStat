@@ -1,8 +1,7 @@
-﻿namespace EmbyStat.Common.Enums
+﻿namespace EmbyStat.Common.Enums;
+
+public enum ServerType
 {
-    public enum ServerType
-    {
-        Emby = 0,
-        Jellyfin = 1
-    }
+    Emby = 0,
+    Jellyfin = 1
 }

@@ -1,4 +1,3 @@
-export * from './MoviesGeneral';
-export * from './MoviesList/MoviesList';
-export * from './MovieGraphs';
-export * from './Helpers/MoviesLoader';
+export * from './General';
+export * from './Movies';
+export * from './List';

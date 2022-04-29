@@ -1,7 +1,6 @@
-﻿namespace EmbyStat.Controllers.MediaServer
+﻿namespace EmbyStat.Controllers.MediaServer;
+
+public class EmbyStatusViewModel
 {
-    public class EmbyStatusViewModel
-    {
-        public int MissedPings { get; set; }
-    }
+    public int MissedPings { get; set; }
 }

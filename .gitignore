@@ -304,3 +304,14 @@ usersettings.json
 **/coverage/**
 **/ClientApp/build/**
 EmbyStat.Web/ClientApp/.eslintcache
+**/logs
+
+*.db-shm
+
+*.db-wal
+
+EmbyStat.Web/ClientApp/junit.xml
+
+EmbyStat.Web/ClientApp/report.json
+
+EmbyStat.Web/ClientApp/test-report.xml

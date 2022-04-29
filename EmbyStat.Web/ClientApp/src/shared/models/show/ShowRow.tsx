@@ -1,13 +1,15 @@
 export interface ShowRow {
   id: string;
   name: string;
-  collectedEpisodeCount: number;
-  cumulativeRunTimeTicks: number;
-  genres: string[];
-  missingEpisodesCount: number;
-  officialRating: string;
-  runTime: number;
   sortName: string;
-  specialEpisodeCount: number;
   status: string;
+  seasonCount: number;
+  episodeCount: number;
+  specialEpisodeCount: number;
+  missingEpisodeCount: number;
+  runTime: number;
+  cumulativeRunTime: number;
+  genres: string[];
+  officialRating: string;
+  sizeInMb: number;
 }

@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 
-namespace EmbyStat.Repositories.Interfaces
+namespace EmbyStat.Repositories.Interfaces;
+
+public interface IStatisticsRepository
 {
-    public interface IStatisticsRepository
-    {
-        Statistic GetLastResultByType(StatisticType type, IReadOnlyList<string> collectionIds);
-        void AddStatistic(string json, DateTime calculationDateTime, StatisticType type, IReadOnlyList<string> collectionIds);
-        void CleanupStatistics();
-        void MarkMovieTypesAsInvalid();
-        void MarkShowTypesAsInvalid();
-    }
+    Task<Statistic> GetLastResultByType(StatisticType type);
+    Task ReplaceStatistic(string json, DateTime calculationDateTime, StatisticType type);
+    Task DeleteStatistics();
+    Task MarkTypesAsInvalid(StatisticType type);
 }

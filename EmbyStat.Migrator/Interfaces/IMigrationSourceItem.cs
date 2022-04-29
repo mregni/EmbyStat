@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EmbyStat.Migrator.Interfaces
+namespace EmbyStat.Migrator.Interfaces;
+
+public interface IMigrationSourceItem
 {
-    public interface IMigrationSourceItem
-    {
-        IEnumerable<Type> MigrationTypeCandidates { get; }
-    }
+    IEnumerable<Type> MigrationTypeCandidates { get; }
 }

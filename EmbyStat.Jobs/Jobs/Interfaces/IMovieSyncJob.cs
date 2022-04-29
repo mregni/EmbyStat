@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace EmbyStat.Jobs.Jobs.Interfaces;
 
-namespace EmbyStat.Jobs.Jobs.Interfaces
+public interface IMovieSyncJob : IBaseJob
 {
-    public interface IMovieSyncJob : IBaseJob
-    {
-    }
 }

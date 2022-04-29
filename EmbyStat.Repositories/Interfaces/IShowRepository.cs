@@ -1,23 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using EmbyStat.Common.Models.Entities;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using EmbyStat.Common.Enums;
+using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Repositories.Interfaces.Helpers;
 
-namespace EmbyStat.Repositories.Interfaces
+namespace EmbyStat.Repositories.Interfaces;
+
+public interface IShowRepository : IMediaRepository
 {
-    public interface IShowRepository : IMediaRepository<Show>
-    {
-        void InsertShow(Show show);
-        List<Show> GetAllShows(IReadOnlyList<string> libraryIds, bool includeSeasons, bool includeEpisodes);
-        Show GetShowById(string showId, bool includeEpisodes);
-        Season GetSeasonById(string id);
-        List<Episode> GetAllEpisodesForShow(string showId);
-        Show GetShowById(string showId);
-        void RemoveShowsThatAreNotUpdated(DateTime startTime);
-        void AddEpisode(Episode episode);
-        void RemoveShows();
-        Dictionary<Show, int> GetShowsWithMostEpisodes(IReadOnlyList<string> libraryIds, int count);
-        IEnumerable<Show> GetShowPage(int skip, int take, string sort, Filter[] filters, List<string> libraryIds);
-    }
+    #region Shows
+    Task UpsertShows(IEnumerable<Show> shows);
+    Task<IEnumerable<Show>> GetAllShowsWithEpisodes();
+    Task<Show> GetShowByIdWithEpisodes(string showId);
+    Task<Dictionary<Show, int>> GetShowsWithMostEpisodes(int count);
+    Task<IEnumerable<Show>> GetShowPage(int skip, int take, string sortField, string sortOrder, IEnumerable<Filter> filters);
+    IEnumerable<Show> GetShowsWithMostDiskSpaceUsed(int count);
+
+    Task<int> CompleteCollectedCount();
+    Task DeleteAll();
+    #endregion
+
+    #region Charts
+    Task<Dictionary<string, int>> GetShowStatusCharValues();
+    Task<IEnumerable<double>> GetCollectedRateChart();
+    #endregion
+
+    #region Episodes
+    Task<int> GetEpisodeCount(LocationType locationType);
+    Task<long> GetTotalRunTimeTicks();
+    Task<double> GetTotalDiskSpaceUsed();
+    #endregion
+
+    IEnumerable<LabelValuePair> CalculateGenreFilterValues();
 }

@@ -1,9 +1,8 @@
-﻿namespace EmbyStat.Controllers.Movie
+﻿namespace EmbyStat.Controllers.Movie;
+
+public class SuspiciousMovieViewModel
 {
-    public class SuspiciousMovieViewModel
-    {
-        public string MediaId { get; set; }
-        public string Title { get; set; }
-        public int Number { get; set; }
-    }
+    public string MediaId { get; set; }
+    public string Title { get; set; }
+    public int Number { get; set; }
 }

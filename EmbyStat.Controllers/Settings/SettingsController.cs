@@ -1,92 +1,69 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Models.Settings;
-using EmbyStat.Logging;
-using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.Logging;
 
-namespace EmbyStat.Controllers.Settings
+namespace EmbyStat.Controllers.Settings;
+
+[Produces("application/json")]
+[Route("api/[controller]")]
+public class SettingsController : Controller
 {
-	[Produces("application/json")]
-	[Route("api/[controller]")]
-	public class SettingsController : Controller
-	{
-        private readonly ISettingsService _settingsService;
-        private readonly ILanguageService _languageService;
-        private readonly IStatisticsRepository _statisticsRepository;
-        private readonly IMapper _mapper;
-        private readonly Logger _logger;
+    private readonly ISettingsService _settingsService;
+    private readonly ILanguageService _languageService;
+    private readonly IMapper _mapper;
+    private readonly ILogger<SettingsController> _logger;
 
-        public SettingsController(ISettingsService settingsService, IStatisticsRepository statisticsRepository, ILanguageService languageService, IMapper mapper)
+    public SettingsController(ISettingsService settingsService,
+        ILanguageService languageService, IMapper mapper, ILogger<SettingsController> logger)
+    {
+        _languageService = languageService;
+        _settingsService = settingsService;
+        _mapper = mapper;
+        _logger = logger;
+    }
+
+    [HttpGet]
+    public IActionResult Get()
+    {
+        var settings = _settingsService.GetUserSettings();
+        var appSettings = _settingsService.GetAppSettings();
+        var settingsViewModel = _mapper.Map<FullSettingsViewModel>(settings);
+        settingsViewModel.Version = appSettings.Version;
+        settingsViewModel.NoUpdates = appSettings.NoUpdates;
+        settingsViewModel.DataDir = appSettings.Dirs.Data;
+        settingsViewModel.ConfigDir = appSettings.Dirs.Config;
+        settingsViewModel.LogDir = appSettings.Dirs.Logs;
+
+        return Ok(settingsViewModel);
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> Update([FromBody] FullSettingsViewModel userSettings)
+    {
+        if (userSettings == null)
         {
-            _languageService = languageService;
-            _settingsService = settingsService;
-            _statisticsRepository = statisticsRepository;
-            _mapper = mapper;
-            _logger = LogFactory.CreateLoggerForType(typeof(SettingsController), "SETTINGS");
+            _logger.LogInformation("Settings object was NULL while calling the PUT API.");
+            return BadRequest();
         }
 
-	    [HttpGet]
-	    public IActionResult Get()
-        {
-            var settings = _settingsService.GetUserSettings();
-            var appSettings = _settingsService.GetAppSettings();
-            var settingsViewModel = _mapper.Map<FullSettingsViewModel>(settings);
-            settingsViewModel.Version = appSettings.Version;
-            settingsViewModel.NoUpdates = appSettings.NoUpdates;
-            settingsViewModel.DataDir = appSettings.Dirs.Data;
-            settingsViewModel.ConfigDir = appSettings.Dirs.Config;
-            settingsViewModel.LogDir = appSettings.Dirs.Logs;
+        var settings = _mapper.Map<UserSettings>(userSettings);
 
-            return Ok(settingsViewModel);
-	    }
+        settings = await _settingsService.SaveUserSettingsAsync(settings);
+        var settingsViewModel = _mapper.Map<FullSettingsViewModel>(settings);
+        settingsViewModel.Version = _settingsService.GetAppSettings().Version;
 
-	    [HttpPut]
-	    public async Task<IActionResult> Update([FromBody] FullSettingsViewModel userSettings)
-	    {
-            if (userSettings == null)
-            {
-                _logger.Info("Settings object was NULL while calling the PUT API.");
-                return BadRequest();
-            }
-            var settings = _mapper.Map<UserSettings>(userSettings);
+        return Ok(settingsViewModel);
+    }
 
-            MarkStatisticsAsInvalidIfNeeded(settings);
-            settings = await _settingsService.SaveUserSettingsAsync(settings);
-            var settingsViewModel = _mapper.Map<FullSettingsViewModel>(settings);
-            settingsViewModel.Version = _settingsService.GetAppSettings().Version;
-
-            //TODO, check if user checked the new to implement checkbox to reset the database.
-            
-            return Ok(settingsViewModel);
-        }
-
-        [HttpGet]
-        [Route("languages")]
-        public IActionResult GetList()
-        {
-            var result = _languageService.GetLanguages();
-            return Ok(_mapper.Map<IList<LanguageViewModel>>(result));
-        }
-
-        private void MarkStatisticsAsInvalidIfNeeded(UserSettings configuration)
-        {
-            var useSettings = _settingsService.GetUserSettings();
-            if (!(useSettings.MovieLibraries.All(configuration.MovieLibraries.Contains) &&
-                  useSettings.MovieLibraries.Count == configuration.MovieLibraries.Count))
-            {
-                _statisticsRepository.MarkMovieTypesAsInvalid();
-            }
-
-            if (!(useSettings.ShowLibraries.All(configuration.ShowLibraries.Contains) &&
-                  useSettings.ShowLibraries.Count == configuration.ShowLibraries.Count))
-            {
-                _statisticsRepository.MarkShowTypesAsInvalid();
-            }
-        }
+    [HttpGet]
+    [Route("languages")]
+    public async Task<IActionResult> GetList()
+    {
+        var result = await _languageService.GetLanguages();
+        return Ok(_mapper.Map<IList<LanguageViewModel>>(result));
     }
 }

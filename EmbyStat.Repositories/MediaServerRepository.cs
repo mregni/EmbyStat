@@ -1,238 +1,339 @@
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Dapper;
+using EmbyStat.Common;
+using EmbyStat.Common.Enums;
+using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Movies;
+using EmbyStat.Common.Models.Entities.Shows;
+using EmbyStat.Common.Models.Entities.Users;
+using EmbyStat.Common.Models.MediaServer;
 using EmbyStat.Repositories.Interfaces;
-using LiteDB;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using MoreLinq;
+using MoreLinq.Extensions;
+// ReSharper disable All
 
-namespace EmbyStat.Repositories
+namespace EmbyStat.Repositories;
+
+public class MediaServerRepository : IMediaServerRepository
 {
-    public class MediaServerRepository : BaseRepository, IMediaServerRepository
+    private readonly EsDbContext _context;
+    private readonly ISqliteBootstrap _sqliteBootstrap;
+    private readonly ILogger<MediaServerRepository> _logger;
+
+    public MediaServerRepository(EsDbContext context, ISqliteBootstrap sqliteBootstrap,
+        ILogger<MediaServerRepository> logger)
     {
-        public MediaServerRepository(IDbContext context) : base(context)
-        {
-
-        }
-
-        #region MediaServer Status
-        public EmbyStatus GetEmbyStatus()
-        {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<EmbyStatus>();
-                return collection.FindOne(Query.All());
-            });
-        }
-
-        public void IncreaseMissedPings()
-        {
-            ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<EmbyStatus>();
-                var state = collection.FindOne(Query.All());
-
-                state.MissedPings++;
-                collection.Upsert(state);
-            });
-        }
-
-        public void ResetMissedPings()
-        {
-            ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<EmbyStatus>();
-                var state = collection.FindOne(Query.All());
-
-                state.MissedPings = 0;
-                collection.Upsert(state);
-            });
-        }
-
-        public void RemoveAllMediaServerData()
-        {
-            ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var pluginCollection = database.GetCollection<PluginInfo>();
-                var serverInfoCollection  = database.GetCollection<ServerInfo>();
-                var userCollection = database.GetCollection<EmbyUser>();
-                var deviceCollection = database.GetCollection<Device>();
-
-                pluginCollection.DeleteMany("1=1");
-                serverInfoCollection.DeleteMany("1=1");
-                userCollection.DeleteMany("1=1");
-                deviceCollection.DeleteMany("1=1");
-            });
-        }
-
-        #endregion
-
-        #region MediaServer Plugins
-        public List<PluginInfo> GetAllPlugins()
-        {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<PluginInfo>();
-                return collection.FindAll().OrderBy(x => x.Name).ToList();
-            });
-        }
-
-        public void RemoveAllAndInsertPluginRange(IEnumerable<PluginInfo> plugins)
-        {
-            ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<PluginInfo>();
-                collection.DeleteMany("1=1");
-                collection.Insert(plugins);
-            });
-            
-        }
-
-        #endregion
-
-        #region MediaServer Server Info
-        public ServerInfo GetServerInfo()
-        {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<ServerInfo>();
-                return collection.FindOne(Query.All());
-            });
-        }
-
-        public void UpsertServerInfo(ServerInfo entity)
-        {
-            ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<ServerInfo>();
-                collection.Upsert(entity);
-            });
-        }
-
-        public void UpsertMediaServerLibraries(IEnumerable<Library> items)
-        {
-            ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Library>();
-                collection.Upsert(items);
-            });
-        }
-
-        #endregion
-
-        #region MediaServer Users
-
-        public void UpsertUsers(IEnumerable<EmbyUser> users)
-        {
-            ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<EmbyUser>();
-                collection.Upsert(users);
-            });
-        }
-
-        public List<EmbyUser> GetAllUsers()
-        {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<EmbyUser>();
-                return collection.FindAll().OrderBy(x => x.Name).ToList();
-            });
-        }
-
-        public List<EmbyUser> GetAllAdministrators()
-        {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<EmbyUser>();
-                return collection.Find(x => x.IsAdministrator).OrderBy(x => x.Name).ToList();
-            });
-        }
-
-        public void MarkUsersAsDeleted(IEnumerable<EmbyUser> users)
-        {
-            ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<EmbyUser>();
-                foreach (var user in users)
-                {
-                    var obj = collection.FindById(user.Id);
-                    obj.Deleted = true;
-                    collection.Update(obj);
-                }
-            });
-        }
-
-        public EmbyUser GetUserById(string id)
-        {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<EmbyUser>();
-                return collection.FindById(id);
-            });
-        }
-
-        #endregion
-
-        #region Devices
-
-        public List<Device> GetAllDevices()
-        {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Device>();
-                return collection.FindAll().OrderBy(x => x.Name).ToList();
-            });
-        }
-
-        public List<Device> GetDeviceById(IEnumerable<string> ids)
-        {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Device>();
-                return collection.Find(x => ids.Any(y => y == x.Id)).ToList();
-            });
-        }
-
-        public void MarkDevicesAsDeleted(IEnumerable<Device> devices)
-        {
-            ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Device>();
-                foreach (var device in devices)
-                {
-                    var obj = collection.FindById(device.Id);
-                    obj.Deleted = true;
-                    collection.Update(obj);
-                }
-            });
-        }
-
-        public void UpsertDevices(IEnumerable<Device> devices)
-        {
-            ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Device>();
-                collection.Upsert(devices);
-            });
-        }
-
-        #endregion
+        _context = context;
+        _sqliteBootstrap = sqliteBootstrap;
+        _logger = logger;
     }
+
+    #region MediaServer Status
+
+    public Task<MediaServerStatus> GetEmbyStatus()
+    {
+        return _context.MediaServerStatus
+            .AsNoTracking()
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task IncreaseMissedPings()
+    {
+        var status = await _context.MediaServerStatus.FirstOrDefaultAsync();
+        if (status != null)
+        {
+            status.MissedPings += 1;
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    public async Task ResetMissedPings()
+    {
+        var status = await _context.MediaServerStatus.FirstOrDefaultAsync();
+        if (status != null)
+        {
+            status.MissedPings = 0;
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    #endregion
+
+    #region MediaServer Plugins
+
+    public Task<List<PluginInfo>> GetAllPlugins()
+    {
+        return _context.Plugins.AsNoTracking().ToListAsync();
+    }
+
+    public async Task InsertPlugins(IEnumerable<PluginInfo> plugins)
+    {
+        await _context.AddRangeAsync(plugins);
+        await _context.SaveChangesAsync();
+    }
+
+    public Task DeleteAllPlugins()
+    {
+        _context.Plugins.RemoveRange(_context.Plugins);
+        return _context.SaveChangesAsync();
+    }
+
+    #endregion
+
+    #region MediaServer Server Info
+
+    public Task<MediaServerInfo> GetServerInfo()
+    {
+        return _context.MediaServerInfo.AsNoTracking().SingleOrDefaultAsync();
+    }
+
+    public async Task DeleteAndInsertServerInfo(MediaServerInfo entity)
+    {
+        _context.MediaServerInfo.RemoveRange(_context.MediaServerInfo);
+        await _context.MediaServerInfo.AddAsync(entity);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteServerInfo()
+    {
+        _context.MediaServerInfo.RemoveRange(_context.MediaServerInfo);
+        await _context.SaveChangesAsync();
+    }
+
+    #endregion
+
+    #region MediaServer Users
+
+    public async Task DeleteAndInsertUsers(IEnumerable<MediaServerUser> users)
+    {
+        var query = MediaServerExtensions.UserInsertQuery;
+        _logger.LogDebug(query);
+        
+        await using var connection = _sqliteBootstrap.CreateConnection();
+        await connection.OpenAsync();
+        
+        await using var transaction = connection.BeginTransaction();
+        await connection.ExecuteAsync(query, users, transaction);
+        await transaction.CommitAsync();
+
+        var usersToDelete = await _context.MediaServerUsers
+            .Where(x => !users.Select(u => u.Id).Contains(x.Id))
+            .ToListAsync();
+        
+        _context.MediaServerUsers.RemoveRange(usersToDelete);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<MediaServerUserRow>> GetUserPage(int skip, int take, string sortField, string sortOrder)
+    {
+        var query = MediaServerExtensions.GenerateUserPageQuery(skip, take, sortField, sortOrder);
+        _logger.LogDebug(query);
+        
+        await using var connection = _sqliteBootstrap.CreateConnection();
+        await connection.OpenAsync();
+        return await connection.QueryAsync<MediaServerUserRow>(query);
+    }
+
+    public Task<MediaServerUser[]> GetAllUsers()
+    {
+        return _context
+            .MediaServerUsers
+            .AsNoTracking()
+            .ToArrayAsync();
+    }
+
+    public Task<MediaServerUser[]> GetAllAdministrators()
+    {
+        return _context.MediaServerUsers
+            .AsNoTracking()
+            .Where(x => x.IsAdministrator)
+            .ToArrayAsync();
+    }
+
+    public Task<MediaServerUser> GetUserById(string id)
+    {
+        return _context.MediaServerUsers
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task DeleteAllUsers()
+    {
+        _context.MediaServerUsers.RemoveRange(_context.MediaServerUsers);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task InsertOrUpdateUserViews(List<MediaServerUserView> views)
+    {
+        var query = $@"
+INSERT INTO {Constants.Tables.MediaServerUserViews} (UserId, MediaId, LastPlayedDate, MediaType, PlayCount)
+VALUES (@UserId, @MediaId, @LastPlayedDate, @MediaType, @PlayCount)
+ON CONFLICT (UserId, MediaId) DO
+UPDATE SET LastPlayedDate=excluded.LastPlayedDate, PlayCount=excluded.PlayCount;";
+
+        _logger.LogDebug(query);
+        await using var connection = _sqliteBootstrap.CreateConnection();
+        await connection.OpenAsync();
+        
+        await using var transaction = connection.BeginTransaction();
+        await connection.ExecuteAsync(query, views, transaction);
+        await transaction.CommitAsync();
+    }
+
+    public Task<int> GetUserCount()
+    {
+        return _context.MediaServerUsers.CountAsync();
+    }
+
+    public int GetUserViewsForType(string type)
+    {
+        var list = _context.MediaServerUserViews
+            .AsNoTracking()
+            .Where(x => x.MediaType == type)
+            .AsEnumerable();
+
+        return MoreEnumerable.DistinctBy(list, x => x.MediaId).Count();
+    }
+
+    public async Task<Dictionary<Show, int>> GetMostWatchedShows(int count)
+    {
+        var query = $@"
+SELECT s.*, COUNT(*) AS ViewCount
+FROM {Constants.Tables.MediaServerUserViews} AS vi
+INNER JOIN {Constants.Tables.Episodes} AS e ON (vi.MediaId = e.Id)
+INNER JOIN {Constants.Tables.Seasons} AS se ON (se.Id = e.SeasonId)
+INNER JOIN {Constants.Tables.Shows} AS s ON (s.Id = se.ShowId)
+WHERE vi.MediaType = 'Episode'
+GROUP BY s.Id
+ORDER BY ViewCount DESC
+LIMIT {count}";
+        
+        _logger.LogDebug(query);
+        await using var connection = _sqliteBootstrap.CreateConnection();
+        await connection.OpenAsync();
+        var result = await connection
+            .QueryAsync<Show, long, KeyValuePair<Show, int>>(query,
+            (s, c) => new KeyValuePair<Show, int>(s, Convert.ToInt32(c)),
+            splitOn: "ViewCount");
+
+        return result.ToDictionary(x => x.Key, x => x.Value);
+    }
+    
+    public async Task<Dictionary<Movie, int>> GetMostWatchedMovies(int count)
+    {
+        var query = $@"
+SELECT m.*, COUNT(*) AS ViewCount
+FROM {Constants.Tables.MediaServerUserViews} AS vi
+INNER JOIN {Constants.Tables.Movies} AS m ON (vi.MediaId = m.Id)
+WHERE vi.MediaType = 'Movie'
+GROUP BY m.Id
+ORDER BY ViewCount DESC
+LIMIT {count}";
+        
+        _logger.LogDebug(query);
+        await using var connection = _sqliteBootstrap.CreateConnection();
+        await connection.OpenAsync();
+        var result = await connection
+            .QueryAsync<Movie, long, KeyValuePair<Movie, int>>(query,
+                (m, c) => new KeyValuePair<Movie, int>(m, Convert.ToInt32(c)),
+                splitOn: "ViewCount");
+
+        return result.ToDictionary(x => x.Key, x => x.Value);
+    }
+
+    #endregion
+
+    #region Devices
+
+    public Task<List<Device>> GetAllDevices()
+    {
+        return _context.Devices.AsNoTracking().ToListAsync();
+    }
+
+    public async Task DeleteAndInsertDevices(IEnumerable<Device> devices)
+    {
+        _context.Devices.RemoveRange(_context.Devices);
+        await _context.Devices.AddRangeAsync(devices);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteAllDevices()
+    {
+        _context.Devices.RemoveRange(_context.Devices);
+        await _context.SaveChangesAsync();
+    }
+
+    #endregion
+
+    #region Libraries
+
+    public Task<List<Library>> GetAllLibraries()
+    {
+        return _context.Libraries.AsNoTracking().ToListAsync();
+    }
+
+    public Task<List<Library>> GetAllLibraries(LibraryType type)
+    {
+        return _context.Libraries
+            .AsNoTracking()
+            .Where(x => x.Type == type).ToListAsync();
+    }
+
+    public Task<List<Library>> GetAllLibraries(LibraryType type, bool synced)
+    {
+        return _context.Libraries
+            .Where(x => x.Type == type && x.Sync == synced)
+            .ToListAsync();
+    }
+
+    public async Task SetLibraryAsSynced(string[] libraryIds, LibraryType type)
+    {
+        var libraries = await _context.Libraries.Where(x => x.Type == type).ToListAsync();
+        ForEachExtension.ForEach(libraries
+                .Where(x => libraryIds.Any(y => y == x.Id)), x => x.Sync = true);
+
+        ForEachExtension.ForEach(libraries
+                .Where(x => libraryIds.All(y => y != x.Id)), x => x.Sync = false);
+
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteAndInsertLibraries(Library[] libraries)
+    {
+        _context.Libraries.RemoveRange(_context.Libraries);
+        await _context.Libraries.AddRangeAsync(libraries);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteAllLibraries()
+    {
+        _context.Libraries.RemoveRange(_context.Libraries);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateLibrarySyncDate(string libraryId, DateTime date)
+    {
+        var library = await _context.Libraries
+            .Where(x => x.Id == libraryId)
+            .FirstOrDefaultAsync();
+
+        if (library != null)
+        {
+            library.LastSynced = date;
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    public Task SaveChangesAsync()
+    {
+        return _context.SaveChangesAsync();
+    }
+
+    #endregion
 }

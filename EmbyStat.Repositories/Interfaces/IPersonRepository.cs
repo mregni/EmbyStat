@@ -1,10 +1,11 @@
-﻿using EmbyStat.Common.Models.Entities;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using EmbyStat.Common.Models.Entities;
 
-namespace EmbyStat.Repositories.Interfaces
+namespace EmbyStat.Repositories.Interfaces;
+
+public interface IPersonRepository
 {
-    public interface IPersonRepository
-    {
-        void Upsert(Person person);
-        Person GetPersonByName(string name);
-    }
+    Task UpsertRange(IEnumerable<Person> people);
+    Task DeleteAll();
 }

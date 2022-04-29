@@ -5,19 +5,18 @@ using EmbyStat.Migrator.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace EmbyStat.Migrator
+namespace EmbyStat.Migrator;
+
+public static class ServiceCollectionMigratorExtension
 {
-    public static class ServiceCollectionMigratorExtension
+    public static IServiceCollection AddJsonMigrator(this IServiceCollection services, Assembly assembly)
     {
-        public static IServiceCollection AddJsonMigrator(this IServiceCollection services, Assembly assembly)
-        {
-            if (services == null)
-                throw new ArgumentNullException(nameof(services));
+        if (services == null)
+            throw new ArgumentNullException(nameof(services));
 
-            services.TryAddSingleton<IMigrationRunner, MigrationRunner>();
-            services.TryAddSingleton<IMigrationSourceItem>(new AssemblyMigrationSourceItem(assembly));
+        services.TryAddSingleton<IMigrationRunner, MigrationRunner>();
+        services.TryAddSingleton<IMigrationSourceItem>(new AssemblyMigrationSourceItem(assembly));
 
-            return services;
-        }
+        return services;
     }
 }

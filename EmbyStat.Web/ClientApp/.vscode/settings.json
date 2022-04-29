@@ -1,9 +1,10 @@
 {
-  "editor.insertSpaces": true,
-  "editor.detectIndentation": false,
-  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "typescript.tsdk": "node_modules\\typescript\\lib"
-}
+  "eslint.validate": [
+    "javascript",
+    "typescript"
+  ],
+  "files.eol": "\r\n"
+ }

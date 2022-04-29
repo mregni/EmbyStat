@@ -1,10 +1,9 @@
-﻿namespace EmbyStat.Controllers.MediaServer
+﻿namespace EmbyStat.Controllers.MediaServer;
+
+public class MediaServerLibraryViewModel
 {
-    public class MediaServerLibraryViewModel
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string PrimaryImage { get; set; }
-        public int Type { get; set; }
-    }
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public string PrimaryImage { get; set; }
+    public int Type { get; set; }
 }

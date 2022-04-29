@@ -1,6 +1,5 @@
-﻿namespace EmbyStat.Jobs.Jobs.Interfaces
+﻿namespace EmbyStat.Jobs.Jobs.Interfaces;
+
+public interface ISmallSyncJob : IBaseJob
 {
-    public interface ISmallSyncJob : IBaseJob
-    {
-    }
 }

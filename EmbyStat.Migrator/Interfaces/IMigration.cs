@@ -1,9 +1,8 @@
 ﻿using EmbyStat.Services.Interfaces;
 
-namespace EmbyStat.Migrator.Interfaces
+namespace EmbyStat.Migrator.Interfaces;
+
+public interface IMigration
 {
-    public interface IMigration
-    {
-        void MigrateUp(ISettingsService settingsService, long version);
-    }
+    void MigrateUp(ISettingsService settingsService, long version);
 }

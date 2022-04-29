@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Assets\logo.png" />
@@ -16,11 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Costura.Fody" Version="5.3.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="MediaBrowser.Server.Core" Version="4.6.0.50" />
+    <PackageReference Include="MediaBrowser.Server.Core" Version="4.7.0.30" />
     <PackageReference Include="System.Memory" Version="4.5.4" />
   </ItemGroup>
 
