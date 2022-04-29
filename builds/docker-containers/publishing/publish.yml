@@ -25,7 +25,7 @@ steps:
       repository: uping/embystat
       Dockerfile: '$(System.DefaultWorkingDirectory)/builds/docker-containers/files/${{ parameters.dockerFile }}'
       buildContext: '$(System.ArtifactsDirectory)/${{ parameters.artifactName }}'
-      tags: ${{ parameters.tags }}
+      tags: ${{ parameters.tag }}
   - task: Docker@2
     displayName: Logout
     inputs:
