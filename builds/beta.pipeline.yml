@@ -32,7 +32,7 @@ stages:
     - template: linux-arm-x64/build.pipeline.yml
     - template: ubuntu-x64/build.pipeline.yml
     - template: win-x64/build.pipeline.yml
-    - template: windows/build.pipeline.yml
+    - template: windows-installer/build.pipeline.yml
 
   - stage: docker_publish
     dependsOn: 
