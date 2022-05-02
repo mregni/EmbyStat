@@ -63,7 +63,7 @@ function Make-NSIS {
 
     $env:InstallLocation = $ResolvedInstallLocation
     if($InstallNSIS.IsPresent -or ($InstallNSIS -eq $true)){
-        & "$tempdir/nsis/nsis-3.04/makensis.exe" /D$Architecture /DVERSION=$version /DUXPATH=$ResolvedUXLocation  ".\builds\windows\embystat.nsi"
+        & "$tempdir/nsis/nsis-3.08/makensis.exe" /D$Architecture /DVERSION=$version /DUXPATH=$ResolvedUXLocation  ".\builds\windows\embystat.nsi"
     } else {
         & "makensis" /D$Architecture /DVERSION=$version /DUXPATH=$ResolvedUXLocation ".\builds\windows\embystat.nsi"
     }
@@ -73,13 +73,14 @@ function Make-NSIS {
 
 function Install-NSIS {
     Write-Host "Downloading NSIS"
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    Invoke-WebRequest -Uri https://nchc.dl.sourceforge.net/project/nsis/NSIS%203/3.04/nsis-3.04.zip -UseBasicParsing -SkipCertificateCheck -OutFile "$tempdir/nsis.zip" | Write-Host
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls, [Net.SecurityProtocolType]::Tls11, [Net.SecurityProtocolType]::Tls12, [Net.SecurityProtocolType]::Ssl3   
+    [Net.ServicePointManager]::SecurityProtocol = "Tls, Tls11, Tls12, Ssl3"
+    Invoke-WebRequest -Uri https://sourceforge.net/projects/nsis/files/NSIS%203/3.08/nsis-3.08.zip -UseBasicParsing -SkipCertificateCheck -OutFile "$tempdir/nsis.zip" | Write-Host
 
     Expand-Archive "$tempdir/nsis.zip" -DestinationPath "$tempdir/nsis/" -Force | Write-Host
 }
 
-function Cleanup-NSIS {
+    function Cleanup-NSIS {
     Remove-Item "$tempdir/nsis/" -Recurse -Force -ErrorAction Continue | Write-Host
     Remove-Item "$tempdir/nsis.zip" -Force -ErrorAction Continue | Write-Host
 }
