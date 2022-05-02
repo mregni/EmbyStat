@@ -58,7 +58,7 @@ ShowUninstDetails show
     VIAddVersionKey "ProductName" "EmbyStat Server"
     VIAddVersionKey "FileVersion" "${VERSION}"
     VIAddVersionKey "LegalCopyright" "(c) 2019 EmbyStat Contributors. Code released under the GNU General Public License"
-    VIAddVersionKey "FileDescription" "EmbyStat Server: The Free Software Media System"
+    VIAddVersionKey "FileDescription" "EmbyStat Server: The Free Software Media Analytics System"
 
 ;TODO, check defaults
     InstallDir ${INSTALL_DIRECTORY} ;Default installation folder
