@@ -43,6 +43,7 @@ jobs:
   - task: PowerShell@2
     displayName: 'Create NSIS package'
     inputs:
+      pwsh: true
       targetType: filePath
       filePath: './builds/windows-installer/installer-build.ps1'
       arguments: '-InstallNSSM -InstallNSIS -MakeNSIS -version $(GitVersion.MajorMinorPatch).$(GitVersion.PreReleaseNumber)'
