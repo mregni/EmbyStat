@@ -73,8 +73,7 @@ function Make-NSIS {
 
 function Install-NSIS {
     Write-Host "Downloading NSIS"
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    Invoke-WebRequest -Uri https://sourceforge.net/projects/nsis/files/NSIS%203/3.08/nsis-3.08.zip -UseBasicParsing -SkipCertificateCheck -OutFile "$tempdir/nsis.zip" | Write-Host
+    Invoke-WebRequest -Uri "https://downloads.sourceforge.net/project/nsis/NSIS%203/3.08/nsis-3.08.zip" -UseBasicParsing -OutFile "$tempdir/nsis.zip" -UserAgent [Microsoft.PowerShell.Commands.PSUserAgent]::FireFox | Write-Host
 
     Expand-Archive "$tempdir/nsis.zip" -DestinationPath "$tempdir/nsis/" -Force | Write-Host
 }
