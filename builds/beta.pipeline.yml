@@ -22,11 +22,11 @@ stages:
     condition: succeeded()
     displayName: 'Build artifacts'
     jobs:
-    - template: debian-x64/build.pipeline.yml
     - template: docker-containers/win.pipeline.yml
     - template: docker-containers/linux.pipeline.yml
     - template: docker-containers/arm64.pipeline.yml
     - template: docker-containers/arm.pipeline.yml
+    - template: debian-x64/build.pipeline.yml
     - template: fedora-x64/build.pipeline.yml
     - template: linux-arm/build.pipeline.yml
     - template: linux-arm-x64/build.pipeline.yml

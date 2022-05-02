@@ -27,7 +27,7 @@ jobs:
       - template: publish.yml
         parameters:
           systemName: 'ARM64'
-          artifactName: 'EmbyStat-docker-${package.linux-arm-x64}-v$(Build.BuildNumber)'
+          artifactName: 'EmbyStat-docker-$(package.linux-arm-x64)-v$(Build.BuildNumber)'
           dockerFile: '../files/arm64.dockerfile'
           tag: 'beta-arm-x64'
   - job: arm_docker_publish
