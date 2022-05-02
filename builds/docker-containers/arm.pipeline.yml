@@ -1,6 +1,6 @@
 jobs:
   - job: linux_arm_docker_container
-    displayName: 'Build Linux-ARM package'
+    displayName: 'Create ARM docker build'
     pool:
       vmImage: $(LinuxPool)
     variables:
