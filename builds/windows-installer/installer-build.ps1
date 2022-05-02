@@ -67,7 +67,7 @@ function Make-NSIS {
     } else {
         & "makensis" /D$Architecture /DVERSION=$version /DUXPATH=$ResolvedUXLocation ".\builds\windows-installer\embystat.nsi"
     }
-    Move-Item .\builds\windows\embystat_*.exe $ResolvedInstallLocation\..\
+    Move-Item .\builds\windows-installer\embystat_*.exe $ResolvedInstallLocation\..\
 }
 
 
