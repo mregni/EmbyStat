@@ -33,15 +33,13 @@ jobs:
     displayName: 'Publish info to Rollbar'
     dependsOn: docker_manifest_publish
     condition: succeeded()
-    variables:
-      GitVersion.SemVer: $[stageDependencies.test_stage.main_build.outputs['setSemVer.SemVer'] ]
     steps:
       - powershell: |
           $environment = '${{ parameters.env }}'
           $postParams = @{
               access_token="$(rollbar.key)";
               environment="$environment";
-              revision="$(GitVersion.SemVer)";
+              revision="$(Build.BuildNumber)";
               local_username="Mikhaël Regni";
               status="succeeded";
             }

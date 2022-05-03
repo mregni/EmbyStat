@@ -116,15 +116,13 @@ stages:
       - job: rollbar_publish
         displayName: 'Publish info to Rollbar'
         condition: succeeded()
-        variables:
-          GitVersion.SemVer: $[stageDependencies.test_stage.main_build.outputs['setSemVer.SemVer'] ]
         steps:
           - powershell: |
               $environment = 'beta'
               $postParams = @{
                   access_token="$(rollbar.key)";
                   environment="$environment";
-                  revision="$(GitVersion.SemVer)";
+                  revision="$(Build.BuildNumber)";
                   local_username="Mikhaël Regni";
                   status="succeeded";
                 }
