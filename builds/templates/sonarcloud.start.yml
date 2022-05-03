@@ -8,6 +8,3 @@ steps:
       projectVersion: '$(GitVersion.SemVer)'
       extraProperties: |
        sonar.exclusions=**/node_modules/**,**/*.js,**/*.css,**/*.spec.tsx,**/bin/**,**/*ViewModel.cs,**/EmbyStat.Common/Models/**,**/*.test.tsx
-       sonar.ts.excludetypedefinitionfiles=true
-       sonar.eslint.reportPaths=ClientApp/report.json
-       sonar.javascript.lcov.reportPaths=ClientApp/coverage/lcov.info

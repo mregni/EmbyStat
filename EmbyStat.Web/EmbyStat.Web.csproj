@@ -19,8 +19,12 @@
     <AssemblyName>EmbyStat</AssemblyName>
 
     <ProjectGuid>{1D5D997D-34AE-45BE-9935-13E0D63EAC02}</ProjectGuid>
+    <SonarQubeSetting Include="sonar.eslint.reportPaths">ClientApp/report.json</SonarQubeSetting>
+    <SonarQubeSetting Include="sonar.ts.excludetypedefinitionfiles">true</SonarQubeSetting>
+    <SonarQubeSetting Include="sonar.javascript.lcov.reportPaths">ClientApp/coverage/lcov.info</SonarQubeSetting>
 
     <ServerGarbageCollection>false</ServerGarbageCollection>
+
   </PropertyGroup>
 
   <ItemGroup>
