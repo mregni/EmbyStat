@@ -1,5 +1,8 @@
 trigger:
-- release/*
+  batch: true
+  branches:
+    include:
+      - release/*
 
 pr: none
 

@@ -1,5 +1,8 @@
 trigger:
-- develop
+  batch: true
+  branches:
+    include:
+      - develop
 
 pr:
   branches:
