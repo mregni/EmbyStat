@@ -5,6 +5,7 @@ trigger:
     - develop
 
 pr:
+  autoCancel: true
   branches:
     include:
     - develop
