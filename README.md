@@ -14,7 +14,7 @@
 EmbyStat is a personal web server that can calculate all kinds of statistics from your (local) Emby or Jellyfin server. Just install this on your server and let him calculate all kinds of fun stuff.
 
 This project is still in Alpha phase, but feel free to pull in on your computer and test it out yourself. When the time is right I will host a full informational website/release for common platforms and Wiki pages.
-
+ 
 ## Build state
 
 | Environment  | Build  | Deploys |
