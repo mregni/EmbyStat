@@ -1,175 +1,158 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common;
-using EmbyStat.Common.Converters;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
-using EmbyStat.Common.Hubs.Job;
-using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Hubs;
+using EmbyStat.Common.Models.Entities.Movies;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
-using MoreLinq;
+using Microsoft.Extensions.Logging;
 
-namespace EmbyStat.Jobs.Jobs.Sync
+namespace EmbyStat.Jobs.Jobs.Sync;
+
+[DisableConcurrentExecution(60 * 60)]
+public class MovieSyncJob : BaseJob, IMovieSyncJob
 {
-    [DisableConcurrentExecution(60 * 60)]
-    public class MovieSyncJob : BaseJob, IMovieSyncJob
+    private readonly IBaseHttpClient _baseHttpClient;
+    private readonly IMovieRepository _movieRepository;
+    private readonly IStatisticsRepository _statisticsRepository;
+    private readonly IMovieService _movieService;
+    private readonly IGenreRepository _genreRepository;
+    private readonly IPersonRepository _personRepository;
+    private readonly IMediaServerRepository _mediaServerRepository;
+    private readonly IFilterRepository _filterRepository;
+
+    public MovieSyncJob(IHubHelper hubHelper, IJobRepository jobRepository,
+        ISettingsService settingsService, IClientStrategy clientStrategy,
+        IMovieRepository movieRepository, IStatisticsRepository statisticsRepository, 
+        IMovieService movieService, IGenreRepository genreRepository, IPersonRepository personRepository, 
+        IMediaServerRepository mediaServerRepository, IFilterRepository filterRepository, ILogger<MovieSyncJob> logger) 
+        : base(hubHelper, jobRepository, settingsService, logger)
     {
-        private readonly IHttpClient _httpClient;
-        private readonly ILibraryRepository _libraryRepository;
-        private readonly IMovieRepository _movieRepository;
-        private readonly IStatisticsRepository _statisticsRepository;
-        private readonly IMovieService _movieService;
+        _movieRepository = movieRepository;
+        _statisticsRepository = statisticsRepository;
+        _movieService = movieService;
+        _genreRepository = genreRepository;
+        _personRepository = personRepository;
+        _mediaServerRepository = mediaServerRepository;
+        _filterRepository = filterRepository;
 
-        public MovieSyncJob(IJobHubHelper hubHelper, IJobRepository jobRepository,
-            ISettingsService settingsService, ILibraryRepository libraryRepository, IClientStrategy clientStrategy,
-            IMovieRepository movieRepository, IStatisticsRepository statisticsRepository, 
-            IMovieService movieService) 
-            : base(hubHelper, jobRepository, settingsService, typeof(MovieSyncJob), Constants.LogPrefix.MovieSyncJob)
-        {
-            _libraryRepository = libraryRepository;
-            _movieRepository = movieRepository;
-            _statisticsRepository = statisticsRepository;
-            _movieService = movieService;
-
-            var settings = settingsService.GetUserSettings();
-            _httpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.ServerType ?? ServerType.Emby);
-            Title = jobRepository.GetById(Id).Title;
-        }
-
-        public sealed override Guid Id => Constants.JobIds.MovieSyncId;
-        public override string Title { get; }
-        public override string JobPrefix => Constants.LogPrefix.MovieSyncJob;
-        public override async Task RunJobAsync()
-        {
-            var cancellationToken = new CancellationToken(false);
-            if (!Settings.WizardFinished)
-            {
-                await LogWarning("Media sync task not running because wizard is not yet finished!");
-                return;
-            }
-
-            if (!IsMediaServerOnline())
-            {
-                await LogWarning($"Halting task because we can't contact the server on {Settings.MediaServer.FullMediaServerAddress}, please check the connection and try again.");
-                return;
-            }
-
-            await LogInformation("First delete all existing movie and root media libraries from database so we have a clean start.");
-            await LogProgress(3);
-
-            var libraries = await GetLibrariesAsync();
-            _libraryRepository.AddOrUpdateRange(libraries);
-            await LogInformation($"Found {libraries.Count} root items, getting ready for processing");
-            await LogProgress(15);
-
-            await ProcessMoviesAsync(cancellationToken);
-            await LogProgress(55);
-
-            await CalculateStatistics();
-            await LogProgress(100);
-        }
-
-        private async Task ProcessMoviesAsync(CancellationToken cancellationToken)
-        {
-            await LogInformation("Lets start processing movies");
-            _movieRepository.RemoveMovies();
-            
-            var logIncrementBase = Math.Round(40 / (double)Settings.MovieLibraries.Count, 1);
-            foreach (var libraryId in Settings.MovieLibraries)
-            {
-                var collectionId = libraryId;
-                var totalCount = await GetTotalLibraryMovieCount(collectionId);
-                if (totalCount == 0)
-                {
-                    continue; ;
-                }
-                var increment = logIncrementBase / (totalCount / (double)100);
-
-                await LogInformation($"Found {totalCount} movies in (NAME REMOVED FOR DEV VERSION) library");
-                var processed = 0;
-                var j = 0;
-                const int limit = 100;
-                do
-                {
-                    cancellationToken.ThrowIfCancellationRequested();
-                    var movies = await PerformMovieSyncAsync(collectionId, collectionId, j * limit, limit);
-                    _movieRepository.UpsertRange(movies.Where(x => x != null && x.MediaType == "Video"));
-
-                    processed += 100;
-                    j++;
-                    var logProcessed = processed < totalCount ? processed : totalCount;
-                    await LogInformation($"Processed { logProcessed } / { totalCount } movies");
-                    await LogProgressIncrement(increment);
-                } while (processed < totalCount);
-
-            }
-        }
-
-        private async Task<int> GetTotalLibraryMovieCount(string parentId)
-        {
-            var count = _httpClient.GetMovieCount(parentId);
-            if (count == 0)
-            {
-                await LogWarning($"0 movies found in parent with id {parentId}. Probably means something is wrong with the HTTP call.");
-            }
-
-            return count;
-        }
-
-        private async Task<List<Movie>> PerformMovieSyncAsync(string parentId, string collectionId, int startIndex, int limit)
-        {
-            try
-            {
-                return _httpClient.GetMovies(parentId, collectionId, startIndex, limit);
-            }
-            catch (Exception e)
-            {
-                await LogError($"Movie error: {e.Message}");
-                throw;
-            }
-        }
-
-        private async Task CalculateStatistics()
-        {
-            await LogInformation("Calculating movie statistics");
-            _statisticsRepository.MarkMovieTypesAsInvalid();
-            _movieService.CalculateMovieStatistics(new List<string>(0));
-
-            await LogInformation($"Calculations done");
-            await LogProgress(100);
-        }
-
-
-        #region Helpers
-
-        private async Task<List<Library>> GetLibrariesAsync()
-        {
-            await LogInformation("Asking MediaServer for all movie root folders");
-            var rootItems = _httpClient.GetMediaFolders();
-
-            Logger.Debug("Following root items are found:");
-            rootItems.Items.ForEach(x => Logger.Debug(x.ToString()));
-
-            return rootItems.Items
-                .Where(x => x.CollectionType.ToLibraryType() == LibraryType.Movies)
-                .Select(LibraryConverter.ConvertToLibrary)
-                .ToList();
-        }
-
-        private bool IsMediaServerOnline()
-        {
-            _httpClient.BaseUrl = Settings.MediaServer.FullMediaServerAddress;
-            return _httpClient.Ping();
-        }
-
-        #endregion
+        var settings = settingsService.GetUserSettings();
+        _baseHttpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.Type ?? ServerType.Emby);
     }
+
+    protected sealed override Guid Id => Constants.JobIds.MovieSyncId;
+    protected override string JobPrefix => Constants.LogPrefix.MovieSyncJob;
+
+    protected override async Task RunJobAsync()
+    {
+        if (!await IsMediaServerOnline())
+        {
+            await LogWarning($"Halting task because we can't contact the server on {Settings.MediaServer.Address}, please check the connection and try again.");
+            return;
+        }
+
+        await ProcessGenresAsync();
+        await LogProgress(7);
+        await ProcessPeopleAsync();
+        await LogProgress(15);
+
+        await ProcessMoviesAsync();
+        await LogProgress(55);
+
+        await CalculateStatistics();
+        await LogProgress(100);
+    }
+
+    private async Task ProcessGenresAsync()
+    {
+        var genres = await _baseHttpClient.GetGenres();
+        await LogInformation("Processing genres");
+        await _genreRepository.UpsertRange(genres);
+    }
+
+    private async Task ProcessPeopleAsync()
+    {
+        var totalCount = await _baseHttpClient.GetPeopleCount();
+        await LogInformation($"Fetching information from {totalCount} people");
+
+        const int limit = 25000;
+        var processed = 0;
+        var j = 0;
+
+        do
+        {
+            var people = await _baseHttpClient.GetPeople(j * limit, limit);
+            await _personRepository.UpsertRange(people);
+
+            processed += limit;
+            j++;
+        } while (processed < totalCount);
+    }
+
+    private async Task ProcessMoviesAsync()
+    {
+        var librariesToProcess = await _mediaServerRepository.GetAllLibraries(LibraryType.Movies, true);
+        await LogInformation("Lets start processing movies");
+        await LogInformation($"{librariesToProcess.Count} libraries are selected, getting ready for processing");
+
+        var logIncrementBase = Math.Round(40 / (double)librariesToProcess.Count, 1);
+        var genres = await _genreRepository.GetAll();
+
+        foreach (var library in librariesToProcess)
+        {
+            var totalCount = await _baseHttpClient.GetMediaCount(library.Id, library.LastSynced, "Movie");
+            if (totalCount == 0)
+            {
+                continue;
+            }
+            var increment = logIncrementBase / (totalCount / (double)100);
+
+            await LogInformation($"Found {totalCount} changed movies since last sync in {library.Name}");
+            var processed = 0;
+            var j = 0;
+            const int limit = 50;
+            do
+            {
+                var movies = await _baseHttpClient.GetMedia<Movie>(library.Id, j * limit, limit, library.LastSynced, "Movie");
+
+                movies.AddGenres(genres);
+                await _movieRepository.UpsertRange(movies);
+
+                processed += limit;
+                j++;
+                var logProcessed = processed < totalCount ? processed : totalCount;
+                await LogInformation($"Processed { logProcessed } / { totalCount } movies");
+                await LogProgressIncrement(increment);
+            } while (processed < totalCount);
+            await _mediaServerRepository.UpdateLibrarySyncDate(library.Id, DateTime.UtcNow);
+        }
+    }
+
+    private async Task CalculateStatistics()
+    {
+        await LogInformation("Calculating movie statistics");
+        await _statisticsRepository.MarkTypesAsInvalid(StatisticType.Movie);
+        await LogProgress(67);
+        await _movieService.CalculateMovieStatistics();
+        await _filterRepository.DeleteAll(LibraryType.Movies);
+
+        await LogInformation("Calculations done");
+        await LogProgress(100);
+    }
+
+    #region Helpers
+
+    private async Task<bool> IsMediaServerOnline()
+    {
+        _baseHttpClient.BaseUrl = Settings.MediaServer.Address;
+        return await _baseHttpClient.Ping();
+    }
+
+    #endregion
 }

@@ -1,10 +1,9 @@
-﻿namespace EmbyStat.Common.Models.Tasks.Enum
+﻿namespace EmbyStat.Common.Models.Tasks.Enum;
+
+public enum JobState
 {
-    public enum JobState
-    {
-        Idle = 0,
-        Running = 1,
-        Failed = 2,
-        Completed = 3
-    }
+    Idle = 0,
+    Running = 1,
+    Failed = 2,
+    Completed = 3
 }

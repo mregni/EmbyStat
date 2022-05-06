@@ -1,8 +1,7 @@
-﻿namespace EmbyStat.Common.Models.Account
+﻿namespace EmbyStat.Common.Models.Account;
+
+public class ChangeUserNameRequest
 {
-    public class ChangeUserNameRequest
-    {
-        public string UserName { get; set; }
-        public string NewUserName { get; set; }
-    }
+    public string OldUserName { get; set; }
+    public string UserName { get; set; }
 }

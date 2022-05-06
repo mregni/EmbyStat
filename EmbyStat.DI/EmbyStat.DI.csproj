@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Version>0.0.0.0</Version>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
     <FileVersion>0.0.0.0</FileVersion>
@@ -11,12 +11,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Clients.Base\EmbyStat.Clients.Base.csproj" />
     <ProjectReference Include="..\EmbyStat.Clients.Emby\EmbyStat.Clients.Emby.csproj" />
     <ProjectReference Include="..\EmbyStat.Clients.Jellyfin\EmbyStat.Clients.Jellyfin.csproj" />
     <ProjectReference Include="..\EmbyStat.Clients.Tmdb\EmbyStat.Clients.Tmdb.csproj" />
     <ProjectReference Include="..\EmbyStat.Services\EmbyStat.Services.csproj" />
     <ProjectReference Include="..\EmbyStat.Jobs\EmbyStat.Jobs.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aiursoft.XelNaga" Version="6.0.0" />
   </ItemGroup>
 
 </Project>

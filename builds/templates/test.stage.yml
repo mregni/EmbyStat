@@ -1,0 +1,32 @@
+stages:
+  - stage: test_stage
+    displayName: Test
+    jobs:
+    - job: main_build
+      displayName: Test application
+      steps:
+      - template: version.variables.yml
+      - template: update.version.yml
+      - template: sonarcloud.start.yml
+
+      - task: PowerShell@2
+        displayName: Update appsettings.json file
+        inputs:
+          targetType: filePath
+          filePath: $(paths.script)/appsettings.ps1
+          arguments: -updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)
+    
+      - task: DotNetCoreCLI@2
+        displayName: Restore NuGet packages
+        inputs:
+          command: restore
+          projects: $(webapp.project)
+
+      - task: DotNetCoreCLI@2
+        displayName: Build web app
+        inputs:
+          projects: $(webapp.project)
+          arguments: --output publish
+    
+      - template: unit.tests.yml
+      - template: sonarcloud.end.yml

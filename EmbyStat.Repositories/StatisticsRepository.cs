@@ -1,92 +1,59 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
-using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
-namespace EmbyStat.Repositories
+namespace EmbyStat.Repositories;
+
+public class StatisticsRepository : IStatisticsRepository
 {
+    private readonly EsDbContext _context;
 
-    public class StatisticsRepository : BaseRepository, IStatisticsRepository
+    public StatisticsRepository(EsDbContext context)
     {
-        public StatisticsRepository(IDbContext context) : base(context)
+        _context = context;
+    }
+
+    public Task<Statistic> GetLastResultByType(StatisticType type)
+    {
+        return _context.Statistics
+            .Where(x => x.IsValid && x.Type == type)
+            .OrderByDescending(x => x.CalculationDateTime)
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task ReplaceStatistic(string json, DateTime calculationDateTime, StatisticType type)
+    {
+        _context.Statistics.RemoveRange(_context.Statistics.Where(x => x.Type == type));
+
+        var statistic = new Statistic
         {
-        }
+            CalculationDateTime = calculationDateTime,
+            Type = type,
+            JsonResult = json,
+            IsValid = true
+        };
+        _context.Statistics.Add(statistic);
+        await _context.SaveChangesAsync();
+    }
 
-        public Statistic GetLastResultByType(StatisticType type, IReadOnlyList<string> collectionIds)
+    public async Task DeleteStatistics()
+    {
+        _context.Statistics.RemoveRange(_context.Statistics.Where(x => !x.IsValid));
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task MarkTypesAsInvalid(StatisticType type)
+    {
+        var statistic = await _context.Statistics
+            .FirstOrDefaultAsync(x => x.IsValid && x.Type == type);
+        if (statistic != null)
         {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Statistic>();
-                return collection.Find(x => x.IsValid && x.Type == type)
-                    .GetStatisticsWithCollectionIds(collectionIds)
-                    .OrderByDescending(x => x.CalculationDateTime)
-                    .FirstOrDefault();
-            });
-        }
-
-        public void AddStatistic(string json, DateTime calculationDateTime, StatisticType type, IReadOnlyList<string> collectionIds)
-        {
-            ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Statistic>();
-                var statistics = collection
-                    .Find(x => x.Type == type)
-                    .GetStatisticsWithCollectionIds(collectionIds)
-                    .ToList();
-
-                statistics.ForEach(x => x.IsValid = false);
-                collection.Update(statistics);
-
-                var statistic = new Statistic
-                {
-                    CalculationDateTime = calculationDateTime,
-                    CollectionIds = collectionIds,
-                    Type = type,
-                    JsonResult = json,
-                    IsValid = true
-                };
-
-                collection.Insert(statistic);
-            });
-        }
-
-        public void CleanupStatistics()
-        {
-            ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Statistic>();
-                collection.DeleteMany(x => !x.IsValid);
-            });
-        }
-
-        public void MarkMovieTypesAsInvalid()
-        {
-            ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Statistic>();
-                var statistics = collection.Find(x => x.IsValid && x.Type == StatisticType.Movie).ToList();
-                statistics.ForEach(x => x.IsValid = false);
-                collection.Update(statistics);
-            });
-        }
-
-        public void MarkShowTypesAsInvalid()
-        {
-            ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Statistic>();
-                var statistics = collection.Find(x => x.IsValid && x.Type == StatisticType.Show).ToList();
-                statistics.ForEach(x => x.IsValid = false);
-                collection.Update(statistics);
-            });
+            statistic.IsValid = false;
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -1,38 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 
-namespace EmbyStat.Services
+namespace EmbyStat.Services;
+
+public class JobService : IJobService
 {
-    public class JobService : IJobService
+    private readonly IJobRepository _jobRepository;
+
+    public JobService(IJobRepository jobRepository)
     {
-        private readonly IJobRepository _jobRepository;
+        _jobRepository = jobRepository;
+    }
 
-        public JobService(IJobRepository jobRepository)
-        {
-            _jobRepository = jobRepository;
-        }
+    public IEnumerable<Job> GetAll()
+    {
+        return _jobRepository.GetAll();
+    }
 
-        public IEnumerable<Job> GetAll()
-        {
-            return _jobRepository.GetAll();
-        }
+    public Job GetById(Guid id)
+    {
+        return _jobRepository.GetById(id);
+    }
 
-        public Job GetById(Guid id)
-        {
-            return _jobRepository.GetById(id);
-        }
+    public Task<bool> UpdateTrigger(Guid id, string trigger)
+    {
+        return _jobRepository.UpdateTrigger(id, trigger);
+    }
 
-        public bool UpdateTrigger(Guid id, string trigger)
-        {
-            return _jobRepository.UpdateTrigger(id, trigger);
-        }
-
-        public void ResetAllJobs()
-        {
-            _jobRepository.ResetAllJobs();
-        }
+    public Task ResetAllJobs()
+    {
+        return _jobRepository.ResetAllJobs();
     }
 }

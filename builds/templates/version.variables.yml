@@ -1,9 +1,17 @@
 steps:
-  - task: GitVersion@5
-    displayName: 'Set Version'
+  - task: gitversion/setup@0
+    displayName: Install GitVersion
     inputs:
-      runtime: 'core'
-      preferBundledVersion: false
+      versionSpec: '5.x'
+
+  - task: CmdLine@2
+    inputs:
+      script: 'dir'
+
+  - task: gitversion/execute@0
+    inputs:
+      targetPath: '$(Build.SourcesDirectory)'
+      useConfigFile: true
       configFilePath: 'GitVersion.yml'
 
   - task: PowerShell@2

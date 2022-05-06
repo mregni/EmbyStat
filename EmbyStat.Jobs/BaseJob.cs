@@ -1,171 +1,185 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EmbyStat.Common.Exceptions;
-using EmbyStat.Common.Hubs.Job;
-using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Common.Models.Tasks.Enum;
-using EmbyStat.Logging;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Interfaces;
 using Hangfire;
+using Microsoft.Extensions.Logging;
 
-namespace EmbyStat.Jobs
+namespace EmbyStat.Jobs;
+
+[Queue("main")]
+public abstract class BaseJob : IBaseJob, IDisposable
 {
-    [Queue("main")]
-    public abstract class BaseJob : IBaseJob
+    protected readonly IHubHelper HubHelper;
+    private readonly IJobRepository _jobRepository;
+    private bool _disposed;
+    protected ILogger<BaseJob> Logger;
+
+    private JobState State { get; set; }
+    private DateTime? StartTimeUtc { get; }
+    protected UserSettings Settings { get; }
+    private bool EnableUiLogging { get; }
+    private double Progress { get; set; }
+
+    protected BaseJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
+        bool enableUiLogging, ILogger<BaseJob> logger)
     {
-        protected readonly IJobHubHelper HubHelper;
-        protected readonly ISettingsService SettingsService;
-        private readonly IJobRepository _jobRepository;
-        protected readonly Logger Logger;
-        private JobState State { get; set; }
-        private DateTime? StartTimeUtc { get; set; }
-        protected UserSettings Settings { get; set; }
-        protected bool EnableUiLogging { get; set; }
-        private double Progress { get; set; }
+        HubHelper = hubHelper;
+        _jobRepository = jobRepository;
+        Settings = settingsService.GetUserSettings();
+        EnableUiLogging = enableUiLogging;
+        Progress = 0;
+        StartTimeUtc = DateTime.UtcNow;
+        Logger = logger;
+    }
 
-        protected BaseJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, bool enableUiLogging, Type type, string prefix)
-        {
-            HubHelper = hubHelper;
-            _jobRepository = jobRepository;
-            Settings = settingsService.GetUserSettings();
-            SettingsService = settingsService;
-            EnableUiLogging = enableUiLogging;
-            Logger = LogFactory.CreateLoggerForType(type, prefix);
-            Progress = 0;
-        }
-
-        protected BaseJob(IJobHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, Type type, string prefix)
-            :this(hubHelper, jobRepository, settingsService, true, type, prefix)
-        {
+    protected BaseJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, ILogger<BaseJob> logger)
+        :this(hubHelper, jobRepository, settingsService, true, logger)
+    {
             
-        }
+    }
 
-        public abstract Guid Id { get; }
-        public abstract string Title { get; }
-        public abstract string JobPrefix { get; }
-        public abstract Task RunJobAsync();
+    protected abstract Guid Id { get; }
+    protected abstract string JobPrefix { get; }
+    protected abstract Task RunJobAsync();
 
-        public async Task Execute()
+    public async Task Execute()
+    {
+        try
         {
-            try
-            {
-                await PreJobExecution();
-                await RunJobAsync();
-                await PostJobExecution();
-            }
-            catch (WizardNotFinishedException e)
-            {
-                await LogWarning(e.Message);
-                await FailExecution();
-            }
-            catch (Exception e)
-            {
-                Logger.Error(e, "Error while running job");
-                await FailExecution("Job failed, check logs for more info.");
-                throw;
-            }
+            await PreJobExecution();
+            await RunJobAsync();
+            await PostJobExecution();
         }
-
-        private async Task PreJobExecution()
+        catch (WizardNotFinishedException e)
         {
-            if (!Settings.WizardFinished)
-            {
-                throw new WizardNotFinishedException("Job not running because wizard is not finished");
-            }
-
-            await BroadcastProgress(0);
-            await LogInformation("Starting job");
-
-            State = JobState.Running;
-            StartTimeUtc = DateTime.UtcNow;
-            var job = new Job { CurrentProgressPercentage = 0, Id = Id, State = State, StartTimeUtc = StartTimeUtc, EndTimeUtc = null };
-
-            _jobRepository.StartJob(job);
+            await LogWarning(e.Message);
+            await FailExecution();
         }
-
-        private async Task PostJobExecution()
+        catch (Exception e)
         {
-            var now = DateTime.UtcNow;
-            State = JobState.Completed;
-            _jobRepository.EndJob(Id, now, State);
-            await BroadcastProgress(100, now);
-
-            var runTime = now.Subtract(StartTimeUtc ?? now).TotalMinutes;
-            await LogInformation(Math.Abs(Math.Ceiling(runTime) - 1) < 0.1
-                ? "Job finished after 1 minute."
-                : $"Job finished after {Math.Ceiling(runTime)} minutes.");
+            Logger.LogError(e, "Error while running job");
+            await FailExecution(e.Message);
+            await FailExecution("Job failed, check logs for more info.");
+            throw;
         }
+    }
 
-        private async Task FailExecution()
+    private async Task PreJobExecution()
+    {
+        if (!Settings.WizardFinished)
         {
-            await FailExecution(string.Empty);
+            throw new WizardNotFinishedException("Job not running because wizard is not finished");
         }
 
-        private async Task FailExecution(string message)
-        {
-            var now = DateTime.UtcNow;
-            State = JobState.Failed;
-            _jobRepository.EndJob(Id, now, State);
-            if (!string.IsNullOrWhiteSpace(message))
-            {
-                await LogError(message);
-            }
-            await BroadcastProgress(100, now);
-        }
+        State = JobState.Running;
+        
+        await BroadcastProgress(0);
+        await LogInformation("Starting job");
+        await _jobRepository.StartJob(Id);
+    }
 
-        public async Task LogProgressIncrement(double increment)
-        {
-            Progress += increment;
-            await BroadcastProgress(Math.Floor(Progress * 10) / 10);
-        }
+    private async Task PostJobExecution()
+    {
+        var now = DateTime.UtcNow;
+        State = JobState.Completed;
+        await _jobRepository.EndJob(Id, now, State);
+        await BroadcastProgress(100, now);
 
-        public async Task LogProgress(double increment)
-        {
-            Progress = increment;
-            await BroadcastProgress(Progress);
-        }
+        var runTime = now.Subtract(StartTimeUtc ?? now).TotalMinutes;
+        await LogInformation(Math.Abs(Math.Ceiling(runTime) - 1) < 0.1
+            ? "Job finished after 1 minute."
+            : $"Job finished after {Math.Ceiling(runTime)} minutes.");
+    }
 
-        public async Task LogInformation(string message)
-        {
-            if (EnableUiLogging)
-            {
-                Logger.Info(message);
-                await SendLogUpdateToFront(message, ProgressLogType.Information);
-            }
-        }
+    private async Task FailExecution()
+    {
+        await FailExecution(string.Empty);
+    }
 
-        public async Task LogWarning(string message)
+    private async Task FailExecution(string message)
+    {
+        var now = DateTime.UtcNow;
+        State = JobState.Failed;
+        await _jobRepository.EndJob(Id, now, State);
+        if (!string.IsNullOrWhiteSpace(message))
         {
-            Logger.Warn(message);
-            await SendLogUpdateToFront(message, ProgressLogType.Warning);
+            await LogError(message);
         }
+        await BroadcastProgress(100, now);
+    }
 
-        public async Task LogError(string message)
-        {
-            Logger.Error(message);
-            await SendLogUpdateToFront(message, ProgressLogType.Error);
-        }
+    protected async Task LogProgressIncrement(double increment)
+    {
+        Progress += increment;
+        await BroadcastProgress(Math.Floor(Progress * 10) / 10);
+    }
 
-        private async Task SendLogUpdateToFront(string message, ProgressLogType type)
-        {
-            await HubHelper.BroadCastJobLog(JobPrefix, message, type);
-        }
+    protected async Task LogProgress(double increment)
+    {
+        Progress = increment;
+        await BroadcastProgress(Progress);
+    }
 
-        private async Task BroadcastProgress(double progress, DateTime? endTimeUtc = null)
+    protected async Task LogInformation(string message)
+    {
+        if (EnableUiLogging)
         {
-            var info = new JobProgress
-            {
-                Id = Id,
-                CurrentProgressPercentage = progress,
-                State = State,
-                StartTimeUtc = StartTimeUtc ?? DateTime.UtcNow,
-                EndTimeUtc = endTimeUtc,
-                Title = Title
-            };
-            await HubHelper.BroadcastJobProgress(info);
+            Logger.LogInformation(message);
+            await SendLogUpdateToFront(message, ProgressLogType.Information);
         }
+    }
+
+    protected async Task LogWarning(string message)
+    {
+        Logger.LogWarning(message);
+        await SendLogUpdateToFront(message, ProgressLogType.Warning);
+    }
+
+    protected async Task LogError(string message)
+    {
+        Logger.LogError(message);
+        await SendLogUpdateToFront(message, ProgressLogType.Error);
+    }
+
+    private async Task SendLogUpdateToFront(string message, ProgressLogType type)
+    {
+        await HubHelper.BroadcastJobLog(JobPrefix, message, type);
+    }
+
+    private async Task BroadcastProgress(double progress, DateTime? endTimeUtc = null)
+    {
+        var info = new JobProgress
+        {
+            Id = Id,
+            CurrentProgressPercentage = progress,
+            State = State,
+            StartTimeUtc = StartTimeUtc ?? DateTime.UtcNow,
+            EndTimeUtc = endTimeUtc
+        };
+        await HubHelper.BroadcastJobProgress(info);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed)
+            return;
+
+        _disposed = true;
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+    ~BaseJob()
+    {
+        Dispose(false);
     }
 }

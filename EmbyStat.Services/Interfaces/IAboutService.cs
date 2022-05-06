@@ -1,9 +1,8 @@
 ﻿using EmbyStat.Services.Models.About;
 
-namespace EmbyStat.Services.Interfaces
+namespace EmbyStat.Services.Interfaces;
+
+public interface IAboutService
 {
-    public interface IAboutService
-    {
-        About GetAbout();
-    }
+    About GetAbout();
 }

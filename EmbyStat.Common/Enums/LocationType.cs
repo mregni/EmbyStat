@@ -1,8 +1,7 @@
-﻿namespace EmbyStat.Common.Enums
+﻿namespace EmbyStat.Common.Enums;
+
+public enum LocationType
 {
-    public enum LocationType
-    {
-        Disk = 0,
-        Virtual = 1
-    }
+    Disk = 0,
+    Virtual = 1
 }

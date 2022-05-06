@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace EmbyStat.Common.Exceptions
+namespace EmbyStat.Common.Exceptions;
+
+public class WizardNotFinishedException : Exception
 {
-    public class WizardNotFinishedException : Exception
+    public WizardNotFinishedException(string message):base(message)
     {
-        public WizardNotFinishedException(string message):base(message)
-        {
             
-        }
     }
 }

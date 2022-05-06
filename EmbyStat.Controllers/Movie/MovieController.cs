@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Controllers.HelperClasses;
@@ -6,71 +8,79 @@ using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace EmbyStat.Controllers.Movie
+namespace EmbyStat.Controllers.Movie;
+
+[Produces("application/json")]
+[Route("api/[controller]")]
+public class MovieController : Controller
 {
-    [Produces("application/json")]
-    [Route("api/[controller]")]
-    public class MovieController : Controller
+    private readonly IMovieService _movieService;
+    private readonly IMapper _mapper;
+
+    public MovieController(IMovieService movieService, IMapper mapper)
     {
-        private readonly IMovieService _movieService;
-        private readonly IMapper _mapper;
+        _movieService = movieService;
+        _mapper = mapper;
+    }
 
-        public MovieController(IMovieService movieService, IMapper mapper)
+    [HttpGet]
+    [Route("statistics")]
+    public async Task<IActionResult> GetGeneralStats()
+    {
+        var result = await _movieService.GetStatistics();
+        var convert = _mapper.Map<MovieStatisticsViewModel>(result);
+        return Ok(convert);
+    }
+
+    [HttpGet]
+    [Route("list")]
+    public async Task<IActionResult> GetMoviePageList(int skip, int take, string sortField, string sortOrder, bool requireTotalCount, string filter)
+    {
+        var filtersObj = Array.Empty<Filter>();
+        if (filter != null)
         {
-            _movieService = movieService;
-            _mapper = mapper;
+            filtersObj = JsonConvert.DeserializeObject<Filter[]>(filter);
         }
 
-        [HttpGet]
-        [Route("statistics")]
-        public IActionResult GetGeneralStats(List<string> libraryIds)
+        var page = await _movieService.GetMoviePage(skip, take, sortField, sortOrder, filtersObj, requireTotalCount);
+
+        var convert = _mapper.Map<PageViewModel<MovieRowViewModel>>(page);
+        return Ok(convert);
+    }
+
+    [HttpGet]
+    [Route("{id}")]
+    public async Task<IActionResult> GetMovie(string id)
+    {
+        var result = await _movieService.GetMovie(id);
+        if (result != null)
         {
-            var result = _movieService.GetStatistics(libraryIds);
-            var convert = _mapper.Map<MovieStatisticsViewModel>(result);
-            return Ok(convert);
+            var movie = _mapper.Map<MovieViewModel>(result);
+            return Ok(movie);
         }
+        return NotFound(id);
+    }
 
-        [HttpGet]
-        [Route("list")]
-        public IActionResult GetMoviePageList(int skip, int take, string sortField, string sortOrder, bool requireTotalCount, string filter, List<string> libraryIds)
-        {
-            var filtersObj = new Filter[0];
-            if (filter != null)
-            {
-                filtersObj = JsonConvert.DeserializeObject<Filter[]>(filter);
-            }
+    [HttpGet]
+    [Route("libraries")]
+    public async Task<IActionResult> GetLibraries()
+    {
+        var result = await _movieService.GetMovieLibraries();
+        return Ok(_mapper.Map<IList<LibraryViewModel>>(result));
+    }
+        
+    [HttpPost]
+    [Route("libraries")]
+    public async Task<IActionResult> UpdateLibraries([FromBody] string[] libraryIds)
+    {
+        await _movieService.SetLibraryAsSynced(libraryIds);
+        return Ok();
+    }
 
-            var page = _movieService.GetMoviePage(skip, take, sortField, sortOrder, filtersObj, requireTotalCount, libraryIds);
-
-            var convert = _mapper.Map<PageViewModel<MovieRowViewModel>>(page);
-            return Ok(convert);
-        }
-
-        [HttpGet]
-        [Route("{id}")]
-        public IActionResult GetMovie(string id)
-        {
-            var movie = _movieService.GetMovie(id);
-            if (movie != null)
-            {
-                return Ok(movie);
-            }
-            return NotFound(id);
-        }
-
-        [HttpGet]
-        [Route("libraries")]
-        public IActionResult GetLibraries()
-        {
-            var result = _movieService.GetMovieLibraries();
-            return Ok(_mapper.Map<IList<LibraryViewModel>>(result));
-        }
-
-        [HttpGet]
-        [Route("typepresent")]
-        public IActionResult MovieTypeIsPresent()
-        {
-            return Ok(_movieService.TypeIsPresent());
-        }
+    [HttpGet]
+    [Route("typepresent")]
+    public IActionResult MovieTypeIsPresent()
+    {
+        return Ok(_movieService.TypeIsPresent());
     }
 }
