@@ -1,28 +1,27 @@
-import React, { useContext } from 'react'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography';
-import { useTranslation } from 'react-i18next';
+import React, {useContext} from 'react';
+import {useTranslation} from 'react-i18next';
 
-import { WizardContext } from '../Context/WizardState';
-import { getMediaServerTypeStringFromNumber } from '../../../shared/utils';
+import {Stack, Typography} from '@mui/material';
 
-export const Finish = () => {
-  const { wizard } = useContext(WizardContext);
-  const { t } = useTranslation();
+import {WizardContext} from '../../../shared/context/wizard/WizardState';
+import {useServerType} from '../../../shared/hooks';
+
+export function Finish() {
+  const {wizard} = useContext(WizardContext);
+  const {t} = useTranslation();
+  const {getMediaServerTypeStringFromNumber} = useServerType();
 
   return (
-    <Grid container direction="column">
+    <Stack spacing={2}>
       <Typography variant="h4" color="primary">
-        {t('WIZARD.FINALLABEL')}
+        {t('WIZARD.FINALTITLE')}
       </Typography>
-      <Grid container direction="column">
-        <Typography variant="body1" className="m-t-16 m-b-16">
-          {t('WIZARD.FINISHED', { type: 'EmbyStat' })}
-        </Typography>
-        <Typography variant="body1">
-          {t('WIZARD.FINISHEXPLANATION', { type: getMediaServerTypeStringFromNumber(wizard.serverType) })}
-        </Typography>
-      </Grid>
-    </Grid>
-  )
+      <Typography variant="body1" className="m-t-16 m-b-16">
+        {t('WIZARD.FINISHED')}
+      </Typography>
+      <Typography variant="body1">
+        {t('WIZARD.FINISHEXPLANATION', {type: getMediaServerTypeStringFromNumber(wizard.serverType)})}
+      </Typography>
+    </Stack>
+  );
 }

@@ -1,41 +1,32 @@
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import React, { forwardRef, useContext, useEffect } from 'react'
-import { useTranslation } from 'react-i18next';
+/* eslint-disable no-unused-vars */
+import React, {forwardRef, useContext, useEffect} from 'react';
+import {useTranslation} from 'react-i18next';
 
-import { ValidationHandleWithSave, StepProps } from '.'
-import { Loading } from '../../../shared/components/loading';
-import { MediaServer, MediaServerUdpBroadcast } from '../../../shared/models/mediaServer';
-import { WizardContext } from '../Context/WizardState';
-import { NewServerCard, ServerCard } from './Helpers';
+import {Grid, Stack, Typography} from '@mui/material';
 
-const useStyles = makeStyles(() => ({
-  result__container: {
-    minHeight: 115,
-  },
-}));
+import {EsLoading} from '../../../shared/components/esLoading';
+import {WizardContext} from '../../../shared/context/wizard/WizardState';
+import {MediaServer, MediaServerUdpBroadcast} from '../../../shared/models/mediaServer';
+import {StepProps, ValidationHandleWithSave} from '../Interfaces';
+import {NewServerCard, ServerCard} from './Helpers';
 
-export const SearchMediaServer = forwardRef<ValidationHandleWithSave, StepProps>((props, ref) => {
-  const { handleNext } = props;
-  const { t } = useTranslation();
-  const classes = useStyles();
-  const { wizard, getMediaServers, mediaServersLoading, setMediaServerNetworkInfo } = useContext(WizardContext);
+export const SearchMediaServer =
+forwardRef<ValidationHandleWithSave, StepProps>(function SearchMediaServer(props: StepProps, ref) {
+  // eslint-disable-next-line react/prop-types
+  const {handleNext} = props;
+  const {t} = useTranslation();
+  const {wizard, getMediaServers, mediaServersLoading, setMediaServerNetworkInfo} = useContext(WizardContext);
 
   useEffect(() => {
     getMediaServers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onServerCardClick = async (server: MediaServerUdpBroadcast) => {
+    const url = `http${server.protocol === 0 ? 's' : ''}://${server.address}:${server.port}${server.baseUrl ?? ''}`;
     const mediaServer: MediaServer = {
-      address: server.address,
-      baseUrl: server.baseUrl,
-      port: server.port,
-      protocol: server.protocol,
+      address: url,
       apiKey: '',
       type: server.type,
-      baseUrlNeeded: server.baseUrl !== null,
       name: server.name,
       id: server.id,
     };
@@ -44,42 +35,38 @@ export const SearchMediaServer = forwardRef<ValidationHandleWithSave, StepProps>
     if (handleNext !== undefined) {
       await handleNext();
     }
-  }
+  };
 
   const addNewServer = async () => {
     const mediaServer: MediaServer = {
       address: '',
-      baseUrl: '',
-      port: null,
-      protocol: 0,
       apiKey: '',
       type: 0,
-      baseUrlNeeded: false,
       name: '',
-      id: ''
+      id: '',
     };
 
     setMediaServerNetworkInfo(mediaServer);
     if (handleNext !== undefined) {
       await handleNext();
     }
-  }
+  };
 
   return (
-    <Grid container direction="column">
+    <Stack>
       <Typography variant="h4" color="primary">
         {t('WIZARD.SERVERCONFIGURATION')}
       </Typography>
-      <Loading
-        className={classes.result__container}
+      <EsLoading
         loading={mediaServersLoading}
-        label={t("WIZARD.SEARCHSERVERS")}
+        label={t('WIZARD.SEARCHSERVERS')}
+        width='100%'
+        height='200px'
       >
-        <Grid container direction="column" className={classes.result__container}>
-          <Typography variant="body1" className="m-b-32">
-            {t('WIZARD.FOUNDTEXT')}
+        <Grid container direction="column" sx={{minHeigt: 115}}>
+          <Typography variant="body1" sx={{mb: 3}}>
+            {wizard.foundServers.length > 0 ? t('WIZARD.FOUNDTEXT') : t('WIZARD.NOTFOUNDTEXT')}
           </Typography>
-
           <Grid item container direction="row" xs={12} spacing={2}>
             {wizard.foundServers.map((x: MediaServerUdpBroadcast) => (
               <ServerCard server={x} key={x.id} onClick={onServerCardClick} />
@@ -87,7 +74,7 @@ export const SearchMediaServer = forwardRef<ValidationHandleWithSave, StepProps>
             <NewServerCard onClick={addNewServer} />
           </Grid>
         </Grid>
-      </Loading>
-    </Grid>
-  )
-})
+      </EsLoading>
+    </Stack>
+  );
+});

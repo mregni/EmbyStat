@@ -1,10 +1,7 @@
 export interface MediaServerPlugin {
-  name: string;
-  configurationDateLastModified: Date | string;
-  version: string;
-  assemblyFileName: string;
-  configurationFileName: string;
-  description: string;
   id: string;
+  name: string;
+  version: string;
+  description: string;
   imageUrl: string;
 }

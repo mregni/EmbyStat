@@ -1,77 +1,49 @@
-import React, { useState } from 'react'
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles } from '@material-ui/core/styles';
-import { useTranslation } from 'react-i18next';
-import { useHistory, useLocation } from 'react-router';
-import { useForm } from 'react-hook-form';
-import classNames from "classnames";
-import { animated } from 'react-spring';
+import React, {useContext, useState} from 'react';
+import {useForm} from 'react-hook-form';
+import {useTranslation} from 'react-i18next';
+import {useNavigate} from 'react-router';
 
-import { LoginView } from '../../shared/models/login';
-import { login } from '../../shared/services/AccountService';
-import { EsTextInput } from '../../shared/components/esTextInput';
-import { EsButton } from '../../shared/components/buttons/EsButton';
+import {CircularProgress, Grid, Typography} from '@mui/material';
 
-const useStyles = makeStyles((theme) => ({
-  card__content: {
-    height: '100%',
-  },
-  input__padding: {
-    marginBottom: 30,
-  },
-  input__root: {
-    marginTop: 0,
-  },
-  error_message: {
-    color: theme.palette.error.main,
-    fontSize: '0.8rem',
-    lineHeight: '0.8rem',
-    marginTop: 10,
-    height: 20,
-  },
-  login__button: {
-    color: "#d3d3d3",
-  },
-  "forgot-password__button": {
-    color: theme.palette.primary.main,
-    fontSize: '0.8rem',
-    textDecoration: 'underline',
-    cursor: 'pointer',
-  }
-}));
+import {EsButton} from '../../shared/components/buttons';
+import {EsTextInput} from '../../shared/components/esTextInput';
+import {UserContext} from '../../shared/context/user';
+import {useEsLocation} from '../../shared/hooks';
 
 interface Props {
-  style: any,
   openForgotPasswordForm: () => void,
 };
 
-export const LoginForm = (props: Props) => {
-  const { style, openForgotPasswordForm } = props;
-  const classes = useStyles();
-  const history = useHistory();
-  const location = useLocation();
-  const { t } = useTranslation();
+export function LoginForm(props: Props) {
+  const {openForgotPasswordForm} = props;
+  const navigate = useNavigate();
+  const location = useEsLocation();
+  const {t} = useTranslation();
   const [failedLogin, setFailedLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const referer = location || '/';
+  const {login, isUserLoggedIn} = useContext(UserContext);
+
+  const from = location.state?.from?.pathname || '/';
 
   const loginUser = async () => {
     setFailedLogin(false);
     setIsLoading(true);
-    var { username, password } = getValues();
-    const result = await login({ username, password });
-    if (result) {
-      history.push(referer.pathname, { referer: { pathname: '/login' } });
-      return;
+    const {username, password} = getValues();
+    try {
+      await login(username, password);
+      if (await isUserLoggedIn()) {
+        navigate(from, {replace: true});
+        return;
+      }
+      setFailedLogin(true);
+    } catch {
+      setFailedLogin(true);
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
-    setFailedLogin(true);
   };
 
-  const { register, getValues } = useForm({
+  const {register, getValues} = useForm({
     mode: 'onBlur',
     defaultValues: {
       username: '',
@@ -83,50 +55,63 @@ export const LoginForm = (props: Props) => {
   const passwordRegister = register('password');
 
   return (
-    <animated.div style={{ ...style }}>
-      <Grid container
-        direction="column"
-        justify="flex-end"
-        alignItems="center"
-        spacing={1}
-        className={classes.card__content}
-      >
-        <Grid item container>
-          <EsTextInput
-            inputRef={usernameRegister}
-            label={t('SETTINGS.ACCOUNT.USERNAME')}
-            defaultValue={getValues('username')}
-          />
-        </Grid>
-        <Grid item container className={classNames({ [classes.input__padding]: !failedLogin })}>
-          <EsTextInput
-            inputRef={passwordRegister}
-            label={t('SETTINGS.ACCOUNT.PASSWORD')}
-            defaultValue={getValues('password')}
-            type="password"
-          />
-        </Grid>
-        {
-          failedLogin ? <Grid item className={classes.error_message}>{t('LOGIN.ERROR')}</Grid> : null
-        }
-        <Grid item className="p-b-8">
-          <Button variant="text" onClick={() => openForgotPasswordForm()} className={classes["forgot-password__button"]}>
-            {t('LOGIN.FORGOTPASSWORD')}
-          </Button>
-        </Grid>
-        <Grid item container>
-          <EsButton
-            onClick={loginUser}
-            disabled={isLoading}
-          >
-            {
-              isLoading
-                ? <CircularProgress size={21} className={classes.login__button} />
-                : t('LOGIN.LOGIN')
-            }
-          </EsButton>
+    <Grid
+      container
+      direction="column"
+      spacing={3}
+    >
+      <Grid item>
+        <Grid container direction="column" spacing={1} >
+          <Grid item>
+            <EsTextInput
+              inputRef={usernameRegister}
+              label={t('SETTINGS.ACCOUNT.USERNAME')}
+              defaultValue={getValues('username')}
+            />
+          </Grid>
+          <Grid item>
+            <EsTextInput
+              inputRef={passwordRegister}
+              label={t('SETTINGS.PASSWORD.PASSWORD')}
+              defaultValue={getValues('password')}
+              type="password"
+            />
+          </Grid>
         </Grid>
       </Grid>
-    </animated.div>
-  )
+      <Grid item>
+        <Grid container spacing={1} direction="column" alignItems="center">
+          <Grid item
+            sx={{
+              marginBottom: failedLogin ? 0 : '23px',
+            }}>
+            <Typography variant="body1" color="error">{failedLogin ? t('LOGIN.ERROR') : null}</Typography>
+          </Grid>
+          <Grid item container direction="row" justifyContent="space-between">
+            <Grid item>
+              <EsButton
+                variant="text"
+                onClick={() => openForgotPasswordForm()}
+                color="secondary"
+              >
+                {t('LOGIN.RECOVERPASSWORD')}
+              </EsButton>
+            </Grid>
+            <Grid item>
+              <EsButton
+                onClick={loginUser}
+                disabled={isLoading}
+              >
+                {
+                  isLoading ?
+                    <CircularProgress size={21} sx={{color: '#d3d3d3'}} /> :
+                    t('LOGIN.LOGIN')
+                }
+              </EsButton>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
+  );
 }

@@ -1,12 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Entities.Movies;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Repositories.Interfaces;
 using EmbyStat.Services.Abstract;
@@ -17,147 +18,127 @@ using EmbyStat.Services.Models.Charts;
 using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Movie;
 using EmbyStat.Services.Models.Stat;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using ValueType = EmbyStat.Services.Models.Cards.ValueType;
 
-namespace EmbyStat.Services
+namespace EmbyStat.Services;
+
+public class MovieService : MediaService, IMovieService
 {
-    public class MovieService : MediaService, IMovieService
+    private readonly IMovieRepository _movieRepository;
+    private readonly ISettingsService _settingsService;
+    private readonly IStatisticsRepository _statisticsRepository;
+    private readonly IMediaServerRepository _mediaServerRepository;
+
+    public MovieService(IMovieRepository movieRepository,
+        ISettingsService settingsService, IStatisticsRepository statisticsRepository,
+        IJobRepository jobRepository, IMediaServerRepository mediaServerRepository,
+        ILogger<MovieService> logger) 
+        : base(jobRepository, logger)
     {
-        private readonly IMovieRepository _movieRepository;
-        private readonly ILibraryRepository _libraryRepository;
-        private readonly ISettingsService _settingsService;
-        private readonly IStatisticsRepository _statisticsRepository;
+        _movieRepository = movieRepository;
+        _settingsService = settingsService;
+        _statisticsRepository = statisticsRepository;
+        _mediaServerRepository = mediaServerRepository;
+    }
 
-        public MovieService(IMovieRepository movieRepository, ILibraryRepository libraryRepository,
-            IPersonService personService, ISettingsService settingsService,
-            IStatisticsRepository statisticsRepository, IJobRepository jobRepository) : base(jobRepository, personService)
+    public Task<List<Library>> GetMovieLibraries()
+    {
+        return _mediaServerRepository.GetAllLibraries(LibraryType.Movies);
+    }
+
+    public async Task<MovieStatistics> GetStatistics()
+    {
+        var statistic = await _statisticsRepository.GetLastResultByType(StatisticType.Movie);
+
+        MovieStatistics statistics;
+        if (StatisticsAreValid(statistic, Constants.JobIds.MovieSyncId))
         {
-            _movieRepository = movieRepository;
-            _libraryRepository = libraryRepository;
-            _settingsService = settingsService;
-            _statisticsRepository = statisticsRepository;
-        }
+            statistics = JsonConvert.DeserializeObject<MovieStatistics>(statistic.JsonResult);
 
-        public IEnumerable<Library> GetMovieLibraries()
-        {
-            var settings = _settingsService.GetUserSettings();
-            return _libraryRepository.GetLibrariesById(settings.MovieLibraries);
-        }
-
-        public MovieStatistics GetStatistics(List<string> libraryIds)
-        {
-            var statistic = _statisticsRepository.GetLastResultByType(StatisticType.Movie, libraryIds);
-
-            MovieStatistics statistics;
-            if (StatisticsAreValid(statistic, libraryIds, Constants.JobIds.MovieSyncId))
+            if (!_settingsService.GetUserSettings().ToShortMovieEnabled
+                && (statistics?.Shorts.Any() ?? false))
             {
-                statistics = JsonConvert.DeserializeObject<MovieStatistics>(statistic.JsonResult);
-
-                if (!_settingsService.GetUserSettings().ToShortMovieEnabled && statistics.Shorts.Any())
-                {
-                    statistics.Shorts = new List<ShortMovie>(0);
-                }
+                statistics.Shorts = new List<ShortMovie>(0);
             }
-            else
-            {
-                statistics = CalculateMovieStatistics(libraryIds);
-            }
-
-            return statistics;
+        }
+        else
+        {
+            statistics = await CalculateMovieStatistics();
         }
 
-        public MovieStatistics CalculateMovieStatistics(List<string> libraryIds)
+        return statistics;
+    }
+
+    public async Task<MovieStatistics> CalculateMovieStatistics()
+    {
+        var statistics = new MovieStatistics();
+
+        statistics.Cards = await CalculateCards();
+        statistics.TopCards = await CalculateTopCards();
+        statistics.Charts = await CalculateCharts();
+        statistics.Shorts = CalculateShorts();
+        statistics.NoImdb = CalculateNoImdbs();
+        statistics.NoPrimary = CalculateNoPrimary();
+
+        var json = JsonConvert.SerializeObject(statistics);
+        await _statisticsRepository.ReplaceStatistic(json, DateTime.UtcNow, StatisticType.Movie);
+
+        return statistics;
+    }
+
+    public bool TypeIsPresent()
+    {
+        return _movieRepository.Any();
+    }
+
+    public async Task<Page<Movie>> GetMoviePage(int skip, int take, string sortField, string sortOrder,
+        Filter[] filters, bool requireTotalCount)
+    {
+        var list = await _movieRepository
+            .GetMoviePage(skip, take, sortField, sortOrder, filters);
+
+        var page = new Page<Movie>(list);
+        if (requireTotalCount)
         {
-            var statistics = new MovieStatistics
-            {
-                Cards = CalculateCards(libraryIds),
-                TopCards = CalculateTopCards(libraryIds),
-                Charts = CalculateCharts(libraryIds),
-                People = CalculatePeopleStatistics(libraryIds),
-                Shorts = CalculateShorts(libraryIds),
-                NoImdb = CalculateNoImdbs(libraryIds),
-                NoPrimary = CalculateNoPrimary(libraryIds),
-            };
-
-            var json = JsonConvert.SerializeObject(statistics);
-            _statisticsRepository.AddStatistic(json, DateTime.UtcNow, StatisticType.Movie, libraryIds);
-
-            return statistics;
+            page.TotalCount = await _movieRepository.Count(filters);
         }
 
-        public MovieStatistics CalculateMovieStatistics(string libraryId)
+        return page;
+    }
+
+    public Task<Movie> GetMovie(string id)
+    {
+        return _movieRepository.GetById(id);
+    }
+
+    public Task SetLibraryAsSynced(string[] libraryIds)
+    {
+        return _mediaServerRepository.SetLibraryAsSynced(libraryIds, LibraryType.Movies);
+    }
+
+    #region Cards
+
+    private async Task<List<Card<string>>> CalculateCards()
+    {
+        var list = new List<Card<string>>();
+        list.AddIfNotNull(await CalculateTotalMovieCount());
+        list.AddIfNotNull(await CalculateTotalMovieGenres());
+        list.AddIfNotNull(CalculateTotalPlayLength());
+        list.AddIfNotNull(CalculateTotalDiskSpace());
+        list.AddIfNotNull(TotalPersonTypeCount(PersonType.Actor, Constants.Common.TotalActors));
+        list.AddIfNotNull(TotalPersonTypeCount(PersonType.Director, Constants.Common.TotalDirectors));
+        list.AddIfNotNull(TotalPersonTypeCount(PersonType.Writer, Constants.Common.TotalWriters));
+
+        return list;
+    }
+
+    private Task<Card<string>> CalculateTotalMovieCount()
+    {
+        return CalculateStat(async () =>
         {
-            return CalculateMovieStatistics(new List<string> { libraryId });
-        }
-
-        public bool TypeIsPresent()
-        {
-            return _movieRepository.Any();
-        }
-        public Page<MovieRow> GetMoviePage(int skip, int take, string sortField, string sortOrder, Filter[] filters, bool requireTotalCount, List<string> libraryIds)
-        {
-            var list = _movieRepository
-                .GetMoviePage(skip, take, sortField, sortOrder, filters, libraryIds)
-                .Select(x => new MovieRow
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    AudioLanguages = x.AudioStreams.Select(y => y.Language).ToArray(),
-                    Banner = x.Banner,
-                    CommunityRating = x.CommunityRating,
-                    Container = x.Container,
-                    Genres = x.Genres,
-                    IMDB = x.IMDB,
-                    TVDB = x.TVDB,
-                    Logo = x.Logo,
-                    OfficialRating = x.OfficialRating,
-                    Path = x.Path,
-                    PremiereDate = x.PremiereDate,
-                    Primary = x.Primary,
-                    RunTime = Math.Round((decimal)(x.RunTimeTicks ?? 0) / 600000000),
-                    SortName = x.SortName,
-                    Subtitles = x.SubtitleStreams.Select(y => y.Language).ToArray(),
-                    TMDB = x.TMDB,
-                    Thumb = x.Thumb,
-                    Height = x.VideoStreams.FirstOrDefault()?.Height,
-                    Width = x.VideoStreams.FirstOrDefault()?.Width,
-                    SizeInMb = x.MediaSources.FirstOrDefault()?.SizeInMb ?? 0,
-                    BitRate = Math.Round((x.VideoStreams.FirstOrDefault()?.BitRate ?? 0d) / 1048576, 2),
-                    Codec = x.VideoStreams.FirstOrDefault()?.Codec,
-                    BitDepth = x.VideoStreams.FirstOrDefault()?.BitDepth,
-                    VideoRange = x.VideoStreams.FirstOrDefault()?.VideoRange
-                });
-
-            var page = new Page<MovieRow> { Data = list };
-            if (requireTotalCount)
-            {
-                page.TotalCount = _movieRepository.GetMediaCount(filters, libraryIds);
-            }
-
-            return page;
-        }
-
-        public Movie GetMovie(string id)
-        {
-            return _movieRepository.GetMovieById(id);
-        }
-
-        #region Cards
-
-        private List<Card<string>> CalculateCards(IReadOnlyList<string> libraryIds)
-        {
-            return new List<Card<string>>
-            {
-                CalculateTotalMovieCount(libraryIds),
-                CalculateTotalMovieGenres(libraryIds),
-                CalculateTotalPlayLength(libraryIds),
-                CalculateTotalDiskSize(libraryIds),
-            };
-        }
-
-        private Card<string> CalculateTotalMovieCount(IReadOnlyList<string> libraryIds)
-        {
-            var count = _movieRepository.GetMediaCount(libraryIds);
+            var count = await _movieRepository.Count();
             return new Card<string>
             {
                 Title = Constants.Movies.TotalMovies,
@@ -165,11 +146,14 @@ namespace EmbyStat.Services
                 Type = CardType.Text,
                 Icon = Constants.Icons.TheatersRoundedIcon
             };
-        }
+        }, "Calculate total movie count failed:");
+    }
 
-        private Card<string> CalculateTotalMovieGenres(IReadOnlyList<string> libraryIds)
+    private Task<Card<string>> CalculateTotalMovieGenres()
+    {
+        return CalculateStat(async () =>
         {
-            var totalGenres = _movieRepository.GetGenreCount(libraryIds);
+            var totalGenres = await _movieRepository.GetGenreCount();
             return new Card<string>
             {
                 Title = Constants.Common.TotalGenres,
@@ -177,11 +161,14 @@ namespace EmbyStat.Services
                 Type = CardType.Text,
                 Icon = Constants.Icons.PoundRoundedIcon
             };
-        }
+        }, "Calculate total movie genres failed:");
+    }
 
-        private Card<string> CalculateTotalPlayLength(IReadOnlyList<string> libraryIds)
+    private Card<string> CalculateTotalPlayLength()
+    {
+        return CalculateStat(() =>
         {
-            var playLengthTicks = _movieRepository.GetTotalRuntime(libraryIds);
+            var playLengthTicks = _movieRepository.GetTotalRuntime() ?? 0;
             var playLength = new TimeSpan(playLengthTicks);
 
             return new Card<string>
@@ -191,201 +178,29 @@ namespace EmbyStat.Services
                 Type = CardType.Time,
                 Icon = Constants.Icons.QueryBuilderRoundedIcon
             };
-        }
+        }, "Calculate total movie play length failed:");
+    }
 
-        protected Card<string> CalculateTotalDiskSize(IReadOnlyList<string> libraryIds)
+    private Card<string> CalculateTotalDiskSpace()
+    {
+        return CalculateStat(() =>
         {
-            var sum = _movieRepository.GetTotalDiskSize(libraryIds);
+            var sum = _movieRepository.GetTotalDiskSpace();
             return new Card<string>
             {
                 Value = sum.ToString(CultureInfo.InvariantCulture),
-                Title = Constants.Common.TotalDiskSize,
+                Title = Constants.Common.TotalDiskSpace,
                 Type = CardType.Size,
                 Icon = Constants.Icons.StorageRoundedIcon
             };
-        }
+        }, "Calculate total movie disk space failed:");
+    }
 
-        #endregion
-
-        #region TopCards
-
-        private List<TopCard> CalculateTopCards(IReadOnlyList<string> libraryIds)
+    private Card<string> TotalPersonTypeCount(PersonType type, string title)
+    {
+        return CalculateStat(() =>
         {
-            var list = new List<TopCard>();
-            var highestRatedMovie = HighestRatedMovie(libraryIds);
-            list.AddIfNotNull(highestRatedMovie);
-
-            var lowestRatedMovie = LowestRatedMovie(libraryIds);
-            list.AddIfNotNull(lowestRatedMovie);
-
-            var oldestPremieredMovie = OldestPremieredMovie(libraryIds);
-            list.AddIfNotNull(oldestPremieredMovie);
-
-            var newestPremieredMovie = NewestPremieredMovie(libraryIds);
-            list.AddIfNotNull(newestPremieredMovie);
-
-            var shortestMovie = ShortestMovie(libraryIds);
-            list.AddIfNotNull(shortestMovie);
-
-            var longestMovie = LongestMovie(libraryIds);
-            list.AddIfNotNull(longestMovie);
-
-            var latestAddedMovie = LatestAddedMovie(libraryIds);
-            list.AddIfNotNull(latestAddedMovie);
-
-            return list;
-        }
-
-        private TopCard HighestRatedMovie(IReadOnlyList<string> libraryIds)
-        {
-            var list = _movieRepository.GetHighestRatedMedia(libraryIds, 5).ToArray();
-
-            return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Movies.HighestRated, "/10", "CommunityRating", false)
-                : null;
-        }
-
-        private TopCard LowestRatedMovie(IReadOnlyList<string> libraryIds)
-        {
-            var list = _movieRepository.GetLowestRatedMedia(libraryIds, 5).ToArray();
-
-            return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Movies.LowestRated, "/10", "CommunityRating", false)
-                : null;
-        }
-
-
-        private TopCard OldestPremieredMovie(IReadOnlyList<string> libraryIds)
-        {
-            var list = _movieRepository.GetOldestPremieredMedia(libraryIds, 5).ToArray();
-
-            return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Movies.OldestPremiered, "COMMON.DATE", "PremiereDate", ValueTypeEnum.Date)
-                : null;
-        }
-
-        private TopCard NewestPremieredMovie(IReadOnlyList<string> libraryIds)
-        {
-            var list = _movieRepository.GetNewestPremieredMedia(libraryIds, 5).ToArray();
-
-            return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Movies.NewestPremiered, "COMMON.DATE", "PremiereDate", ValueTypeEnum.Date)
-                : null;
-        }
-
-        private TopCard ShortestMovie(IReadOnlyList<string> libraryIds)
-        {
-            var settings = _settingsService.GetUserSettings();
-            var toShortMovieTicks = TimeSpan.FromMinutes(settings.ToShortMovie).Ticks;
-            var list = _movieRepository.GetShortestMovie(libraryIds, toShortMovieTicks, 5).ToArray();
-
-            return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Movies.Shortest, "COMMON.MIN", "RunTimeTicks", ValueTypeEnum.Ticks)
-                : null;
-        }
-
-        private TopCard LongestMovie(IReadOnlyList<string> libraryIds)
-        {
-            var list = _movieRepository.GetLongestMovie(libraryIds, 5).ToArray();
-
-            return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Movies.Longest, "COMMON.MIN", "RunTimeTicks", ValueTypeEnum.Ticks)
-                : null;
-        }
-
-        private TopCard LatestAddedMovie(IReadOnlyList<string> libraryIds)
-        {
-            var list = _movieRepository.GetLatestAddedMedia(libraryIds, 5).ToArray();
-
-            return list.Length > 0
-                ? list.ConvertToTopCard(Constants.Movies.LatestAdded, "COMMON.DATE", "DateCreated", ValueTypeEnum.Date)
-                : null;
-        }
-
-        #endregion
-
-        #region Charts
-
-        private List<Chart> CalculateCharts(IReadOnlyList<string> libraryIds)
-        {
-            var movies = _movieRepository.GetAll(libraryIds);
-            return new List<Chart>
-            {
-                CalculateGenreChart(movies),
-                CalculateRatingChart(movies.Select(x => x.CommunityRating)),
-                CalculatePremiereYearChart(movies.Select(x => x.PremiereDate)),
-                CalculateOfficialRatingChart(movies)
-            };
-        }
-
-        private Chart CalculateOfficialRatingChart(IEnumerable<Movie> movies)
-        {
-            var ratingData = movies
-                .Where(x => !string.IsNullOrWhiteSpace(x.OfficialRating))
-                .GroupBy(x => x.OfficialRating.ToUpper())
-                .Select(x => new { Label = x.Key, Val0 = x.Count() })
-                .OrderBy(x => x.Label)
-                .ToList();
-
-            return new Chart
-            {
-                Title = Constants.CountPerOfficialRating,
-                DataSets = JsonConvert.SerializeObject(ratingData),
-                SeriesCount = 1
-            };
-        }
-
-        #endregion
-
-        #region People
-
-        public PersonStats CalculatePeopleStatistics(IReadOnlyList<string> libraryIds)
-        {
-            var returnObj = new PersonStats();
-            try
-            {
-                returnObj.Cards = new List<Card<string>>
-                {
-                    TotalTypeCount(libraryIds, PersonType.Actor, Constants.Common.TotalActors),
-                    TotalTypeCount(libraryIds, PersonType.Director, Constants.Common.TotalDirectors),
-                    TotalTypeCount(libraryIds, PersonType.Writer, Constants.Common.TotalWriters),
-                };
-
-                returnObj.GlobalCards = new List<TopCard>();
-
-                var mostFeaturedActor = GetMostFeaturedPersonAsync(libraryIds, PersonType.Actor, Constants.Common.MostFeaturedActor);
-                if (mostFeaturedActor != null)
-                {
-                    returnObj.GlobalCards.Add(mostFeaturedActor);
-                }
-
-                var mostFeaturedDirector = GetMostFeaturedPersonAsync(libraryIds, PersonType.Director, Constants.Common.MostFeaturedDirector);
-                if (mostFeaturedDirector != null)
-                {
-                    returnObj.GlobalCards.Add(mostFeaturedDirector);
-                }
-
-                var mostFeaturedWriter = GetMostFeaturedPersonAsync(libraryIds, PersonType.Writer, Constants.Common.MostFeaturedWriter);
-                if (mostFeaturedWriter != null)
-                {
-                    returnObj.GlobalCards.Add(mostFeaturedWriter);
-                }
-
-                returnObj.MostFeaturedActorsPerGenreCards = GetMostFeaturedActorsPerGenreAsync(libraryIds);
-
-                return returnObj;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-
-
-        private Card<string> TotalTypeCount(IReadOnlyList<string> libraryIds, PersonType type, string title)
-        {
-            var value = _movieRepository.GetPeopleCount(libraryIds, type);
+            var value = _movieRepository.GetPeopleCount(type);
             return new Card<string>
             {
                 Value = value.ToString(),
@@ -393,95 +208,209 @@ namespace EmbyStat.Services
                 Icon = Constants.Icons.PeopleAltRoundedIcon,
                 Type = CardType.Text
             };
-        }
+        }, $"Calculate total {type} count failed:");
+    }
 
-        private TopCard GetMostFeaturedPersonAsync(IReadOnlyList<string> libraryIds, PersonType type, string title)
+    #endregion
+
+    #region TopCards
+
+    private async Task<List<TopCard>> CalculateTopCards()
+    {
+        var list = new List<TopCard>();
+        list.AddIfNotNull(await HighestRatedMovie());
+        list.AddIfNotNull(await LowestRatedMovie());
+        list.AddIfNotNull(await OldestPremieredMovie());
+        list.AddIfNotNull(await NewestPremieredMovie());
+        list.AddIfNotNull(ShortestMovie());
+        list.AddIfNotNull(LongestMovie());
+        list.AddIfNotNull(LatestAddedMovie());
+        return list;
+    }
+
+    private Task<TopCard> HighestRatedMovie()
+    {
+        return CalculateStat(async () =>
         {
-            var people = _movieRepository
-                    .GetMostFeaturedPersons(libraryIds, type, 5)
-                    .Select(name => PersonService.GetPersonByNameForMovies(name))
-                    .Where(x => x != null)
-                    .ToArray();
+            var data = await _movieRepository.GetHighestRatedMedia(5);
+            var list = data.ToArray();
+            return list.Length > 0
+                ? list.ConvertToTopCard(Constants.Movies.HighestRated, "/10", "CommunityRating", false)
+                : null;
+        }, "Calculate highest rated movies failed:");
+    }
 
-            return people.ConvertToTopCard(title, string.Empty, "MovieCount");
-
-        }
-
-        private List<TopCard> GetMostFeaturedActorsPerGenreAsync(IReadOnlyList<string> libraryIds)
+    private Task<TopCard> LowestRatedMovie()
+    {
+        return CalculateStat(async () =>
         {
-            var movies = _movieRepository.GetAll(libraryIds);
-            return GetMostFeaturedActorsPerGenre(movies, 5, "MovieCount");
-        }
+            var data = await _movieRepository.GetLowestRatedMedia(5);
+            var list = data.ToArray();
+            return list.Length > 0
+                ? list.ConvertToTopCard(Constants.Movies.LowestRated, "/10", "CommunityRating", false)
+                : null;
+        }, "Calculate oldest premiered movies failed:");
+    }
 
-        private List<TopCard> GetMostFeaturedActorsPerGenre(IReadOnlyList<Extra> media, int count, string valueSelector)
+    private Task<TopCard> OldestPremieredMovie()
+    {
+        return CalculateStat(async () =>
         {
-            var list = new List<TopCard>();
-            foreach (var genre in media.SelectMany(x => x.Genres).Distinct().OrderBy(x => x))
-            {
-                var selectedMovies = media.Where(x => x.Genres.Any(y => y == genre));
-                var people = selectedMovies
-                    .SelectMany(x => x.People)
-                    .Where(x => x.Type == PersonType.Actor)
-                    .GroupBy(x => x.Name, (name, p) => new { Name = name, Count = p.Count() })
-                    .OrderByDescending(x => x.Count)
-                    .Select(x => x.Name)
-                    .Select(name => PersonService.GetPersonByNameForMovies(name, genre))
-                    .Where(x => x != null)
-                    .Take(count * 4)
-                    .ToArray();
+            var data = await _movieRepository.GetOldestPremieredMedia(5);
+            var list = data.ToArray();
+            return list.Length > 0
+                ? list.ConvertToTopCard(Constants.Movies.OldestPremiered, "COMMON.DATE", "PremiereDate",
+                    ValueType.Date)
+                : null;
+        }, "Calculate oldest premiered movies failed:");
+    }
 
-                list.Add(people.ConvertToTopCard(genre, string.Empty, valueSelector));
-            }
+    private Task<TopCard> NewestPremieredMovie()
+    {
+        return CalculateStat(async () =>
+        {
+            var data = await _movieRepository.GetNewestPremieredMedia(5);
+            var list = data.ToArray();
+            return list.Length > 0
+                ? list.ConvertToTopCard(Constants.Movies.NewestPremiered, "COMMON.DATE", "PremiereDate",
+                    ValueType.Date)
+                : null;
+        }, "Calculate newest premiered movies failed:");
+    }
 
-            return list.Where(x => x != null).ToList();
-        }
-
-        #endregion
-
-        #region Suspicious
-
-        private IEnumerable<ShortMovie> CalculateShorts(IReadOnlyList<string> libraryIds)
+    private TopCard ShortestMovie()
+    {
+        return CalculateStat(() =>
         {
             var settings = _settingsService.GetUserSettings();
-            if (!settings.ToShortMovieEnabled)
-            {
-                return new List<ShortMovie>(0);
-            }
+            var toShortMovieTicks = TimeSpan.FromMinutes(settings.ToShortMovie).Ticks;
+            var list = _movieRepository.GetShortestMovie(toShortMovieTicks, 5).ToArray();
+            return list.Length > 0
+                ? list.ConvertToTopCard(Constants.Movies.Shortest, "COMMON.MIN", "RunTimeTicks",
+                    ValueType.Ticks)
+                : null;
+        }, "Calculate shortest movies failed:");
+    }
 
-            var shortMovies = _movieRepository.GetToShortMovieList(libraryIds, settings.ToShortMovie);
-            return shortMovies.Select((t, i) => new ShortMovie
+    private TopCard LongestMovie()
+    {
+        return CalculateStat(() =>
+        {
+            var list = _movieRepository.GetLongestMovie(5).ToArray();
+            return list.Length > 0
+                ? list.ConvertToTopCard(Constants.Movies.Longest, "COMMON.MIN", "RunTimeTicks", ValueType.Ticks)
+                : null;
+        }, "Calculate longest movies failed:");
+    }
+
+    private TopCard LatestAddedMovie()
+    {
+        return CalculateStat(() =>
+        {
+            var list = _movieRepository.GetLatestAddedMedia(5).ToArray();
+            return list.Length > 0
+                ? list.ConvertToTopCard(Constants.Movies.LatestAdded, "COMMON.DATE", "DateCreated",
+                    ValueType.Date)
+                : null;
+        }, "Calculate latest added movies failed:");
+    }
+
+    #endregion
+
+    #region Charts
+
+    private async Task<List<Chart>> CalculateCharts()
+    {
+        var list = new List<Chart>();
+        list.AddIfNotNull(await CalculateGenreChart());
+        list.AddIfNotNull(CalculateRatingChart());
+        list.AddIfNotNull(CalculatePremiereYearChart());
+        list.AddIfNotNull(await CalculateOfficialRatingChart());
+
+        return list;
+    }
+
+    private Task<Chart> CalculateGenreChart()
+    {
+        return CalculateStat(async () =>
+        {
+            var genres = await _movieRepository.GetGenreChartValues();
+            return CreateGenreChart(genres);
+        }, "Calculate genre chart failed:");
+    }
+
+    private Chart CalculateRatingChart()
+    {
+        return CalculateStat(() =>
+        {
+            var items = _movieRepository.GetCommunityRatings();
+            return CreateRatingChart(items);
+        }, "Calculate rating chart failed:");
+    }
+
+    private Chart CalculatePremiereYearChart()
+    {
+        return CalculateStat(() =>
+        {
+            var yearDataList = _movieRepository.GetPremiereYears();
+            return CalculatePremiereYearChart(yearDataList);
+        }, "Calculate premiered year chart failed:");
+    }
+
+    private Task<Chart> CalculateOfficialRatingChart()
+    {
+        return CalculateStat(async () =>
+        {
+            var ratings = await _movieRepository.GetOfficialRatingChartValues();
+            return CalculateOfficialRatingChart(ratings);
+        }, "Calculate official movie rating chart failed:");
+    }
+
+    #endregion
+
+    #region Suspicious
+
+    private IEnumerable<ShortMovie> CalculateShorts()
+    {
+        var settings = _settingsService.GetUserSettings();
+        if (!settings.ToShortMovieEnabled)
+        {
+            return new List<ShortMovie>(0);
+        }
+
+        var shortMovies = _movieRepository.GetToShortMovieList(settings.ToShortMovie);
+        return shortMovies.Select((t, i) => new ShortMovie
+        {
+            Number = i,
+            Duration = Math.Floor(new TimeSpan(t.RunTimeTicks ?? 0).TotalMinutes),
+            Title = t.Name,
+            MediaId = t.Id
+        }).ToList();
+    }
+
+    private IEnumerable<SuspiciousMovie> CalculateNoImdbs()
+    {
+        var moviesWithoutImdbId = _movieRepository.GetMoviesWithoutImdbId();
+        return moviesWithoutImdbId
+            .Select((t, i) => new SuspiciousMovie
             {
                 Number = i,
-                Duration = Math.Floor(new TimeSpan(t.RunTimeTicks ?? 0).TotalMinutes),
                 Title = t.Name,
                 MediaId = t.Id
-            }).ToList();
-        }
+            });
+    }
 
-        private IEnumerable<SuspiciousMovie> CalculateNoImdbs(IReadOnlyList<string> libraryIds)
-        {
-            var moviesWithoutImdbId = _movieRepository.GetMoviesWithoutImdbId(libraryIds);
-            return moviesWithoutImdbId
-                .Select((t, i) => new SuspiciousMovie
-                {
-                    Number = i,
-                    Title = t.Name,
-                    MediaId = t.Id
-                });
-        }
-
-        private IEnumerable<SuspiciousMovie> CalculateNoPrimary(IReadOnlyList<string> libraryIds)
-        {
-            var noPrimaryImageMovies = _movieRepository.GetMoviesWithoutPrimaryImage(libraryIds);
-            return noPrimaryImageMovies.Select((t, i) => new SuspiciousMovie
+    private IEnumerable<SuspiciousMovie> CalculateNoPrimary()
+    {
+        var noPrimaryImageMovies = _movieRepository.GetMoviesWithoutPrimaryImage();
+        return noPrimaryImageMovies.Select((t, i) => new SuspiciousMovie
             {
                 Number = i,
                 Title = t.Name,
                 MediaId = t.Id
             })
             .ToList();
-        }
-
-        #endregion
     }
+
+    #endregion
 }

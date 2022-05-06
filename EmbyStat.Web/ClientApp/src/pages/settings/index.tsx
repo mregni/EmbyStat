@@ -1,3 +1,4 @@
-export * from './GeneralSettings/GeneralSettings';
-export * from './MovieSettings/MovieSettings';
-export * from './ShowSettings/ShowSettings';
+export * from './Settings';
+export * from './Server';
+export * from './Shows';
+export * from './Movies';

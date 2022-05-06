@@ -1,12 +1,9 @@
 jobs:
 - job: win_docker_container
-  dependsOn: main_build
   displayName: 'Create Windows docker build'
-  pool:
-    name: Hosted Windows 2019 with VS2019
   variables:
-    GitVersion.AssemblySemVer: $[ dependencies.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
-    GitVersion.SemVer: $[ dependencies.main_build.outputs['setSemVer.SemVer'] ]
+    GitVersion.AssemblySemVer: $[stageDependencies.test_stage.main_build.outputs['setAssemblySemVer.AssemblySemVer'] ]
+    GitVersion.SemVer: $[stageDependencies.test_stage.main_build.outputs['setSemVer.SemVer'] ]
   steps:
   - template: '../templates/update.version.yml'
   
@@ -45,4 +42,4 @@ jobs:
     displayName: 'Publish Windows Docker Artifact'
     inputs:
       PathtoPublish: 'publish'
-      ArtifactName: 'EmbyStat-docker-win-v$(GitVersion.SemVer)'
+      ArtifactName: 'EmbyStat-docker-$(package.win10-x64)-v$(Build.BuildNumber)'

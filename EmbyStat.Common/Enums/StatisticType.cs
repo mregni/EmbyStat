@@ -1,9 +1,8 @@
-﻿namespace EmbyStat.Common.Enums
+﻿namespace EmbyStat.Common.Enums;
+
+public enum StatisticType
 {
-    public enum StatisticType
-    {
-        Movie = 0,
-        Show = 1,
-        ShowCollectedRows = 2
-    }
+    Movie = 0,
+    Show = 1,
+    User = 2
 }

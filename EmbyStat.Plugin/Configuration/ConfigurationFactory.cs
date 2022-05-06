@@ -1,20 +1,19 @@
 ﻿using System.Collections.Generic;
 using MediaBrowser.Common.Configuration;
 
-namespace EmbyStat.Plugin.Configuration
+namespace EmbyStat.Plugin.Configuration;
+
+public class ConfigurationFactory : IConfigurationFactory
 {
-    public class ConfigurationFactory : IConfigurationFactory
+    public IEnumerable<ConfigurationStore> GetConfigurations()
     {
-        public IEnumerable<ConfigurationStore> GetConfigurations()
+        return new[]
         {
-            return new[]
+            new ConfigurationStore
             {
-                    new ConfigurationStore
-                    {
-                        ConfigurationType = typeof(EmbyStatConfiguration),
-                        Key = "embystat"
-                    }
-                };
-        }
+                ConfigurationType = typeof(EmbyStatConfiguration),
+                Key = "embystat"
+            }
+        };
     }
 }

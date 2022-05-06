@@ -1,75 +1,61 @@
-﻿using System;
+﻿using System.Threading.Tasks;
+using AutoMapper;
+using EmbyStat.Clients.Base.Api;
+using EmbyStat.Clients.Base.Http;
 using EmbyStat.Clients.Emby.Http;
-using EmbyStat.Common.Net;
+using EmbyStat.Controllers;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Moq;
-using RestSharp;
-using RestSharp.Serialization;
 using Xunit;
 
-namespace Tests.Unit.Clients
+namespace Tests.Unit.Clients;
+
+public class EmbyHttpClientTests
 {
-    public class EmbyHttpClientTests
+    private readonly Mock<IMediaServerApi> _restClientMock;
+    private readonly EmbyBaseHttpClient _service;
+    private readonly Mock<IRefitHttpClientFactory<IMediaServerApi>> _factoryMock;
+    private readonly string _authorizationParameter;
+
+    public EmbyHttpClientTests()
     {
-        private Mock<IRestClient> _restClientMock;
-        private IRestRequest _usedRequest;
-        private EmbyHttpClient CreateClient<T>(T returnObject) where T : new()
-        {
-            var response = new RestResponse<T> { Data = returnObject };
-            
-            _restClientMock = new Mock<IRestClient>();
-            _restClientMock.Setup(x => x.Execute<T>(It.IsAny<IRestRequest>()))
-                .Callback<IRestRequest>((request) =>
-                {
-                    _usedRequest = request;
-                })
-                .Returns(response);
-            _restClientMock.Setup(x => x.UseSerializer(It.IsAny<JsonNetSerializer>));
-            var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
+        _restClientMock = new Mock<IMediaServerApi>();
+        _restClientMock
+            .Setup(x => x.Ping(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync("Emby Server");
 
-            return new EmbyHttpClient(_restClientMock.Object, httpContextAccessorMock.Object);
-        }
+        _factoryMock = new Mock<IRefitHttpClientFactory<IMediaServerApi>>();
+        _factoryMock
+            .Setup(x => x.CreateClient(It.IsAny<string>()))
+            .Returns(_restClientMock.Object);
 
-        private EmbyHttpClient CreateStringClient(string returnObject)
-        {
-            var response = new RestResponse { Content = returnObject };
+        var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new MapProfiles()); });
+        var mapper = mappingConfig.CreateMapper();
 
-            _restClientMock = new Mock<IRestClient>();
-            _restClientMock.Setup(x => x.Execute(It.IsAny<IRestRequest>()))
-                .Callback<IRestRequest>((request) =>
-                {
-                    _usedRequest = request;
-                })
-                .Returns(response);
-            _restClientMock.Setup(x => x.UseSerializer(It.IsAny<JsonNetSerializer>));
-            var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
+        var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
+        var logger = new Mock<ILogger<EmbyBaseHttpClient>>();
+        _service = new EmbyBaseHttpClient(httpContextAccessorMock.Object,logger.Object, _factoryMock.Object, mapper);
 
-            return new EmbyHttpClient(_restClientMock.Object, httpContextAccessorMock.Object);
-        }
+        _service.SetDeviceInfo("embystat", "mediabrowser", "0", "c",
+            "fa89fb6c-f3b7-4cc5-bc17-9522e3b94246");
+        _service.BaseUrl = "localhost:9000";
+        _service.ApiKey = "apikey";
+        _authorizationParameter =
+            "mediabrowser RestClient=\"other\", DeviceId=\"c\", Device=\"embystat\", Version=\"0\"";
+    }
 
-        [Fact]
-        public void PingEmby_Should_Return_Emby_String()
-        {
-            var client = CreateStringClient("Emby Server");
-            var result = client.Ping();
+    [Fact]
+    public async Task Ping_Should_Be_A_Success()
+    {
+        var result = await _service.Ping();
+        result.Should().BeTrue();
 
-            result.Should().Be(true);
-        }
+        _restClientMock.Verify(x => x.Ping(_service.ApiKey, _authorizationParameter));
+        _restClientMock.VerifyNoOtherCalls();
 
-        [Fact]
-        public void PingEmby_Should_Return_False()
-        {
-            _restClientMock = new Mock<IRestClient>();
-            _restClientMock.Setup(x => x.Execute(It.IsAny<IRestRequest>()))
-                .Throws<Exception>();
-            _restClientMock.Setup(x => x.UseSerializer(It.IsAny<IRestSerializer>)).Returns(_restClientMock.Object);
-            var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
-
-            var client = new EmbyHttpClient(_restClientMock.Object, httpContextAccessorMock.Object);
-            var result = client.Ping();
-
-            result.Should().Be(false);
-        }
+        _factoryMock.Verify(x => x.CreateClient(_service.BaseUrl));
+        _factoryMock.VerifyNoOtherCalls();
     }
 }

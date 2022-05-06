@@ -1,7 +1,6 @@
-﻿namespace EmbyStat.Controllers.MediaServer
+﻿namespace EmbyStat.Controllers.MediaServer;
+
+public class UrlViewModel
 {
-    public class UrlViewModel
-    {
-        public string Url { get; set; }
-    }
+    public string Url { get; set; }
 }

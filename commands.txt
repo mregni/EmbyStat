@@ -1,0 +1,4 @@
+add migration:
+
+cd ./EmbyStat.Migrations
+dotnet ef migrations add AddLastUpdated --project ../EmbyStat.Repositories --startup-project ../EmbyStat.Web --output-dir Sqlite

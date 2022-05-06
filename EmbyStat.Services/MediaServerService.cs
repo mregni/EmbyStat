@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common;
-using EmbyStat.Common.Converters;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extensions;
@@ -13,356 +12,601 @@ using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Events;
 using EmbyStat.Common.Models.Entities.Helpers;
+using EmbyStat.Common.Models.Entities.Shows;
+using EmbyStat.Common.Models.Entities.Users;
+using EmbyStat.Common.Models.MediaServer;
 using EmbyStat.Common.Models.Settings;
-using EmbyStat.Logging;
 using EmbyStat.Repositories.Interfaces;
+using EmbyStat.Services.Abstract;
+using EmbyStat.Services.Converters;
 using EmbyStat.Services.Interfaces;
+using EmbyStat.Services.Models.Cards;
+using EmbyStat.Services.Models.DataGrid;
 using EmbyStat.Services.Models.Emby;
+using EmbyStat.Services.Models.MediaServerUser;
+using EmbyStat.Services.Models.Movie;
+using EmbyStat.Services.Models.Show;
 using EmbyStat.Services.Models.Stat;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
-namespace EmbyStat.Services
+namespace EmbyStat.Services;
+
+public class MediaServerService : StatisticHelper, IMediaServerService
 {
-    public class MediaServerService : IMediaServerService
+    private IBaseHttpClient _baseHttpClient;
+    private readonly IMediaServerRepository _mediaServerRepository;
+    private readonly ISessionService _sessionService;
+    private readonly ISettingsService _settingsService;
+    private readonly IClientStrategy _clientStrategy;
+    private readonly ILogger<MediaServerService> _logger;
+    private readonly IStatisticsRepository _statisticsRepository;
+
+    public MediaServerService(IClientStrategy clientStrategy, IMediaServerRepository mediaServerRepository,
+        ISessionService sessionService, ISettingsService settingsService, ILogger<MediaServerService> logger,
+        IStatisticsRepository statisticsRepository, IJobRepository jobRepository) : base(logger, jobRepository)
     {
-        private IHttpClient _httpClient;
-        private readonly IMediaServerRepository _mediaServerRepository;
-        private readonly ISessionService _sessionService;
-        private readonly ILibraryRepository _libraryRepository;
-        private readonly ISettingsService _settingsService;
-        private readonly IMovieRepository _movieRepository;
-        private readonly IShowRepository _showRepository;
-        private readonly IClientStrategy _clientStrategy;
-        private readonly Logger _logger;
+        _mediaServerRepository = mediaServerRepository;
+        _sessionService = sessionService;
+        _settingsService = settingsService;
+        _clientStrategy = clientStrategy;
+        _logger = logger;
+        _statisticsRepository = statisticsRepository;
 
-        public MediaServerService(IClientStrategy clientStrategy, IMediaServerRepository mediaServerRepository, ISessionService sessionService,
-            ISettingsService settingsService, IMovieRepository movieRepository, IShowRepository showRepository, ILibraryRepository libraryRepository)
+        var settings = _settingsService.GetUserSettings();
+        ChangeClientType(settings.MediaServer?.Type);
+    }
+
+    #region Server
+
+    public Task<IEnumerable<MediaServerUdpBroadcast>> SearchMediaServer(ServerType type)
+    {
+        ChangeClientType(type);
+        return _baseHttpClient.SearchServer();
+    }
+
+    public async Task<MediaServerInfo> GetServerInfo(bool forceReSync)
+    {
+        if (forceReSync)
         {
-            _mediaServerRepository = mediaServerRepository;
-            _sessionService = sessionService;
-            _settingsService = settingsService;
-            _movieRepository = movieRepository;
-            _showRepository = showRepository;
-            _clientStrategy = clientStrategy;
-            _libraryRepository = libraryRepository;
-            _logger = LogFactory.CreateLoggerForType(typeof(MediaServerService), "SERVER-API");
-
-            var settings = _settingsService.GetUserSettings();
-            ChangeClientType(settings.MediaServer?.ServerType);
+            return await GetAndProcessServerInfo();
         }
 
-        #region Server
-        public Task<IEnumerable<MediaServerUdpBroadcast>> SearchMediaServer(ServerType type)
+        return await _mediaServerRepository.GetServerInfo() ?? await GetAndProcessServerInfo();
+    }
+
+    public async Task<bool> TestNewApiKey(string url, string apiKey, ServerType type)
+    {
+        _logger.LogDebug($"Testing new API key on {url}");
+        _logger.LogDebug($"API key used: {apiKey}");
+        ChangeClientType(type);
+        var oldApiKey = _baseHttpClient.ApiKey;
+        var oldUrl = _baseHttpClient.BaseUrl;
+        _baseHttpClient.ApiKey = apiKey;
+        _baseHttpClient.BaseUrl = url;
+
+        var info = await _baseHttpClient.GetServerInfo();
+        if (info != null)
         {
-            ChangeClientType(type);
-            return _httpClient.SearchServer();
+            _logger.LogDebug("new API key works!");
+            return true;
         }
 
-        public ServerInfo GetServerInfo(bool forceReSync)
+        _baseHttpClient.ApiKey = oldApiKey;
+        _baseHttpClient.BaseUrl = oldUrl;
+
+        _logger.LogDebug("new API key not working!");
+        return false;
+    }
+
+    public Task<MediaServerStatus> GetMediaServerStatus()
+    {
+        return _mediaServerRepository.GetEmbyStatus();
+    }
+
+    public async Task<Library[]> GetMediaServerLibraries()
+    {
+        var items = await _baseHttpClient.GetLibraries();
+        var libraries = items
+            .Where(x => x.Type != LibraryType.BoxSets)
+            .ToArray();
+
+        await _mediaServerRepository.DeleteAndInsertLibraries(libraries);
+        return libraries;
+    }
+
+    public async Task<bool> PingMediaServer(string url)
+    {
+        _logger.LogDebug($"Pinging server on {url}");
+        var oldUrl = _baseHttpClient.BaseUrl;
+        _baseHttpClient.BaseUrl = url;
+
+        var result = await _baseHttpClient.Ping();
+
+        _baseHttpClient.BaseUrl = oldUrl;
+        return result;
+    }
+
+    public async Task<bool> PingMediaServer()
+    {
+        _logger.LogDebug($"Pinging server on {_settingsService.GetUserSettings().MediaServer.Address}");
+        return await _baseHttpClient.Ping();
+    }
+
+    public Task ResetMissedPings()
+    {
+        return _mediaServerRepository.ResetMissedPings();
+    }
+
+    public Task IncreaseMissedPings()
+    {
+        return _mediaServerRepository.IncreaseMissedPings();
+    }
+
+    #endregion
+
+    #region Plugin
+
+    public Task<List<PluginInfo>> GetAllPlugins()
+    {
+        return _mediaServerRepository.GetAllPlugins();
+    }
+
+    #endregion
+
+    #region Users
+
+    #region Statistics
+
+    public async Task<MediaServerUserStatistics> GetMediaServerUserStatistics()
+    {
+        var statistic = await _statisticsRepository.GetLastResultByType(StatisticType.User);
+
+        MediaServerUserStatistics statistics;
+        if (StatisticsAreValid(statistic, Constants.JobIds.SmallSyncId))
         {
-            if (forceReSync)
+            statistics = JsonConvert.DeserializeObject<MediaServerUserStatistics>(statistic.JsonResult);
+        }
+        else
+        {
+            statistics = await CalculateMediaServerUserStatistics();
+        }
+
+        return statistics;
+    }
+
+    public async Task<MediaServerUserStatistics> CalculateMediaServerUserStatistics()
+    {
+        var statistics = new MediaServerUserStatistics
+        {
+            Cards = await CalculateCards()
+        };
+
+        var json = JsonConvert.SerializeObject(statistics);
+        await _statisticsRepository.ReplaceStatistic(json, DateTime.UtcNow, StatisticType.User);
+
+        await CalculateMovieStatistics();
+        await CalculateShowStatistics();
+
+        return statistics;
+    }
+
+    private async Task CalculateMovieStatistics()
+    {
+        var movieStatistic = await _statisticsRepository.GetLastResultByType(StatisticType.Movie);
+        if (StatisticsAreValid(movieStatistic, Constants.JobIds.MovieSyncId))
+        {
+            var movieStatistics = JsonConvert.DeserializeObject<MovieStatistics>(movieStatistic.JsonResult);
+            if (movieStatistics != null)
             {
-                return GetAndProcessServerInfo();
+                movieStatistics.Cards = movieStatistics.Cards
+                    .Where(x => x.Title != Constants.Movies.TotalWatchedMovies)
+                    .ToList();
+                movieStatistics?.Cards.AddIfNotNull(CalculateWatchedMovieCount());
+
+                movieStatistics.TopCards = movieStatistics.TopCards
+                    .Where(x => x.Title != Constants.Movies.MostWatchedMovies)
+                    .ToList();
+                movieStatistics?.TopCards.AddIfNotNull(await CalculateMostWatchedMovies());
+                var movieJson = JsonConvert.SerializeObject(movieStatistics);
+                await _statisticsRepository.ReplaceStatistic(movieJson, DateTime.UtcNow, StatisticType.Movie);
             }
-
-            return _mediaServerRepository.GetServerInfo() ?? GetAndProcessServerInfo();
         }
+    }
 
-        public bool TestNewApiKey(string url, string apiKey, ServerType type)
+    private async Task CalculateShowStatistics()
+    {
+        var showStatistic = await _statisticsRepository.GetLastResultByType(StatisticType.Show);
+        if (StatisticsAreValid(showStatistic, Constants.JobIds.ShowSyncId))
         {
-            _logger.Debug($"Testing new API key on {url}");
-            _logger.Debug($"API key used: {apiKey}");
-            ChangeClientType(type);
-            var oldApiKey = _httpClient.ApiKey;
-            var oldUrl = _httpClient.BaseUrl;
-            _httpClient.ApiKey = apiKey;
-            _httpClient.BaseUrl = url;
-
-            var info = _httpClient.GetServerInfo();
-            if (info != null)
+            var showStatistics = JsonConvert.DeserializeObject<ShowStatistics>(showStatistic.JsonResult);
+            if (showStatistics != null)
             {
-                _logger.Debug("new API key works!");
-                return true;
+                showStatistics.Cards = showStatistics.Cards
+                    .Where(x => x.Title != Constants.Shows.TotalWatchedEpisodes)
+                    .ToList();
+                showStatistics?.Cards.AddIfNotNull(CalculateWatchedEpisodeCount());
+
+                showStatistics.TopCards = showStatistics.TopCards
+                    .Where(x => x.Title != Constants.Shows.MostWatchedShows)
+                    .ToList();
+                showStatistics?.TopCards.AddIfNotNull(await CalculateMostWatchedShows());
+
+                var showJson = JsonConvert.SerializeObject(showStatistics);
+                await _statisticsRepository.ReplaceStatistic(showJson, DateTime.UtcNow, StatisticType.Show);
             }
-
-            _httpClient.ApiKey = oldApiKey;
-            _httpClient.BaseUrl = oldUrl;
-
-            _logger.Debug("new API key not working!");
-            return false;
         }
+    }
 
-        public EmbyStatus GetMediaServerStatus()
+    #region Cards
+
+    private async Task<List<Card<string>>> CalculateCards()
+    {
+        var list = new List<Card<string>>();
+        list.AddIfNotNull(await CalculateActiveUsers());
+        list.AddIfNotNull(await CalculateIdleUsers());
+        list.AddIfNotNull(CalculateWatchedEpisodeCount());
+        list.AddIfNotNull(CalculateWatchedMovieCount());
+        return list;
+    }
+
+
+    private Task<Card<string>> CalculateActiveUsers()
+    {
+        return CalculateStat(async () =>
         {
-            return _mediaServerRepository.GetEmbyStatus();
-        }
-
-        public IEnumerable<Library> GetMediaServerLibraries()
-        {
-            var rootItems = _httpClient.GetMediaFolders();
-
-            var libraries = rootItems.Items
-                .Select(LibraryConverter.ConvertToLibrary)
-                .Where(x => x.Type != LibraryType.BoxSets)
-                .ToList();
-
-            _libraryRepository.AddOrUpdateRange(libraries);
-            return libraries;
-        }
-
-        public bool PingMediaServer(string url)
-        {
-            _logger.Debug($"Pinging server on {url}");
-            _httpClient.BaseUrl = url;
-            return _httpClient.Ping();
-        }
-
-        public void ResetMissedPings()
-        {
-            _mediaServerRepository.ResetMissedPings();
-        }
-
-        public void IncreaseMissedPings()
-        {
-            _mediaServerRepository.IncreaseMissedPings();
-        }
-
-        //TODO Add checkbox in settings UI to fully reset the database or not
-        public void ResetMediaServerData()
-        {
-            var settings = _settingsService.GetUserSettings();
-            ChangeClientType(settings.MediaServer.ServerType);
-            _movieRepository.RemoveMovies();
-            _showRepository.RemoveShows();
-            _mediaServerRepository.ResetMissedPings();
-            _mediaServerRepository.RemoveAllMediaServerData();
-        }
-
-        #endregion
-
-        #region Plugin
-
-        public List<PluginInfo> GetAllPlugins()
-        {
-            return _mediaServerRepository.GetAllPlugins();
-        }
-
-        #endregion
-
-        #region Users
-
-        public List<EmbyUser> GetAllUsers()
-        {
-            return _mediaServerRepository.GetAllUsers();
-        }
-
-        public List<EmbyUser> GetAllAdministrators()
-        {
-            var administrators = _mediaServerRepository.GetAllAdministrators();
-
-            if (administrators.Any())
+            var users = await _mediaServerRepository.GetAllUsers();
+            var count = users.Count(x => x.LastActivityDate > DateTime.Now.AddMonths(-6));
+            return new Card<string>
             {
-                return administrators;
-            }
-
-            GetAndProcessUsers();
-            return _mediaServerRepository.GetAllAdministrators();
-        }
-
-        public EmbyUser GetUserById(string id)
-        {
-            return _mediaServerRepository.GetUserById(id);
-        }
-
-        public Card<int> GetViewedEpisodeCountByUserId(string id)
-        {
-            var episodeIds = _sessionService.GetMediaIdsForUser(id, PlayType.Episode);
-            return new Card<int>
-            {
-                Title = Constants.Users.TotalWatchedEpisodes,
-                Value = episodeIds.Count()
+                Title = Constants.MediaServer.TotalActiveUsers,
+                Value = count.ToString(),
+                Type = CardType.Text,
+                Icon = Constants.Icons.PoundRoundedIcon
             };
-        }
+        }, "Calculate total active user count failed:");
+    }
 
-        public Card<int> GetViewedMovieCountByUserId(string id)
+    private Task<Card<string>> CalculateIdleUsers()
+    {
+        return CalculateStat(async () =>
         {
-            var movieIds = _sessionService.GetMediaIdsForUser(id, PlayType.Movie);
-            return new Card<int>
+            var users = await _mediaServerRepository.GetAllUsers();
+            var count = users.Count(x => x.LastActivityDate <= DateTime.Now.AddMonths(-6));
+            return new Card<string>
             {
-                Title = Constants.Users.TotalWatchedMovies,
-                Value = movieIds.Count()
+                Title = Constants.MediaServer.TotalIdleUsers,
+                Value = count.ToString(),
+                Type = CardType.Text,
+                Icon = Constants.Icons.PoundRoundedIcon
             };
-        }
+        }, "Calculate total idle user count failed:");
+    }
 
-        public IEnumerable<UserMediaView> GetUserViewPageByUserId(string id, int page, int size)
+    private Card<string> CalculateWatchedMovieCount()
+    {
+        return CalculateStat(() =>
         {
-            var skip = page * size;
-            var sessions = _sessionService.GetSessionsForUser(id).ToList();
-            var plays = sessions.SelectMany(x => x.Plays).Skip(skip).Take(size).ToList();
-            var deviceIds = sessions.Where(x => plays.Any(y => x.Plays.Any(z => z.Id == y.Id))).Select(x => x.DeviceId);
-
-            var devices = _mediaServerRepository.GetDeviceById(deviceIds).ToList();
-
-            foreach (var play in plays)
+            var viewCount = _mediaServerRepository.GetUserViewsForType("Movie");
+            return new Card<string>
             {
-                var currentSession = sessions.Single(x => x.Plays.Any(y => y.Id == play.Id));
-                var device = devices.SingleOrDefault(x => x.Id == currentSession.DeviceId);
-
-                if (play.Type == PlayType.Movie)
-                {
-                    yield return CreateUserMediaViewFromMovie(play, device);
-                }
-                else if (play.Type == PlayType.Episode)
-                {
-                    yield return CreateUserMediaViewFromEpisode(play, device);
-                }
-
-                //if media is null this means a user has watched something that is not yet in our DB
-                //TODO: try starting a sync here
-            }
-        }
-
-        public int GetUserViewCount(string id)
-        {
-            return _sessionService.GetPlayCountForUser(id);
-        }
-
-        #endregion
-
-        #region JobHelpers
-
-        public ServerInfo GetAndProcessServerInfo()
-        {
-            var server = _httpClient.GetServerInfo();
-            _mediaServerRepository.UpsertServerInfo(server);
-            return server;
-        }
-
-        public void GetAndProcessPluginInfo()
-        {
-            var plugins = _httpClient.GetInstalledPlugins();
-            _mediaServerRepository.RemoveAllAndInsertPluginRange(plugins);
-        }
-
-        public void GetAndProcessUsers()
-        {
-            var usersJson = _httpClient.GetUsers();
-            var users = usersJson.ConvertToUserList();
-            _mediaServerRepository.UpsertUsers(users);
-
-            var localUsers = _mediaServerRepository.GetAllUsers();
-            var removedUsers = localUsers.Where(u => users.All(u2 => u2.Id != u.Id));
-            _mediaServerRepository.MarkUsersAsDeleted(removedUsers);
-        }
-
-        public void GetAndProcessDevices()
-        {
-            var devicesJson = _httpClient.GetDevices();
-            var devices = devicesJson.ConvertToDeviceList();
-            _mediaServerRepository.UpsertDevices(devices);
-
-            var localDevices = _mediaServerRepository.GetAllDevices();
-            var removedDevices = localDevices.Where(d => devices.All(d2 => d2.Id != d.Id));
-            _mediaServerRepository.MarkDevicesAsDeleted(removedDevices);
-        }
-
-        #endregion
-
-        private UserMediaView CreateUserMediaViewFromMovie(Play play, Device device)
-        {
-            var movie = _movieRepository.GetMovieById(play.MediaId);
-            if (movie == null)
-            {
-                throw new BusinessException("MOVIENOTFOUND");
-            }
-
-            var startedPlaying = play.PlayStates.Min(x => x.TimeLogged);
-            var endedPlaying = play.PlayStates.Max(x => x.TimeLogged);
-            var watchedTime = endedPlaying - startedPlaying;
-
-            return new UserMediaView
-            {
-                Id = movie.Id,
-                Name = movie.Name,
-                ParentId = movie.ParentId,
-                Primary = movie.Primary,
-                StartedWatching = startedPlaying,
-                EndedWatching = endedPlaying,
-                WatchedTime = Math.Round(watchedTime.TotalSeconds),
-                WatchedPercentage = CalculateWatchedPercentage(play, movie),
-                DeviceId = device?.Id ?? string.Empty,
-                DeviceLogo = device?.IconUrl ?? string.Empty
+                Title = Constants.Movies.TotalWatchedMovies,
+                Value = viewCount.ToString(),
+                Type = CardType.Text,
+                Icon = Constants.Icons.PoundRoundedIcon
             };
-        }
+        }, "Calculate total idle user count failed:");
+    }
 
-        private UserMediaView CreateUserMediaViewFromEpisode(Play play, Device device)
+    private Card<string> CalculateWatchedEpisodeCount()
+    {
+        return CalculateStat(() =>
         {
-            //var episode = _showRepository.GetEpisodeById(play.play.MediaId);
-            //TODO: fix implementation
-            Episode episode = null;
-            if (episode == null)
+            var viewCount = _mediaServerRepository.GetUserViewsForType("Episode");
+            return new Card<string>
             {
-                throw new BusinessException("EPISODENOTFOUND");
-            }
-
-            var season = _showRepository.GetSeasonById(play.ParentId);
-            var seasonNumber = season.IndexNumber;
-            var name = $"{episode.ShowName} - {seasonNumber}x{episode.IndexNumber} - {episode.Name}";
-
-            var startedPlaying = play.PlayStates.Min(x => x.TimeLogged);
-            var endedPlaying = play.PlayStates.Max(x => x.TimeLogged);
-            var watchedTime = endedPlaying - startedPlaying;
-
-
-            return new UserMediaView
-            {
-                Id = episode.Id,
-                Name = name,
-                ParentId = episode.ParentId,
-                Primary = episode.Primary,
-                StartedWatching = startedPlaying,
-                EndedWatching = endedPlaying,
-                WatchedTime = Math.Round(watchedTime.TotalSeconds),
-                WatchedPercentage = CalculateWatchedPercentage(play, episode),
-                DeviceId = device.Id,
-                DeviceLogo = device?.IconUrl ?? ""
+                Title = Constants.Shows.TotalWatchedEpisodes,
+                Value = viewCount.ToString(),
+                Type = CardType.Text,
+                Icon = Constants.Icons.PoundRoundedIcon
             };
-        }
+        }, "Calculate total idle user count failed:");
+    }
 
-        private decimal? CalculateWatchedPercentage(Play play, Extra media)
+    #endregion
+
+    #region TopCards
+
+    private Task<TopCard> CalculateMostWatchedShows()
+    {
+        return CalculateStat(async () =>
         {
-            decimal? watchedPercentage = null;
-            if (media.RunTimeTicks.HasValue)
-            {
-                var playStates = play.PlayStates.Where(x => x.PositionTicks.HasValue).ToList();
-                var watchedTicks = playStates.Max(x => x.PositionTicks) -
-                                   playStates.Min(x => x.PositionTicks);
-                watchedPercentage = Math.Round((watchedTicks.Value / (decimal)media.RunTimeTicks.Value) * 1000) / 10;
-            }
+            var data = await _mediaServerRepository.GetMostWatchedShows(5);
 
-            return watchedPercentage;
-        }
+            return data.Count > 0
+                ? data.ConvertToTopCard(Constants.Shows.MostWatchedShows, "#", false)
+                : null;
+        }, "Calculate most watched shows failed:");
+    }
 
-        private void ChangeClientType(ServerType? type)
+    private Task<TopCard> CalculateMostWatchedMovies()
+    {
+        return CalculateStat(async () =>
         {
-            var realType = type ?? ServerType.Emby;
-            _httpClient = _clientStrategy.CreateHttpClient(realType);
-            var settings = _settingsService.GetUserSettings();
-            var appSettings = _settingsService.GetAppSettings();
+            var data = await _mediaServerRepository.GetMostWatchedMovies(5);
 
-            if (settings.MediaServer == null)
-            {
-                settings.MediaServer = new MediaServerSettings();
-            }
+            return data.Count > 0
+                ? data.ConvertToTopCard(Constants.Movies.MostWatchedMovies, "#", false)
+                : null;
+        }, "Calculate most watched shows failed:");
+    }
 
-            _httpClient.SetDeviceInfo(
-                settings.AppName, 
-                settings.MediaServer.AuthorizationScheme, 
-                appSettings.Version.ToCleanVersionString(), 
-                settings.Id.ToString(),
-                settings.MediaServer.UserId);
+    #endregion
 
-            settings.MediaServer.ServerType = realType;
-            _settingsService.SaveUserSettingsAsync(settings);
+    #endregion
+
+    public async Task<Page<MediaServerUserRow>> GetUserPage(int skip, int take, string sortField, string sortOrder,
+        bool requireTotalCount)
+    {
+        var list = await _mediaServerRepository.GetUserPage(skip, take, sortField, sortOrder);
+        var page = new Page<MediaServerUserRow>(list);
+
+        if (requireTotalCount)
+        {
+            page.TotalCount = await _mediaServerRepository.GetUserCount();
         }
+
+        return page;
+    }
+
+    public Task<MediaServerUser[]> GetAllUsers()
+    {
+        return _mediaServerRepository.GetAllUsers();
+    }
+
+    public async Task<MediaServerUser[]> GetAllAdministrators()
+    {
+        var administrators = await _mediaServerRepository.GetAllAdministrators();
+
+        if (administrators.Any())
+        {
+            return administrators;
+        }
+
+        await GetAndProcessUsers();
+        return await _mediaServerRepository.GetAllAdministrators();
+    }
+
+    public Task<MediaServerUser> GetUserById(string id)
+    {
+        return _mediaServerRepository.GetUserById(id);
+    }
+
+    public Card<int> GetViewedEpisodeCountByUserId(string id)
+    {
+        var episodeIds = _sessionService.GetMediaIdsForUser(id, PlayType.Episode);
+        return new Card<int>
+        {
+            Title = "Constants.Users.TotalWatchedEpisodes",
+            Value = episodeIds.Count()
+        };
+    }
+
+    public Card<int> GetViewedMovieCountByUserId(string id)
+    {
+        var movieIds = _sessionService.GetMediaIdsForUser(id, PlayType.Movie);
+        return new Card<int>
+        {
+            Title = "Constants.Users.TotalWatchedMovies",
+            Value = movieIds.Count()
+        };
+    }
+
+    public IEnumerable<UserMediaView> GetUserViewPageByUserId(string id, int page, int size)
+    {
+        throw new NotImplementedException();
+        // var skip = page * size;
+        // var sessions = _sessionService.GetSessionsForUser(id).ToList();
+        // var plays = sessions.SelectMany(x => x.Plays).Skip(skip).Take(size).ToList();
+        // var deviceIds = sessions.Where(x => plays.Any(y => x.Plays.Any(z => z.Id == y.Id))).Select(x => x.DeviceId);
+        //
+        // var devices = await _mediaServerRepository.GetDeviceById(deviceIds);
+        //
+        // var list = new List<UserMediaView>();
+        // foreach (var play in plays)
+        // {
+        //     var currentSession = sessions.Single(x => x.Plays.Any(y => y.Id == play.Id));
+        //     var device = devices.SingleOrDefault(x => x.Id == currentSession.DeviceId);
+        //
+        //     if (play.Type == PlayType.Movie)
+        //     {
+        //         list(CreateUserMediaViewFromMovie(play, device));
+        //     }
+        //     else if (play.Type == PlayType.Episode)
+        //     {
+        //         yield return CreateUserMediaViewFromEpisode(play, device);
+        //     }
+        //
+        //     //if media is null this means a user has watched something that is not yet in our DB
+        //     //TODO: try starting a sync here
+        // }
+    }
+
+    public int GetUserViewCount(string id)
+    {
+        return _sessionService.GetPlayCountForUser(id);
+    }
+
+    #endregion
+
+    #region Devices
+
+    public Task<List<Device>> GetAllDevices()
+    {
+        return _mediaServerRepository.GetAllDevices();
+    }
+
+    #endregion
+
+    #region JobHelpers
+
+    public async Task<MediaServerInfo> GetAndProcessServerInfo()
+    {
+        var server = await _baseHttpClient.GetServerInfo();
+        await _mediaServerRepository.DeleteAndInsertServerInfo(server);
+        return server;
+    }
+
+    public async Task GetAndProcessPluginInfo()
+    {
+        var plugins = await _baseHttpClient.GetInstalledPlugins();
+        await _mediaServerRepository.DeleteAllPlugins();
+        await _mediaServerRepository.InsertPlugins(plugins);
+    }
+
+    public async Task GetAndProcessUsers()
+    {
+        var users = await _baseHttpClient.GetUsers();
+        await _mediaServerRepository.DeleteAndInsertUsers(users);
+    }
+
+    public async Task<int> ProcessViewsForUser(string id)
+    {
+        var viewCount = await _baseHttpClient.GetPlayedMediaCountForUser(id);
+        var processed = 0;
+        const int limit = 500;
+        var totalViews = new List<MediaServerUserView>();
+        do
+        {
+            var views = await _baseHttpClient.GetPlayedMediaForUser(id, processed, limit);
+            totalViews.AddRange(views);
+            processed += limit;
+        } while (processed < viewCount);
+
+        await _mediaServerRepository.InsertOrUpdateUserViews(totalViews);
+        return viewCount;
+    }
+
+    public async Task GetAndProcessDevices()
+    {
+        var devices = await _baseHttpClient.GetDevices();
+        await _mediaServerRepository.DeleteAndInsertDevices(devices);
+    }
+
+    public async Task GetAndProcessLibraries()
+    {
+        var libraries = await _baseHttpClient.GetLibraries();
+        var currentLibraries = await _mediaServerRepository.GetAllLibraries();
+
+        foreach (var library in libraries)
+        {
+            library.Sync = currentLibraries
+                .FirstOrDefault(x => x.Id == library.Id)?
+                .Sync ?? false;
+        }
+
+        await _mediaServerRepository.DeleteAndInsertLibraries(libraries);
+    }
+
+    #endregion
+
+    // private UserMediaView CreateUserMediaViewFromMovie(Play play, Device device)
+    // {
+    //     var movie = _movieRepository.GetById(play.MediaId);
+    //     if (movie == null)
+    //     {
+    //         throw new BusinessException("MOVIENOTFOUND");
+    //     }
+    //
+    //     var startedPlaying = play.PlayStates.Min(x => x.TimeLogged);
+    //     var endedPlaying = play.PlayStates.Max(x => x.TimeLogged);
+    //     var watchedTime = endedPlaying - startedPlaying;
+    //
+    //     return new UserMediaView
+    //     {
+    //         Id = movie.Id,
+    //         Name = movie.Name,
+    //         Primary = movie.Primary,
+    //         StartedWatching = startedPlaying,
+    //         EndedWatching = endedPlaying,
+    //         WatchedTime = Math.Round(watchedTime.TotalSeconds),
+    //         WatchedPercentage = CalculateWatchedPercentage(play, movie),
+    //         DeviceId = device?.Id ?? string.Empty,
+    //         DeviceLogo = device?.IconUrl ?? string.Empty
+    //     };
+    // }
+
+    private UserMediaView CreateUserMediaViewFromEpisode(Play play, Device device)
+    {
+        //var episode = _showRepository.GetEpisodeById(play.play.MediaId);
+        //TODO: fix implementation
+        Episode episode = null;
+        if (episode == null)
+        {
+            throw new BusinessException("EPISODENOTFOUND");
+        }
+
+        //var season = _showRepository.GetSeasonById(play.ParentId);
+        //var seasonNumber = season.IndexNumber;
+        //var name = $"{episode.ShowName} - {seasonNumber}x{episode.IndexNumber} - {episode.Name}";
+
+        //var startedPlaying = play.PlayStates.Min(x => x.TimeLogged);
+        //var endedPlaying = play.PlayStates.Max(x => x.TimeLogged);
+        //var watchedTime = endedPlaying - startedPlaying;
+
+
+        return new UserMediaView
+        {
+            Id = episode.Id,
+            //Name = name,
+            //ParentId = episode.ParentId,
+            //Primary = episode.Primary,
+            //StartedWatching = startedPlaying,
+            //EndedWatching = endedPlaying,
+            //WatchedTime = Math.Round(watchedTime.TotalSeconds),
+            WatchedPercentage = CalculateWatchedPercentage(play, episode),
+            DeviceId = device.Id,
+            DeviceLogo = device?.IconUrl ?? ""
+        };
+    }
+
+    private decimal? CalculateWatchedPercentage(Play play, long? runTimeTicks)
+    {
+        decimal? watchedPercentage = null;
+        if (runTimeTicks.HasValue)
+        {
+            var playStates = play.PlayStates.Where(x => x.PositionTicks.HasValue).ToList();
+            var watchedTicks = playStates.Max(x => x.PositionTicks) -
+                               playStates.Min(x => x.PositionTicks);
+            if (watchedTicks != null)
+                watchedPercentage = Math.Round((watchedTicks.Value / (decimal) runTimeTicks) * 1000) / 10;
+        }
+
+        return watchedPercentage;
+    }
+
+    private decimal? CalculateWatchedPercentage(Play play, Extra media)
+    {
+        return CalculateWatchedPercentage(play, media.RunTimeTicks);
+    }
+
+    private void ChangeClientType(ServerType? type)
+    {
+        var realType = type ?? ServerType.Emby;
+        _baseHttpClient = _clientStrategy.CreateHttpClient(realType);
+        var settings = _settingsService.GetUserSettings();
+        var appSettings = _settingsService.GetAppSettings();
+
+        settings.MediaServer ??= new MediaServerSettings();
+
+        _baseHttpClient.SetDeviceInfo(
+            settings.AppName,
+            settings.MediaServer.AuthorizationScheme,
+            appSettings.Version.ToCleanVersionString(),
+            settings.Id.ToString(),
+            settings.MediaServer.UserId);
+
+        settings.MediaServer.Type = realType;
+        _settingsService.SaveUserSettingsAsync(settings);
     }
 }

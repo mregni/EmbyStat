@@ -1,33 +1,37 @@
-﻿using EmbyStat.Common.Models.Entities;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Dapper;
+using EmbyStat.Common;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Repositories.Interfaces;
 
-namespace EmbyStat.Repositories
+namespace EmbyStat.Repositories;
+
+public class PersonRepository : IPersonRepository
 {
-    public class PersonRepository : BaseRepository, IPersonRepository
+    private readonly ISqliteBootstrap _sqliteBootstrap;
+    private readonly EsDbContext _context;
+
+    public PersonRepository(EsDbContext context, ISqliteBootstrap sqliteBootstrap)
     {
-        public PersonRepository(IDbContext context) : base(context)
-        {
+        _context = context;
+        _sqliteBootstrap = sqliteBootstrap;
+    }
 
-        }
+    public async Task UpsertRange(IEnumerable<Person> people)
+    {
+        await using var connection = _sqliteBootstrap.CreateConnection();
+        await connection.OpenAsync();
+        await using var transaction = connection.BeginTransaction();
 
-        public void Upsert(Person person)
-        {
-            ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Person>();
-                collection.Upsert(person);
-            });
-        }
+        var query = $"INSERT OR IGNORE INTO {Constants.Tables.People} (Id,Name,\"Primary\") VALUES (@Id, @Name, @Primary)";
+        await connection.ExecuteAsync(query, people, transaction);
+        await transaction.CommitAsync();
+    }
 
-        public Person GetPersonByName(string name)
-        {
-            return ExecuteQuery(() =>
-            {
-                using var database = Context.CreateDatabaseContext();
-                var collection = database.GetCollection<Person>();
-                return collection.FindOne(x => x.Name == name);
-            });
-        }
+    public async Task DeleteAll()
+    {
+        _context.People.RemoveRange(_context.People);
+        await _context.SaveChangesAsync();
     }
 }

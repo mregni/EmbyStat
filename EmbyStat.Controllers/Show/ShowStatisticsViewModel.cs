@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using EmbyStat.Controllers.HelperClasses;
+using EmbyStat.Services.Models.Charts;
 
-namespace EmbyStat.Controllers.Show
+namespace EmbyStat.Controllers.Show;
+
+public class ShowStatisticsViewModel
 {
-    public class ShowStatisticsViewModel
-    {
-        public List<CardViewModel<string>> Cards { get; set; }
-        public List<TopCardViewModel> TopCards { get; set; }
-        public List<ChartViewModel> BarCharts { get; set; }
-        public List<ChartViewModel> PieCharts { get; set; }
-        public PersonStatsViewModel People { get; set; }
-    }
+    public List<CardViewModel<string>> Cards { get; set; }
+    public List<TopCardViewModel> TopCards { get; set; }
+    public List<Chart> BarCharts { get; set; }
+    public List<Chart> PieCharts { get; set; }
 }

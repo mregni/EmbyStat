@@ -1,12 +1,22 @@
-import { ShortMovie, SuspiciousMovie } from '.';
-import { Card, Chart, TopCard } from '../common';
-import { PersonStatistics } from '../person';
+import {Card, Chart, TopCard} from '../common';
+
+export interface SuspiciousMovie {
+  mediaId: string;
+  title: string;
+  number: number;
+}
+
+export interface ShortMovie {
+  number: number;
+  mediaId: string;
+  title: string;
+  duration: number;
+}
 
 export interface MovieStatistics {
   cards: Card[];
   topCards: TopCard[];
   charts: Chart[];
-  people: PersonStatistics;
   shorts: ShortMovie[];
   noImdb: SuspiciousMovie[];
   noPrimary: SuspiciousMovie[];

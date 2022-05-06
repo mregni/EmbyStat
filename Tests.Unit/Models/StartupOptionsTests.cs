@@ -3,17 +3,16 @@ using Xunit;
 using CommandLine;
 using EmbyStat.Common.Models;
 
-namespace Tests.Unit.Models
+namespace Tests.Unit.Models;
+
+public class StartupOptionsTests
 {
-    public class StartupOptionsTests
+    [Fact]
+    public void Properties_Should_Be_Decorated_With_Option_Attribute()
     {
-        [Fact]
-        public void Properties_Should_Be_Decorated_With_Option_Attribute()
-        {
-            typeof(StartupOptions)
-                .Properties()
-                .Should()
-                .BeDecoratedWith<OptionAttribute>();
-        }
+        typeof(StartupOptions)
+            .Properties()
+            .Should()
+            .BeDecoratedWith<OptionAttribute>();
     }
 }

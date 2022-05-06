@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace EmbyStat.Jobs
+namespace EmbyStat.Jobs;
+
+public interface IBaseJob
 {
-    public interface IBaseJob
-    {
-        Task Execute();
-    }
+    Task Execute();
 }

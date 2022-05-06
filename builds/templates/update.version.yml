@@ -1,9 +1,9 @@
 steps:
 - task: VersionJSONFile@2
-  displayName: 'Version JSON File'
+  displayName: 'Version package.json'
   inputs:
     Path: '$(Build.SourcesDirectory)'
-    recursion: True
+    recursion: true
     VersionNumber: '$(GitVersion.AssemblySemVer)'
     useBuildNumberDirectly: False
     VersionRegex: '\d+\.\d+\.\d+\.\d+'

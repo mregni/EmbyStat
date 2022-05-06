@@ -1,0 +1,47 @@
+parameters:
+  - name: dependsOn
+    type: object
+    default: []
+  - name: manifestFile
+    type: string
+  - name: env
+    type: string
+    values:
+      - dev
+      - beta
+
+jobs:
+  - job: docker_manifest_publish
+    displayName: 'Publish manifest data'
+    dependsOn: ${{ parameters.dependsOn }}
+    condition: succeeded()
+    steps:
+      - task: Docker@2
+        displayName: Login
+        inputs:
+          containerRegistry: 'Docker hub'
+          command: login
+      - script: 'manifest-tool-windows-amd64.exe push from-spec ${{ parameters.manifestFile }}'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/builds/docker-containers/files'
+        displayName: 'Pushing manifest file to Docker Hub'
+      - task: Docker@2
+        displayName: Logout
+        inputs:
+          containerRegistry: 'Docker hub'
+          command: logout
+  - job: rollbar_publish
+    displayName: 'Publish info to Rollbar'
+    dependsOn: docker_manifest_publish
+    condition: succeeded()
+    steps:
+      - powershell: |
+          $environment = '${{ parameters.env }}'
+          $postParams = @{
+              access_token="$(rollbar.key)";
+              environment="$environment";
+              revision="$(Build.BuildNumber)";
+              local_username="Mikhaël Regni";
+              status="succeeded";
+            }
+            Invoke-WebRequest -Uri https://api.rollbar.com/api/1/deploy -Method POST -UseBasicParsing -Body $postParams
+        displayName: 'Publishing deploy on Rollbar'
