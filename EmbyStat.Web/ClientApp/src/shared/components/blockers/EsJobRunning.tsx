@@ -29,7 +29,7 @@ export function EsJobRunning(props: Props) {
       if ([0, 2, 3].includes(job.state)) {
         (async () => {
           if ([0, 2, 3].includes(job.state)) {
-            await finishedAction();
+          await finishedAction();
           }
         })();
       }

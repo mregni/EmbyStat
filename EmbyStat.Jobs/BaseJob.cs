@@ -77,6 +77,8 @@ public abstract class BaseJob : IBaseJob, IDisposable
             throw new WizardNotFinishedException("Job not running because wizard is not finished");
         }
 
+        State = JobState.Running;
+        
         await BroadcastProgress(0);
         await LogInformation("Starting job");
         await _jobRepository.StartJob(Id);
