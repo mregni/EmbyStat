@@ -24,7 +24,7 @@ pool:
   vmImage: $(WinPool)
 
 stages:
-  - template: 'templates/test.stage.yml'
+  - template: templates/test.stage.yml
 
   - stage: build_artifacts
     dependsOn: test_stage
