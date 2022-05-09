@@ -1,17 +1,17 @@
 {
   "ABOUT": {
-    "OS": "操作系统",
-    "SERVERINFO": "服务器信息",
+    "ACTIONS": "操作",
     "GITHUBRELEASE": "在 Github 上发布",
-    "REQUESTFEATURE": "请求功能",
-    "LOGBUG": "在 Github 上提交错误记录",
     "HELPTRANSLATE": "帮助翻译这个程序",
+    "LOGBUG": "在 Github 上提交错误记录",
+    "OS": "操作系统",
+    "REQUESTFEATURE": "请求功能",
+    "SERVERINFO": "服务器信息",
     "THANKS": {
-      "TITLE": "谢谢",
+      "MISSINGNAME": "If your name is missing from this list, send me a message on Crowdin!",
       "TEXT": "A big thanks to the following people for translating the app in their native language or helping to test the application:",
-      "MISSINGNAME": "If your name is missing from this list, send me a message on Crowdin!"
-    },
-    "ACTIONS": "操作"
+      "TITLE": "谢谢"
+    }
   },
   "COMMON": {
     "AND": "和",
@@ -36,6 +36,7 @@
     "DOWNLOADCSV": "Download list as CSV",
     "EPISODE": "Episode",
     "EPISODES": "集",
+    "FILTER": "Filter",
     "FILTERS": "筛选器",
     "FPS": "帧/秒",
     "GB": "Gb",
@@ -275,6 +276,9 @@
       "RESETINFO": "Starting the EmbyStat reset process. This can take some time depending on the size of the database. Please wait until it is finished.",
       "TITLE": "{{type}} settings"
     },
+    "MOVIES": {
+      "TITLE": "Movie settings"
+    },
     "PASSWORD": {
       "CONTENT": "For changing your password, fill in the current one and your new one twice.",
       "CURRENTPASSWORD": "Current password",
@@ -354,6 +358,7 @@
     "CROWDINHELP": "如果您的语言未提及或不完整，请随时帮助我在 <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
     "EXCEPTIONLOGGING": "Exception logging",
     "FINALTITLE": "Final",
+    "FINISH": "Finish",
     "FINISHED": "所有设置都已保存，您现在可以开始使用 Emby 服务器。享受您的新统计！",
     "FINISHEXPLANATION": "首先做的事情是开始电影和节目的同步任务。EmbyStat将开始从您的 {{type}} 服务器下载所有数据。 请记住，这些任务可能需要很长时间，取决于您的媒体库大小。 您可以在登录后通过导航到任务页面手动启动任务。",
     "FOUNDTEXT": "我们在您的网络中找到了以下服务器。请选择您想要连接的服务器。 如果您的服务器未显示，您可以手动创建服务器连接。",
@@ -366,6 +371,7 @@
     "LIBRARIES": {
       "TITLE": "Select {{type}} libraries"
     },
+    "NEXT": "Next",
     "NOTFOUNDTEXT": "现在，我们将设置您的 {{type}} 连接。我们尝试自动检测网络中的Emby服务器，但失败了。填写所有字段，以便EmbyStat可以找到您的Emby服务器。",
     "SEARCHSERVERS": "Searching media servers",
     "SELECTLANGUAGE": "Select your prefered language",
@@ -379,8 +385,6 @@
     "STEPTHREE": "获取管理员账户 ({{step}}/{{total}})",
     "STEPTWO": "获取服务器信息 ({{step}}/{{total}})",
     "TITLE": "Wizard",
-    "NEXT": "Next",
-    "FINISH": "Finish",
     "USERDETAILTEXT": "提供您的管理员用户名和密码"
   }
 }
