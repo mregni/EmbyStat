@@ -379,6 +379,8 @@
     "STEPTHREE": "获取管理员账户 ({{step}}/{{total}})",
     "STEPTWO": "获取服务器信息 ({{step}}/{{total}})",
     "TITLE": "Wizard",
+    "NEXT": "Next",
+    "FINISH": "Finish",
     "USERDETAILTEXT": "提供您的管理员用户名和密码"
   }
 }
