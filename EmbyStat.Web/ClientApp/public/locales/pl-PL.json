@@ -379,6 +379,8 @@
     "STEPTHREE": "Pobieranie kont administratora ({{step}}/{{total}})",
     "STEPTWO": "Pobieranie informacji o serwerze ({{step}}/{{total}})",
     "TITLE": "Wizard",
+    "NEXT": "Next",
+    "FINISH": "Finish",
     "USERDETAILTEXT": "Podaj nazwę użytkownika i hasło dla administratora"
   }
 }
