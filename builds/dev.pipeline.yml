@@ -8,9 +8,9 @@ pr:
   branches:
     include:
     - develop
-    - release/*
     exclude:
     - dependabot/*
+    - release/*
     
 variables:
   - group: dev-build
