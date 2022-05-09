@@ -379,6 +379,8 @@
     "STEPTHREE": "Abrufen der Administratorkonten ({{step}}/{{total}})",
     "STEPTWO": "Serverinformationen werden abgerufen ({{step}}/{{total}})",
     "TITLE": "Wizard",
+    "NEXT": "Next",
+    "FINISH": "Finish",
     "USERDETAILTEXT": "Geben Sie einen Benutzernamen und ein Passwort für Ihren Admin-Benutzer ein"
   }
 }
