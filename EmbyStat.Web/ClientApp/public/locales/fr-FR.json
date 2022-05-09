@@ -379,6 +379,8 @@
     "STEPTHREE": "Récupération des comptes administrateur ({{step}}/{{total}})",
     "STEPTWO": "Récupération des informations du serveur ({{step}}/{{total}})",
     "TITLE": "Wizard",
+    "NEXT": "Next",
+    "FINISH": "Finish",
     "USERDETAILTEXT": "Fournissez un nom d'utilisateur et un mot de passe pour votre utilisateur administrateur"
   }
 }
