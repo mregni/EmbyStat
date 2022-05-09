@@ -1,17 +1,17 @@
 {
   "ABOUT": {
-    "OS": "Betriebssystem",
-    "SERVERINFO": "Serverinfo",
+    "ACTIONS": "Aktionen",
     "GITHUBRELEASE": "Releases auf Github",
-    "REQUESTFEATURE": "Funktion anfordern",
-    "LOGBUG": "Fehler auf GitHub melden",
     "HELPTRANSLATE": "Helfe diese App zu übersetzen",
+    "LOGBUG": "Fehler auf GitHub melden",
+    "OS": "Betriebssystem",
+    "REQUESTFEATURE": "Funktion anfordern",
+    "SERVERINFO": "Serverinfo",
     "THANKS": {
-      "TITLE": "Vielen Dank",
+      "MISSINGNAME": "If your name is missing from this list, send me a message on Crowdin!",
       "TEXT": "A big thanks to the following people for translating the app in their native language or helping to test the application:",
-      "MISSINGNAME": "If your name is missing from this list, send me a message on Crowdin!"
-    },
-    "ACTIONS": "Aktionen"
+      "TITLE": "Vielen Dank"
+    }
   },
   "COMMON": {
     "AND": "und",
@@ -36,6 +36,7 @@
     "DOWNLOADCSV": "Download list as CSV",
     "EPISODE": "Episode",
     "EPISODES": "Episoden",
+    "FILTER": "Filter",
     "FILTERS": "Filter",
     "FPS": "FPS",
     "GB": "Gb",
@@ -275,6 +276,9 @@
       "RESETINFO": "Starting the EmbyStat reset process. This can take some time depending on the size of the database. Please wait until it is finished.",
       "TITLE": "{{type}} settings"
     },
+    "MOVIES": {
+      "TITLE": "Movie settings"
+    },
     "PASSWORD": {
       "CONTENT": "For changing your password, fill in the current one and your new one twice.",
       "CURRENTPASSWORD": "Current password",
@@ -354,6 +358,7 @@
     "CROWDINHELP": "Falls deine Sprache fehlt oder nicht vollständig ist, kannst du gerne helfen die App zu übersetzen auf <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
     "EXCEPTIONLOGGING": "Exception logging",
     "FINALTITLE": "Final",
+    "FINISH": "Finish",
     "FINISHED": "Alle Einstellungen wurden gespeichert und Sie können Ihren EmbyStat-Server jetzt verwenden. Viel Spaß mit Ihren neuen Statistiken!",
     "FINISHEXPLANATION": "Am besten starten Sie zuerst die Film- und Seriensynchronisation. EmbyStat beginnt mit dem Herunterladen aller Daten von Ihrem {{type}}-Server. Beachten Sie, dass diese Aufgaben je nach Größe Ihrer Sammlung sehr lange dauern kann. Nach Ihrer Anmeldung können Sie diese Aufgaben manuell auf der Aufgaben-Seite starten.",
     "FOUNDTEXT": "Wir haben die folgenden Server in Ihrem Netzwerk gefunden. Wählen Sie diejenige aus, mit der Sie eine Verbindung herstellen möchten. Wenn Ihr Server nicht angezeigt wird, können Sie manuell eine Serververbindung erstellen.",
@@ -366,6 +371,7 @@
     "LIBRARIES": {
       "TITLE": "Select {{type}} libraries"
     },
+    "NEXT": "Next",
     "NOTFOUNDTEXT": "Jetzt werden wir die Verbindung zu {{type}} einrichten. Wir haben versucht deinen {{type}} Server im Netzwerk zu finden, konnten aber keinen erkennen. Bitte fülle alle Felder aus, sodass EmbyStat deinen {{type}} Server finden kann.",
     "SEARCHSERVERS": "Searching media servers",
     "SELECTLANGUAGE": "Select your prefered language",
@@ -379,8 +385,6 @@
     "STEPTHREE": "Abrufen der Administratorkonten ({{step}}/{{total}})",
     "STEPTWO": "Serverinformationen werden abgerufen ({{step}}/{{total}})",
     "TITLE": "Wizard",
-    "NEXT": "Next",
-    "FINISH": "Finish",
     "USERDETAILTEXT": "Geben Sie einen Benutzernamen und ein Passwort für Ihren Admin-Benutzer ein"
   }
 }
