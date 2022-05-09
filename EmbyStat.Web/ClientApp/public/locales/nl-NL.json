@@ -379,6 +379,8 @@
     "STEPTHREE": "Ophalen beheerdersaccounts ({{step}}/{{total}})",
     "STEPTWO": "Fetching serverinformatie ({{step}}/{{total}})",
     "TITLE": "Wizard",
+    "NEXT": "Next",
+    "FINISH": "Finish",
     "USERDETAILTEXT": "Geef een gebruikersnaam en wachtwoord op voor uw admin-gebruiker"
   }
 }
