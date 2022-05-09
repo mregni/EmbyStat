@@ -379,6 +379,8 @@
     "STEPTHREE": "Fetching administrator accounts ({{step}}/{{total}})",
     "STEPTWO": "Fetching server information ({{step}}/{{total}})",
     "TITLE": "Wizard",
+    "NEXT": "Next",
+    "FINISH": "Finish",
     "USERDETAILTEXT": "Provide a username and password for your admin user"
   }
 }
