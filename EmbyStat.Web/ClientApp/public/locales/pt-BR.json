@@ -379,6 +379,8 @@
     "STEPTHREE": "Buscando contas de administrador ({{step}}/{{total}})",
     "STEPTWO": "Buscando informações do servidor ({{step}}/{{total}})",
     "TITLE": "Wizard",
+    "NEXT": "Next",
+    "FINISH": "Finish",
     "USERDETAILTEXT": "Forneça um nome de usuário e senha para seu administrador"
   }
 }
