@@ -63,23 +63,22 @@ function Make-NSIS {
 
     $env:InstallLocation = $ResolvedInstallLocation
     if($InstallNSIS.IsPresent -or ($InstallNSIS -eq $true)){
-        & "$tempdir/nsis/nsis-3.04/makensis.exe" /D$Architecture /DVERSION=$version /DUXPATH=$ResolvedUXLocation  ".\builds\windows\embystat.nsi"
+        & "$tempdir/nsis/nsis-3.08/makensis.exe" /D$Architecture /DVERSION=$version /DUXPATH=$ResolvedUXLocation  ".\builds\windows-installer\embystat.nsi"
     } else {
-        & "makensis" /D$Architecture /DVERSION=$version /DUXPATH=$ResolvedUXLocation ".\builds\windows\embystat.nsi"
+        & "makensis" /D$Architecture /DVERSION=$version /DUXPATH=$ResolvedUXLocation ".\builds\windows-installer\embystat.nsi"
     }
-    Move-Item .\builds\windows\embystat_*.exe $ResolvedInstallLocation\..\
+    Move-Item .\builds\windows-installer\embystat_*.exe $ResolvedInstallLocation\..\
 }
 
 
 function Install-NSIS {
     Write-Host "Downloading NSIS"
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    Invoke-WebRequest -Uri https://nchc.dl.sourceforge.net/project/nsis/NSIS%203/3.04/nsis-3.04.zip -UseBasicParsing -OutFile "$tempdir/nsis.zip" | Write-Host
+    Invoke-WebRequest -Uri "https://downloads.sourceforge.net/project/nsis/NSIS%203/3.08/nsis-3.08.zip" -UseBasicParsing -OutFile "$tempdir/nsis.zip" -UserAgent [Microsoft.PowerShell.Commands.PSUserAgent]::FireFox | Write-Host
 
     Expand-Archive "$tempdir/nsis.zip" -DestinationPath "$tempdir/nsis/" -Force | Write-Host
 }
 
-function Cleanup-NSIS {
+    function Cleanup-NSIS {
     Remove-Item "$tempdir/nsis/" -Recurse -Force -ErrorAction Continue | Write-Host
     Remove-Item "$tempdir/nsis.zip" -Force -ErrorAction Continue | Write-Host
 }

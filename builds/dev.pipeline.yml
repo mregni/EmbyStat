@@ -1,13 +1,16 @@
 trigger:
-- develop
-
-pr:
   branches:
     include:
     - develop
-    - release/*
+
+pr:
+  autoCancel: true
+  branches:
+    include:
+    - develop
     exclude:
     - dependabot/*
+    - release/*
     
 variables:
   - group: dev-build
@@ -21,7 +24,7 @@ pool:
   vmImage: $(WinPool)
 
 stages:
-  - template: 'templates/test.stage.yml'
+  - template: templates/test.stage.yml
 
   - stage: build_artifacts
     dependsOn: test_stage
@@ -41,4 +44,4 @@ stages:
     condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop'))
     displayName: 'Publish docker artifacts'
     jobs:
-    - template: './docker-container/publish/dev.publish.yml'
+    - template: './docker-containers/publishing/dev.publish.yml'

@@ -1,5 +1,8 @@
 trigger:
-- release/*
+  batch: true
+  branches:
+    include:
+      - release/*
 
 pr: none
 
@@ -22,17 +25,17 @@ stages:
     condition: succeeded()
     displayName: 'Build artifacts'
     jobs:
-    - template: debian-x64/build.pipeline.yml
     - template: docker-containers/win.pipeline.yml
     - template: docker-containers/linux.pipeline.yml
     - template: docker-containers/arm64.pipeline.yml
     - template: docker-containers/arm.pipeline.yml
+    - template: debian-x64/build.pipeline.yml
     - template: fedora-x64/build.pipeline.yml
     - template: linux-arm/build.pipeline.yml
     - template: linux-arm-x64/build.pipeline.yml
     - template: ubuntu-x64/build.pipeline.yml
     - template: win-x64/build.pipeline.yml
-    - template: windows/build.pipeline.yml
+    - template: windows-installer/build.pipeline.yml
 
   - stage: docker_publish
     dependsOn: 
@@ -41,7 +44,7 @@ stages:
     condition: succeeded()
     displayName: 'Publish Docker artifacts'
     jobs:
-    - template: './docker-container/publish/beta.publish.yml'
+    - template: 'docker-containers/publishing/beta.publish.yml'
 
   - stage: github_publish
     dependsOn: 
@@ -53,56 +56,61 @@ stages:
     - job:
       displayName: 'Create GitHub Releases'
       steps:
-        - template: '../../templates/download.artifact.yml'
+        - template: 'templates/download.artifact.yml'
           parameters:
             systemName: Debian
-            artifactName: EmbyStat-$(package.debian-x64)-v$(GitVersion.SemVer)
-        - template: '../../templates/download.artifact.yml'
+            artifactName: EmbyStat-$(package.debian-x64)-v$(Build.BuildNumber)
+        - template: 'templates/download.artifact.yml'
           parameters:
             systemName: Fedora
-            artifactName: EmbyStat-$(package.fedora-x64)-v$(GitVersion.SemVer)
-        - template: '../../templates/download.artifact.yml'
+            artifactName: EmbyStat-$(package.fedora-x64)-v$(Build.BuildNumber)
+        - template: 'templates/download.artifact.yml'
           parameters:
             systemName: Linux ARM
-            artifactName: EmbyStat-$(package.linux-arm)-v$(GitVersion.SemVer)
-        - template: '../../templates/download.artifact.yml'
+            artifactName: EmbyStat-$(package.linux-arm)-v$(Build.BuildNumber)
+        - template: 'templates/download.artifact.yml'
           parameters:
             systemName: Linux ARM64
-            artifactName: EmbyStat-$(package.linux-arm-x64)-v$(GitVersion.SemVer)
-        - template: '../../templates/download.artifact.yml'
+            artifactName: EmbyStat-$(package.linux-arm-x64)-v$(Build.BuildNumber)
+        - template: 'templates/download.artifact.yml'
           parameters:
             systemName: Ubuntu
-            artifactName: EmbyStat-$(package.ubuntu-x64)-v$(GitVersion.SemVer)
-        - template: '../../templates/download.artifact.yml'
+            artifactName: EmbyStat-$(package.ubuntu-x64)-v$(Build.BuildNumber)
+        - template: 'templates/download.artifact.yml'
           parameters:
             systemName: Windows x64
             artifactName: EmbyStat-$(package.win10-x64)-v$(Build.BuildNumber)
-        - template: '../../templates/download.artifact.yml'
+        - template: 'templates/download.artifact.yml'
           parameters:
             systemName: Windows Installer
-            artifactName: EmbyStat-installer-win-x64-v$(GitVersion.SemVer)
-        - task: petergroenewegen.PeterGroenewegen-Xpirit-Vsts-Build-Zip.Xpirit-Vsts-Build-Zip.ZipDirectory@1
-          displayName: 'Zip releases'
+            artifactName: EmbyStat-installer-win-x64-v$(Build.BuildNumber)
+        - task: ZipDirectory@1
+          displayName: Creating zip files
           inputs:
             ItemSpec: |
-            $(System.ArtifactsDirectory)/EmbyStat-$(package.debian-x64)-v$(GitVersion.SemVer)
-            $(System.ArtifactsDirectory)/EmbyStat-$(package.fedora-x64)-v$(GitVersion.SemVer)
-            $(System.ArtifactsDirectory)/EmbyStat-$(package.linux-arm)-v$(GitVersion.SemVer)
-            $(System.ArtifactsDirectory)/EmbyStat-$(package.linux-arm-x64)-v$(GitVersion.SemVer)
-            $(System.ArtifactsDirectory)/EmbyStat-$(package.ubuntu-x64)-v$(GitVersion.SemVer)
-            $(System.ArtifactsDirectory)/EmbyStat-$(package.win10-x64)-v$(Build.BuildNumber)
-        - task: marcelo-formentao.github-tools.github-release-publish-task.GitHubReleasePublish@1
+              $(System.ArtifactsDirectory)/EmbyStat-$(package.debian-x64)-v$(Build.BuildNumber)
+              $(System.ArtifactsDirectory)/EmbyStat-$(package.fedora-x64)-v$(Build.BuildNumber)
+              $(System.ArtifactsDirectory)/EmbyStat-$(package.linux-arm)-v$(Build.BuildNumber)
+              $(System.ArtifactsDirectory)/EmbyStat-$(package.linux-arm-x64)-v$(Build.BuildNumber)
+              $(System.ArtifactsDirectory)/EmbyStat-$(package.ubuntu-x64)-v$(Build.BuildNumber)
+              $(System.ArtifactsDirectory)/EmbyStat-$(package.win10-x64)-v$(Build.BuildNumber)
+        - task: GitHubRelease@1
           displayName: 'Create GitHub release'
           inputs:
-            githubEndpoint: mregniGitHubConnection
-            githubRepository: mregni/EmbyStat
-            githubTag: '$(Build.BuildNumber)'
-            githubReleaseTitle: 'v$(Build.BuildNumber)'
-            githubReleaseNotes: '### Changes'
-            githubReleasePrerelease: true
-            githubReleaseAsset: |
+            gitHubConnection: 'mregniGitHubConnection'
+            repositoryName: 'mregni/EmbyStat'
+            action: 'create'
+            target: '$(Build.SourceVersion)'
+            tagSource: 'gitTag'
+            tagPattern: '$(Build.BuildNumber)'
+            title: 'v$(Build.BuildNumber)'
+            releaseNotesSource: 'inline'
+            releaseNotesInline: '### Changes'
+            assets: |
               $(System.ArtifactsDirectory)/**/*.zip
               $(System.ArtifactsDirectory)/**/EmbyStat_*_windows-x64.exe
+            isPreRelease: true
+            addChangeLog: false
   - stage: rollbar
     dependsOn: 
       - github_publish
@@ -111,15 +119,13 @@ stages:
       - job: rollbar_publish
         displayName: 'Publish info to Rollbar'
         condition: succeeded()
-        variables:
-          GitVersion.SemVer: $[stageDependencies.test_stage.main_build.outputs['setSemVer.SemVer'] ]
         steps:
           - powershell: |
               $environment = 'beta'
               $postParams = @{
                   access_token="$(rollbar.key)";
                   environment="$environment";
-                  revision="$(GitVersion.SemVer)";
+                  revision="$(Build.BuildNumber)";
                   local_username="Mikhaël Regni";
                   status="succeeded";
                 }

@@ -7,7 +7,4 @@ steps:
       projectKey: '15579460-0cb2-4494-a9ed-ebcc05beeb00'
       projectVersion: '$(GitVersion.SemVer)'
       extraProperties: |
-       sonar.exclusions=**/node_modules/**,**/*.js,**/*.css,**/*.spec.tsx,**/bin/**,**/*ViewModel.cs,**/EmbyStat.Common/Models/**,**/*.test.tsx
-       sonar.ts.excludetypedefinitionfiles=true
-       sonar.eslint.reportPaths=ClientApp/report.json
-       sonar.javascript.lcov.reportPaths=ClientApp/coverage/lcov.info
+       sonar.exclusions=**/node_modules/**/*,**/*.js,**/*.css,**/*.spec.tsx,**/bin/**/*,**/*ViewModel.cs,**/EmbyStat.Common/Models/**,**/*.test.tsx

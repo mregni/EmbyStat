@@ -41,7 +41,7 @@ jobs:
       npmBuild: 'run build -- --prod'
 
   - task: PublishBuildArtifacts@1
-    displayName: 'Publish Linux Docker Artifact'
+    displayName: 'Publish ARM64 Docker Artifact'
     inputs:
       PathtoPublish: 'publish'
-      ArtifactName: 'EmbyStat-docker-${package.linux-arm-x64}-v$(Build.BuildNumber)'
+      ArtifactName: 'EmbyStat-docker-$(package.linux-arm-x64)-v$(Build.BuildNumber)'

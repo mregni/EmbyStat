@@ -154,7 +154,7 @@ function WizardContainer() {
                         (<CircularProgress size={24} />) :
                         (
                           <>
-                            <span>{activeStep !== (steps - 1) ? t('next') : t('finish')}</span>
+                            <span>{activeStep !== (steps - 1) ? t('WIZARD.NEXT') : t('WIZARD.FINISH')}</span>
                             <KeyboardArrowRight />
                           </>
                         )

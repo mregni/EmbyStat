@@ -19,10 +19,25 @@
     <AssemblyName>EmbyStat</AssemblyName>
 
     <ProjectGuid>{1D5D997D-34AE-45BE-9935-13E0D63EAC02}</ProjectGuid>
-
     <ServerGarbageCollection>false</ServerGarbageCollection>
+
   </PropertyGroup>
 
+  <ItemGroup>
+    <SonarQubeSetting Include="sonar.eslint.reportPaths">
+      <Value>ClientApp/report.json</Value>
+    </SonarQubeSetting>
+    <SonarQubeSetting Include="sonar.ts.excludetypedefinitionfiles">
+      <Value>true</Value>
+    </SonarQubeSetting>
+    <SonarQubeSetting Include="sonar.javascript.lcov.reportPaths">
+      <Value>ClientApp/coverage/lcov.info</Value>
+    </SonarQubeSetting>
+    <SonarQubeSetting Include="sonar.typescript.tsconfigPath">
+      <Value>ClientApp/tsconfig.json</Value>
+    </SonarQubeSetting>
+  </ItemGroup>
+  
   <ItemGroup>
     <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
   </ItemGroup>
@@ -67,17 +82,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="ClientApp\**\*.*" CopyToPublishDirectory="Never" />
+    <Content Update="ClientApp\**\*" CopyToPublishDirectory="Never" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="nlog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
 
