@@ -27,6 +27,7 @@
     "COUNT": "Count",
     "CREATE": "Create",
     "CREATEDDATE": "Media added",
+    "CRON": "Cron sträng",
     "DATE": "Date",
     "DAYSABBR": "d",
     "DESCRIPTION": "Description",

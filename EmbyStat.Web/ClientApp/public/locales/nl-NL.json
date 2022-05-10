@@ -27,6 +27,7 @@
     "COUNT": "Hoeveelheid",
     "CREATE": "Toevoegen",
     "CREATEDDATE": "Media added",
+    "CRON": "Cron-tekenreeks",
     "DATE": "Datum",
     "DAYSABBR": "d",
     "DESCRIPTION": "Beschrijving",
