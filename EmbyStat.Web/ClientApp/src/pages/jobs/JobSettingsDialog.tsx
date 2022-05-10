@@ -3,7 +3,8 @@ import React, {useContext, useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
 
 import {
-  Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Theme,
+  Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack, Theme,
+  Typography,
 } from '@mui/material';
 
 import {EsSaveButton} from '../../shared/components/buttons';
@@ -28,7 +29,7 @@ export function JobSettingsDialog(props: Props) {
   const [changed, setChanged] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [openSettings, setOpenSettings] = useState(false);
-  const serverType = useServerType();
+  const {serverType} = useServerType();
   const {updateJobTrigger} = useContext(JobsContext);
 
   useEffect(() => {
@@ -81,34 +82,36 @@ export function JobSettingsDialog(props: Props) {
           {t(`JOB.INFO.${job.title}`, {type: serverType})}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            {t(`JOB.INFO.${job.description}`)}
-          </DialogContentText>
-          <EsTextInput
-            inputRef={cronRegister}
-            defaultValue={getValues('cron')}
-            helperText={<Box sx={{
-              '& a': {
-                color:
-                  (theme: Theme) => theme.palette.mode === 'dark' ?
-                    theme.palette.secondary.light : theme.palette.secondary.dark,
-              },
-            }} dangerouslySetInnerHTML={helperText} />
-            }
-            error={errors.cron}
-            errorText={{pattern: <Box
-              sx={{
+          <Stack spacing={1}>
+            <Typography>
+              {t(`JOB.INFO.${job.description}`)}
+            </Typography>
+            <EsTextInput
+              inputRef={cronRegister}
+              defaultValue={getValues('cron')}
+              helperText={<Box sx={{
                 '& a': {
                   color:
+                  (theme: Theme) => theme.palette.mode === 'dark' ?
+                    theme.palette.secondary.light : theme.palette.secondary.dark,
+                },
+              }} dangerouslySetInnerHTML={helperText} />
+              }
+              error={errors.cron}
+              errorText={{pattern: <Box
+                sx={{
+                  '& a': {
+                    color:
                     (theme: Theme) => theme.palette.mode === 'dark' ?
                       theme.palette.secondary.light : theme.palette.secondary.dark,
-                },
-              }} dangerouslySetInnerHTML={errorText} />,
-            }}
-            label="FORMLABELS.CRON"
-            onChange={handleChange}
-            readonly={isSaving}
-          />
+                  },
+                }} dangerouslySetInnerHTML={errorText} />,
+              }}
+              label={t('COMMON.CRON')}
+              onChange={handleChange}
+              readonly={isSaving}
+            />
+          </Stack>
         </DialogContent>
         <DialogActions>
           <Button
