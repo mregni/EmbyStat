@@ -601,37 +601,36 @@ namespace EmbyStat.Migrations.Sqlite
                 });
 
             migrationBuilder.CreateTable(
-                name: "MediaServerUserView",
+                name: "MediaServerUserViews",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    MovieId = table.Column<string>(type: "TEXT", nullable: true),
-                    EpisodeId = table.Column<string>(type: "TEXT", nullable: true),
+                    MediaId = table.Column<string>(type: "TEXT", nullable: false),
+                    MediaType = table.Column<string>(type: "TEXT", nullable: true),
                     PlayCount = table.Column<int>(type: "INTEGER", nullable: false),
-                    LastPlayedDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    LastPlayedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    EpisodeId = table.Column<string>(type: "TEXT", nullable: true),
+                    MovieId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MediaServerUserView", x => x.Id);
+                    table.PrimaryKey("PK_MediaServerUserViews", x => new { x.UserId, x.MediaId });
                     table.ForeignKey(
-                        name: "FK_MediaServerUserView_Episodes_EpisodeId",
+                        name: "FK_MediaServerUserViews_Episodes_EpisodeId",
                         column: x => x.EpisodeId,
                         principalTable: "Episodes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_MediaServerUserView_MediaServerUsers_UserId",
+                        name: "FK_MediaServerUserViews_MediaServerUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "MediaServerUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_MediaServerUserView_Movies_MovieId",
+                        name: "FK_MediaServerUserViews_Movies_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -798,7 +797,7 @@ namespace EmbyStat.Migrations.Sqlite
             migrationBuilder.InsertData(
                 table: "Languages",
                 columns: new[] { "Id", "Code", "Name" },
-                values: new object[] { "97616a9b-60f9-407a-9a87-b4518da5e5f4", "cs-CZ", "简体中文" });
+                values: new object[] { "97616a9b-60f9-407a-9a87-b4518da5e5f4", "zh-CN", "简体中文" });
 
             migrationBuilder.InsertData(
                 table: "Languages",
@@ -896,19 +895,14 @@ namespace EmbyStat.Migrations.Sqlite
                 column: "ShowId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MediaServerUserView_EpisodeId",
-                table: "MediaServerUserView",
+                name: "IX_MediaServerUserViews_EpisodeId",
+                table: "MediaServerUserViews",
                 column: "EpisodeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MediaServerUserView_MovieId",
-                table: "MediaServerUserView",
+                name: "IX_MediaServerUserViews_MovieId",
+                table: "MediaServerUserViews",
                 column: "MovieId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MediaServerUserView_UserId",
-                table: "MediaServerUserView",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MediaSource_EpisodeId",
@@ -1089,7 +1083,7 @@ namespace EmbyStat.Migrations.Sqlite
                 name: "MediaServerStatus");
 
             migrationBuilder.DropTable(
-                name: "MediaServerUserView");
+                name: "MediaServerUserViews");
 
             migrationBuilder.DropTable(
                 name: "MediaSource");

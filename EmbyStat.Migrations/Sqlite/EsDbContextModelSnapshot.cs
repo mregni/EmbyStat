@@ -15,7 +15,7 @@ namespace EmbyStat.Migrations.Sqlite
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.3");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.4");
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Device", b =>
                 {
@@ -276,15 +276,9 @@ namespace EmbyStat.Migrations.Sqlite
                     b.HasData(
                         new
                         {
-                            Id = "082d8aaf-f86a-4401-bf0f-c315b3c9d904",
-                            Code = "nl-NL",
-                            Name = "Nederlands"
-                        },
-                        new
-                        {
-                            Id = "62fe1b5e-3328-450b-b24b-fa16bea58870",
-                            Code = "en-US",
-                            Name = "English"
+                            Id = "e1940bfd-00c4-46f9-b9ac-a87a5d92e8ca",
+                            Code = "da-DK",
+                            Name = "Dansk"
                         },
                         new
                         {
@@ -294,15 +288,15 @@ namespace EmbyStat.Migrations.Sqlite
                         },
                         new
                         {
-                            Id = "e1940bfd-00c4-46f9-b9ac-a87a5d92e8ca",
-                            Code = "da-DK",
-                            Name = "Dansk"
-                        },
-                        new
-                        {
                             Id = "d6401f6b-becf-49e2-b82e-1018b3bf607f",
                             Code = "el-GR",
                             Name = "Ελληνικά"
+                        },
+                        new
+                        {
+                            Id = "62fe1b5e-3328-450b-b24b-fa16bea58870",
+                            Code = "en-US",
+                            Name = "English"
                         },
                         new
                         {
@@ -333,6 +327,12 @@ namespace EmbyStat.Migrations.Sqlite
                             Id = "282182b9-9332-4266-a093-5ff5b7f927a9",
                             Code = "it-IT",
                             Name = "Italiano"
+                        },
+                        new
+                        {
+                            Id = "082d8aaf-f86a-4401-bf0f-c315b3c9d904",
+                            Code = "nl-NL",
+                            Name = "Nederlands"
                         },
                         new
                         {
@@ -373,7 +373,7 @@ namespace EmbyStat.Migrations.Sqlite
                         new
                         {
                             Id = "97616a9b-60f9-407a-9a87-b4518da5e5f4",
-                            Code = "cs-CZ",
+                            Code = "zh-CN",
                             Name = "简体中文"
                         });
                 });

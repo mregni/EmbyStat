@@ -29,8 +29,5 @@
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Sqlite" />
-  </ItemGroup>
 
 </Project>
