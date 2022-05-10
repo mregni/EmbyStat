@@ -33,6 +33,7 @@ export function EsFilterNumberField(props: Props) {
         inputRef={registerInput}
         defaultValue={value}
         color="secondary"
+        variant="standard"
         error={errors[fieldName]}
         type='number'
         onChange={handleChange}

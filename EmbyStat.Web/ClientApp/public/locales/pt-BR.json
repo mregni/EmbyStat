@@ -1,17 +1,17 @@
 {
   "ABOUT": {
-    "OS": "Sistema operacional",
-    "SERVERINFO": "Informações do Servidor",
+    "ACTIONS": "Ações.",
     "GITHUBRELEASE": "Lançamentos no Github",
-    "REQUESTFEATURE": "Requisitar recurso",
-    "LOGBUG": "Erro de log no Github",
     "HELPTRANSLATE": "Ajude a traduzir o aplicativo",
+    "LOGBUG": "Erro de log no Github",
+    "OS": "Sistema operacional",
+    "REQUESTFEATURE": "Requisitar recurso",
+    "SERVERINFO": "Informações do Servidor",
     "THANKS": {
-      "TITLE": "Obrigado",
+      "MISSINGNAME": "If your name is missing from this list, send me a message on Crowdin!",
       "TEXT": "A big thanks to the following people for translating the app in their native language or helping to test the application:",
-      "MISSINGNAME": "If your name is missing from this list, send me a message on Crowdin!"
-    },
-    "ACTIONS": "Ações."
+      "TITLE": "Obrigado"
+    }
   },
   "COMMON": {
     "AND": "e",
@@ -27,6 +27,7 @@
     "COUNT": "Quantidade",
     "CREATE": "Create",
     "CREATEDDATE": "Media added",
+    "CRON": "Corda Cron",
     "DATE": "Date",
     "DAYSABBR": "d",
     "DESCRIPTION": "Description",
@@ -36,6 +37,7 @@
     "DOWNLOADCSV": "Download list as CSV",
     "EPISODE": "Episode",
     "EPISODES": "Episódios",
+    "FILTER": "Filter",
     "FILTERS": "Filtros",
     "FPS": "fps",
     "GB": "Gb",
@@ -275,6 +277,9 @@
       "RESETINFO": "Starting the EmbyStat reset process. This can take some time depending on the size of the database. Please wait until it is finished.",
       "TITLE": "{{type}} settings"
     },
+    "MOVIES": {
+      "TITLE": "Movie settings"
+    },
     "PASSWORD": {
       "CONTENT": "For changing your password, fill in the current one and your new one twice.",
       "CURRENTPASSWORD": "Current password",
@@ -354,6 +359,7 @@
     "CROWDINHELP": "Se o seu idioma não for mencionado ou não estiver completo, sinta-se à vontade para me ajudar a traduzir o aplicativo em seu idioma em <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
     "EXCEPTIONLOGGING": "Exception logging",
     "FINALTITLE": "Final",
+    "FINISH": "Finish",
     "FINISHED": "Todas as configurações são salvas e você pode começar a usar o servidor EmbyStat agora. Aproveite suas novas estatísticas!",
     "FINISHEXPLANATION": "A melhor coisa a fazer primeiro é iniciar um filme e mostrar a tarefa de sincronização. O EmbyStat começará a baixar todos os dados do seu servidor {{type}} . Tenha em mente que estas tarefas podem levar um longo tempo dependendo do tamanho da sua coleção. Você pode iniciar as tarefas manualmente, navegando na página de Tarefas após o login.",
     "FOUNDTEXT": "Encontramos os seguintes servidores em sua rede. Selecione aquele ao qual você deseja se conectar. Se seu servidor não for exibido, você poderá criar uma conexão de servidor manualmente.",
@@ -366,6 +372,7 @@
     "LIBRARIES": {
       "TITLE": "Select {{type}} libraries"
     },
+    "NEXT": "Next",
     "NOTFOUNDTEXT": "Agora vamos configurar sua conexão Emby. Nós tentamos detectar automaticamente o seu servidor Emby na rede, mas falhou. Preencha todos os campos para que o EmbyStat possa encontrar o seu servidor Emby.",
     "SEARCHSERVERS": "Searching media servers",
     "SELECTLANGUAGE": "Select your prefered language",
