@@ -27,6 +27,7 @@
     "COUNT": "总计",
     "CREATE": "Create",
     "CREATEDDATE": "Media added",
+    "CRON": "Cron 字符串",
     "DATE": "Date",
     "DAYSABBR": "日",
     "DESCRIPTION": "Description",
