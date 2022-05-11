@@ -45,7 +45,7 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.EnableDetailedErrors();
-        optionsBuilder.UseSqlite("Data Source=SqliteData.db");
+        optionsBuilder.UseSqlite("Data Source=SqliteData.db", x => x.MigrationsAssembly("EmbyStat.Migrations"));
     }
 
 
