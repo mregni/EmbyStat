@@ -63,10 +63,9 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
         await LogProgress(15);
 
         await ProcessMoviesAsync();
-        await LogProgress(55);
+        await LogProgress(75);
 
         await CalculateStatistics();
-        await LogProgress(100);
     }
 
     private async Task ProcessGenresAsync()
@@ -101,7 +100,7 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
         await LogInformation("Lets start processing movies");
         await LogInformation($"{librariesToProcess.Count} libraries are selected, getting ready for processing");
 
-        var logIncrementBase = Math.Round(40 / (double)librariesToProcess.Count, 1);
+        var logIncrementBase = Math.Round(60 / (double)librariesToProcess.Count, 1);
         var genres = await _genreRepository.GetAll();
 
         foreach (var library in librariesToProcess)
@@ -111,12 +110,14 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
             {
                 continue;
             }
-            var increment = logIncrementBase / (totalCount / (double)100);
+            
 
             await LogInformation($"Found {totalCount} changed movies since last sync in {library.Name}");
             var processed = 0;
             var j = 0;
             const int limit = 50;
+            
+            var increment = logIncrementBase / (totalCount / (double)limit);
             do
             {
                 var movies = await _baseHttpClient.GetMedia<Movie>(library.Id, j * limit, limit, library.LastSynced, "Movie");
@@ -138,7 +139,7 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
     {
         await LogInformation("Calculating movie statistics");
         await _statisticsRepository.MarkTypesAsInvalid(StatisticType.Movie);
-        await LogProgress(67);
+        await LogProgress(77);
         await _movieService.CalculateMovieStatistics();
         await _filterRepository.DeleteAll(LibraryType.Movies);
 

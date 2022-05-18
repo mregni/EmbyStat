@@ -76,7 +76,6 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
         await LogProgress(75);
 
         await CalculateStatistics();
-        await LogProgress(100);
     }
 
     private async Task ProcessGenresAsync()
@@ -123,7 +122,7 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
                 continue;
             }
 
-            var increment = logIncrementBase / (totalCount / (double) 100);
+            var increment = logIncrementBase / totalCount;
 
             await LogInformation($"Found {totalCount} changed shows since last sync in {library.Name}");
             var processed = 0;
@@ -131,21 +130,20 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
             const int limit = 50;
             do
             {
-                await ProcessShowBlock(library, genres, j, limit);
+                await ProcessShowBlock(library, genres, j, limit, increment);
 
                 processed += limit;
                 j++;
 
                 var logProcessed = processed < totalCount ? processed : totalCount;
                 await LogInformation($"Processed {logProcessed} / {totalCount} shows");
-                await LogProgressIncrement(increment);
             } while (processed < totalCount);
 
             await _mediaServerRepository.UpdateLibrarySyncDate(library.Id, DateTime.UtcNow);
         }
     }
 
-    private async Task ProcessShowBlock(Library library, IEnumerable<Genre> genres, int index, int limit)
+    private async Task ProcessShowBlock(Library library, IEnumerable<Genre> genres, int index, int limit, double increment)
     {
         var shows = await _baseHttpClient.GetShows(library.Id, index * limit, limit, library.LastSynced);
         shows.AddGenres(genres);
@@ -174,6 +172,8 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
             {
                 await GetMissingEpisodesFromProviderAsync(show);
             }
+            
+            await LogProgressIncrement(increment);
         }
 
         await _showRepository.UpsertShows(shows);
@@ -283,6 +283,8 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
     {
         await LogInformation("Calculating show statistics");
         await _statisticsRepository.MarkTypesAsInvalid(StatisticType.Show);
+        await LogProgress(75);
+
         await _showService.CalculateShowStatistics();
         await _filterRepository.DeleteAll(LibraryType.TvShow);
 
