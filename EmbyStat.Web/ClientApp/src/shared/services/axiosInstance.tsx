@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-import SnackbarUtils from '../utils/SnackbarUtilsConfigurator';
 import i18n from '../../i18n';
+import SnackbarUtils from '../utils/SnackbarUtilsConfigurator';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:6555/api/',
+  baseURL: '/api/',
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',

@@ -319,7 +319,7 @@ public class Program
         var noUpdatesStr = Environment.GetEnvironmentVariable("EMBYSTAT_NOUPDATES");
         if (noUpdatesStr != null && bool.TryParse(noUpdatesStr, out var noUpdates))
         {
-            options.Service = noUpdates;
+            options.NoUpdates = noUpdates;
         }
 
         var serviceStr = Environment.GetEnvironmentVariable("EMBYSTAT_SERVICE");
