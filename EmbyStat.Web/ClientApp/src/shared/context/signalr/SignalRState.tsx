@@ -16,7 +16,7 @@ export const useSignalR = () => {
   const {databaseReset, addResetLogLine} = useResetReceived();
 
   const connect = () => {
-    const connectionHub = 'http://localhost:6555/hub';
+    const connectionHub = '/hub';
     const protocol = new JsonHubProtocol();
     const transport = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
     const options = {

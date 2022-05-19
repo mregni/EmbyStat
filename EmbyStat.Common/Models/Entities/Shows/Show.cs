@@ -12,8 +12,10 @@ public class Show : Extra, ILinkedMedia
     public ICollection<Season> Seasons { get; set; }
 
     #region Inherited props
+
     public ICollection<MediaPerson> People { get; set; }
     public ICollection<Genre> Genres { get; set; }
     public Library Library { get; set; }
+
     #endregion
 }
