@@ -1,6 +1,13 @@
-﻿namespace EmbyStat.Common.Configuration;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 
-public class WritableJsonConfigurationSource
+namespace EmbyStat.Common.Configuration;
+
+public class WritableJsonConfigurationSource: JsonConfigurationSource
 {
-    
+    public override IConfigurationProvider Build(IConfigurationBuilder builder)
+    {
+        EnsureDefaults(builder);
+        return new WritableJsonConfigurationProvider(this);
+    }
 }

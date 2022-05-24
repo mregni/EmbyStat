@@ -1,6 +1,7 @@
 ﻿namespace EmbyStat.Common.EnvironmentInfo;
 
-public class IOsVersionAdapter
+public interface IOsVersionAdapter
 {
-    
+    bool Enabled { get; }
+    OsVersionModel Read();
 }

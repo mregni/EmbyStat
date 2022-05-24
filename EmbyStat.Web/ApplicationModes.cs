@@ -1,6 +1,10 @@
 ﻿namespace EmbyStat.Web;
 
-public class ApplicationModes
+public enum ApplicationModes
 {
-    
+    Interactive,
+    InstallService,
+    UninstallService,
+    Service,
+    RegisterUrl
 }

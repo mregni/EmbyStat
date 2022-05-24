@@ -3,8 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using CommandLine;
+using EmbyStat.Common.Configuration;
+using EmbyStat.Common.Exceptions;
+using EmbyStat.Common.Generators;
 using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Settings;
 using EmbyStat.Repositories;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -12,10 +19,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NetEscapades.Configuration.Yaml;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Exceptions;
+using YamlDotNet.Serialization.NamingConventions;
 using Constants = EmbyStat.Common.Constants;
 
 // ReSharper disable All
@@ -47,38 +56,19 @@ public class Program
 
             StartupOptions options = null;
             parseResult.MapResult(opt => options = opt, NotParedOptions);
-
             options = CheckEnvironmentVariables(options);
 
-            var configArgs = CreateArgsArray(options);
-            SetupLogger(configArgs["Dirs:Logs"], options.LogLevel);
-            LogStartupParameters(configArgs, options.LogLevel, options.Service);
-
-            var listeningUrl = string.Join(';', options.ListeningUrls.Split(';').Select(x => $"{x}:{options.Port}"));
-            var config = BuildConfigurationRoot(configArgs);
-
-            var host = Host
-                .CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder
-                        .CaptureStartupErrors(true)
-                        .UseKestrel()
-                        .UseStartup<Startup>()
-                        .UseUrls(listeningUrl)
-                        .UseConfiguration(config)
-                        .ConfigureLogging(builder =>
-                        {
-                            builder.ClearProviders();
-                            builder.SetMinimumLevel(LogLevel.Debug);
-                            builder.AddSerilog();
-                        });
-                })
-                .Build();
-
-            SetupDatabase(host);
-
-            host.Run();
+            var mode = GetApplicationMode();
+            switch (mode)
+            {
+                case ApplicationModes.Interactive:
+                    var builder = BuildConsoleHost(options);
+                    builder.Run();
+                    break;
+                default:
+                    break;
+            }
+         
             return 0;
         }
         catch (Exception ex)
@@ -114,19 +104,143 @@ public class Program
 
         return null;
     }
-
-    public static IConfigurationRoot BuildConfigurationRoot(Dictionary<string, string> configArgs) =>
-        new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", false, false)
-            .AddInMemoryCollection(configArgs)
-            .Build();
-
-    private static void SetupDatabase(IHost host)
+    
+    private static ApplicationModes GetApplicationMode()
     {
-        using var scope = host.Services.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<EsDbContext>();
-        db.Database.Migrate();
+        // if (OperatingSystem.IsWindows() && startupContext.RegisterUrl)
+        // {
+        //     return ApplicationModes.RegisterUrl;
+        // }
+        //
+        // if (OperatingSystem.IsWindows() && startupContext.InstallService)
+        // {
+        //     return ApplicationModes.InstallService;
+        // }
+        //
+        // if (OperatingSystem.IsWindows() && startupContext.UninstallService)
+        // {
+        //     return ApplicationModes.UninstallService;
+        // }
+
+        // IsWindowsService can throw sometimes, so wrap it
+        var isWindowsService = false;
+        // try
+        // {
+        //     isWindowsService = WindowsServiceHelpers.IsWindowsService();
+        // }
+        // catch (Exception e)
+        // {
+        //     Logger.LogError(e, "Failed to get service status");
+        // }
+
+        if (OperatingSystem.IsWindows() && isWindowsService)
+        {
+            return ApplicationModes.Service;
+        }
+
+        return ApplicationModes.Interactive;
+    }
+
+    private static IHost BuildConsoleHost(StartupOptions options)
+    {
+        var memoryConfig = options.ToKeyValuePairs();
+        
+        var config = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .Add<WritableJsonConfigurationSource>(
+                (Action<WritableJsonConfigurationSource>)(s =>
+                {
+                    s.FileProvider = null;
+                    s.Path = Path.Combine("config", "config.json");
+                    s.Optional = false;
+                    s.ReloadOnChange = true;
+                    s.ResolveFileProvider();
+                }))
+            .AddInMemoryCollection(memoryConfig)
+            .Build();
+        
+        SetupLogger(config["Dirs:Logs"], options.LogLevel ?? 2);
+        LogStartupParameters(config, options.LogLevel ?? 2, options.RunAsService ?? false);
+
+        if (string.IsNullOrWhiteSpace(config["Jwt:Key"]))
+        {
+            Log.Logger.Debug("Generating JWT key");
+            config["Jwt:Key"] = KeyGenerator.GetUniqueKey(120);
+        }
+        
+        var bindAddress = config["Hosting:Url"];
+        var port = Convert.ToInt32(config["Hosting:Port"]);
+        var sslPort = Convert.ToInt32(config["Hosting:SslPort"]);
+        var sslEnalbed = Convert.ToBoolean(config["Hosting:SslEnalbed"]);
+        var sslCertPath = config["Hosting:SslCertPath"];
+        var sslCertPassword = config["Hosting:SslCertPassword"];
+
+        var urls = new List<string> { BuildUrl("http", bindAddress, port) };
+
+        if (sslEnalbed && !string.IsNullOrWhiteSpace(sslCertPath))
+        {
+            urls.Add(BuildUrl("https", bindAddress, sslPort));
+        }
+        
+        return Host
+            .CreateDefaultBuilder()
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder
+                    .UseContentRoot(Directory.GetCurrentDirectory())
+                    .CaptureStartupErrors(true)
+                    .UseKestrel(options =>
+                    {
+                        if (sslEnalbed && !string.IsNullOrWhiteSpace(sslCertPath))
+                        {
+                            options.ConfigureHttpsDefaults(configureOptions =>
+                            {
+                                configureOptions.ServerCertificate = ValidateSslCertificate(sslCertPath, sslCertPassword);
+                            });
+                        }
+                    })
+                    .UseStartup<Startup>()
+                    .UseUrls(urls.ToArray())
+                    .UseConfiguration(config)
+                    .ConfigureKestrel(serverOptions =>
+                    {
+                        serverOptions.AllowSynchronousIO = true;
+                        serverOptions.Limits.MaxRequestBodySize = null;
+                    })
+                    .ConfigureLogging(builder =>
+                    {
+                        builder.ClearProviders();
+                        builder.SetMinimumLevel(LogLevel.Debug);
+                        builder.AddSerilog();
+                    });
+            })
+            .Build();
+    }
+    
+    private static X509Certificate2 ValidateSslCertificate(string cert, string password)
+    {
+        X509Certificate2 certificate;
+
+        try
+        {
+            certificate = new X509Certificate2(cert, password, X509KeyStorageFlags.DefaultKeySet);
+        }
+        catch (CryptographicException ex)
+        {
+            if (ex.HResult == 0x2 || ex.HResult == 0x2006D080)
+            {
+                throw new EmbyStatStartupException(ex, $"The SSL certificate file {cert} does not exist");
+            }
+
+            throw new EmbyStatStartupException(ex);
+        }
+
+        return certificate;
+    }
+    
+    private static string BuildUrl(string scheme, string bindAddress, int port)
+    {
+        return $"{scheme}://{bindAddress}:{port}";
     }
 
     private static void SetupLogger(string logPath, int logLevel)
@@ -166,22 +280,24 @@ public class Program
         
     }
 
-    private static void LogStartupParameters(IReadOnlyDictionary<string, string> options, int logLevel, bool service)
+    private static void LogStartupParameters(IConfigurationRoot config, int logLevel, bool service)
     {
         var logLevelStr = logLevel == 1 ? "Debug" : "Information";
-        var updatesEnabled = options["NoUpdates"] == "False";
         Log.Information("--------------------------------------------------------------------");
         Log.Information("System info:");
         Log.Information($"\tEnvironment\t{GetEnvironmentName()}");
         Log.Information($"\tDebugger\t{Debugger.IsAttached}");
         Log.Information($"\tProcess Name\t{GetProcessName()}");
+        Log.Information($"\tVersion\t\t{Assembly.GetExecutingAssembly().GetName().Version}");
         Log.Information($"\tLog level:\t{logLevelStr}");
-        Log.Information($"\tPort:\t\t{options["Port"]}");
-        Log.Information($"\tURL's:\t\t{options["ListeningUrls"]}");
-        Log.Information($"\tConfigDir:\t{options["Dirs:Config"]}");
-        Log.Information($"\tDataDir:\t{options["Dirs:Data"]}");
-        Log.Information($"\tLogDir:\t\t{options["Dirs:Logs"]}");
-        Log.Information($"\tCan update:\t{updatesEnabled}");
+        Log.Information($"\tPort:\t\t{config["Hosting:Port"]}");
+        Log.Information($"\tSSL Port:\t{config["Hosting:SslPort"]}");
+        Log.Information($"\tSSL Enabled:\t{config["Hosting:SslEnabled"]}");
+        Log.Information($"\tURLs:\t\t{config["Hosting:Urls"]}");
+        Log.Information($"\tConfig dir:\t{config["Dirs:Config"]}");
+        Log.Information($"\tLog dir:\t{config["Dirs:Logs"]}");
+        Log.Information($"\tData dir:\t{config["Dirs:Data"]}");
+        Log.Information($"\tCan update:\t{config["UpdatesDisabled"]}");
         Log.Information($"\tAs service:\t{service}");
         Log.Information("--------------------------------------------------------------------");
     }
@@ -202,80 +318,6 @@ public class Program
         if (string.IsNullOrWhiteSpace(str))
             str = "Production";
         return str;
-    }
-
-    private static Dictionary<string, string> CreateArgsArray(StartupOptions options)
-    {
-        var dataPath = GetDataPath(options);
-        return new Dictionary<string, string>
-        {
-            {"Port", options.Port.ToString()},
-            {"ListeningUrls", options.ListeningUrls},
-            {"NoUpdates", options.NoUpdates.ToString()},
-            {"Dirs:Data", dataPath},
-            {"Dirs:Config", GetConfigPath(options, dataPath)},
-            {"Dirs:Logs", GetLogsPath(options, dataPath)}
-        };
-    }
-
-    private static string GetDataPath(StartupOptions options)
-    {
-        var dataDir = options.DataDir;
-        if (string.IsNullOrWhiteSpace(dataDir))
-        {
-            dataDir = Directory.GetCurrentDirectory();
-        }
-
-        try
-        {
-            Directory.CreateDirectory(dataDir);
-        }
-        catch (Exception e)
-        {
-            Log.Fatal(e, "Can't create data directory:");
-        }
-
-        return dataDir;
-    }
-
-    private static string GetConfigPath(StartupOptions options, string basePath)
-    {
-        var configDir = options.ConfigDir;
-        if (string.IsNullOrWhiteSpace(configDir))
-        {
-            configDir = basePath;
-        }
-
-        try
-        {
-            Directory.CreateDirectory(configDir);
-        }
-        catch (Exception e)
-        {
-            Log.Fatal(e, "Can't create config directory:");
-        }
-
-        return configDir;
-    }
-
-    private static string GetLogsPath(StartupOptions options, string basePath)
-    {
-        var logDir = options.LogDir;
-        if (string.IsNullOrWhiteSpace(logDir))
-        {
-            logDir = Path.Combine(basePath, "logs");
-        }
-
-        try
-        {
-            Directory.CreateDirectory(logDir);
-        }
-        catch (Exception e)
-        {
-            Log.Fatal(e, "Can't create log directory:");
-        }
-
-        return logDir;
     }
 
     private static StartupOptions CheckEnvironmentVariables(StartupOptions options)
@@ -325,7 +367,7 @@ public class Program
         var serviceStr = Environment.GetEnvironmentVariable("EMBYSTAT_SERVICE");
         if (serviceStr != null && bool.TryParse(serviceStr, out var service))
         {
-            options.Service = service;
+            options.RunAsService = service;
         }
 
         return options;

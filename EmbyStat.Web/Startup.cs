@@ -37,8 +37,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Refit;
@@ -60,8 +62,8 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     { 
         services.AddOptions();
-        services.Configure<AppSettings>(Configuration);
-        var appSettings = Configuration.Get<AppSettings>();
+        services.Configure<Configuration>(Configuration);
+        var appSettings = Configuration.Get<Configuration>();
         services.RegisterApplicationDependencies();
 
         RollbarLocator.RollbarInstance.Configure(new RollbarConfig(appSettings.Rollbar.AccessToken));
@@ -286,7 +288,7 @@ public class Startup
 
     }
 
-    private static void SetupDirectories(AppSettings settings)
+    private static void SetupDirectories(Configuration settings)
     {
         if (Directory.Exists(settings.Dirs.TempUpdate.GetLocalPath()))
         {
@@ -297,23 +299,25 @@ public class Startup
     private void PerformPostStartup()
     {
         using var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope();
+        var db = serviceScope.ServiceProvider.GetRequiredService<EsDbContext>();
+        db.Database.Migrate();
+        
         var migrationRunner = serviceScope.ServiceProvider.GetService<IMigrationRunner>();
         migrationRunner?.Migrate();
 
-        var settingsService = serviceScope.ServiceProvider.GetService<ISettingsService>();
+        var settingsService = serviceScope.ServiceProvider.GetService<IRollbarProvider>();
         var accountService = serviceScope.ServiceProvider.GetService<IAccountService>();
         var clientStrategy = serviceScope.ServiceProvider.GetService<IClientStrategy>();
         var jobInitializer = serviceScope.ServiceProvider.GetService<IJobInitializer>();
-        
+
         if (settingsService != null)
         {
-            var settings = settingsService.GetAppSettings();
-            settingsService?.LoadUserSettingsFromFile();
+            var settings = settingsService.GetSettings();
             accountService?.CreateRoles();
             settingsService.CreateRollbarLogger();
             AddDeviceIdToConfig(settingsService);
             SetMediaServerClientConfiguration(settingsService, clientStrategy);
-            jobInitializer?.Setup(settings.NoUpdates);
+            jobInitializer?.Setup(settings.UpdatesDisabled);
         }
         
         RemoveVersionFiles();
@@ -337,22 +341,22 @@ public class Startup
         }
     }
 
-    private static void AddDeviceIdToConfig(ISettingsService settingsService)
+    private static void AddDeviceIdToConfig(IRollbarProvider rollbarProvider)
     {
-        var userSettings = settingsService.GetUserSettings();
+        var appSettings = rollbarProvider.GetSettings();
 
-        if (userSettings.Id != null)
+        if (appSettings.Id != null)
         {
             return;
         }
-        userSettings.Id = Guid.NewGuid();
-        settingsService.SaveUserSettingsAsync(userSettings);
+        appSettings.Id = Guid.NewGuid();
+        rollbarProvider.SaveSettingsAsync(appSettings);
     }
 
-    private static void SetMediaServerClientConfiguration(ISettingsService settingsService, IClientStrategy clientStrategy)
+    private static void SetMediaServerClientConfiguration(IRollbarProvider rollbarProvider, IClientStrategy clientStrategy)
     {
-        settingsService.SetUpdateInProgressSettingAsync(false);
-        var settings = settingsService.GetUserSettings();
+        rollbarProvider.SetUpdateInProgressSettingAsync(false);
+        var settings = rollbarProvider.GetSettings();
 
         var mediaServerType = settings.MediaServer?.Type ?? ServerType.Emby;
         var mediaServerClient = clientStrategy.CreateHttpClient(mediaServerType);
@@ -360,7 +364,7 @@ public class Startup
         mediaServerClient.SetDeviceInfo(
             settings.AppName, 
             settings.MediaServer?.AuthorizationScheme ?? string.Empty, 
-            settingsService.GetAppSettings().Version.ToCleanVersionString(), 
+            rollbarProvider.GetSettings().Version.ToCleanVersionString(), 
             settings.Id.ToString(),
             settings.MediaServer?.UserId ?? string.Empty);
 

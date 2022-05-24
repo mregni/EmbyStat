@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using EmbyStat.Common.Enums;
 using Newtonsoft.Json;
 
 namespace EmbyStat.Common.Models.Settings;
 
-public class AppSettings
+public class Configuration
 {
     public string Version { get; set; }
     public string ProcessName { get; set; }
@@ -15,34 +16,49 @@ public class AppSettings
     public bool ToShortMovieEnabled { get; set; }
     public int ToShortMovie { get; set; }
     public int KeepLogsCount { get; set; }
+    public int LogLevel { get; set; }
     public bool AutoUpdate { get; set; }
-    public UpdateTrain UpdateTrain { get; set; }
     public bool UpdateInProgress { get; set; }
+    public bool EnableRollbarLogging { get; set; }
+    public string DatabaseFile { get; set; }
+    public int Port { get; set; }
+    public string ListeningUrls { get; set; }
+    public long Migration { get; set; }
+    public bool UpdatesDisabled { get; set; }
+    public UpdateTrain UpdateTrain { get; set; }
+    public Hosting Hosting { get; set; }
     public MediaServerSettings MediaServer { get; set; }
     public TmdbSettings Tmdb { get; set; }
-    public bool EnableRollbarLogging { get; set; }
     public Updater Updater { get; set; }
     public Dirs Dirs { get; set; }
     public Rollbar Rollbar { get; set; }
-    public string DatabaseFile { get; set; }
-    /// <summary>
-    /// Port number. Set dynamically when server is starting
-    /// </summary>
-    [JsonIgnore]
-    public int Port { get; set; }
-    /// <summary>
-    /// If true, update flow is disabled. Set dynamically when server is starting
-    /// </summary>
-    [JsonIgnore]
-    public bool NoUpdates { get; set; }
-    /// <summary>
-    /// Listeing urls. Set dynamically when server is starting
-    /// </summary>
-    [JsonIgnore]
-    public string ListeningUrls { get; set; }
     public Jwt Jwt { get; set; }
-    public long Migration { get; set; }
+}
 
+public class Hosting
+{
+    public bool SslEnabled { get; set; }
+    public int Port { get; set; }
+    public int SslPort { get; set; }
+    public string Url { get; set; }
+    public string SslCertPath { get; set; }
+    public string SslCertPassword { get; set; }
+}
+
+public class MediaServerSettings
+{
+    public string Name { get; set; }
+    public string ApiKey { get; set; }
+    public string Address { get; set; }
+    public string AuthorizationScheme { get; set; }
+    public ServerType Type { get; set; }
+    public string UserId { get; set; }
+    public string Id { get; set; }
+
+    [JsonIgnore]
+    public string FullSocketAddress => Address
+        .Replace("https://", "wss://")
+        .Replace("http://", "ws://");
 }
 
 public class Updater
@@ -53,24 +69,18 @@ public class Updater
     public string BetaString { get; set; }
 }
 
+public class TmdbSettings
+{
+    public DateTime? LastUpdate { get; set; }
+    public string ApiKey { get; set; }
+}
+
 public class Dirs
 {
     public string TempUpdate { get; set; }
     public string Updater { get; set; }
-    /// <summary>
-    /// Log folder. Never saved, Set dynamically when server is starting.
-    /// </summary>
-    [JsonIgnore]
     public string Logs { get; set; }
-    /// <summary>
-    /// Config folder. Never saved, Set dynamically when server is starting.
-    /// </summary>
-    [JsonIgnore]
     public string Config { get; set; }
-    /// <summary>
-    /// Database folder. Never saved, Set dynamically when server is starting.
-    /// </summary>
-    [JsonIgnore]
     public string Data { get; set; }
 }
 
@@ -92,26 +102,4 @@ public class Jwt
     public DateTime IssuedAt => DateTime.UtcNow;
     public DateTime NotBefore => DateTime.UtcNow;
     public DateTime Expiration => IssuedAt.Add(TimeSpan.FromMinutes(AccessExpireMinutes));
-}
-
-public class MediaServerSettings
-{
-    public string Name { get; set; }
-    public string ApiKey { get; set; }
-    public string Address { get; set; }
-    public string AuthorizationScheme { get; set; }
-    public ServerType Type { get; set; }
-    public string UserId { get; set; }
-    public string Id { get; set; }
-
-    [JsonIgnore]
-    public string FullSocketAddress => Address
-        .Replace("https://", "wss://")
-        .Replace("http://", "ws://");
-}
-
-public class TmdbSettings
-{
-    public DateTime? LastUpdate { get; set; }
-    public string ApiKey { get; set; }
 }

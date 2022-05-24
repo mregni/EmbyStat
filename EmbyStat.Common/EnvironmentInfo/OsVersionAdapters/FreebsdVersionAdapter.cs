@@ -1,8 +1,8 @@
+using System;
 using System.Linq;
-using NzbDrone.Common.EnvironmentInfo;
-using NzbDrone.Common.Processes;
+using EmbyStat.Common.Processes.Interfaces;
 
-namespace NzbDrone.Mono.EnvironmentInfo.VersionAdapters
+namespace EmbyStat.Common.EnvironmentInfo.OsVersionAdapters
 {
     public class FreebsdVersionAdapter : IOsVersionAdapter
     {
@@ -15,13 +15,18 @@ namespace NzbDrone.Mono.EnvironmentInfo.VersionAdapters
 
         public OsVersionModel Read()
         {
+            if (!OperatingSystem.IsFreeBSD())
+            {
+                return null;
+            }
+            
             var output = _processProvider.StartAndCapture("freebsd-version");
-
             var version = output.Standard.First().Content;
 
             return new OsVersionModel("FreeBSD", version, $"FreeBSD {version}");
+
         }
 
-        public bool Enabled => OsInfo.Os == Os.Bsd;
+        public bool Enabled => OperatingSystem.IsFreeBSD();
     }
 }
