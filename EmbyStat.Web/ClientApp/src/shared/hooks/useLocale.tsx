@@ -6,14 +6,14 @@ import {useContext, useEffect, useState} from 'react';
 import {SettingsContext} from '../context/settings';
 
 export const useLocale = () => {
-  const {settings} = useContext(SettingsContext);
+  const {userConfig} = useContext(SettingsContext);
   const [locale, setLocale] = useState<Locale>(null!);
 
   useEffect(() => {
-    if (settings !== null) {
-      setLocale(getLocale(settings.language));
+    if (userConfig !== null) {
+      setLocale(getLocale(userConfig.language));
     }
-  }, [settings]);
+  }, [userConfig]);
 
   const getLocale = (language: string): Locale => {
     switch (language) {

@@ -26,7 +26,6 @@ public static class DefaultConfig
                 AccessExpireMinutes = 120,
                 Key = KeyGenerator.GetUniqueKey(120)
             },
-            WizardFinished = false,
             AutoUpdate = true,
             UpdateTrain = UpdateTrain.Release,
             ProcessName = "EmbyStat",
@@ -51,6 +50,7 @@ public static class DefaultConfig
         UserConfig = new UserConfig
         {
             Language = "en-US",
+            WizardFinished = false,
             ToShortMovieEnabled = true,
             ToShortMovie = 10,
             KeepLogsCount = 10,

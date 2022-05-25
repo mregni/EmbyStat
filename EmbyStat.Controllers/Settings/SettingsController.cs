@@ -37,18 +37,19 @@ public class SettingsController : Controller
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update([FromBody] ConfigViewModel userSettings)
+    public async Task<IActionResult> Update([FromBody] UserConfigViewModel userConfigViewModel)
     {
-        if (userSettings == null)
+        if (userConfigViewModel == null)
         {
             _logger.LogInformation("Settings object was NULL while calling the PUT API.");
             return BadRequest();
         }
 
-        var settings = _mapper.Map<Config>(userSettings);
-        await _configurationService.UpdateUserConfiguration(settings.UserConfig);
-
-        return Ok(userSettings);
+        var userConfig = _mapper.Map<UserConfig>(userConfigViewModel);
+        await _configurationService.UpdateUserConfiguration(userConfig);
+        
+        var config = _configurationService.Get();
+        return Ok(config);
     }
 
     [HttpGet]

@@ -9,9 +9,9 @@ import {
 } from './components';
 
 export function Server() {
-  const {settings} = useContext(SettingsContext);
+  const {userConfig} = useContext(SettingsContext);
 
-  if (settings === null) {
+  if (userConfig === null) {
     return (null);
   }
 

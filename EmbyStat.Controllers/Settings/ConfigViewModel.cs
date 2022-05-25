@@ -16,6 +16,7 @@ public class UserConfigViewModel
     public int KeepLogsCount { get; set; }
     public int LogLevel { get; set; }
     public bool EnableRollbarLogging { get; set; }
+    public bool WizardFinished { get; set; }
     public HostingViewModel Hosting { get; set; }
     public MediaServerSettingsViewModel MediaServer { get; set; }
     public TmdbSettingsViewModel Tmdb { get; set; }
@@ -24,7 +25,6 @@ public class UserConfigViewModel
 public class SystemConfigViewModel
 {
     public bool AutoUpdate { get; set; }
-    public bool WizardFinished { get; set; }
     public string Version { get; set; }
     public string ProcessName { get; set; }
     public string AppName { get; set; }
@@ -56,9 +56,7 @@ public class MediaServerSettingsViewModel
     public int Type { get; set; }
     public string UserId { get; set; }
     public string Id { get; set; }
-    public string FullSocketAddress => (Address ?? string.Empty)
-        .Replace("https://", "wss://")
-        .Replace("http://", "ws://");
+    public string FullSocketAddress { get; set; }
 }
 
 public class TmdbSettingsViewModel

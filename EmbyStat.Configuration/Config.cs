@@ -17,6 +17,7 @@ public class UserConfig
     public int KeepLogsCount { get; set; }
     public int LogLevel { get; set; }
     public bool EnableRollbarLogging { get; set; }
+    public bool WizardFinished { get; set; }
     public Hosting Hosting { get; set; }
     public MediaServerSettings MediaServer { get; set; }
     public TmdbSettings Tmdb { get; set; }
@@ -25,7 +26,6 @@ public class UserConfig
 public class SystemConfig
 {
     public bool AutoUpdate { get; set; }
-    public bool WizardFinished { get; set; }
     [JsonIgnore] public string Version => "0.0.0.0";
     public string ProcessName { get; set; }
     public string AppName { get; set; }
@@ -83,10 +83,8 @@ public class TmdbSettings
 
 public class Rollbar
 {
-    [JsonIgnore]
-    public string AccessToken => "RollbarAccessToken";
-    [JsonIgnore]
-        public string Environment => "RollbarEnvironment";
+    [JsonIgnore] public string AccessToken => "RollbarAccessToken";
+    [JsonIgnore] public string Environment => "RollbarEnvironment";
     public bool Enabled { get; set; }
 }
 
@@ -104,10 +102,7 @@ public class Jwt
     public int AccessExpireMinutes { get; set; }
     public string Issuer { get; set; }
     public string Audience { get; set; }
-    [JsonIgnore]
-    public DateTime IssuedAt => DateTime.UtcNow;
-    [JsonIgnore]
-    public DateTime NotBefore => DateTime.UtcNow;    
-    [JsonIgnore]
-    public DateTime Expiration => IssuedAt.Add(TimeSpan.FromMinutes(AccessExpireMinutes));
+    [JsonIgnore] public DateTime IssuedAt => DateTime.UtcNow;
+    [JsonIgnore] public DateTime NotBefore => DateTime.UtcNow;
+    [JsonIgnore] public DateTime Expiration => IssuedAt.Add(TimeSpan.FromMinutes(AccessExpireMinutes));
 }

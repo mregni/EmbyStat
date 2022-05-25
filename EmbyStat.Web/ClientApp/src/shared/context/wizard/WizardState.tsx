@@ -2,7 +2,7 @@
 import {createContext, useEffect, useState} from 'react';
 
 import {useSearchMediaServers} from '../../../shared/hooks';
-import {Settings} from '../../../shared/models/settings';
+import {Settings, UserConfig} from '../../../shared/models/settings';
 import {Wizard} from '../../../shared/models/wizard';
 import {MediaServer, MediaServerInfo, MediaServerUser} from '../../models/mediaServer';
 import {register, updateSettings} from '../../services';
@@ -20,7 +20,7 @@ export interface WizardContextProps {
   setAdministrator: (userId: string) => void;
   setMovieLibraryIds: (libraries: string[]) => Promise<void>;
   setShowLibraryIds: (libraries: string[]) => Promise<void>;
-  finishWizard: (settings: Settings) => Promise<boolean>;
+  finishWizard: (userConfig: UserConfig) => Promise<boolean>;
   mediaServersLoading: boolean;
   wizard: Wizard;
 }
@@ -84,11 +84,11 @@ export const useWizardContext = (): WizardContextProps => {
     return Promise.resolve();
   };
 
-  const finishWizard = async (settings: Settings): Promise<boolean> => {
-    const newSettings: Settings = {
-      ...settings,
+  const finishWizard = async (userConfig: UserConfig): Promise<boolean> => {
+    const newUserConfig: UserConfig = {
+      ...userConfig,
       mediaServer: {
-        ...settings.mediaServer,
+        ...userConfig.mediaServer,
         id: wizard.serverId,
         apiKey: wizard.apiKey,
         address: wizard.address,
@@ -104,7 +104,7 @@ export const useWizardContext = (): WizardContextProps => {
     try {
       const result = await register(wizard.username, wizard.password);
 
-      result && await updateSettings(newSettings);
+      result && await updateSettings(newUserConfig);
       result && await pushMovieLibraries(wizard.movieLibraryIds);
       result && await pushShowLibraries(wizard.showLibraryIds);
 

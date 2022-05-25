@@ -159,14 +159,13 @@ public class MapProfiles : Profile
     private void CreateSettingMappings()
     {
         CreateMap<Config, ConfigViewModel>();
-        CreateMap<UserConfig, UserConfigViewModel>();
+        CreateMap<UserConfig, UserConfigViewModel>().ReverseMap();
         CreateMap<SystemConfig, SystemConfigViewModel>();
-        CreateMap<Hosting, HostingViewModel>();
-        CreateMap<MediaServerSettings, MediaServerSettingsViewModel>();
-        CreateMap<TmdbSettings, TmdbSettingsViewModel>();
+        CreateMap<Hosting, HostingViewModel>().ReverseMap();
+        CreateMap<MediaServerSettings, MediaServerSettingsViewModel>().ReverseMap();
+        CreateMap<TmdbSettings, TmdbSettingsViewModel>().ReverseMap();
         CreateMap<Configuration.Rollbar, RollbarViewModel>();
         CreateMap<Dirs, DirsViewModel>();
-
     }
 
     private void CreatePeopleMappings()

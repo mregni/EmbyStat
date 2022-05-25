@@ -8,7 +8,7 @@ import {SettingsContext} from '../../shared/context/settings';
 import {useAbout} from './hooks';
 
 export function About() {
-  const {settings} = useContext(SettingsContext);
+  const {systemConfig} = useContext(SettingsContext);
   const {about, loaded} = useAbout();
   const {t} = useTranslation();
 
@@ -28,7 +28,7 @@ export function About() {
       <EsTitle content="ABOUT.SERVERINFO" isFirst />
       <Stack spacing={1}>
         <Typography>
-        EmbyStat {t('COMMON.VERSION')}: {settings.version}
+        EmbyStat {t('COMMON.VERSION')}: {systemConfig.version}
         </Typography>
         <Typography>
           {t('ABOUT.OS')}: { about.operatingSystem } {about.architecture} { about.operatingSystemVersion }
