@@ -29,7 +29,6 @@ public static class DefaultConfig
             WizardFinished = false,
             AutoUpdate = true,
             UpdateTrain = UpdateTrain.Release,
-            Version = "0.0.0.0",
             ProcessName = "EmbyStat",
             AppName = "EmbyStat",
             Id = Guid.NewGuid(),

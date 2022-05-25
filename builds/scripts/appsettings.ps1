@@ -1,19 +1,22 @@
 param(
 	[string]$updatePackage, 
 	[string]$rollbarKey,
+	[string]$rollbarEnv,
 	[string]$version
 )
 
-$appSettings = "EmbyStat.Web\appsettings.json"
+$config = "EmbyStat.Configuration\Config.cs"
 
 Write-Host "Updating version to $version";
-(GC $appSettings).Replace("0.0.0.0", "$version") | Set-Content $appSettings
+(Get-Content $config).Replace("0.0.0.0", "$version") | Set-Content $config
 
-Write-Host "Updating RollbarENV to dev";
-(GC $appSettings).Replace("RollbarENV", "dev") | Set-Content $appSettings
+Write-Host "Updating Rollbar environment to $rollbarEnv";
+(Get-Content $config).Replace("RollbarEnvironment", $rollbarEnv) | Set-Content $config
 
 Write-Host "Updating Rollbar key to $rollbarKey";
-(GC $appSettings).Replace("XXXXXXXXXX", "$rollbarKey") | Set-Content $appSettings
+(Get-Content $config).Replace("RollbarAccessToken", "$rollbarKey") | Set-Content $config
+
+$defaultConfig = "EmbyStat.Web\DefaultConfig.cs"
 
 Write-Host "Updating update package name to $updatePackage"
-(GC $appSettings).Replace("win10-x64-v{version}.zip", $updatePackage + '-v{version}.zip') | Set-Content $appSettings
+(Get-Content $defaultConfig).Replace("win10-x64-v{version}.zip", $updatePackage + '-v{version}.zip') | Set-Content $defaultConfig

@@ -20,19 +20,3 @@ steps:
     VersionRegex: '\d+\.\d+\.\d+\.\d+'
     FilenamePattern: '.csproj'
     OutputVersion: 'OutputedVersion'
-
-- task: replacetokens@5
-  displayName: Setting Rollbar settings
-  inputs:
-    rootDirectory: '$(Build.SourcesDirectory)\EmbyStat.Web'
-    targetFiles: 'Startup.cs'
-    encoding: 'auto'
-    tokenPattern: 'default'
-    writeBOM: true
-    actionOnMissing: 'warn'
-    keepToken: false
-    actionOnNoFiles: 'continue'
-    enableTransforms: false
-    enableRecursion: false
-    useLegacyPattern: false
-    enableTelemetry: false

@@ -26,7 +26,7 @@ public class SystemConfig
 {
     public bool AutoUpdate { get; set; }
     public bool WizardFinished { get; set; }
-    public string Version { get; set; }
+    [JsonIgnore] public string Version => "0.0.0.0";
     public string ProcessName { get; set; }
     public string AppName { get; set; }
     public Guid? Id { get; set; }
@@ -86,7 +86,7 @@ public class Rollbar
     [JsonIgnore]
     public string AccessToken => "RollbarAccessToken";
     [JsonIgnore]
-    public string Environment => "RollbarEnvironment";
+        public string Environment => "RollbarEnvironment";
     public bool Enabled { get; set; }
 }
 
