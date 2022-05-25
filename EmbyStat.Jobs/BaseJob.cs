@@ -18,7 +18,7 @@ public abstract class BaseJob : IBaseJob, IDisposable
     protected readonly IHubHelper HubHelper;
     private readonly IJobRepository _jobRepository;
     private bool _disposed;
-    protected ILogger<BaseJob> Logger;
+    protected readonly ILogger<BaseJob> Logger;
 
     private JobState State { get; set; }
     private DateTime? StartTimeUtc { get; }
