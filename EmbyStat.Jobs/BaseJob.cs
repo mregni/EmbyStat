@@ -72,7 +72,7 @@ public abstract class BaseJob : IBaseJob, IDisposable
 
     private async Task PreJobExecution()
     {
-        if (!Configuration.SystemConfig.WizardFinished)
+        if (!Configuration.UserConfig.WizardFinished)
         {
             throw new WizardNotFinishedException("Job not running because wizard is not finished");
         }
