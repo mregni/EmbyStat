@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using EmbyStat.Services.Interfaces;
+using EmbyStat.Core.Logs.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmbyStat.Controllers.Log;

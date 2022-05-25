@@ -8,18 +8,19 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Movies;
 using EmbyStat.Common.Models.Query;
-using EmbyStat.Common.Models.Settings;
-using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services;
-using EmbyStat.Services.Interfaces;
-using EmbyStat.Services.Models.Cards;
+using EmbyStat.Core.Jobs.Interfaces;
+using EmbyStat.Core.MediaServers.Interfaces;
+using EmbyStat.Core.Movies;
+using EmbyStat.Core.Movies.Interfaces;
+using EmbyStat.Core.Rollbar.Interfaces;
+using EmbyStat.Core.Statistics.Interfaces;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Tests.Unit.Builders;
 using Xunit;
 using Constants = EmbyStat.Common.Constants;
-using ValueType = EmbyStat.Services.Models.Cards.ValueType;
+using ValueType = EmbyStat.Common.Models.Cards.ValueType;
 
 namespace Tests.Unit.Services;
 
@@ -29,7 +30,7 @@ public class MovieServiceTests
     private readonly Movie _movieOne;
     private readonly Movie _movieTwo;
     private readonly Movie _movieThree;
-    private readonly Mock<ISettingsService> _settingsServiceMock;
+    private readonly Mock<IRollbarService> _settingsServiceMock;
     private readonly Mock<IMovieRepository> _movieRepositoryMock;
     private readonly Mock<IMediaServerRepository> _mediaServerRepositoryMock;
     private readonly Mock<ILogger<MovieService>> _logger;
@@ -79,7 +80,7 @@ public class MovieServiceTests
             .AddImdb("0003")
             .Build();
 
-        _settingsServiceMock = new Mock<ISettingsService>();
+        _settingsServiceMock = new Mock<IRollbarService>();
         _settingsServiceMock
             .Setup(x => x.GetUserSettings())
             .Returns(new UserSettings
@@ -90,7 +91,7 @@ public class MovieServiceTests
         _subject = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree);
     }
 
-    private MovieService CreateMovieService(Mock<ISettingsService> settingsServiceMock, params Movie[] movies)
+    private MovieService CreateMovieService(Mock<IRollbarService> settingsServiceMock, params Movie[] movies)
     {
         _movieRepositoryMock
             .Setup(x => x.GetAll())

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EmbyStat.Common.Exceptions;
-using EmbyStat.Common.Hubs;
-using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Tasks;
 using EmbyStat.Common.Models.Tasks.Enum;
-using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services.Interfaces;
+using EmbyStat.Configuration;
+using EmbyStat.Configuration.Interfaces;
+using EmbyStat.Core.Hubs;
+using EmbyStat.Core.Jobs.Interfaces;
 using Hangfire;
 using Microsoft.Extensions.Logging;
 
@@ -22,24 +22,24 @@ public abstract class BaseJob : IBaseJob, IDisposable
 
     private JobState State { get; set; }
     private DateTime? StartTimeUtc { get; }
-    protected UserSettings Settings { get; }
+    protected Config Configuration { get; }
     private bool EnableUiLogging { get; }
     private double Progress { get; set; }
 
-    protected BaseJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
+    protected BaseJob(IHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService, 
         bool enableUiLogging, ILogger<BaseJob> logger)
     {
         HubHelper = hubHelper;
         _jobRepository = jobRepository;
-        Settings = settingsService.GetUserSettings();
+        Configuration = configurationService.Get();
         EnableUiLogging = enableUiLogging;
         Progress = 0;
         StartTimeUtc = DateTime.UtcNow;
         Logger = logger;
     }
 
-    protected BaseJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, ILogger<BaseJob> logger)
-        :this(hubHelper, jobRepository, settingsService, true, logger)
+    protected BaseJob(IHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService, ILogger<BaseJob> logger)
+        :this(hubHelper, jobRepository, configurationService, true, logger)
     {
             
     }
@@ -72,7 +72,7 @@ public abstract class BaseJob : IBaseJob, IDisposable
 
     private async Task PreJobExecution()
     {
-        if (!Settings.WizardFinished)
+        if (!Configuration.SystemConfig.WizardFinished)
         {
             throw new WizardNotFinishedException("Job not running because wizard is not finished");
         }

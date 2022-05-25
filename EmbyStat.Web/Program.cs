@@ -7,24 +7,20 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using CommandLine;
-using EmbyStat.Common.Configuration;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Generators;
 using EmbyStat.Common.Models;
-using EmbyStat.Common.Models.Settings;
-using EmbyStat.Repositories;
+using EmbyStat.Configuration;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using NetEscapades.Configuration.Yaml;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Exceptions;
-using YamlDotNet.Serialization.NamingConventions;
 using Constants = EmbyStat.Common.Constants;
 
 // ReSharper disable All
@@ -143,37 +139,33 @@ public class Program
 
     private static IHost BuildConsoleHost(StartupOptions options)
     {
+        GenerateDefaultConfiguration();
+        
         var memoryConfig = options.ToKeyValuePairs();
         
-        var config = new ConfigurationBuilder()
+        var configurationRoot = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .Add<WritableJsonConfigurationSource>(
-                (Action<WritableJsonConfigurationSource>)(s =>
-                {
-                    s.FileProvider = null;
-                    s.Path = Path.Combine("config", "config.json");
-                    s.Optional = false;
-                    s.ReloadOnChange = true;
-                    s.ResolveFileProvider();
-                }))
+            .AddJsonFile(Path.Combine("config", "config.json"), false, true)
             .AddInMemoryCollection(memoryConfig)
             .Build();
+
+        var config = configurationRoot.Get<Config>();
         
-        SetupLogger(config["Dirs:Logs"], options.LogLevel ?? 2);
+        SetupLogger(config.SystemConfig.Dirs.Logs, options.LogLevel ?? 2);
         LogStartupParameters(config, options.LogLevel ?? 2, options.RunAsService ?? false);
 
-        if (string.IsNullOrWhiteSpace(config["Jwt:Key"]))
+        if (string.IsNullOrWhiteSpace(config.SystemConfig.Jwt.Key))
         {
             Log.Logger.Debug("Generating JWT key");
-            config["Jwt:Key"] = KeyGenerator.GetUniqueKey(120);
+            config.SystemConfig.Jwt.Key = KeyGenerator.GetUniqueKey(120);
         }
         
-        var bindAddress = config["Hosting:Url"];
-        var port = Convert.ToInt32(config["Hosting:Port"]);
-        var sslPort = Convert.ToInt32(config["Hosting:SslPort"]);
-        var sslEnalbed = Convert.ToBoolean(config["Hosting:SslEnalbed"]);
-        var sslCertPath = config["Hosting:SslCertPath"];
-        var sslCertPassword = config["Hosting:SslCertPassword"];
+        var bindAddress = config.UserConfig.Hosting.Url;
+        var port = config.UserConfig.Hosting.Port;
+        var sslPort = config.UserConfig.Hosting.SslPort;
+        var sslEnalbed = config.UserConfig.Hosting.SslEnabled;
+        var sslCertPath = config.UserConfig.Hosting.SslCertPath;
+        var sslCertPassword = config.UserConfig.Hosting.SslCertPassword;
 
         var urls = new List<string> { BuildUrl("http", bindAddress, port) };
 
@@ -201,7 +193,7 @@ public class Program
                     })
                     .UseStartup<Startup>()
                     .UseUrls(urls.ToArray())
-                    .UseConfiguration(config)
+                    .UseConfiguration(configurationRoot)
                     .ConfigureKestrel(serverOptions =>
                     {
                         serverOptions.AllowSynchronousIO = true;
@@ -215,6 +207,30 @@ public class Program
                     });
             })
             .Build();
+    }
+
+    private static void GenerateDefaultConfiguration()
+    {
+        var dir = Path.Combine(Directory.GetCurrentDirectory(), "config");
+        if (!Directory.Exists(dir))
+        {
+            Directory.CreateDirectory(dir);
+        }
+        
+        var path = Path.Combine(Directory.GetCurrentDirectory(),"config", "config.json");
+        if (!File.Exists(path))
+        {
+            using var writer = File.CreateText(path);
+            var defaultConfig = DefaultConfig.Default;
+            var jsonSettings = new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented
+            };
+            jsonSettings.Converters.Add(new StringEnumConverter());
+
+            var newJson = JsonConvert.SerializeObject(defaultConfig, Formatting.Indented, jsonSettings);
+            writer.Write(newJson);
+        }
     }
     
     private static X509Certificate2 ValidateSslCertificate(string cert, string password)
@@ -280,7 +296,7 @@ public class Program
         
     }
 
-    private static void LogStartupParameters(IConfigurationRoot config, int logLevel, bool service)
+    private static void LogStartupParameters(Config config, int logLevel, bool service)
     {
         var logLevelStr = logLevel == 1 ? "Debug" : "Information";
         Log.Information("--------------------------------------------------------------------");
@@ -290,14 +306,14 @@ public class Program
         Log.Information($"\tProcess Name\t{GetProcessName()}");
         Log.Information($"\tVersion\t\t{Assembly.GetExecutingAssembly().GetName().Version}");
         Log.Information($"\tLog level:\t{logLevelStr}");
-        Log.Information($"\tPort:\t\t{config["Hosting:Port"]}");
-        Log.Information($"\tSSL Port:\t{config["Hosting:SslPort"]}");
-        Log.Information($"\tSSL Enabled:\t{config["Hosting:SslEnabled"]}");
-        Log.Information($"\tURLs:\t\t{config["Hosting:Urls"]}");
-        Log.Information($"\tConfig dir:\t{config["Dirs:Config"]}");
-        Log.Information($"\tLog dir:\t{config["Dirs:Logs"]}");
-        Log.Information($"\tData dir:\t{config["Dirs:Data"]}");
-        Log.Information($"\tCan update:\t{config["UpdatesDisabled"]}");
+        Log.Information($"\tPort:\t\t{config.UserConfig.Hosting.Port}");
+        Log.Information($"\tSSL Port:\t{config.UserConfig.Hosting.SslPort}");
+        Log.Information($"\tSSL Enabled:\t{config.UserConfig.Hosting.SslEnabled}");
+        Log.Information($"\tURLs:\t\t{config.UserConfig.Hosting.Url}");
+        Log.Information($"\tConfig dir:\tconfig");
+        Log.Information($"\tLog dir:\t{config.SystemConfig.Dirs.Logs}");
+        Log.Information($"\tData dir:\t{config.SystemConfig.Dirs.Data}");
+        Log.Information($"\tCan update:\t{!config.SystemConfig.UpdatesDisabled}");
         Log.Information($"\tAs service:\t{service}");
         Log.Information("--------------------------------------------------------------------");
     }

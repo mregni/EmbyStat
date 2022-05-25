@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Settings;
 using EmbyStat.Controllers.Settings;
-using EmbyStat.Services.Interfaces;
+using EmbyStat.Core.Languages.Interfaces;
+using EmbyStat.Core.Rollbar.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -21,7 +21,7 @@ public class SettingsControllerTests : IDisposable
     private readonly SettingsController _subject;
     private readonly AppSettings _appSettings;
     private readonly UserSettings _userSettings;
-    private readonly Mock<ISettingsService> _settingsServiceMock;
+    private readonly Mock<IRollbarService> _settingsServiceMock;
     private readonly Mock<ILanguageService> _languageServiceMock;
 
     private Guid DeviceId { get; }
@@ -60,7 +60,7 @@ public class SettingsControllerTests : IDisposable
             Dirs = new Dirs {Data = "data-dir", Logs = "log-dir", Config = "config-dir"}
         };
 
-        _settingsServiceMock = new Mock<ISettingsService>();
+        _settingsServiceMock = new Mock<IRollbarService>();
         _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(_appSettings);
         _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(_userSettings);
         _settingsServiceMock.Setup(x => x.SaveUserSettingsAsync(It.IsAny<UserSettings>()))

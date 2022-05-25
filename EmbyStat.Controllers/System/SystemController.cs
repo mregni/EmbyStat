@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Aiursoft.XelNaga.Services;
 using AutoMapper;
-using EmbyStat.Services.Interfaces;
+using EmbyStat.Core.System.Interfaces;
+using EmbyStat.Core.Updates.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmbyStat.Controllers.System;

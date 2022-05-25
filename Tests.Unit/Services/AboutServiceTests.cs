@@ -1,9 +1,6 @@
-﻿using EmbyStat.Common.Models.Settings;
-using EmbyStat.Services;
+﻿using EmbyStat.Core.About;
 using FluentAssertions;
 using Microsoft.DotNet.PlatformAbstractions;
-using Microsoft.Extensions.Options;
-using Moq;
 using Xunit;
 
 namespace Tests.Unit.Services;

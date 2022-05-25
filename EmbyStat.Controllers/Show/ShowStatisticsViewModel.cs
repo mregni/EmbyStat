@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using EmbyStat.Common.Models.Charts;
 using EmbyStat.Controllers.HelperClasses;
-using EmbyStat.Services.Models.Charts;
 
 namespace EmbyStat.Controllers.Show;
 

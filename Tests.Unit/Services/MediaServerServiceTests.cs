@@ -9,10 +9,12 @@ using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.MediaServer;
-using EmbyStat.Common.Models.Settings;
-using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services;
-using EmbyStat.Services.Interfaces;
+using EmbyStat.Core.Jobs.Interfaces;
+using EmbyStat.Core.MediaServers;
+using EmbyStat.Core.MediaServers.Interfaces;
+using EmbyStat.Core.Rollbar.Interfaces;
+using EmbyStat.Core.Sessions.Interfaces;
+using EmbyStat.Core.Statistics.Interfaces;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -24,7 +26,7 @@ public class MediaServerServiceTests
 {
     private readonly Mock<IMediaServerRepository> _mediaServerRepositoryMock;
     private readonly Mock<ISessionService> _sessionServiceMock;
-    private readonly Mock<ISettingsService> _settingsServiceMock;
+    private readonly Mock<IRollbarService> _settingsServiceMock;
     private readonly Mock<IBaseHttpClient> _httpClientMock;
     private readonly Mock<ILogger<MediaServerService>> _logger;
     private readonly Mock<IStatisticsRepository> _statisticsRepositoryMock;
@@ -39,7 +41,7 @@ public class MediaServerServiceTests
         _logger = new Mock<ILogger<MediaServerService>>();
         _statisticsRepositoryMock = new Mock<IStatisticsRepository>();
         _jobRepositoryMock = new Mock<IJobRepository>();
-        _settingsServiceMock = new Mock<ISettingsService>();
+        _settingsServiceMock = new Mock<IRollbarService>();
         _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(new UserSettings
         {
             MediaServer = new MediaServerSettings

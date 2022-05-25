@@ -1,25 +1,25 @@
 ﻿using System.Threading.Tasks;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Clients.GitHub.Models;
-using EmbyStat.Common.Models.Settings;
-using Microsoft.Extensions.Options;
+using EmbyStat.Configuration;
+using EmbyStat.Configuration.Interfaces;
 
 namespace EmbyStat.Clients.GitHub;
 
 public class GitHubClient : IGitHubClient
 {
-    private readonly AppSettings _appSettings;
+    private readonly Config _config;
     private readonly IRefitHttpClientFactory<IGitHubApi> _refitFactory;
 
-    public GitHubClient(IOptions<AppSettings> appSettings, IRefitHttpClientFactory<IGitHubApi> refitFactory)
+    public GitHubClient(IConfigurationService configurationService, IRefitHttpClientFactory<IGitHubApi> refitFactory)
     {
         _refitFactory = refitFactory;
-        _appSettings = appSettings.Value;
+        _config = configurationService.Get();
     }
 
     public async Task<ReleaseObject[]> GetGithubVersions()
     {
-        var client = _refitFactory.CreateClient(_appSettings.Updater.GitHubUrl);
+        var client = _refitFactory.CreateClient(_config.SystemConfig.Updater.GitHubUrl);
         return await client.GetReleases();
     }
 }

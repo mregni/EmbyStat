@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <ProjectGuid>{7243326B-D3F9-4C14-BAAD-86BF66D4F223}</ProjectGuid>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
+    </ItemGroup>
+
+</Project>

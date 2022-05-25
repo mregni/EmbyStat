@@ -1,10 +1,14 @@
 ﻿using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
-using EmbyStat.Common.Hubs;
-using EmbyStat.Common.Models.Settings;
+using EmbyStat.Core.Filters.Interfaces;
+using EmbyStat.Core.MediaServers.Interfaces;
+using EmbyStat.Core.Movies.Interfaces;
+using EmbyStat.Core.People.Interfaces;
+using EmbyStat.Core.Rollbar.Interfaces;
+using EmbyStat.Core.Shows.Interfaces;
+using EmbyStat.Core.Statistics.Interfaces;
+using EmbyStat.Core.System;
 using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services;
-using EmbyStat.Services.Interfaces;
 using Moq;
 using Xunit;
 
@@ -24,7 +28,7 @@ public class SystemServiceTests
         var genreRepository = new Mock<IGenreRepository>();
         var personRepository = new Mock<IPersonRepository>();
         var hub = new Mock<IHubHelper>();
-        var settingsService = new Mock<ISettingsService>();
+        var settingsService = new Mock<IRollbarService>();
         var settings = new UserSettings
         {
             MediaServer = new MediaServerSettings

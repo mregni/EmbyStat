@@ -5,14 +5,13 @@ using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common;
-using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.Job;
+using EmbyStat.Core.Jobs.Interfaces;
+using EmbyStat.Core.Rollbar.Interfaces;
 using EmbyStat.Jobs;
-using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using Hangfire;
 using Hangfire.MemoryStorage;
@@ -26,7 +25,7 @@ public class JobControllerTests
 {
     private Mock<IJobService> _jobServiceMock;
     private Mock<IJobInitializer> _jobInitializerMock;
-    private Mock<ISettingsService> _settingsServiceMock;
+    private Mock<IRollbarService> _settingsServiceMock;
     private Mock<IHubHelper> _jobHubHelperMock;
 
     private JobController CreateController(bool disableUpdateJob, params Job[] jobs)
@@ -37,7 +36,7 @@ public class JobControllerTests
 
         _jobServiceMock = new Mock<IJobService>();
         _jobInitializerMock = new Mock<IJobInitializer>();
-        _settingsServiceMock = new Mock<ISettingsService>();
+        _settingsServiceMock = new Mock<IRollbarService>();
         _jobHubHelperMock = new Mock<IHubHelper>();
 
         _jobServiceMock.Setup(x => x.GetAll()).Returns(jobs);

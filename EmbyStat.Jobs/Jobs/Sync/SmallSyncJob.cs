@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EmbyStat.Common;
-using EmbyStat.Common.Hubs;
+using EmbyStat.Configuration.Interfaces;
+using EmbyStat.Core.Hubs;
+using EmbyStat.Core.Jobs.Interfaces;
+using EmbyStat.Core.MediaServers.Interfaces;
 using EmbyStat.Jobs.Jobs.Interfaces;
-using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services.Interfaces;
 using Hangfire;
 using Microsoft.Extensions.Logging;
 
@@ -15,9 +16,9 @@ public class SmallSyncJob : BaseJob, ISmallSyncJob
 {
     private readonly IMediaServerService _mediaServerService;
 
-    public SmallSyncJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService, 
+    public SmallSyncJob(IHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService, 
         IMediaServerService mediaServerService, ILogger<SmallSyncJob> logger) 
-        : base(hubHelper, jobRepository, settingsService, logger)
+        : base(hubHelper, jobRepository, configurationService, logger)
     {
         _mediaServerService = mediaServerService;
     }

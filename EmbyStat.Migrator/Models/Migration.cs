@@ -1,22 +1,21 @@
-﻿using EmbyStat.Common.Models.Settings;
+﻿using EmbyStat.Configuration;
+using EmbyStat.Configuration.Interfaces;
 using EmbyStat.Migrator.Interfaces;
-using EmbyStat.Services.Interfaces;
 
 namespace EmbyStat.Migrator.Models;
 
 public abstract class Migration : IMigration
 {
-    protected UserSettings UserSettings { get; set; }
-    protected AppSettings AppSettings { get; set; }
-    protected ISettingsService SettingsService { get; set; }
-    public void MigrateUp(ISettingsService settingsService, long version)
+    protected Config Configuration { get; set; }
+    protected IConfigurationService ConfigurationService { get; set; }
+    public void MigrateUp(IConfigurationService configurationService, long version)
     {
-        SettingsService = settingsService;
-        UserSettings = settingsService.GetUserSettings();
-        AppSettings = settingsService.GetAppSettings();
+        ConfigurationService = configurationService;
+        Configuration = configurationService.Get();
         Up();
 
-        settingsService.SaveUserSettingsAsync(UserSettings, version).Wait();
+        Configuration.SystemConfig.Migration = version;
+        configurationService.UpdateSystemConfiguration(Configuration.SystemConfig).Wait();
     }
 
     public abstract void Up();

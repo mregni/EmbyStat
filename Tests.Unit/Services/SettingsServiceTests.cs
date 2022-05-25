@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
-using EmbyStat.Common.Models.Settings;
-using EmbyStat.Services;
+using EmbyStat.Core.Rollbar;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -12,14 +11,14 @@ namespace Tests.Unit.Services;
 
 public class SettingsServiceTests
 {
-    private readonly SettingsService _subject;
+    private readonly RollbarService _subject;
     private Guid DeviceId { get; }
 
     public SettingsServiceTests()
     {
         DeviceId = Guid.NewGuid();
 
-        var rollbar = new EmbyStat.Common.Models.Settings.Rollbar
+        var rollbar = new EmbyStat.Core.Configuration.Rollbar
         {
             AccessToken = "aaaaaaa",
             Environment = "dev"
@@ -29,7 +28,7 @@ public class SettingsServiceTests
         appSettingsMock.Setup(x => x.Value).Returns(new AppSettings
             {Version = "0.0.0.0", Dirs = new Dirs {Config = "config"}, Rollbar = rollbar});
 
-        _subject = new SettingsService(appSettingsMock.Object);
+        _subject = new RollbarService(appSettingsMock.Object);
     }
 
     private void SetupSettingsFile()

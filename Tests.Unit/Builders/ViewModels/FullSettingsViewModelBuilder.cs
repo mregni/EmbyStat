@@ -1,5 +1,4 @@
-﻿using EmbyStat.Common.Models.Settings;
-using EmbyStat.Controllers.Settings;
+﻿using EmbyStat.Controllers.Settings;
 
 namespace Tests.Unit.Builders.ViewModels;
 

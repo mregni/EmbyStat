@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Models.Account;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Settings;
-using EmbyStat.Services;
-using EmbyStat.Services.Interfaces;
+using EmbyStat.Core.Account;
+using EmbyStat.Core.Rollbar.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
@@ -65,7 +64,7 @@ public class AccountServiceTests
 
         var roleManagerMock = new Mock<FakeRoleManager>();
 
-        var settingsServiceMock = new Mock<ISettingsService>();
+        var settingsServiceMock = new Mock<IRollbarService>();
         settingsServiceMock
             .Setup(x => x.GetAppSettings())
             .Returns(_appSettings);
@@ -109,7 +108,7 @@ public class AccountServiceTests
             .ReturnsAsync(SignInResult.Failed);
 
         var userManagerMock = new Mock<FakeUserManager>();
-        var settingsServiceMock = new Mock<ISettingsService>();
+        var settingsServiceMock = new Mock<IRollbarService>();
         var tokenHandler = new Mock<JwtSecurityTokenHandler>();
         var roleManagerMock = new Mock<FakeRoleManager>();
         var logger = new Mock<ILogger<AccountService>>();
@@ -135,7 +134,7 @@ public class AccountServiceTests
         userManagerMock.Setup(x => 
                 x.CreateAsync(It.IsAny<EmbyStatUser>(), It.IsAny<string>()))
             .ReturnsAsync(IdentityResult.Success);
-        var settingsServiceMock = new Mock<ISettingsService>();
+        var settingsServiceMock = new Mock<IRollbarService>();
         var tokenHandler = new Mock<JwtSecurityTokenHandler>();
         var roleManagerMock = new Mock<FakeRoleManager>();
         var logger = new Mock<ILogger<AccountService>>();
@@ -159,7 +158,7 @@ public class AccountServiceTests
         var signInManagerMock = new Mock<FakeSignInManager>();
         signInManagerMock.Setup(x => x.SignOutAsync());
         var userManagerMock = new Mock<FakeUserManager>();
-        var settingsServiceMock = new Mock<ISettingsService>();
+        var settingsServiceMock = new Mock<IRollbarService>();
         var tokenHandler = new Mock<JwtSecurityTokenHandler>();
         var roleManagerMock = new Mock<FakeRoleManager>();
         var logger = new Mock<ILogger<AccountService>>();
@@ -184,7 +183,7 @@ public class AccountServiceTests
             .Setup(x => x.ChangePasswordAsync(It.IsAny<EmbyStatUser>(), "oldpass", "newpass"))
             .ReturnsAsync(IdentityResult.Success);
 
-        var settingsServiceMock = new Mock<ISettingsService>();
+        var settingsServiceMock = new Mock<IRollbarService>();
         var tokenHandler = new Mock<JwtSecurityTokenHandler>();
         var roleManagerMock = new Mock<FakeRoleManager>();
         var logger = new Mock<ILogger<AccountService>>();
@@ -214,7 +213,7 @@ public class AccountServiceTests
         userManagerMock
             .Setup(x => x.FindByNameAsync("test"))
             .ReturnsAsync((EmbyStatUser) null);
-        var settingsServiceMock = new Mock<ISettingsService>();
+        var settingsServiceMock = new Mock<IRollbarService>();
         var tokenHandler = new Mock<JwtSecurityTokenHandler>();
         var roleManagerMock = new Mock<FakeRoleManager>();
         var logger = new Mock<ILogger<AccountService>>();
@@ -249,7 +248,7 @@ public class AccountServiceTests
             .Setup(x => x.ChangePasswordAsync(It.IsAny<EmbyStatUser>(), "oldpass", "newpass"))
             .ReturnsAsync(IdentityResult.Failed(new IdentityError()));
 
-        var settingsServiceMock = new Mock<ISettingsService>();
+        var settingsServiceMock = new Mock<IRollbarService>();
         var tokenHandler = new Mock<JwtSecurityTokenHandler>();
         var roleManagerMock = new Mock<FakeRoleManager>();
         var logger = new Mock<ILogger<AccountService>>();
@@ -283,7 +282,7 @@ public class AccountServiceTests
             .Setup(x => x.SetUserNameAsync(It.IsAny<EmbyStatUser>(), "test2"))
             .ReturnsAsync(IdentityResult.Success);
 
-        var settingsServiceMock = new Mock<ISettingsService>();
+        var settingsServiceMock = new Mock<IRollbarService>();
         var tokenHandler = new Mock<JwtSecurityTokenHandler>();
         var roleManagerMock = new Mock<FakeRoleManager>();
         var logger = new Mock<ILogger<AccountService>>();
@@ -312,7 +311,7 @@ public class AccountServiceTests
             .Setup(x => x.FindByNameAsync("test"))
             .ReturnsAsync((EmbyStatUser) null);
 
-        var settingsServiceMock = new Mock<ISettingsService>();
+        var settingsServiceMock = new Mock<IRollbarService>();
         var tokenHandler = new Mock<JwtSecurityTokenHandler>();
         var roleManagerMock = new Mock<FakeRoleManager>();
         var logger = new Mock<ILogger<AccountService>>();
@@ -344,7 +343,7 @@ public class AccountServiceTests
             .Setup(x => x.SetUserNameAsync(It.IsAny<EmbyStatUser>(), "test2"))
             .ReturnsAsync(IdentityResult.Failed(new IdentityError()));
 
-        var settingsServiceMock = new Mock<ISettingsService>();
+        var settingsServiceMock = new Mock<IRollbarService>();
         var tokenHandler = new Mock<JwtSecurityTokenHandler>();
         var roleManagerMock = new Mock<FakeRoleManager>();
         var logger = new Mock<ILogger<AccountService>>();

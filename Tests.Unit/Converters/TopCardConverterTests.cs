@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using EmbyStat.Common.Converters;
+using EmbyStat.Common.Models.Cards;
 using EmbyStat.Common.Models.Entities.Shows;
-using EmbyStat.Services.Converters;
-using EmbyStat.Services.Models.Cards;
 using FluentAssertions;
 using Tests.Unit.Builders;
 using Xunit;

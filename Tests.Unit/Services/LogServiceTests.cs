@@ -4,9 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Settings;
-using EmbyStat.Services;
-using EmbyStat.Services.Interfaces;
+using EmbyStat.Core.Logs;
+using EmbyStat.Core.MediaServers.Interfaces;
+using EmbyStat.Core.Rollbar.Interfaces;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -15,11 +15,11 @@ namespace Tests.Unit.Services;
 
 public class LogServiceTests
 {
-    private readonly Mock<ISettingsService> _settingsServiceMock;
+    private readonly Mock<IRollbarService> _settingsServiceMock;
 
     public LogServiceTests()
     {
-        _settingsServiceMock = new Mock<ISettingsService>();
+        _settingsServiceMock = new Mock<IRollbarService>();
     }
 
     [Fact]

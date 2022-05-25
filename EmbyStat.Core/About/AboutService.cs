@@ -1,0 +1,19 @@
+﻿using RuntimeEnvironment = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment;
+
+namespace EmbyStat.Core.About;
+
+public class AboutService : IAboutService
+{
+    public AboutModel GetAbout()
+    {
+        var operatingSystem = RuntimeEnvironment.OperatingSystem;
+        var operatingSystemVersion = RuntimeEnvironment.OperatingSystemVersion;
+        var architecture = RuntimeEnvironment.RuntimeArchitecture;
+
+        return new AboutModel { 
+            OperatingSystem = operatingSystem,
+            OperatingSystemVersion = operatingSystemVersion,
+            Architecture = architecture
+        };
+    }
+}
