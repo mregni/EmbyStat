@@ -39,10 +39,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
@@ -86,7 +82,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="logs" />
+    <_ContentIncludedByDefault Remove="config\config.json" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">

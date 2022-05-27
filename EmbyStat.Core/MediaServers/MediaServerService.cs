@@ -14,7 +14,6 @@ using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.MediaServer;
-using EmbyStat.Configuration;
 using EmbyStat.Configuration.Interfaces;
 using EmbyStat.Core.Abstract;
 using EmbyStat.Core.Jobs.Interfaces;

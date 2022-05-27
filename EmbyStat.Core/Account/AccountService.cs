@@ -35,7 +35,7 @@ public class AccountService : IAccountService
         _logger = logger;
     }
 
-    public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest login, string remoteIp)
+    public async Task<AuthenticateResponse?> Authenticate(AuthenticateRequest login, string remoteIp)
     {
         var result = await _signInManager.PasswordSignInAsync(login.Username, login.Password, login.RememberMe, false);
         if (!result.Succeeded)
@@ -57,7 +57,7 @@ public class AccountService : IAccountService
         };
     }
 
-    public async Task<AuthenticateResponse> RefreshToken(string accessToken, string refreshToken, string remoteIp)
+    public async Task<AuthenticateResponse?> RefreshToken(string accessToken, string refreshToken, string remoteIp)
     {
         var tokenValidationParameters = new TokenValidationParameters
         {
@@ -67,24 +67,28 @@ public class AccountService : IAccountService
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.SystemConfig.Jwt.Key)),
             ValidateLifetime = false
         };
-
-        var principal = _jwtSecurityTokenHandler.ValidateToken(accessToken, tokenValidationParameters, out var securityToken);
-        if (!(securityToken is JwtSecurityToken jwtSecurityToken) 
-            || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+        try
         {
-            throw new SecurityTokenException("Invalid token");
-        }
+            var principal = _jwtSecurityTokenHandler.ValidateToken(accessToken, tokenValidationParameters, out var securityToken);
+            if (!(securityToken is JwtSecurityToken jwtSecurityToken) 
+                || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new SecurityTokenException("Invalid token");
+            }
 
-        if (principal == null)
-        {
-            return null;
-        }
+            if (principal == null)
+            {
+                return null;
+            }
 
-        var username = principal.Claims.First(c => c.Type == "sub");
-        var user = await _userManager.FindByNameAsync(username.Value);
+            var username = principal.Claims.First(c => c.Type == "sub");
+            var user = await _userManager.FindByNameAsync(username.Value);
 
-        if (user != null && user.HasValidRefreshToken(refreshToken))
-        {
+            if (user == null || !user.HasValidRefreshToken(refreshToken))
+            {
+                return null;
+            }
+            
             var token = AuthenticationHelper.GenerateAccessToken(user, _configuration.SystemConfig.Jwt, _jwtSecurityTokenHandler);
             var newRefreshToken = AuthenticationHelper.GenerateRefreshToken();
             user.SetRefreshToken(newRefreshToken, user.Id, remoteIp);
@@ -95,9 +99,13 @@ public class AccountService : IAccountService
                 AccessToken = token,
                 RefreshToken = newRefreshToken,
             };
-        }
 
-        return null;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error refreshing token");
+            return null;
+        }
     }
 
     public async Task Register(AuthenticateRequest login)

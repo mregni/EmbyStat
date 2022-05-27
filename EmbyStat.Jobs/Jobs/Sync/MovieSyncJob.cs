@@ -138,6 +138,7 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
                 await LogInformation($"Processed { logProcessed } / { totalCount } movies");
                 await LogProgressIncrement(increment);
             } while (processed < totalCount);
+            
             await _mediaServerRepository.UpdateLibrarySyncDate(library.Id, DateTime.UtcNow);
         }
     }

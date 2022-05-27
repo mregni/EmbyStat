@@ -2,7 +2,6 @@
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Generators;
 using EmbyStat.Configuration;
-using Rollbar = EmbyStat.Configuration.Rollbar;
 
 namespace EmbyStat.Web;
 
