@@ -85,7 +85,6 @@ public class Rollbar
 {
     [JsonIgnore] public string AccessToken => "RollbarAccessToken";
     [JsonIgnore] public string Environment => "RollbarEnvironment";
-    public bool Enabled { get; set; }
 }
 
 public class Dirs

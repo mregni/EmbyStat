@@ -33,10 +33,7 @@ public static class DefaultConfig
             Migration = 0,
             UpdateInProgress = false,
             UpdatesDisabled = false,
-            Rollbar = new Configuration.Rollbar
-            {
-                Enabled = false,
-            },
+            Rollbar = new Configuration.Rollbar(),
             Updater = new Updater
             {
                 BetaString = "-beta",

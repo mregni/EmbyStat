@@ -17,7 +17,7 @@ public class JobService : IJobService
         return _jobRepository.GetAll();
     }
 
-    public Job GetById(Guid id)
+    public Job? GetById(Guid id)
     {
         return _jobRepository.GetById(id);
     }

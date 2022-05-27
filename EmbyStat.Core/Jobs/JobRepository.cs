@@ -20,7 +20,7 @@ public class JobRepository : IJobRepository
         return _context.Jobs.AsNoTracking().AsEnumerable();
     }
 
-    public Job GetById(Guid id)
+    public Job? GetById(Guid id)
     {
         return _context.Jobs.AsNoTracking().FirstOrDefault(x => x.Id == id);
     }

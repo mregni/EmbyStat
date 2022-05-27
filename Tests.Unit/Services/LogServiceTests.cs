@@ -4,46 +4,49 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Configuration.Interfaces;
 using EmbyStat.Core.Logs;
 using EmbyStat.Core.MediaServers.Interfaces;
 using FluentAssertions;
 using Moq;
+using Tests.Unit.Builders;
 using Xunit;
 
 namespace Tests.Unit.Services;
 
 public class LogServiceTests
 {
-    private readonly Mock<IRollbarService> _settingsServiceMock;
+    private readonly Mock<IConfigurationService> _configurationServiceMock;
 
     public LogServiceTests()
     {
-        _settingsServiceMock = new Mock<IRollbarService>();
+        _configurationServiceMock = new Mock<IConfigurationService>();
     }
 
     [Fact]
     public void GetLogList()
     {
-        if (Directory.Exists(Path.Combine("config", "Logs-test1").GetLocalPath()))
+        var logPath = Path.Combine("log-dir", "Logs-test1");
+        if (Directory.Exists(logPath.GetLocalPath()))
         {
-            Directory.Delete(Path.Combine("config", "Logs-test1").GetLocalPath(), true);
+            Directory.Delete(logPath.GetLocalPath(), true);
         }
 
-        Directory.CreateDirectory(Path.Combine("config", "Logs-test1").GetLocalPath());
+        Directory.CreateDirectory(logPath.GetLocalPath());
 
-        var settings = new AppSettings {Dirs = new Dirs {Logs = "Logs-test1", Config = "config"}};
-        var userSettings = new UserSettings {KeepLogsCount = 10};
+        var config = new ConfigBuilder()
+            .WithLogsDir(logPath)
+            .Build();
 
-        _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(settings);
-        _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(userSettings);
+        _configurationServiceMock.Setup(x => x.Get()).Returns(config);
 
         var embyServiceMock = new Mock<IMediaServerService>();
 
-        var service = new LogService(_settingsServiceMock.Object, embyServiceMock.Object);
+        var service = new LogService(_configurationServiceMock.Object, embyServiceMock.Object);
 
-        File.Create(Path.Combine("config", "Logs-test1", "log1.txt").GetLocalPath());
+        File.Create(Path.Combine("log-dir", "Logs-test1", "log1.txt").GetLocalPath());
         Thread.Sleep(1001);
-        File.Create(Path.Combine("config", "Logs-test1", "log2.txt").GetLocalPath());
+        File.Create(Path.Combine("log-dir", "Logs-test1", "log2.txt").GetLocalPath());
 
         var list = service.GetLogFileList();
         list.Should().NotBeNull();
@@ -55,26 +58,27 @@ public class LogServiceTests
     [Fact]
     public void GetLimitedLogList()
     {
-        if (Directory.Exists(Path.Combine("config", "Logs-test2").GetLocalPath()))
+        var logPath = Path.Combine("log-dir", "Logs-test2");
+        if (Directory.Exists(logPath.GetLocalPath()))
         {
-            Directory.Delete(Path.Combine("config", "Logs-test2").GetLocalPath(), true);
+            Directory.Delete(logPath.GetLocalPath(), true);
         }
 
-        Directory.CreateDirectory(Path.Combine("config", "Logs-test2").GetLocalPath());
+        Directory.CreateDirectory(logPath.GetLocalPath());
+        
+        var config = new ConfigBuilder()
+            .WithLogsDir(logPath)
+            .WithLogCount(1)
+            .Build();
 
-        var settings = new AppSettings {Dirs = new Dirs {Logs = "Logs-test2", Config = "config"}};
-        _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(settings);
+        _configurationServiceMock.Setup(x => x.Get()).Returns(config);
 
-        var userSettings = new UserSettings {KeepLogsCount = 1};
-
-        _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(userSettings);
         var embyServiceMock = new Mock<IMediaServerService>();
+        var service = new LogService(_configurationServiceMock.Object, embyServiceMock.Object);
 
-        var service = new LogService(_settingsServiceMock.Object, embyServiceMock.Object);
-
-        File.Create(Path.Combine("config", "Logs-test2", "log1.txt").GetLocalPath());
+        File.Create(Path.Combine("log-dir", "Logs-test2", "log1.txt").GetLocalPath());
         Thread.Sleep(1001);
-        File.Create(Path.Combine("config", "Logs-test2", "log2.txt").GetLocalPath());
+        File.Create(Path.Combine("log-dir", "Logs-test2", "log2.txt").GetLocalPath());
 
         var list = service.GetLogFileList();
         list.Should().NotBeNull();
@@ -85,32 +89,31 @@ public class LogServiceTests
     [Fact]
     public async Task GetLogStream_Should_Return_Log()
     {
-        if (Directory.Exists(Path.Combine("config", "Logs-test3").GetLocalPath()))
+        var logPath = Path.Combine("log-dir", "Logs-test3");
+        if (Directory.Exists(logPath.GetLocalPath()))
         {
-            Directory.Delete(Path.Combine("config", "Logs-test3").GetLocalPath(), true);
+            Directory.Delete(logPath.GetLocalPath(), true);
         }
 
-        Directory.CreateDirectory(Path.Combine("config", "Logs-test3").GetLocalPath());
+        Directory.CreateDirectory(logPath.GetLocalPath());
 
-        var settings = new AppSettings {Dirs = new Dirs {Logs = "Logs-test3", Config = "config"}};
-        var userSettings = new UserSettings
-        {
-            MediaServer = new MediaServerSettings
-                {Address = "http://192.168.1.1:8001"},
-            Tmdb = new TmdbSettings {ApiKey = "0000"}
-        };
-        _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(settings);
-        _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(userSettings);
+        var config = new ConfigBuilder()
+            .WithLogsDir(logPath)
+            .WithMediaServerAddress("http://192.168.1.1:8001")
+            .WithTmdbApiKey("0000")
+            .Build();
+        
+        _configurationServiceMock.Setup(x => x.Get()).Returns(config);
 
         var embyServiceMock = new Mock<IMediaServerService>();
         embyServiceMock
             .Setup(x => x.GetServerInfo(false))
             .ReturnsAsync(new MediaServerInfo {Id = Guid.NewGuid().ToString()});
 
-        var service = new LogService(_settingsServiceMock.Object, embyServiceMock.Object);
+        var service = new LogService(_configurationServiceMock.Object, embyServiceMock.Object);
 
-        var line = "Log line: http://192.168.1.1:8001; ApiKey:0000; username:reggi";
-        await File.AppendAllTextAsync(Path.Combine("config", "Logs-test3", "log1.txt").GetLocalPath(), line);
+        const string line = "Log line: http://192.168.1.1:8001; ApiKey:0000; username:reggi";
+        await File.AppendAllTextAsync(Path.Combine("log-dir", "Logs-test3", "log1.txt").GetLocalPath(), line);
 
         var stream = await service.GetLogStream("log1.txt", false);
         stream.Position = 0;
@@ -123,38 +126,35 @@ public class LogServiceTests
     [Fact]
     public async Task GetAnonymousLogStream_Should_Return_Log()
     {
-        if (Directory.Exists(Path.Combine("config", "Logs-test4").GetLocalPath()))
+        var logPath = Path.Combine("log-dir", "Logs-test4");
+        if (Directory.Exists(logPath.GetLocalPath()))
         {
-            Directory.Delete(Path.Combine("config", "Logs-test4").GetLocalPath(), true);
+            Directory.Delete(logPath.GetLocalPath(), true);
         }
 
-        Directory.CreateDirectory(Path.Combine("config", "Logs-test4").GetLocalPath());
+        Directory.CreateDirectory(logPath.GetLocalPath());
 
-        var settings = new AppSettings {Dirs = new Dirs {Logs = "Logs-test4", Config = "config"}};
-        var userSettings = new UserSettings
-        {
-            MediaServer = new MediaServerSettings
-            {
-                Address = "http://192.168.1.1:8001",
-                ApiKey = "123456"
-            },
-            Tmdb = new TmdbSettings {ApiKey = "0000"}
-        };
-        _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(settings);
-        _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(userSettings);
+        var config = new ConfigBuilder()
+            .WithLogsDir(logPath)
+            .WithMediaServerAddress("http://192.168.1.1:8001")
+            .WithMediaServerApiKey("123456")
+            .WithTmdbApiKey("0000")
+            .Build();
+
+        _configurationServiceMock.Setup(x => x.Get()).Returns(config);
 
         var embyServiceMock = new Mock<IMediaServerService>();
         embyServiceMock
             .Setup(x => x.GetServerInfo(false))
             .ReturnsAsync(new MediaServerInfo {Id = "654321"});
 
-        var service = new LogService(_settingsServiceMock.Object, embyServiceMock.Object);
+        var service = new LogService(_configurationServiceMock.Object, embyServiceMock.Object);
 
         const string line =
             "Log line: http://192.168.1.1:8001; ApiKey:0000; ws://192.168.1.1:8001; serverId:654321\r\n";
         const string anonymousLine =
             "Log line: https://xxx.xxx.xxx.xxx:xxxx; ApiKey:xxxxxxxxxxxxxx; wss://xxx.xxx.xxx.xxx:xxxx; serverId:xxxxxxxxxxxxxx\r\n";
-        await File.AppendAllTextAsync(Path.Combine("config", "Logs-test4", "log1.txt").GetLocalPath(), line);
+        await File.AppendAllTextAsync(Path.Combine("log-dir", "Logs-test4", "log1.txt").GetLocalPath(), line);
 
         var stream = await service.GetLogStream("log1.txt", true);
         stream.Position = 0;

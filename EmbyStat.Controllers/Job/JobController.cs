@@ -54,6 +54,11 @@ public class JobController : Controller
     public IActionResult Get(Guid id)
     {
         var job = _jobService.GetById(id);
+        if (job == null)
+        {
+            return NotFound();
+        }
+        
         return Ok(_mapper.Map<JobViewModel>(job));
     }
 
@@ -76,6 +81,11 @@ public class JobController : Controller
     {
         var job = _jobService.GetById(id);
 
+        if (job == null)
+        {
+            return new NotFoundResult();
+        }
+        
         await Task.Run(() => { RecurringJob.Trigger(job.Id.ToString()); });
         await _hubHelper.BroadcastJobLog("JOBS", $"{job.Title} job queued", ProgressLogType.Information);
         return Ok();
