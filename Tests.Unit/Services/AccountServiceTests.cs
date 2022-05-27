@@ -4,7 +4,6 @@ using EmbyStat.Common;
 using EmbyStat.Common.Models.Account;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Core.Account;
-using EmbyStat.Core.Rollbar.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;

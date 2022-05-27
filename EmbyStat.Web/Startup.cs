@@ -16,7 +16,6 @@ using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Api;
 using EmbyStat.Common;
-using EmbyStat.Common.Enums;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
@@ -121,7 +120,6 @@ public class Startup
         
         ConfigureRollbarInfrastructure();
         
-        
         services.AddRollbarLogger(loggerOptions =>
         {
             loggerOptions.Filter = loggerOptions.Filter = (_, loglevel) => loglevel >= LogLevel.Error;
@@ -133,7 +131,12 @@ public class Startup
         });
 
         services.AddSignalR();
-        services.AddDbContext<EsDbContext>();
+        var dbPath = Path.Combine(configuration.SystemConfig.Dirs.Data, "SqliteData.db");
+        services.AddDbContext<EsDbContext>(options =>
+        {
+            options.EnableDetailedErrors();
+            options.UseSqlite($"Data Source={dbPath}", x => x.MigrationsAssembly("EmbyStat.Migrations"));
+        });
 
         services.AddAuthorization(options =>
         {

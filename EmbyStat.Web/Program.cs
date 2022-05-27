@@ -139,6 +139,7 @@ public class Program
 
     private static IHost BuildConsoleHost(StartupOptions options)
     {
+        CreateFolder("config");
         GenerateDefaultConfiguration();
         
         var memoryConfig = options.ToKeyValuePairs();
@@ -150,6 +151,9 @@ public class Program
             .Build();
 
         var config = configurationRoot.Get<Config>();
+        
+        CreateFolder(config.SystemConfig.Dirs.Logs);
+        CreateFolder(config.SystemConfig.Dirs.Data);
         
         SetupLogger(config.SystemConfig.Dirs.Logs, options.LogLevel ?? 2);
         LogStartupParameters(config, options.LogLevel ?? 2, options.RunAsService ?? false);
@@ -209,14 +213,17 @@ public class Program
             .Build();
     }
 
-    private static void GenerateDefaultConfiguration()
+    private static void CreateFolder(string folder)
     {
-        var dir = Path.Combine(Directory.GetCurrentDirectory(), "config");
+        var dir = Path.Combine(Directory.GetCurrentDirectory(), folder);
         if (!Directory.Exists(dir))
         {
             Directory.CreateDirectory(dir);
         }
-        
+    }
+
+    private static void GenerateDefaultConfiguration()
+    {
         var path = Path.Combine(Directory.GetCurrentDirectory(),"config", "config.json");
         if (!File.Exists(path))
         {

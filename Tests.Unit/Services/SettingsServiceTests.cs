@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using EmbyStat.Core.Rollbar;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
 using Moq;

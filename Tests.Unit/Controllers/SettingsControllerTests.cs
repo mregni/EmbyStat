@@ -6,7 +6,6 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers.Settings;
 using EmbyStat.Core.Languages.Interfaces;
-using EmbyStat.Core.Rollbar.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

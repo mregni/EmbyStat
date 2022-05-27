@@ -12,7 +12,6 @@ using EmbyStat.Core.Jobs.Interfaces;
 using EmbyStat.Core.MediaServers.Interfaces;
 using EmbyStat.Core.Movies;
 using EmbyStat.Core.Movies.Interfaces;
-using EmbyStat.Core.Rollbar.Interfaces;
 using EmbyStat.Core.Statistics.Interfaces;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;

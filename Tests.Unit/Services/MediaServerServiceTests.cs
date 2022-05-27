@@ -12,7 +12,6 @@ using EmbyStat.Common.Models.MediaServer;
 using EmbyStat.Core.Jobs.Interfaces;
 using EmbyStat.Core.MediaServers;
 using EmbyStat.Core.MediaServers.Interfaces;
-using EmbyStat.Core.Rollbar.Interfaces;
 using EmbyStat.Core.Sessions.Interfaces;
 using EmbyStat.Core.Statistics.Interfaces;
 using FluentAssertions;

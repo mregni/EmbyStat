@@ -6,7 +6,6 @@ using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Core.Logs;
 using EmbyStat.Core.MediaServers.Interfaces;
-using EmbyStat.Core.Rollbar.Interfaces;
 using FluentAssertions;
 using Moq;
 using Xunit;

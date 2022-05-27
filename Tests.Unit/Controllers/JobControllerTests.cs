@@ -10,7 +10,6 @@ using EmbyStat.Common.Models.Tasks.Enum;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.Job;
 using EmbyStat.Core.Jobs.Interfaces;
-using EmbyStat.Core.Rollbar.Interfaces;
 using EmbyStat.Jobs;
 using FluentAssertions;
 using Hangfire;
