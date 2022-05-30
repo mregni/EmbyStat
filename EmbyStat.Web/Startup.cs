@@ -24,6 +24,7 @@ using EmbyStat.Configuration.Interfaces;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.Middleware;
 using EmbyStat.Core.Account;
+using EmbyStat.Core.Account.Interfaces;
 using EmbyStat.Core.DataStore;
 using EmbyStat.Core.Hubs;
 using EmbyStat.Core.Jobs.Interfaces;

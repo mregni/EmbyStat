@@ -1,4 +1,4 @@
-﻿namespace EmbyStat.Core.About;
+﻿namespace EmbyStat.Core.About.Interfaces;
 
 public interface IAboutService
 {

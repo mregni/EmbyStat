@@ -5,6 +5,7 @@ using EmbyStat.Common.Models.Account;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Configuration;
 using EmbyStat.Configuration.Interfaces;
+using EmbyStat.Core.Account.Interfaces;
 using EmbyStat.Core.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;

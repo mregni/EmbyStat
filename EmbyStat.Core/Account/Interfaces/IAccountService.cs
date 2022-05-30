@@ -1,6 +1,6 @@
 ﻿using EmbyStat.Common.Models.Account;
 
-namespace EmbyStat.Core.Account;
+namespace EmbyStat.Core.Account.Interfaces;
 
 public interface IAccountService
 {

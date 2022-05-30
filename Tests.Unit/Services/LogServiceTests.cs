@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Configuration.Interfaces;
-using EmbyStat.Core.Logs;
+using EmbyStat.Core.Logging;
 using EmbyStat.Core.MediaServers.Interfaces;
 using FluentAssertions;
 using Moq;

@@ -8,6 +8,7 @@ using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities.Movies;
 using EmbyStat.Configuration.Interfaces;
 using EmbyStat.Core.Filters.Interfaces;
+using EmbyStat.Core.Genres.Interfaces;
 using EmbyStat.Core.Hubs;
 using EmbyStat.Core.Jobs.Interfaces;
 using EmbyStat.Core.MediaServers.Interfaces;
@@ -15,7 +16,6 @@ using EmbyStat.Core.Movies.Interfaces;
 using EmbyStat.Core.People.Interfaces;
 using EmbyStat.Core.Statistics.Interfaces;
 using EmbyStat.Jobs.Jobs.Interfaces;
-using EmbyStat.Repositories.Interfaces;
 using Hangfire;
 using Microsoft.Extensions.Logging;
 

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using EmbyStat.Common.Models.Account;
 using EmbyStat.Core.Account;
+using EmbyStat.Core.Account.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

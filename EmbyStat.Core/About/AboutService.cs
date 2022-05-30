@@ -1,4 +1,5 @@
-﻿using Microsoft.DotNet.PlatformAbstractions;
+﻿using EmbyStat.Core.About.Interfaces;
+using Microsoft.DotNet.PlatformAbstractions;
 
 namespace EmbyStat.Core.About;
 

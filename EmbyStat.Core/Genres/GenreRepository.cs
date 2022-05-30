@@ -2,7 +2,7 @@
 using EmbyStat.Common;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Core.DataStore;
-using EmbyStat.Repositories.Interfaces;
+using EmbyStat.Core.Genres.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmbyStat.Core.Genres;

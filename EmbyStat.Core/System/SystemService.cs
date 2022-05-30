@@ -1,5 +1,6 @@
 ﻿using EmbyStat.Configuration.Interfaces;
 using EmbyStat.Core.Filters.Interfaces;
+using EmbyStat.Core.Genres.Interfaces;
 using EmbyStat.Core.Hubs;
 using EmbyStat.Core.MediaServers.Interfaces;
 using EmbyStat.Core.Movies.Interfaces;
@@ -7,7 +8,6 @@ using EmbyStat.Core.People.Interfaces;
 using EmbyStat.Core.Shows.Interfaces;
 using EmbyStat.Core.Statistics.Interfaces;
 using EmbyStat.Core.System.Interfaces;
-using EmbyStat.Repositories.Interfaces;
 
 namespace EmbyStat.Core.System;
 
