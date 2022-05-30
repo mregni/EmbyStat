@@ -25,6 +25,10 @@ public class UserConfig
 
 public class SystemConfig
 {
+    public SystemConfig()
+    {
+        Rollbar = new Rollbar();
+    }
     public bool AutoUpdate { get; set; }
     [JsonIgnore] public string Version => "0.0.0.0";
     public string ProcessName { get; set; }
@@ -36,6 +40,7 @@ public class SystemConfig
     public UpdateTrain UpdateTrain { get; set; }
     public Updater Updater { get; set; }
     public Jwt Jwt { get; set; }
+    [JsonIgnore]
     public Rollbar Rollbar { get; set; }
     public Dirs Dirs { get; set; }
 }
@@ -83,8 +88,8 @@ public class TmdbSettings
 
 public class Rollbar
 {
-    [JsonIgnore] public string AccessToken => "RollbarAccessToken";
-    [JsonIgnore] public string Environment => "RollbarEnvironment";
+    public string AccessToken => "RollbarAccessToken";
+    public string Environment => "RollbarEnvironment";
 }
 
 public class Dirs

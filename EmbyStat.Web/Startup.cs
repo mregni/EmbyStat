@@ -119,7 +119,7 @@ public class Startup
 
         services.AddRefitClient<IMediaServerApi>();
         
-        ConfigureRollbarInfrastructure();
+        ConfigureRollbarInfrastructure(configuration);
         
         services.AddRollbarLogger(loggerOptions =>
         {
@@ -330,10 +330,8 @@ public class Startup
         }
     }
     
-    private void ConfigureRollbarInfrastructure()
+    private void ConfigureRollbarInfrastructure(Config configuration)
     {
-        var configuration = Configuration.Get<Config>();
-        
         var config = new RollbarInfrastructureConfig(
             configuration.SystemConfig.Rollbar.AccessToken, 
             configuration.SystemConfig.Rollbar.Environment

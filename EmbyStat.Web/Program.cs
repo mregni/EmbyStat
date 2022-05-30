@@ -14,6 +14,7 @@ using EmbyStat.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Hosting.WindowsServices;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -120,14 +121,14 @@ public class Program
 
         // IsWindowsService can throw sometimes, so wrap it
         var isWindowsService = false;
-        // try
-        // {
-        //     isWindowsService = WindowsServiceHelpers.IsWindowsService();
-        // }
-        // catch (Exception e)
-        // {
-        //     Logger.LogError(e, "Failed to get service status");
-        // }
+        try
+        {
+            isWindowsService = WindowsServiceHelpers.IsWindowsService();
+        }
+        catch (Exception)
+        {
+            //Swallowing exception because we can just continue without service host
+        }
 
         if (OperatingSystem.IsWindows() && isWindowsService)
         {
