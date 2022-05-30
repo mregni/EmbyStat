@@ -16,7 +16,7 @@ public class LogService : ILogService
         _mediaServerService = mediaServerService;
     }
 
-    public List<LogFile> GetLogFileList()
+    public IEnumerable<LogFile> GetLogFileList()
     {
         var config = _configurationService.Get();
         var list = new List<LogFile>();
@@ -25,11 +25,13 @@ public class LogService : ILogService
             var file = new FileInfo(filePath);
             list.Add(new LogFile
             {
-                FileName = Path.GetFileName(file.Name),
+                Name = Path.GetFileName(file.Name),
                 Size = file.Length
             });
         }
-        return list.OrderByDescending(x => x.FileName).Take(config.UserConfig.KeepLogsCount).ToList();
+        return list
+            .OrderByDescending(x => x.Name)
+            .Take(config.UserConfig.KeepLogsCount);
     }
 
     public async Task<MemoryStream> GetLogStream(string fileName, bool anonymous)

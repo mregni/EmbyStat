@@ -2,6 +2,6 @@
 
 public interface ILogService
 {
-    List<LogFile> GetLogFileList();
+    IEnumerable<LogFile> GetLogFileList();
     Task<MemoryStream> GetLogStream(string fileName, bool anonymous);
 }
