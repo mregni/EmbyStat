@@ -34,7 +34,6 @@
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Controllers\EmbyStat.Controllers.csproj" />
     <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
-    <ProjectReference Include="..\EmbyStat.Services\EmbyStat.Services.csproj" />
     <ProjectReference Include="..\EmbyStat.Web\EmbyStat.Web.csproj" />
   </ItemGroup>
 

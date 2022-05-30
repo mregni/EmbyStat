@@ -20,7 +20,6 @@
     <ProjectReference Include="..\EmbyStat.Clients.Jellyfin\EmbyStat.Clients.Jellyfin.csproj" />
     <ProjectReference Include="..\EmbyStat.Clients.Tmdb\EmbyStat.Clients.Tmdb.csproj" />
     <ProjectReference Include="..\EmbyStat.Core\EmbyStat.Core.csproj" />
-    <ProjectReference Include="..\EmbyStat.Services\EmbyStat.Services.csproj" />
     <ProjectReference Include="..\EmbyStat.Jobs\EmbyStat.Jobs.csproj" />
   </ItemGroup>
 
