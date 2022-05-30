@@ -1,4 +1,4 @@
-﻿using RuntimeEnvironment = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment;
+﻿using Microsoft.DotNet.PlatformAbstractions;
 
 namespace EmbyStat.Core.About;
 
