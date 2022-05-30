@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react';
+import React from 'react';
 
 import {useMediaServerUrls} from '../../shared/hooks';
 
@@ -8,7 +8,7 @@ describe('with media server address', () => {
       jest
         .spyOn(React, 'useContext')
         .mockImplementation(() => ({
-          settings: {
+          userConfig: {
             mediaServer: {
               address: 'https://localhost',
               id: 14,
@@ -54,7 +54,7 @@ describe('with media server address', () => {
       jest
         .spyOn(React, 'useContext')
         .mockImplementation(() => ({
-          settings: {
+          userConfig: {
             mediaServer: {
               address: 'https://localhost',
               id: 14,
@@ -101,7 +101,7 @@ describe('without settings', () => {
     jest
       .spyOn(React, 'useContext')
       .mockImplementation(() => ({
-        settings: null,
+        userConfig: null,
       }));
   });
 
@@ -141,7 +141,7 @@ describe('with media server url being null', () => {
     jest
       .spyOn(React, 'useContext')
       .mockImplementation(() => ({
-        settings: {
+        userConfig: {
           mediaServer: {
             type: 0,
             address: null,
@@ -168,7 +168,7 @@ describe('with media server url being empty', () => {
     jest
       .spyOn(React, 'useContext')
       .mockImplementation(() => ({
-        settings: {
+        userConfig: {
           mediaServer: {
             type: 0,
             address: '',
