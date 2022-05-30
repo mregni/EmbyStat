@@ -37,6 +37,7 @@ using EmbyStat.Core.Shows;
 using MediaBrowser.Model.Querying;
 using MediaBrowser.Model.System;
 using TMDbLib.Objects.Search;
+using LogFile = EmbyStat.Core.Logging.LogFile;
 
 namespace EmbyStat.Controllers;
 
@@ -97,7 +98,7 @@ public class MapProfiles : Profile
         CreateMap<LabelValuePair, LabelValuePairViewModel>();
         CreateMap<FilterValues, FilterValuesViewModel>();
         CreateMap<MediaServerStatus, EmbyStatusViewModel>();
-            
+
         CreateMap<LogFile, LogFileViewModel>();
             
         //TODO: NOT USED

@@ -1,4 +1,4 @@
 export interface LogFile {
-  fileName: string;
+  name: string;
   size: number;
 }

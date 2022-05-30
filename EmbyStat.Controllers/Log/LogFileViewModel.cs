@@ -2,6 +2,6 @@
 
 public class LogFileViewModel
 {
-    public string FileName { get; set; }
+    public string Name { get; set; }
     public long Size { get; set; }
 }

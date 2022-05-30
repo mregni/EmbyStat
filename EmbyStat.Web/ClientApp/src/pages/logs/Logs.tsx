@@ -29,7 +29,7 @@ export function Logs() {
   };
 
   return (
-    <Grid container item xs={12} lg={6} xl={3}>
+    <Grid container item xs={12} lg={6} xl={4}>
       <TableContainer component={Paper} sx={{p: 2}}>
         <Table size="small">
           <TableHead>
@@ -41,15 +41,15 @@ export function Logs() {
           </TableHead>
           <TableBody>
             {logs.map((row) => (
-              <TableRow key={row.fileName}>
+              <TableRow key={row.name}>
                 <TableCell component="th" scope="row">
-                  {row.fileName}
+                  {row.name}
                 </TableCell>
                 <TableCell align="right">{convertToSize(row.size)}</TableCell>
                 <TableCell align="right">
                   <Stack direction="row" spacing={1} justifyContent="flex-end">
                     <Button
-                      onClick={() => downloadLogFile(row.fileName, false)}
+                      onClick={() => downloadLogFile(row.name, false)}
                       color="secondary"
                       size="small"
                       variant="outlined"
@@ -58,7 +58,7 @@ export function Logs() {
                       {t('COMMON.DOWNLOAD')}
                     </Button>
                     <Button
-                      onClick={() => downloadLogFile(row.fileName, true)}
+                      onClick={() => downloadLogFile(row.name, true)}
                       className="m-l-8"
                       color="secondary"
                       size="small"
