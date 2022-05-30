@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbyStat.Common.Extensions;
@@ -48,11 +49,11 @@ public class LogServiceTests
         Thread.Sleep(1001);
         File.Create(Path.Combine("log-dir", "Logs-test1", "log2.txt").GetLocalPath());
 
-        var list = service.GetLogFileList();
+        var list = service.GetLogFileList().ToList();
         list.Should().NotBeNull();
         list.Count.Should().Be(2);
-        list[0].FileName.Should().Be("log2.txt");
-        list[1].FileName.Should().Be("log1.txt");
+        list[0].Name.Should().Be("log2.txt");
+        list[1].Name.Should().Be("log1.txt");
     }
 
     [Fact]
@@ -80,10 +81,10 @@ public class LogServiceTests
         Thread.Sleep(1001);
         File.Create(Path.Combine("log-dir", "Logs-test2", "log2.txt").GetLocalPath());
 
-        var list = service.GetLogFileList();
+        var list = service.GetLogFileList().ToList();
         list.Should().NotBeNull();
         list.Count.Should().Be(1);
-        list[0].FileName.Should().Be("log2.txt");
+        list[0].Name.Should().Be("log2.txt");
     }
 
     [Fact]
