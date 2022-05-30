@@ -9,13 +9,19 @@ using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extensions;
-using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Show;
+using EmbyStat.Configuration.Interfaces;
+using EmbyStat.Core.Filters.Interfaces;
+using EmbyStat.Core.Genres.Interfaces;
+using EmbyStat.Core.Hubs;
+using EmbyStat.Core.Jobs.Interfaces;
+using EmbyStat.Core.MediaServers.Interfaces;
+using EmbyStat.Core.People.Interfaces;
+using EmbyStat.Core.Shows.Interfaces;
+using EmbyStat.Core.Statistics.Interfaces;
 using EmbyStat.Jobs.Jobs.Interfaces;
-using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services.Interfaces;
 using Hangfire;
 using MediaBrowser.Model.Net;
 using Microsoft.Extensions.Logging;
@@ -35,12 +41,12 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
     private readonly IMediaServerRepository _mediaServerRepository;
     private readonly IFilterRepository _filterRepository;
 
-    public ShowSyncJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
+    public ShowSyncJob(IHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService,
         IClientStrategy clientStrategy, IShowRepository showRepository,
         IStatisticsRepository statisticsRepository, IShowService showService, ITmdbClient tmdbClient,
         IGenreRepository genreRepository, IPersonRepository personRepository, 
         IMediaServerRepository mediaServerRepository, IFilterRepository filterRepository, ILogger<ShowSyncJob> logger)
-        : base(hubHelper, jobRepository, settingsService, logger)
+        : base(hubHelper, jobRepository, configurationService, logger)
     {
         _showRepository = showRepository;
         _statisticsRepository = statisticsRepository;
@@ -51,8 +57,8 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
         _mediaServerRepository = mediaServerRepository;
         _filterRepository = filterRepository;
 
-        var settings = settingsService.GetUserSettings();
-        _baseHttpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.Type ?? ServerType.Emby);
+        var settings = configurationService.Get();
+        _baseHttpClient = clientStrategy.CreateHttpClient(settings.UserConfig.MediaServer.Type);
     }
 
     protected sealed override Guid Id => Constants.JobIds.ShowSyncId;
@@ -62,8 +68,8 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
     {
         if (!await IsMediaServerOnline())
         {
-            await LogWarning(
-                $"Halting task because we can't contact the server on {Settings.MediaServer.Address}, please check the connection and try again.");
+            var address = Configuration.UserConfig.MediaServer.Address;
+            await LogWarning($"Halting task because we can't contact the server on {address}, please check the connection and try again.");
             return;
         }
 
@@ -275,7 +281,7 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
 
     private async Task<bool> IsMediaServerOnline()
     {
-        _baseHttpClient.BaseUrl = Settings.MediaServer.Address;
+        _baseHttpClient.BaseUrl = Configuration.UserConfig.MediaServer.Address;
         return await _baseHttpClient.Ping();
     }
 

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Enums;
-using EmbyStat.Services.Interfaces;
+using EmbyStat.Core.Filters.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmbyStat.Controllers.Filters;

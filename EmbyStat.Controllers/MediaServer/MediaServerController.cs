@@ -6,7 +6,7 @@ using AutoMapper;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Controllers.HelperClasses;
-using EmbyStat.Services.Interfaces;
+using EmbyStat.Core.MediaServers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using MoreLinq;
 

@@ -27,6 +27,16 @@ public class StringExtensionTests
 
         fullPath.Should().Be(Path.Combine(Directory.GetCurrentDirectory(), path));
     }
+    
+    [Fact]
+    public void GetLocalFilePath_Should_Add_Current_Directory_As_Prefix()
+    {
+        var path = "temp";
+        var fileName = "log.txt";
+        var fullPath = path.GetLocalFilePath(fileName);
+
+        fullPath.Should().Be(Path.Combine(Directory.GetCurrentDirectory(), path, fileName));
+    }
 
     [Theory]
     [InlineData("movies", LibraryType.Movies)]

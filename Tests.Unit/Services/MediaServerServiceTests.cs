@@ -9,13 +9,17 @@ using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.MediaServer;
-using EmbyStat.Common.Models.Settings;
-using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services;
-using EmbyStat.Services.Interfaces;
+using EmbyStat.Configuration;
+using EmbyStat.Configuration.Interfaces;
+using EmbyStat.Core.Jobs.Interfaces;
+using EmbyStat.Core.MediaServers;
+using EmbyStat.Core.MediaServers.Interfaces;
+using EmbyStat.Core.Sessions.Interfaces;
+using EmbyStat.Core.Statistics.Interfaces;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
+using Tests.Unit.Builders;
 using Xunit;
 
 namespace Tests.Unit.Services;
@@ -24,7 +28,7 @@ public class MediaServerServiceTests
 {
     private readonly Mock<IMediaServerRepository> _mediaServerRepositoryMock;
     private readonly Mock<ISessionService> _sessionServiceMock;
-    private readonly Mock<ISettingsService> _settingsServiceMock;
+    private readonly Mock<IConfigurationService> _configurationServiceMock;
     private readonly Mock<IBaseHttpClient> _httpClientMock;
     private readonly Mock<ILogger<MediaServerService>> _logger;
     private readonly Mock<IStatisticsRepository> _statisticsRepositoryMock;
@@ -39,20 +43,13 @@ public class MediaServerServiceTests
         _logger = new Mock<ILogger<MediaServerService>>();
         _statisticsRepositoryMock = new Mock<IStatisticsRepository>();
         _jobRepositoryMock = new Mock<IJobRepository>();
-        _settingsServiceMock = new Mock<ISettingsService>();
-        _settingsServiceMock.Setup(x => x.GetUserSettings()).Returns(new UserSettings
-        {
-            MediaServer = new MediaServerSettings
-            {
-                ApiKey = "123",
-                Address = "http://localhost:1"
-            }
-        });
 
-        _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(new AppSettings
-        {
-            Version = "0.0.0.0"
-        });
+        var config = new ConfigBuilder()
+            .WithMediaServerAddress("http://localhost:1")
+            .WithMediaServerApiKey("123")
+            .Build();
+        _configurationServiceMock = new Mock<IConfigurationService>();
+        _configurationServiceMock.Setup(x => x.Get()).Returns(config);
     }
 
     [Fact]
@@ -67,7 +64,7 @@ public class MediaServerServiceTests
         strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
-            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object,
+            _sessionServiceMock.Object, _configurationServiceMock.Object, _logger.Object,
             _statisticsRepositoryMock.Object, _jobRepositoryMock.Object);
         var result = await service.GetServerInfo(false);
 
@@ -89,7 +86,7 @@ public class MediaServerServiceTests
         strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
-            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object,
+            _sessionServiceMock.Object, _configurationServiceMock.Object, _logger.Object,
             _statisticsRepositoryMock.Object, _jobRepositoryMock.Object);
         var result = await service.GetServerInfo(true);
 
@@ -117,7 +114,7 @@ public class MediaServerServiceTests
         strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
-            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object,
+            _sessionServiceMock.Object, _configurationServiceMock.Object, _logger.Object,
             _statisticsRepositoryMock.Object, _jobRepositoryMock.Object);
         var result = await service.GetServerInfo(false);
 
@@ -142,7 +139,7 @@ public class MediaServerServiceTests
         strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
-            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object,
+            _sessionServiceMock.Object, _configurationServiceMock.Object, _logger.Object,
             _statisticsRepositoryMock.Object, _jobRepositoryMock.Object);
         var result = await service.GetMediaServerStatus();
 
@@ -161,7 +158,7 @@ public class MediaServerServiceTests
         strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
-            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object,
+            _sessionServiceMock.Object, _configurationServiceMock.Object, _logger.Object,
             _statisticsRepositoryMock.Object, _jobRepositoryMock.Object);
         await service.ResetMissedPings();
 
@@ -183,7 +180,7 @@ public class MediaServerServiceTests
         strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
-            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object,
+            _sessionServiceMock.Object, _configurationServiceMock.Object, _logger.Object,
             _statisticsRepositoryMock.Object, _jobRepositoryMock.Object);
         var result = await service.GetAllUsers();
 
@@ -214,7 +211,7 @@ public class MediaServerServiceTests
         strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
-            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object,
+            _sessionServiceMock.Object, _configurationServiceMock.Object, _logger.Object,
             _statisticsRepositoryMock.Object, _jobRepositoryMock.Object);
         var result = await service.GetUserPage(0, 1, "name", "asc", true);
         result.Should().NotBeNull();
@@ -246,7 +243,7 @@ public class MediaServerServiceTests
         strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
-            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object,
+            _sessionServiceMock.Object, _configurationServiceMock.Object, _logger.Object,
             _statisticsRepositoryMock.Object, _jobRepositoryMock.Object);
         var result = await service.GetUserPage(0, 1, "name", "asc", false);
         result.Should().NotBeNull();
@@ -278,7 +275,7 @@ public class MediaServerServiceTests
         strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
-            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object,
+            _sessionServiceMock.Object, _configurationServiceMock.Object, _logger.Object,
             _statisticsRepositoryMock.Object, _jobRepositoryMock.Object);
         var result = await service.GetUserById("1");
 
@@ -304,7 +301,7 @@ public class MediaServerServiceTests
         strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
-            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object,
+            _sessionServiceMock.Object, _configurationServiceMock.Object, _logger.Object,
             _statisticsRepositoryMock.Object, _jobRepositoryMock.Object);
         var result = await service.GetAllAdministrators();
 
@@ -341,7 +338,7 @@ public class MediaServerServiceTests
         strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
-            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object,
+            _sessionServiceMock.Object, _configurationServiceMock.Object, _logger.Object,
             _statisticsRepositoryMock.Object, _jobRepositoryMock.Object);
         var result = await service.GetAllAdministrators();
 
@@ -368,7 +365,7 @@ public class MediaServerServiceTests
         strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
-            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object,
+            _sessionServiceMock.Object, _configurationServiceMock.Object, _logger.Object,
             _statisticsRepositoryMock.Object, _jobRepositoryMock.Object);
         await service.IncreaseMissedPings();
 
@@ -384,7 +381,7 @@ public class MediaServerServiceTests
         strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
-            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object,
+            _sessionServiceMock.Object, _configurationServiceMock.Object, _logger.Object,
             _statisticsRepositoryMock.Object, _jobRepositoryMock.Object);
         var result = await service.PingMediaServer("localhost:9000");
         result.Should().BeTrue();
@@ -406,7 +403,7 @@ public class MediaServerServiceTests
         strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
-            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object,
+            _sessionServiceMock.Object, _configurationServiceMock.Object, _logger.Object,
             _statisticsRepositoryMock.Object, _jobRepositoryMock.Object);
         var result = await service.TestNewApiKey("localhost:9000", "1234", ServerType.Emby);
 
@@ -437,7 +434,7 @@ public class MediaServerServiceTests
             .Returns(_httpClientMock.Object);
 
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
-            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object,
+            _sessionServiceMock.Object, _configurationServiceMock.Object, _logger.Object,
             _statisticsRepositoryMock.Object, _jobRepositoryMock.Object);
         var result = await service.TestNewApiKey("localhost:9000", "1234", ServerType.Emby);
 
@@ -465,7 +462,7 @@ public class MediaServerServiceTests
         strategy.Setup(x => x.CreateHttpClient(It.IsAny<ServerType>())).Returns(_httpClientMock.Object);
 
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
-            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object,
+            _sessionServiceMock.Object, _configurationServiceMock.Object, _logger.Object,
             _statisticsRepositoryMock.Object, _jobRepositoryMock.Object);
         var result = await service.GetAllPlugins();
 
@@ -488,7 +485,7 @@ public class MediaServerServiceTests
             .Returns(_httpClientMock.Object);
 
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
-            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object,
+            _sessionServiceMock.Object, _configurationServiceMock.Object, _logger.Object,
             _statisticsRepositoryMock.Object, _jobRepositoryMock.Object);
         var result = await service.SearchMediaServer(ServerType.Emby);
         var list = result.ToList();
@@ -500,10 +497,9 @@ public class MediaServerServiceTests
         _httpClientMock.Verify(x => x.SetDeviceInfo(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),
             It.IsAny<string>(), It.IsAny<string>()));
         _httpClientMock.VerifyNoOtherCalls();
-        _settingsServiceMock.Verify(x => x.SaveUserSettingsAsync(It.IsAny<UserSettings>()));
-        _settingsServiceMock.Verify(x => x.GetAppSettings());
-        _settingsServiceMock.Verify(x => x.GetUserSettings());
-        _settingsServiceMock.VerifyNoOtherCalls();
+        _configurationServiceMock.Verify(x => x.UpdateUserConfiguration(It.IsAny<UserConfig>()));
+        _configurationServiceMock.Verify(x => x.Get());
+        _configurationServiceMock.VerifyNoOtherCalls();
         strategy.Verify(x => x.CreateHttpClient(ServerType.Emby));
         strategy.VerifyNoOtherCalls();
     }
@@ -523,7 +519,7 @@ public class MediaServerServiceTests
             .Setup(x => x.CreateHttpClient(It.IsAny<ServerType>()))
             .Returns(_httpClientMock.Object);
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
-            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object,
+            _sessionServiceMock.Object, _configurationServiceMock.Object, _logger.Object,
             _statisticsRepositoryMock.Object, _jobRepositoryMock.Object);
 
         await service.GetAndProcessPluginInfo();
@@ -548,7 +544,7 @@ public class MediaServerServiceTests
             .Setup(x => x.CreateHttpClient(It.IsAny<ServerType>()))
             .Returns(_httpClientMock.Object);
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
-            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object,
+            _sessionServiceMock.Object, _configurationServiceMock.Object, _logger.Object,
             _statisticsRepositoryMock.Object, _jobRepositoryMock.Object);
 
         await service.GetAndProcessUsers();
@@ -572,7 +568,7 @@ public class MediaServerServiceTests
             .Setup(x => x.CreateHttpClient(It.IsAny<ServerType>()))
             .Returns(_httpClientMock.Object);
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
-            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object,
+            _sessionServiceMock.Object, _configurationServiceMock.Object, _logger.Object,
             _statisticsRepositoryMock.Object, _jobRepositoryMock.Object);
 
         await service.GetAndProcessDevices();
@@ -602,7 +598,7 @@ public class MediaServerServiceTests
             .Setup(x => x.CreateHttpClient(It.IsAny<ServerType>()))
             .Returns(_httpClientMock.Object);
         var service = new MediaServerService(strategy.Object, _mediaServerRepositoryMock.Object,
-            _sessionServiceMock.Object, _settingsServiceMock.Object, _logger.Object,
+            _sessionServiceMock.Object, _configurationServiceMock.Object, _logger.Object,
             _statisticsRepositoryMock.Object, _jobRepositoryMock.Object);
 
         await service.GetAndProcessLibraries();

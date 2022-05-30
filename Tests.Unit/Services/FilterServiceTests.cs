@@ -2,8 +2,10 @@
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
-using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services;
+using EmbyStat.Core.Filters;
+using EmbyStat.Core.Filters.Interfaces;
+using EmbyStat.Core.Movies.Interfaces;
+using EmbyStat.Core.Shows.Interfaces;
 using FluentAssertions;
 using Moq;
 using Xunit;

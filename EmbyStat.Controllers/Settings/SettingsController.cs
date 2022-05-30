@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using EmbyStat.Common.Models.Settings;
-using EmbyStat.Services.Interfaces;
+using EmbyStat.Configuration;
+using EmbyStat.Configuration.Interfaces;
+using EmbyStat.Core.Languages.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -12,16 +13,16 @@ namespace EmbyStat.Controllers.Settings;
 [Route("api/[controller]")]
 public class SettingsController : Controller
 {
-    private readonly ISettingsService _settingsService;
+    private readonly IConfigurationService _configurationService;
     private readonly ILanguageService _languageService;
     private readonly IMapper _mapper;
     private readonly ILogger<SettingsController> _logger;
 
-    public SettingsController(ISettingsService settingsService,
+    public SettingsController(IConfigurationService configurationService,
         ILanguageService languageService, IMapper mapper, ILogger<SettingsController> logger)
     {
         _languageService = languageService;
-        _settingsService = settingsService;
+        _configurationService = configurationService;
         _mapper = mapper;
         _logger = logger;
     }
@@ -29,34 +30,26 @@ public class SettingsController : Controller
     [HttpGet]
     public IActionResult Get()
     {
-        var settings = _settingsService.GetUserSettings();
-        var appSettings = _settingsService.GetAppSettings();
-        var settingsViewModel = _mapper.Map<FullSettingsViewModel>(settings);
-        settingsViewModel.Version = appSettings.Version;
-        settingsViewModel.NoUpdates = appSettings.NoUpdates;
-        settingsViewModel.DataDir = appSettings.Dirs.Data;
-        settingsViewModel.ConfigDir = appSettings.Dirs.Config;
-        settingsViewModel.LogDir = appSettings.Dirs.Logs;
-
+        var config = _configurationService.Get();
+        
+        var settingsViewModel = _mapper.Map<ConfigViewModel>(config);
         return Ok(settingsViewModel);
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update([FromBody] FullSettingsViewModel userSettings)
+    public async Task<IActionResult> Update([FromBody] UserConfigViewModel userConfigViewModel)
     {
-        if (userSettings == null)
+        if (userConfigViewModel == null)
         {
             _logger.LogInformation("Settings object was NULL while calling the PUT API.");
             return BadRequest();
         }
 
-        var settings = _mapper.Map<UserSettings>(userSettings);
-
-        settings = await _settingsService.SaveUserSettingsAsync(settings);
-        var settingsViewModel = _mapper.Map<FullSettingsViewModel>(settings);
-        settingsViewModel.Version = _settingsService.GetAppSettings().Version;
-
-        return Ok(settingsViewModel);
+        var userConfig = _mapper.Map<UserConfig>(userConfigViewModel);
+        await _configurationService.UpdateUserConfiguration(userConfig);
+        
+        var config = _configurationService.Get();
+        return Ok(config);
     }
 
     [HttpGet]

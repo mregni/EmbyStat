@@ -1,28 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using EmbyStat.Configuration.Interfaces;
 using EmbyStat.Migrator.Interfaces;
 using EmbyStat.Migrator.Models;
-using EmbyStat.Services.Interfaces;
 
 namespace EmbyStat.Migrator;
 
 public class MigrationRunner : IMigrationRunner
 {
     private readonly IEnumerable<Type> _migrations;
-    private readonly ISettingsService _settingsService;
+    private readonly IConfigurationService _configurationService;
 
-    public MigrationRunner(IMigrationSourceItem source, ISettingsService settingsService)
+    public MigrationRunner(IMigrationSourceItem source, IConfigurationService configurationService)
     {
         _migrations = source.MigrationTypeCandidates;
-        _settingsService = settingsService;
+        _configurationService = configurationService;
     }
 
     public void Migrate()
     {
-        _settingsService.LoadUserSettingsFromFile();
-        var settingsVersion = _settingsService.GetUserSettingsVersion();
-        var orderedMigrations = GetOrderedMigrations(settingsVersion);
+        var config = _configurationService.Get();
+        var orderedMigrations = GetOrderedMigrations(config.SystemConfig.Migration);
         StartMigrations(orderedMigrations);
     }
 
@@ -46,7 +45,7 @@ public class MigrationRunner : IMigrationRunner
         foreach (var (key, value) in migrations)
         {
             var migration = (IMigration)Activator.CreateInstance(value);
-            migration?.MigrateUp(_settingsService, key);
+            migration?.MigrateUp(_configurationService, key);
         }
     }
 }

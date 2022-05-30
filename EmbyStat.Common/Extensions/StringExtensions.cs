@@ -39,6 +39,11 @@ public static class StringExtensions
     {
         return Path.Combine(Directory.GetCurrentDirectory(), path);
     }
+    
+    public static string GetLocalFilePath(this string path, string fileName)
+    {
+        return Path.Combine(Directory.GetCurrentDirectory(), path, fileName);
+    }
 
     public static string FirstCharToUpper(this string input) =>
         input switch

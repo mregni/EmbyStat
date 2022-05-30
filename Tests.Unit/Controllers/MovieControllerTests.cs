@@ -2,14 +2,14 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Models.Cards;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Movies;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Controllers.Movie;
-using EmbyStat.Services.Interfaces;
-using EmbyStat.Services.Models.Cards;
-using EmbyStat.Services.Models.Movie;
+using EmbyStat.Core.Movies;
+using EmbyStat.Core.Movies.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

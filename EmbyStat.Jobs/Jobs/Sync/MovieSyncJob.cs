@@ -5,11 +5,17 @@ using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
-using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Entities.Movies;
+using EmbyStat.Configuration.Interfaces;
+using EmbyStat.Core.Filters.Interfaces;
+using EmbyStat.Core.Genres.Interfaces;
+using EmbyStat.Core.Hubs;
+using EmbyStat.Core.Jobs.Interfaces;
+using EmbyStat.Core.MediaServers.Interfaces;
+using EmbyStat.Core.Movies.Interfaces;
+using EmbyStat.Core.People.Interfaces;
+using EmbyStat.Core.Statistics.Interfaces;
 using EmbyStat.Jobs.Jobs.Interfaces;
-using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services.Interfaces;
 using Hangfire;
 using Microsoft.Extensions.Logging;
 
@@ -28,11 +34,11 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
     private readonly IFilterRepository _filterRepository;
 
     public MovieSyncJob(IHubHelper hubHelper, IJobRepository jobRepository,
-        ISettingsService settingsService, IClientStrategy clientStrategy,
+        IConfigurationService configurationService, IClientStrategy clientStrategy,
         IMovieRepository movieRepository, IStatisticsRepository statisticsRepository, 
         IMovieService movieService, IGenreRepository genreRepository, IPersonRepository personRepository, 
         IMediaServerRepository mediaServerRepository, IFilterRepository filterRepository, ILogger<MovieSyncJob> logger) 
-        : base(hubHelper, jobRepository, settingsService, logger)
+        : base(hubHelper, jobRepository, configurationService, logger)
     {
         _movieRepository = movieRepository;
         _statisticsRepository = statisticsRepository;
@@ -42,8 +48,8 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
         _mediaServerRepository = mediaServerRepository;
         _filterRepository = filterRepository;
 
-        var settings = settingsService.GetUserSettings();
-        _baseHttpClient = clientStrategy.CreateHttpClient(settings.MediaServer?.Type ?? ServerType.Emby);
+        var settings = configurationService.Get();
+        _baseHttpClient = clientStrategy.CreateHttpClient(settings.UserConfig.MediaServer.Type);
     }
 
     protected sealed override Guid Id => Constants.JobIds.MovieSyncId;
@@ -53,7 +59,8 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
     {
         if (!await IsMediaServerOnline())
         {
-            await LogWarning($"Halting task because we can't contact the server on {Settings.MediaServer.Address}, please check the connection and try again.");
+            var address = Configuration.UserConfig.MediaServer.Address;
+            await LogWarning($"Halting task because we can't contact the server on {address}, please check the connection and try again.");
             return;
         }
 
@@ -131,6 +138,7 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
                 await LogInformation($"Processed { logProcessed } / { totalCount } movies");
                 await LogProgressIncrement(increment);
             } while (processed < totalCount);
+            
             await _mediaServerRepository.UpdateLibrarySyncDate(library.Id, DateTime.UtcNow);
         }
     }
@@ -151,7 +159,7 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
 
     private async Task<bool> IsMediaServerOnline()
     {
-        _baseHttpClient.BaseUrl = Settings.MediaServer.Address;
+        _baseHttpClient.BaseUrl = Configuration.UserConfig.MediaServer.Address;
         return await _baseHttpClient.Ping();
     }
 

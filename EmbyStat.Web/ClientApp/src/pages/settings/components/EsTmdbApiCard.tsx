@@ -13,7 +13,7 @@ type TmdbApiForm = {
 }
 
 export function EsTmdbApiCard() {
-  const {settings, save} = useContext(SettingsContext);
+  const {userConfig, save} = useContext(SettingsContext);
 
   const {handleSubmit, register, getValues, formState: {errors}} = useForm<TmdbApiForm>({
     mode: 'all',
@@ -23,8 +23,8 @@ export function EsTmdbApiCard() {
   });
 
   const saveForm = async (data: TmdbApiForm) => {
-    settings.tmdb.apiKey = data.apiKey;
-    await save(settings);
+    userConfig.tmdb.apiKey = data.apiKey;
+    await save(userConfig);
   };
 
   const apiKeyRegister = register('apiKey', {required: true});

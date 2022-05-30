@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EmbyStat.Common;
-using EmbyStat.Common.Hubs;
+using EmbyStat.Configuration.Interfaces;
+using EmbyStat.Core.Hubs;
+using EmbyStat.Core.Jobs.Interfaces;
+using EmbyStat.Core.MediaServers.Interfaces;
 using EmbyStat.Jobs.Jobs.Interfaces;
-using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services.Interfaces;
 using Hangfire;
 using Microsoft.Extensions.Logging;
 
@@ -15,9 +16,9 @@ public class PingEmbyJob : BaseJob, IPingEmbyJob
 {
     private readonly IMediaServerService _mediaServerService;
 
-    public PingEmbyJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
+    public PingEmbyJob(IHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService,
         IMediaServerService mediaServerService, ILogger<PingEmbyJob> logger)
-        : base(hubHelper, jobRepository, settingsService, false, logger)
+        : base(hubHelper, jobRepository, configurationService, false, logger)
     {
         _mediaServerService = mediaServerService;
     }
@@ -36,8 +37,9 @@ public class PingEmbyJob : BaseJob, IPingEmbyJob
         }
         else
         {
+            var address = Configuration.UserConfig.MediaServer.Address;
             await LogWarning(
-                $"We could not ping your MediaServer server at {Settings.MediaServer.Address}. Might be because it's turned off or dns is wrong");
+                $"We could not ping your MediaServer server at {address}. Might be because it's turned off or dns is wrong");
             await _mediaServerService.IncreaseMissedPings();
         }
 

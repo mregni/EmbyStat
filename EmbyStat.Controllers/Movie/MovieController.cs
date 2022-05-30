@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Controllers.HelperClasses;
-using EmbyStat.Services.Interfaces;
+using EmbyStat.Core.Movies.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 

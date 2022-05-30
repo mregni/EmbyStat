@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using EmbyStat.Common.Models.Account;
-using EmbyStat.Services.Interfaces;
+using EmbyStat.Core.Account;
+using EmbyStat.Core.Account.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -29,12 +30,12 @@ public class AccountController : Controller
         {
             var remoteIp = Request.HttpContext.Connection.RemoteIpAddress?.ToString();
             var result = await _accountService.Authenticate(login, remoteIp);
-
+            _logger.LogInformation($"Username {login.Username} was used for login", login.Username);
+            
             if (result != null)
             {
                 return Ok(result);
             }
-            _logger.LogInformation("Username {login.Username} was used for login", login.Username);
         }
 
         _logger.LogInformation("Invalid username or password");

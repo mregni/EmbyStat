@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EmbyStat.Common;
-using EmbyStat.Common.Hubs;
+using EmbyStat.Configuration.Interfaces;
+using EmbyStat.Core.Hubs;
+using EmbyStat.Core.Jobs.Interfaces;
+using EmbyStat.Core.Statistics.Interfaces;
 using EmbyStat.Jobs.Jobs.Interfaces;
-using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services.Interfaces;
 using Hangfire;
 using Microsoft.Extensions.Logging;
 
@@ -15,9 +16,9 @@ public class DatabaseCleanupJob : BaseJob, IDatabaseCleanupJob
 {
     private readonly IStatisticsRepository _statisticsRepository;
 
-    public DatabaseCleanupJob(IHubHelper hubHelper, IJobRepository jobRepository, ISettingsService settingsService,
+    public DatabaseCleanupJob(IHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService,
         IStatisticsRepository statisticsRepository, ILogger<DatabaseCleanupJob> logger)
-        : base(hubHelper, jobRepository, settingsService, logger)
+        : base(hubHelper, jobRepository, configurationService, logger)
     {
         _statisticsRepository = statisticsRepository;
     }

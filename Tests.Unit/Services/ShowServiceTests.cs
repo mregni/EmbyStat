@@ -5,19 +5,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Models.Charts;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Query;
-using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services;
-using EmbyStat.Services.Models.Cards;
-using EmbyStat.Services.Models.Charts;
+using EmbyStat.Core.Jobs.Interfaces;
+using EmbyStat.Core.MediaServers.Interfaces;
+using EmbyStat.Core.Shows;
+using EmbyStat.Core.Shows.Interfaces;
+using EmbyStat.Core.Statistics.Interfaces;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Tests.Unit.Builders;
 using Xunit;
-using ValueType = EmbyStat.Services.Models.Cards.ValueType;
+using ValueType = EmbyStat.Common.Models.Cards.ValueType;
 
 namespace Tests.Unit.Services;
 

@@ -13,8 +13,6 @@ if($buildNumber -like '*beta*'){
   $environment = "beta"
 }
 
-
-
 $postParams = @{
     access_token="$rollbarKey";
     environment="$environment";

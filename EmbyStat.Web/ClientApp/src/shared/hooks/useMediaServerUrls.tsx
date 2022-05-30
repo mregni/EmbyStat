@@ -3,18 +3,18 @@ import {useContext} from 'react';
 import {SettingsContext} from '../context/settings';
 
 export const useMediaServerUrls = () => {
-  const {settings} = useContext(SettingsContext);
+  const {userConfig} = useContext(SettingsContext);
 
   const getFullMediaServerUrl = (): string => {
-    if (settings?.mediaServer !== null) {
-      return settings.mediaServer.address;
+    if (userConfig?.mediaServer !== null) {
+      return userConfig.mediaServer.address;
     }
 
     return '';
   };
 
   const getPrimaryImageLink = (itemId: string, tag: string, fallbackUrl: string = ''): string => {
-    if (settings !== null) {
+    if (userConfig !== null) {
       let url = getFullMediaServerUrl();
       if (url === null || url === '') {
         url = fallbackUrl;
@@ -25,7 +25,7 @@ export const useMediaServerUrls = () => {
   };
 
   const getPrimaryUserImageLink = (userId: string, fallbackUrl: string = ''): string => {
-    if (settings !== null) {
+    if (userConfig !== null) {
       let url = getFullMediaServerUrl();
       if (url === null || url === '') {
         url = fallbackUrl;
@@ -36,22 +36,22 @@ export const useMediaServerUrls = () => {
   };
 
   const getItemDetailLink = (itemId: string): string => {
-    if (settings !== null) {
+    if (userConfig !== null) {
       const url = getFullMediaServerUrl();
-      if (settings.mediaServer.type === 0) {
-        return `${url}/web/index.html#!/item?id=${itemId}&serverId=${settings.mediaServer.id}`;
+      if (userConfig.mediaServer.type === 0) {
+        return `${url}/web/index.html#!/item?id=${itemId}&serverId=${userConfig.mediaServer.id}`;
       }
 
-      return `${url}/web/index.html#!/details?id=${itemId}&serverId=${settings.mediaServer.id}`;
+      return `${url}/web/index.html#!/details?id=${itemId}&serverId=${userConfig.mediaServer.id}`;
     }
 
     return '';
   };
 
   const getUserDetailLink = (userId: string): string => {
-    if (settings !== null) {
+    if (userConfig !== null) {
       const url = getFullMediaServerUrl();
-      if (settings.mediaServer.type === 0) {
+      if (userConfig.mediaServer.type === 0) {
         return `${url}/web/index.html#!/users/user?userId=${userId}`;
       }
 
@@ -62,9 +62,9 @@ export const useMediaServerUrls = () => {
   };
 
   const getBackdropImageLink = (itemId: string): string => {
-    if (settings !== null) {
+    if (userConfig !== null) {
       const url = getFullMediaServerUrl();
-      if (settings.mediaServer.type === 0) {
+      if (userConfig.mediaServer.type === 0) {
         return `${url}/Items/${itemId}/Images/Backdrop?quality=90&enableimageenhancers=false`;
       }
 

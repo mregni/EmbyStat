@@ -3,15 +3,15 @@ import {useContext, useEffect, useState} from 'react';
 import {SettingsContext} from '../context/settings';
 
 export function useServerType() {
-  const {settings} = useContext(SettingsContext);
+  const {userConfig} = useContext(SettingsContext);
   const [serverType, setServerType] = useState('Emby');
   useEffect(() => {
-    setServerType(settings?.mediaServer.type === 0 ? 'Emby' : 'Jellyfin');
-  }, [settings?.mediaServer.type]);
+    setServerType(userConfig?.mediaServer.type === 0 ? 'Emby' : 'Jellyfin');
+  }, [userConfig?.mediaServer.type]);
 
   const getMediaServerTypeString = (): string => {
-    if (settings != null) {
-      return settings.mediaServer.type === 0 ? 'Emby' : 'Jellyfin';
+    if (userConfig != null) {
+      return userConfig.mediaServer.type === 0 ? 'Emby' : 'Jellyfin';
     }
     return 'Emby';
   };
