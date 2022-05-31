@@ -1,11 +1,18 @@
 ﻿using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
-using EmbyStat.Common.Hubs;
-using EmbyStat.Common.Models.Settings;
-using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services;
-using EmbyStat.Services.Interfaces;
+using EmbyStat.Configuration;
+using EmbyStat.Configuration.Interfaces;
+using EmbyStat.Core.Filters.Interfaces;
+using EmbyStat.Core.Genres.Interfaces;
+using EmbyStat.Core.Hubs;
+using EmbyStat.Core.MediaServers.Interfaces;
+using EmbyStat.Core.Movies.Interfaces;
+using EmbyStat.Core.People.Interfaces;
+using EmbyStat.Core.Shows.Interfaces;
+using EmbyStat.Core.Statistics.Interfaces;
+using EmbyStat.Core.System;
 using Moq;
+using Tests.Unit.Builders;
 using Xunit;
 
 namespace Tests.Unit.Services;
@@ -24,19 +31,16 @@ public class SystemServiceTests
         var genreRepository = new Mock<IGenreRepository>();
         var personRepository = new Mock<IPersonRepository>();
         var hub = new Mock<IHubHelper>();
-        var settingsService = new Mock<ISettingsService>();
-        var settings = new UserSettings
-        {
-            MediaServer = new MediaServerSettings
-            {
-                Address = "localhost:8000",
-                ApiKey = "AZER",
-                Type = ServerType.Emby
-            }
-        };
+        var settingsService = new Mock<IConfigurationService>();
+        
+        var config = new ConfigBuilder()
+            .WithMediaServerAddress("localhost:8000")
+            .WithMediaServerApiKey("AZER")
+            .WithMediaServerType(ServerType.Emby)
+            .Build();
         settingsService
-            .Setup(x => x.GetUserSettings())
-            .Returns(settings);
+            .Setup(x => x.Get())
+            .Returns(config);
         var mediaServerService = new Mock<IMediaServerService>();
         mediaServerService
             .Setup(x => x.TestNewApiKey(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ServerType>()))
@@ -71,7 +75,7 @@ public class SystemServiceTests
         personRepository.Verify(x => x.DeleteAll());
         personRepository.VerifyNoOtherCalls();
 
-        settingsService.Verify(x => x.GetUserSettings());
+        settingsService.Verify(x => x.Get());
         settingsService.VerifyNoOtherCalls();
 
         hub.Verify(x => x.BroadcastResetLogLine("Deleting statistics"));
@@ -93,7 +97,7 @@ public class SystemServiceTests
         hub.VerifyNoOtherCalls();
         
         mediaServerService.Verify(x =>
-            x.TestNewApiKey(settings.MediaServer.Address, settings.MediaServer.ApiKey, settings.MediaServer.Type));
+            x.TestNewApiKey(config.UserConfig.MediaServer.Address, config.UserConfig.MediaServer.ApiKey, config.UserConfig.MediaServer.Type));
         mediaServerService.VerifyNoOtherCalls();
         
         filterRepository.Verify(x => x.DeleteAll());

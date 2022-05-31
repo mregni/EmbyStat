@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using EmbyStat.Common;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Core.Jobs.Interfaces;
 using EmbyStat.Jobs;
 using EmbyStat.Jobs.Jobs.Interfaces;
-using EmbyStat.Services.Interfaces;
 using Hangfire;
 using Moq;
 using Xunit;

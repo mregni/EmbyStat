@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services;
+using EmbyStat.Core.Languages;
+using EmbyStat.Core.Languages.Interfaces;
 using FluentAssertions;
 using Moq;
 using Xunit;

@@ -10,11 +10,11 @@ jobs:
   - template: '../templates/update.version.yml'
 
   - task: PowerShell@2
-    displayName: 'Update appsettings.json file'
+    displayName: 'Update configuration'
     inputs:
       targetType: filePath
       filePath: $(paths.script)/appsettings.ps1
-      arguments: '$(package.ubuntu-x64) $(rollbar.key) $(GitVersion.SemVer)'
+      arguments: '-updatePackage $(package.ubuntu-x64) -rollbarKey $(rollbar.key) -rollbarEnv $(rollbar.env) -version $(GitVersion.SemVer)'
 
   - task: DotNetCoreCLI@2
     displayName: 'Make ubuntu-x64 package'

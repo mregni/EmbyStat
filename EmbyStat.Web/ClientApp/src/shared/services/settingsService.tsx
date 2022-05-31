@@ -2,7 +2,7 @@ import {AxiosResponse} from 'axios';
 import i18n from 'i18next';
 
 import {Language} from '../models/language';
-import {Settings} from '../models/settings';
+import {Settings, UserConfig} from '../models/settings';
 import SnackbarUtils from '../utils/SnackbarUtilsConfigurator';
 import {axiosInstance} from './axiosInstance';
 
@@ -13,9 +13,9 @@ export const getSettings = async (): Promise<Settings> => {
   return response.data;
 };
 
-export const updateSettings = (userSettings: Settings): Promise<Settings | void> => {
+export const updateSettings = (userConfig: UserConfig): Promise<Settings | void> => {
   const config = {headers: {'Content-Type': 'application/json'}};
-  return axiosInstance.put<Settings>(`${domain}`, userSettings, config)
+  return axiosInstance.put<Settings>(`${domain}`, userConfig, config)
     .then((response) => {
       if (response.status === 200) {
         SnackbarUtils.success(i18n.t('SETTINGS.SAVED'));

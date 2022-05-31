@@ -1,6 +1,4 @@
-using EmbyStat.Common.Models.Settings;
 using EmbyStat.Jobs;
-using EmbyStat.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -12,23 +10,28 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Api;
 using EmbyStat.Common;
-using EmbyStat.Common.Enums;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extensions;
-using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Configuration;
+using EmbyStat.Configuration.Interfaces;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.Middleware;
+using EmbyStat.Core.Account;
+using EmbyStat.Core.Account.Interfaces;
+using EmbyStat.Core.DataStore;
+using EmbyStat.Core.Hubs;
+using EmbyStat.Core.Jobs.Interfaces;
 using EmbyStat.DI;
 using EmbyStat.Migrator;
 using EmbyStat.Migrator.Interfaces;
 using EmbyStat.Migrator.Migrations;
-using EmbyStat.Repositories;
 using Hangfire;
 using Hangfire.Dashboard;
 using Hangfire.MemoryStorage;
@@ -37,11 +40,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Refit;
+using Rollbar.DTOs;
 
 namespace EmbyStat.Web;
 
@@ -60,17 +65,11 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     { 
         services.AddOptions();
-        services.Configure<AppSettings>(Configuration);
-        var appSettings = Configuration.Get<AppSettings>();
+        services.Configure<Config>(Configuration);
+        var configuration = Configuration.Get<Config>();
         services.RegisterApplicationDependencies();
-
-        RollbarLocator.RollbarInstance.Configure(new RollbarConfig(appSettings.Rollbar.AccessToken));
-
-        services.AddRollbarLogger(loggerOptions =>
-        {
-            loggerOptions.Filter = (_, logLevel) => logLevel >= (LogLevel)Enum.Parse(typeof(LogLevel), appSettings.Rollbar.LogLevel);
-        });
-
+        services.AddHttpContextAccessor();
+        
         services.AddCors(b => b.AddPolicy("default"
             , builder => {
                 builder
@@ -88,8 +87,6 @@ public class Startup
             .AddApplicationPart(Assembly.Load(new AssemblyName("EmbyStat.Controllers")))
             .AddApiExplorer()
             .AddAuthorization();
-
-        SetupDirectories(appSettings);
 
         services.AddAutoMapper(typeof(MapProfiles));
         services.AddSwaggerGen(c =>
@@ -121,6 +118,13 @@ public class Startup
         });
 
         services.AddRefitClient<IMediaServerApi>();
+        
+        ConfigureRollbarInfrastructure(configuration);
+        
+        services.AddRollbarLogger(loggerOptions =>
+        {
+            loggerOptions.Filter = loggerOptions.Filter = (_, loglevel) => loglevel >= LogLevel.Error;
+        });
 
         services.AddSpaStaticFiles(configuration =>
         {
@@ -128,7 +132,12 @@ public class Startup
         });
 
         services.AddSignalR();
-        services.AddDbContext<EsDbContext>();
+        var dbPath = Path.Combine(configuration.SystemConfig.Dirs.Data, "SqliteData.db");
+        services.AddDbContext<EsDbContext>(options =>
+        {
+            options.EnableDetailedErrors();
+            options.UseSqlite($"Data Source={dbPath}", x => x.MigrationsAssembly("EmbyStat.Migrations"));
+        });
 
         services.AddAuthorization(options =>
         {
@@ -161,19 +170,19 @@ public class Startup
             })
             .AddJwtBearer(x =>
             {
-                x.ClaimsIssuer = appSettings.Jwt.Issuer;
+                x.ClaimsIssuer = configuration.SystemConfig.Jwt.Issuer;
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(appSettings.Jwt.Key)),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.SystemConfig.Jwt.Key)),
 
                     ValidateIssuer = true,
-                    ValidIssuer = appSettings.Jwt.Issuer,
+                    ValidIssuer = configuration.SystemConfig.Jwt.Issuer,
 
                     ValidateAudience = true,
-                    ValidAudience = appSettings.Jwt.Audience,
+                    ValidAudience = configuration.SystemConfig.Jwt.Audience,
 
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
@@ -192,10 +201,8 @@ public class Startup
                 };
             });
             
-        services.AddHttpContextAccessor();
-
         //services.AddHostedService<WebSocketService>();
-        services.AddJsonMigrator(typeof(CreateUserSettings).Assembly);
+        services.AddJsonMigrator(typeof(DummyMigration).Assembly);
         
         services.AddHangfire(x =>
         {
@@ -220,7 +227,7 @@ public class Startup
             logging.ResponseBodyLogLimit = 4096;
         });
     }
-
+    
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
     {
         ApplicationBuilder = app;
@@ -238,7 +245,7 @@ public class Startup
             ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
         });
 
-        //app.UseRollbarMiddleware();
+        app.UseRollbarMiddleware();
 
         GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 2 });
 
@@ -286,40 +293,84 @@ public class Startup
 
     }
 
-    private static void SetupDirectories(AppSettings settings)
-    {
-        if (Directory.Exists(settings.Dirs.TempUpdate.GetLocalPath()))
-        {
-            Directory.Delete(settings.Dirs.TempUpdate.GetLocalPath(), true);
-        }
-    }
-
     private void PerformPostStartup()
     {
         using var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope();
+        var db = serviceScope.ServiceProvider.GetRequiredService<EsDbContext>();
+        db.Database.Migrate();
+        
         var migrationRunner = serviceScope.ServiceProvider.GetService<IMigrationRunner>();
         migrationRunner?.Migrate();
-
-        var settingsService = serviceScope.ServiceProvider.GetService<ISettingsService>();
+  
+        var configurationService = serviceScope.ServiceProvider.GetService<IConfigurationService>();
         var accountService = serviceScope.ServiceProvider.GetService<IAccountService>();
         var clientStrategy = serviceScope.ServiceProvider.GetService<IClientStrategy>();
         var jobInitializer = serviceScope.ServiceProvider.GetService<IJobInitializer>();
-        
-        if (settingsService != null)
+
+        if (configurationService != null)
         {
-            var settings = settingsService.GetAppSettings();
-            settingsService?.LoadUserSettingsFromFile();
+            var config = configurationService.Get();
+            SetupDirectories(config);
             accountService?.CreateRoles();
-            settingsService.CreateRollbarLogger();
-            AddDeviceIdToConfig(settingsService);
-            SetMediaServerClientConfiguration(settingsService, clientStrategy);
-            jobInitializer?.Setup(settings.NoUpdates);
+            SetMediaServerClientConfiguration(configurationService, clientStrategy);
+            jobInitializer?.Setup(config.SystemConfig.UpdatesDisabled);
         }
         
         RemoveVersionFiles();
         
         var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
         jobService?.ResetAllJobs();
+    }
+    
+    private static void SetupDirectories(Config settings)
+    {
+        if (Directory.Exists(settings.SystemConfig.Dirs.TempUpdate.GetLocalPath()))
+        {
+            Directory.Delete(settings.SystemConfig.Dirs.TempUpdate.GetLocalPath(), true);
+        }
+    }
+    
+    private void ConfigureRollbarInfrastructure(Config configuration)
+    {
+        var config = new RollbarInfrastructureConfig(
+            configuration.SystemConfig.Rollbar.AccessToken, 
+            configuration.SystemConfig.Rollbar.Environment
+        );
+
+        var offlineStoreOptions = new RollbarOfflineStoreOptions
+        {
+            EnableLocalPayloadStore = false
+        };
+        config.RollbarOfflineStoreOptions.Reconfigure(offlineStoreOptions);
+
+        var telemetryOptions = new RollbarTelemetryOptions(true, 3);
+        config.RollbarTelemetryOptions.Reconfigure(telemetryOptions);
+
+        var dataSecurityOptions = 
+            new RollbarDataSecurityOptions
+            {
+                IpAddressCollectionPolicy = IpAddressCollectionPolicy.DoNotCollect,
+                PersonDataCollectionPolicies = PersonDataCollectionPolicies.None,
+                ScrubFields = new[] {
+                    "user_password",
+                    "secret",
+                }
+            };
+        config.RollbarLoggerConfig.RollbarDataSecurityOptions.Reconfigure(dataSecurityOptions);
+
+        var payloadAdditionOptions = 
+            new RollbarPayloadAdditionOptions
+            {
+                CodeVersion = configuration.SystemConfig.Version,
+                Server = new Server
+                {
+                    {"Framework", RuntimeInformation.FrameworkDescription},
+                    {"OS", RuntimeInformation.OSDescription}
+                }
+            };
+        config.RollbarLoggerConfig.RollbarPayloadAdditionOptions.Reconfigure(payloadAdditionOptions);
+
+        RollbarInfrastructure.Instance.Init(config);
     }
 
     private void PerformPreShutdown()
@@ -337,37 +388,25 @@ public class Startup
         }
     }
 
-    private static void AddDeviceIdToConfig(ISettingsService settingsService)
+    private static void SetMediaServerClientConfiguration(IConfigurationService configurationService, IClientStrategy clientStrategy)
     {
-        var userSettings = settingsService.GetUserSettings();
+        configurationService.SetUpdateInProgressSettingAsync(false);
+        var config = configurationService.Get();
 
-        if (userSettings.Id != null)
-        {
-            return;
-        }
-        userSettings.Id = Guid.NewGuid();
-        settingsService.SaveUserSettingsAsync(userSettings);
-    }
-
-    private static void SetMediaServerClientConfiguration(ISettingsService settingsService, IClientStrategy clientStrategy)
-    {
-        settingsService.SetUpdateInProgressSettingAsync(false);
-        var settings = settingsService.GetUserSettings();
-
-        var mediaServerType = settings.MediaServer?.Type ?? ServerType.Emby;
+        var mediaServerType = config.UserConfig.MediaServer.Type;
         var mediaServerClient = clientStrategy.CreateHttpClient(mediaServerType);
 
         mediaServerClient.SetDeviceInfo(
-            settings.AppName, 
-            settings.MediaServer?.AuthorizationScheme ?? string.Empty, 
-            settingsService.GetAppSettings().Version.ToCleanVersionString(), 
-            settings.Id.ToString(),
-            settings.MediaServer?.UserId ?? string.Empty);
+            config.SystemConfig.AppName, 
+            config.UserConfig.MediaServer.AuthorizationScheme,
+            config.SystemConfig.Version.ToCleanVersionString(), 
+            config.SystemConfig.Id.ToString(),
+            config.UserConfig.MediaServer.UserId);
 
-        if (!string.IsNullOrWhiteSpace(settings.MediaServer?.ApiKey))
+        if (!string.IsNullOrWhiteSpace(config.UserConfig.MediaServer?.ApiKey))
         {
-            mediaServerClient.BaseUrl = settings.MediaServer.Address;
-            mediaServerClient.ApiKey = settings.MediaServer.ApiKey;
+            mediaServerClient.BaseUrl = config.UserConfig.MediaServer.Address;
+            mediaServerClient.ApiKey = config.UserConfig.MediaServer.ApiKey;
         }
     }
 }

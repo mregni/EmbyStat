@@ -19,17 +19,17 @@ import Wizard from './pages/wizard';
 import {SettingsContext} from './shared/context/settings';
 
 function RoutesContainer() {
-  const {settings, load} = useContext(SettingsContext);
+  const {userConfig, load} = useContext(SettingsContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (settings !== null) {
-      i18n.changeLanguage(settings.language);
-      if (!settings.wizardFinished) {
+    if (userConfig !== null) {
+      i18n.changeLanguage(userConfig.language);
+      if (!userConfig.wizardFinished) {
         navigate('/wizard');
       }
     }
-  }, [load, settings, navigate]);
+  }, [load, userConfig, navigate]);
 
   return (
     <Routes>

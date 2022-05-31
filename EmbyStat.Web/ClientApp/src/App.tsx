@@ -11,14 +11,14 @@ import {SnackbarUtilsConfigurator} from './shared/utils/SnackbarUtilsConfigurato
 import {theme} from './styles/theme';
 
 function App() {
-  const {settings, load} = useContext(SettingsContext);
+  const {isLoaded, load} = useContext(SettingsContext);
   useSignalR();
 
   useEffect(() => {
-    if (!settings?.isLoaded) {
+    if (!isLoaded) {
       load();
     }
-  }, [load, settings]);
+  }, [load, isLoaded]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -30,8 +30,8 @@ function App() {
           horizontal: 'right',
         }}
       >
-        {settings === null && <EsPageLoader />}
-        {settings !== null && <RoutesContainer />}
+        {!isLoaded && <EsPageLoader />}
+        {isLoaded && <RoutesContainer />}
         <SnackbarUtilsConfigurator />
       </SnackbarProvider>
     </ThemeProvider>

@@ -23,7 +23,9 @@ public class RequestLoggingMiddleware
 
     public async Task Invoke(HttpContext context)
     {
-        if (_logger.IsEnabled(LogLevel.Debug) && context.Request.Path.StartsWithSegments(new PathString("/api")))
+        if (_logger.IsEnabled(LogLevel.Debug) 
+            && context.Request.Path.StartsWithSegments(new PathString("/api"))
+            && !context.Request.Path.StartsWithSegments(new PathString("/api/account/login")))
         {
             await InvokeWithLogging(context);
         }

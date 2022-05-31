@@ -5,18 +5,19 @@ using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common;
-using EmbyStat.Common.Hubs;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Tasks.Enum;
+using EmbyStat.Configuration;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.Job;
+using EmbyStat.Core.Hubs;
+using EmbyStat.Core.Jobs.Interfaces;
 using EmbyStat.Jobs;
-using EmbyStat.Services.Interfaces;
 using FluentAssertions;
 using Hangfire;
 using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Moq;
 using Xunit;
 
@@ -26,7 +27,7 @@ public class JobControllerTests
 {
     private Mock<IJobService> _jobServiceMock;
     private Mock<IJobInitializer> _jobInitializerMock;
-    private Mock<ISettingsService> _settingsServiceMock;
+    private Mock<IOptions<Config>> _options;
     private Mock<IHubHelper> _jobHubHelperMock;
 
     private JobController CreateController(bool disableUpdateJob, params Job[] jobs)
@@ -37,7 +38,7 @@ public class JobControllerTests
 
         _jobServiceMock = new Mock<IJobService>();
         _jobInitializerMock = new Mock<IJobInitializer>();
-        _settingsServiceMock = new Mock<ISettingsService>();
+        _options = new Mock<IOptions<Config>>();
         _jobHubHelperMock = new Mock<IHubHelper>();
 
         _jobServiceMock.Setup(x => x.GetAll()).Returns(jobs);
@@ -51,10 +52,18 @@ public class JobControllerTests
             x.BroadcastJobLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ProgressLogType>()));
         _jobInitializerMock.Setup(x => x.UpdateTrigger(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<bool>()));
 
-        _settingsServiceMock.Setup(x => x.GetAppSettings()).Returns(new AppSettings {NoUpdates = disableUpdateJob});
+        _options
+            .Setup(x => x.Value)
+            .Returns(new Config
+            {
+                SystemConfig = new SystemConfig()
+                {
+                    UpdatesDisabled = disableUpdateJob
+                }
+            });
 
         return new JobController(mapper, _jobServiceMock.Object, _jobHubHelperMock.Object,
-            _jobInitializerMock.Object, _settingsServiceMock.Object);
+            _jobInitializerMock.Object, _options.Object);
     }
 
     [Fact]
@@ -78,10 +87,10 @@ public class JobControllerTests
         jobs.SingleOrDefault(x => x.Id == jobOne.Id).Should().NotBeNull();
         jobs.SingleOrDefault(x => x.Id == jobTwo.Id).Should().NotBeNull();
 
-        _settingsServiceMock.Verify(x => x.GetAppSettings(), Times.Once);
+        _options.Verify(x => x.Value, Times.Once);
         _jobServiceMock.Verify(x => x.GetAll(), Times.Once);
             
-        _settingsServiceMock.VerifyNoOtherCalls();
+        _options.VerifyNoOtherCalls();
         _jobServiceMock.VerifyNoOtherCalls();
         _jobInitializerMock.VerifyNoOtherCalls();
     }
@@ -109,10 +118,10 @@ public class JobControllerTests
         jobs.SingleOrDefault(x => x.Id == jobTwo.Id).Should().NotBeNull();
         jobs.SingleOrDefault(x => x.Id == jobThree.Id).Should().BeNull();
 
-        _settingsServiceMock.Verify(x => x.GetAppSettings(), Times.Once);
+        _options.Verify(x => x.Value, Times.Once);
         _jobServiceMock.Verify(x => x.GetAll(), Times.Once);
             
-        _settingsServiceMock.VerifyNoOtherCalls();
+        _options.VerifyNoOtherCalls();
         _jobServiceMock.VerifyNoOtherCalls();
         _jobInitializerMock.VerifyNoOtherCalls();
     }
@@ -135,7 +144,9 @@ public class JobControllerTests
         job.Id.Should().Be(jobTwo.Id);
             
         _jobServiceMock.Verify(x => x.GetById(jobTwo.Id), Times.Once);
-        _settingsServiceMock.VerifyNoOtherCalls();
+        
+        _options.Verify(x => x.Value, Times.Once);
+        _options.VerifyNoOtherCalls();
         _jobServiceMock.VerifyNoOtherCalls();
         _jobInitializerMock.VerifyNoOtherCalls();
     }
@@ -155,7 +166,9 @@ public class JobControllerTests
         res!.StatusCode.Should().Be((int) HttpStatusCode.NotFound);
 
         _jobServiceMock.Verify(x => x.GetById(randomId), Times.Once);
-        _settingsServiceMock.VerifyNoOtherCalls();
+        
+        _options.Verify(x => x.Value, Times.Once);
+        _options.VerifyNoOtherCalls();
         _jobServiceMock.VerifyNoOtherCalls();
         _jobInitializerMock.VerifyNoOtherCalls();
     }
@@ -173,11 +186,12 @@ public class JobControllerTests
         res.Should().NotBeNull();
         res!.StatusCode.Should().Be((int) HttpStatusCode.NoContent);
 
-        _settingsServiceMock.Verify(x => x.GetAppSettings(), Times.Once);
+        _options.Verify(x => x.Value, Times.Once);
         _jobServiceMock.Verify(x => x.UpdateTrigger(jobOne.Id, "* * * 1 0"), Times.Once);
         _jobInitializerMock.Verify(x => x.UpdateTrigger(jobOne.Id, "* * * 1 0", false));
             
-        _settingsServiceMock.VerifyNoOtherCalls();
+        _options.Verify(x => x.Value, Times.Once);
+        _options.VerifyNoOtherCalls();
         _jobServiceMock.VerifyNoOtherCalls();
         _jobInitializerMock.VerifyNoOtherCalls();
     }
@@ -197,7 +211,9 @@ public class JobControllerTests
         res!.StatusCode.Should().Be((int) HttpStatusCode.NotFound);
 
         _jobServiceMock.Verify(x => x.UpdateTrigger(randomId, "* * * 1 0"), Times.Once);
-        _settingsServiceMock.VerifyNoOtherCalls();
+        
+        _options.Verify(x => x.Value, Times.Once);
+        _options.VerifyNoOtherCalls();
         _jobServiceMock.VerifyNoOtherCalls();
         _jobInitializerMock.VerifyNoOtherCalls();
     }
@@ -227,7 +243,8 @@ public class JobControllerTests
             x => x.BroadcastJobLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<ProgressLogType>()),
             Times.Once);
             
-        _settingsServiceMock.VerifyNoOtherCalls();
+        _options.Verify(x => x.Value, Times.Once);
+        _options.VerifyNoOtherCalls();
         _jobServiceMock.VerifyNoOtherCalls();
         _jobInitializerMock.VerifyNoOtherCalls();
     }
@@ -247,7 +264,9 @@ public class JobControllerTests
         res!.StatusCode.Should().Be((int) HttpStatusCode.NotFound);
 
         _jobServiceMock.Verify(x => x.GetById(randomId), Times.Once);
-        _settingsServiceMock.VerifyNoOtherCalls();
+        
+        _options.Verify(x => x.Value, Times.Once);
+        _options.VerifyNoOtherCalls();
         _jobServiceMock.VerifyNoOtherCalls();
         _jobInitializerMock.VerifyNoOtherCalls();
     }

@@ -7,6 +7,9 @@ using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Helpers;
 using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Cards;
+using EmbyStat.Common.Models.Charts;
+using EmbyStat.Common.Models.DataGrid;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Shows;
@@ -14,8 +17,8 @@ using EmbyStat.Common.Models.Entities.Streams;
 using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.MediaServer;
 using EmbyStat.Common.Models.Net;
-using EmbyStat.Common.Models.Settings;
 using EmbyStat.Common.Models.Show;
+using EmbyStat.Configuration;
 using EmbyStat.Controllers.About;
 using EmbyStat.Controllers.Filters;
 using EmbyStat.Controllers.HelperClasses;
@@ -27,17 +30,14 @@ using EmbyStat.Controllers.Settings;
 using EmbyStat.Controllers.Show;
 using EmbyStat.Controllers.System;
 using EmbyStat.Controllers.MediaServer;
-using EmbyStat.Services.Models.Cards;
-using EmbyStat.Services.Models.Charts;
-using EmbyStat.Services.Models.DataGrid;
-using EmbyStat.Services.Models.Emby;
-using EmbyStat.Services.Models.MediaServerUser;
-using EmbyStat.Services.Models.Movie;
-using EmbyStat.Services.Models.Show;
-using EmbyStat.Services.Models.Stat;
+using EmbyStat.Core.About;
+using EmbyStat.Core.MediaServers;
+using EmbyStat.Core.Movies;
+using EmbyStat.Core.Shows;
 using MediaBrowser.Model.Querying;
 using MediaBrowser.Model.System;
 using TMDbLib.Objects.Search;
+using LogFile = EmbyStat.Core.Logging.LogFile;
 
 namespace EmbyStat.Controllers;
 
@@ -98,7 +98,7 @@ public class MapProfiles : Profile
         CreateMap<LabelValuePair, LabelValuePairViewModel>();
         CreateMap<FilterValues, FilterValuesViewModel>();
         CreateMap<MediaServerStatus, EmbyStatusViewModel>();
-            
+
         CreateMap<LogFile, LogFileViewModel>();
             
         //TODO: NOT USED
@@ -109,7 +109,7 @@ public class MapProfiles : Profile
         CreateMap<ShortMovie, ShortMovieViewModel>();
         CreateMap<SuspiciousTables, SuspiciousTablesViewModel>();
             
-        CreateMap<Services.Models.About.About, AboutViewModel>();
+        CreateMap<AboutModel, AboutViewModel>();
         CreateMap<SuspiciousMovie, SuspiciousMovieViewModel>();
 
         CreateMap<UserMediaView, UserMediaViewViewModel>();
@@ -159,11 +159,14 @@ public class MapProfiles : Profile
 
     private void CreateSettingMappings()
     {
-        CreateMap<UserSettings, FullSettingsViewModel>()
-            .ForMember(x => x.Version, x => x.Ignore())
-            .ReverseMap()
-            .ForMember(x => x.Version, x => x.Ignore())
-            .AfterMap((src, dest) => dest.MediaServer.ApiKey = src.MediaServer.ApiKey.Trim());
+        CreateMap<Config, ConfigViewModel>();
+        CreateMap<UserConfig, UserConfigViewModel>().ReverseMap();
+        CreateMap<SystemConfig, SystemConfigViewModel>();
+        CreateMap<Hosting, HostingViewModel>().ReverseMap();
+        CreateMap<MediaServerSettings, MediaServerSettingsViewModel>().ReverseMap();
+        CreateMap<TmdbSettings, TmdbSettingsViewModel>().ReverseMap();
+        CreateMap<Configuration.Rollbar, RollbarViewModel>();
+        CreateMap<Dirs, DirsViewModel>();
     }
 
     private void CreatePeopleMappings()

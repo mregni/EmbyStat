@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using EmbyStat.Common;
-using EmbyStat.Common.Hubs;
+using EmbyStat.Configuration.Interfaces;
+using EmbyStat.Core.Hubs;
+using EmbyStat.Core.Jobs.Interfaces;
+using EmbyStat.Core.Updates.Interfaces;
 using EmbyStat.Jobs.Jobs.Interfaces;
-using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services.Interfaces;
 using Hangfire;
 using Microsoft.Extensions.Logging;
 
@@ -14,14 +15,14 @@ namespace EmbyStat.Jobs.Jobs.Updater;
 public class CheckUpdateJob : BaseJob, ICheckUpdateJob
 {
     private readonly IUpdateService _updateService;
-    private readonly ISettingsService _settingsService;
+    private readonly IConfigurationService _configurationService;
 
     public CheckUpdateJob(IHubHelper hubHelper, IJobRepository jobRepository,
-        ISettingsService settingsService, IUpdateService updateService, ILogger<CheckUpdateJob> logger) 
-        : base(hubHelper, jobRepository, settingsService, logger)
+        IConfigurationService configurationService, IUpdateService updateService, ILogger<CheckUpdateJob> logger) 
+        : base(hubHelper, jobRepository, configurationService, logger)
     {
         _updateService = updateService;
-        _settingsService = settingsService;
+        _configurationService = configurationService;
     }
 
     protected sealed override Guid Id => Constants.JobIds.CheckUpdateId;
@@ -34,16 +35,17 @@ public class CheckUpdateJob : BaseJob, ICheckUpdateJob
             await LogInformation("Contacting Github now to see if new version is available.");
             var update = await _updateService.CheckForUpdate();
             await LogProgress(20);
-            if (update.IsUpdateAvailable && Settings.AutoUpdate)
+            if (update.IsUpdateAvailable && Configuration.SystemConfig.AutoUpdate)
             {
                 await LogInformation($"New version found: v{update.AvailableVersion}");
                 await LogInformation("Auto update is enabled so going to update the server now!");
-                await _settingsService.SetUpdateInProgressSettingAsync(true);
+                
+                await _configurationService.SetUpdateInProgressSettingAsync(true);
                 await HubHelper.BroadcastUpdateState(true);
                 _updateService.DownloadZipAsync(update).Wait();
                 await LogProgress(50);
                 await _updateService.UpdateServerAsync();
-                await _settingsService.SetUpdateInProgressSettingAsync(false);
+                await _configurationService.SetUpdateInProgressSettingAsync(false);
                 await HubHelper.BroadcastUpdateFinished(true);
             }
             else if (update.IsUpdateAvailable)
@@ -58,7 +60,7 @@ public class CheckUpdateJob : BaseJob, ICheckUpdateJob
         }
         catch (Exception)
         {
-            await _settingsService.SetUpdateInProgressSettingAsync(false);
+            await _configurationService.SetUpdateInProgressSettingAsync(false);
             await HubHelper.BroadcastUpdateState(false);
             await HubHelper.BroadcastUpdateFinished(false);
             throw;

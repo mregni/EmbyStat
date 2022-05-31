@@ -5,7 +5,7 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.Filters;
-using EmbyStat.Services.Interfaces;
+using EmbyStat.Core.Filters.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

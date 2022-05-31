@@ -49,14 +49,14 @@
     "HTTPSPORT": "HTTPS port",
     "ID": "ID",
     "ISDEFAULT": "is default",
-    "LINKS": "Links",
-    "LIST": "List",
+    "LINKS": "Länkar",
+    "LIST": "Lista",
     "MIN": "min",
     "MINUTESABBR": "m",
-    "MOVIE": "movie",
+    "MOVIE": "film",
     "MOVIES": "filmer",
-    "NAME": "Name",
-    "NUMBERS": "Numbers",
+    "NAME": "Namn",
+    "NUMBERS": "Nummer",
     "OFFICIALRATING": "Official rating",
     "OS": "Operating system",
     "OTHER": "Other",
@@ -66,12 +66,12 @@
     "PROTOCOL": "Protocol",
     "RUNTIME": "Runtime",
     "SAVE": "spara",
-    "SEASON": "Season",
-    "SEASONS": "Seasons",
-    "SELECTVALUE": "Select value",
-    "SHOW": "show",
+    "SEASON": "Säsong",
+    "SEASONS": "Säsonger",
+    "SELECTVALUE": "Välj värde",
+    "SHOW": "serier",
     "SHOWS": "Serier",
-    "SIZE": "Size",
+    "SIZE": "Storlek",
     "SIZEINMB": "Size in Mb",
     "STATUS": "Status",
     "STREAMS": "Streams",
@@ -88,8 +88,8 @@
     "UNKNOWN": "Unknown",
     "UPDATELEVEL": "Update level",
     "VERSION": "Version",
-    "VIDEORANGE": "Video range",
-    "WIDTH": "Width"
+    "VIDEORANGE": "Längd på video",
+    "WIDTH": "Bredd"
   },
   "DIALOGS": {
     "EDIT_TRIGGER": {
@@ -97,8 +97,8 @@
       "FORMAT_ERROR": "Given cron string is in a wrong format. Check <a href=\"https://crontab.guru/\" target=\"_blank\">here</a> for formatting rules. Only numbers, spaces, *, / and - are allowed."
     },
     "MOVIEJOBRUNNING": {
-      "BODY": "Movie job is running, please wait until it is finished",
-      "TITLE": "Movie job running"
+      "BODY": "Filmjobbet körs, vänta tills det är klart",
+      "TITLE": "Filmjobbet är igång"
     },
     "NOMOVIETYPEFOUND": {
       "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in {{type}} you should try starting a new movie syncronisation task.",
@@ -116,32 +116,32 @@
   "FILTERS": {
     "DIALOG": {
       "CONTENT": "Select field on which you want to add a new filter",
-      "TITLE": "Add new filter"
+      "TITLE": "Lägg till nytt filter"
     },
     "OPERATIONS": {
-      "BETWEEN": "is between",
-      "CONTAINS": "contains",
-      "ENDSWITH": "ends with",
-      "EQUAL": "equals",
-      "HAS": "has",
-      "HASNO": "has no",
-      "HASNONE": "has none",
-      "IS": "is",
-      "ISNOT": "is not",
-      "ISNULL": "is null",
-      "ISZERO": "is 0",
-      "LARGER": "is larger then",
-      "LONGER": "is longer then",
-      "NOTCONTAINS": "does not contain",
-      "SHORTER": "is shorter then",
-      "SMALLER": "is smaller then",
-      "STARTSWITH": "starts with"
+      "BETWEEN": "är mellan",
+      "CONTAINS": "innehåller",
+      "ENDSWITH": "slutar med",
+      "EQUAL": "är lika med",
+      "HAS": "har",
+      "HASNO": "saknar",
+      "HASNONE": "har ingen",
+      "IS": "är",
+      "ISNOT": "är inte",
+      "ISNULL": "är tom",
+      "ISZERO": "är 0",
+      "LARGER": "är större än",
+      "LONGER": "är längre än",
+      "NOTCONTAINS": "innehåller inte",
+      "SHORTER": "är kortare än",
+      "SMALLER": "är mindre än",
+      "STARTSWITH": "börjar med"
     },
     "TITLES": {
       "CONTAINER": "Container",
-      "FRAMERATE": "Frame rate",
-      "GENRES": "Genres",
-      "IMAGES": "Images",
+      "FRAMERATE": "Bildhastighet",
+      "GENRES": "Genrer",
+      "IMAGES": "Bilder",
       "IMDB": "Imdb",
       "TITLE": "Titel",
       "TMDB": "Tmdb"
@@ -149,7 +149,7 @@
   },
   "FORMLABELS": {
     "CRON": "Cron sträng",
-    "FIELD": "Field",
+    "FIELD": "Fält",
     "OPERATION": "Operation"
   },
   "JOB": {
@@ -173,8 +173,8 @@
     "LASTRUN": "Last run",
     "NORUN": "Not ran yet",
     "OPENJOBPAGE": "Go to job page",
-    "PROCESSING": "Processing",
-    "STARTMEDIASYNC": "Start media sync"
+    "PROCESSING": "Bearbetar",
+    "STARTMEDIASYNC": "Starta mediasynkronisering"
   },
   "LOGIN": {
     "ERROR": "Username or password unknown",

@@ -16,15 +16,17 @@ public static class ListExtensions
     {
         return source != null && source.Any();
     }
-
-    public static void AddIfNotNull<T>(this ICollection<T> items, T item)
+    
+#nullable enable
+    public static void AddIfNotNull<T>(this ICollection<T> items, T? item)
     {
         if (item != null)
         {
             items.Add(item);
         }
     }
-
+#nullable disable
+    
     public static void AddRange<T>(this ICollection<T> list, IEnumerable<T> items)
     {
         foreach (var item in items)

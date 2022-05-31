@@ -68,7 +68,7 @@ type MediaServerForm = {
 
 export function EsMediaServerCard() {
   const {serverType} = useServerType();
-  const {settings, save, resetFinished, resetLogLine} = useContext(SettingsContext);
+  const {userConfig, save, resetFinished, resetLogLine} = useContext(SettingsContext);
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [openWarningDialog, setOpenWarningDialog] = useState(false);
   const {t} = useTranslation();
@@ -76,8 +76,8 @@ export function EsMediaServerCard() {
   const {register, handleSubmit, getValues, formState: {errors}} = useForm<MediaServerForm>({
     mode: 'all',
     defaultValues: {
-      address: settings.mediaServer.address,
-      apiKey: settings.mediaServer.apiKey,
+      address: userConfig.mediaServer.address,
+      apiKey: userConfig.mediaServer.apiKey,
     },
   });
 
@@ -94,11 +94,11 @@ export function EsMediaServerCard() {
 
   const saveForm = async (reset: boolean) => {
     const {address, apiKey} = getValues();
-    settings.mediaServer.address = address;
-    settings.mediaServer.apiKey = apiKey;
+    userConfig.mediaServer.address = address;
+    userConfig.mediaServer.apiKey = apiKey;
     setOpenWarningDialog(false);
 
-    await save(settings);
+    await save(userConfig);
     if (reset) {
       setOpenBackdrop(true);
       await resetEmbyStat();

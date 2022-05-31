@@ -12,22 +12,22 @@ type RollbarForm = {
 }
 
 export function EsRollbarCard() {
-  const {settings, save} = useContext(SettingsContext);
+  const {userConfig, save} = useContext(SettingsContext);
   const {t} = useTranslation();
 
   const saveForm = async (data: RollbarForm) => {
-    settings.enableRollbarLogging = data.enabled;
-    await save(settings);
+    userConfig.enableRollbarLogging = data.enabled;
+    await save(userConfig);
   };
 
   const {handleSubmit, control} = useForm<RollbarForm>({
     mode: 'all',
     defaultValues: {
-      enabled: settings.enableRollbarLogging,
+      enabled: userConfig.enableRollbarLogging,
     },
   });
 
-  if (settings === null) {
+  if (userConfig === null) {
     return (null);
   }
 
@@ -43,7 +43,7 @@ export function EsRollbarCard() {
       <Controller
         name="enabled"
         control={control}
-        defaultValue={settings.enableRollbarLogging}
+        defaultValue={userConfig.enableRollbarLogging}
         render={({field: {onChange, onBlur, value, ref}}) =>
           <FormControlLabel
             control={

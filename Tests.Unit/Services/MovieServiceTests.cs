@@ -8,18 +8,19 @@ using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Movies;
 using EmbyStat.Common.Models.Query;
-using EmbyStat.Common.Models.Settings;
-using EmbyStat.Repositories.Interfaces;
-using EmbyStat.Services;
-using EmbyStat.Services.Interfaces;
-using EmbyStat.Services.Models.Cards;
+using EmbyStat.Configuration.Interfaces;
+using EmbyStat.Core.Jobs.Interfaces;
+using EmbyStat.Core.MediaServers.Interfaces;
+using EmbyStat.Core.Movies;
+using EmbyStat.Core.Movies.Interfaces;
+using EmbyStat.Core.Statistics.Interfaces;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Tests.Unit.Builders;
 using Xunit;
 using Constants = EmbyStat.Common.Constants;
-using ValueType = EmbyStat.Services.Models.Cards.ValueType;
+using ValueType = EmbyStat.Common.Models.Cards.ValueType;
 
 namespace Tests.Unit.Services;
 
@@ -29,7 +30,7 @@ public class MovieServiceTests
     private readonly Movie _movieOne;
     private readonly Movie _movieTwo;
     private readonly Movie _movieThree;
-    private readonly Mock<ISettingsService> _settingsServiceMock;
+    private readonly Mock<IConfigurationService> _configurationServiceMock;
     private readonly Mock<IMovieRepository> _movieRepositoryMock;
     private readonly Mock<IMediaServerRepository> _mediaServerRepositoryMock;
     private readonly Mock<ILogger<MovieService>> _logger;
@@ -79,18 +80,15 @@ public class MovieServiceTests
             .AddImdb("0003")
             .Build();
 
-        _settingsServiceMock = new Mock<ISettingsService>();
-        _settingsServiceMock
-            .Setup(x => x.GetUserSettings())
-            .Returns(new UserSettings
-            {
-                ToShortMovie = 10,
-                ToShortMovieEnabled = true
-            });
-        _subject = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree);
+        var config = new ConfigBuilder()
+            .EnableToShortMovies(true, 10)
+            .Build();
+        _configurationServiceMock = new Mock<IConfigurationService>();
+        _configurationServiceMock.Setup(x => x.Get()).Returns(config);
+        _subject = CreateMovieService(_configurationServiceMock, _movieOne, _movieTwo, _movieThree);
     }
 
-    private MovieService CreateMovieService(Mock<ISettingsService> settingsServiceMock, params Movie[] movies)
+    private MovieService CreateMovieService(Mock<IConfigurationService> configurationService, params Movie[] movies)
     {
         _movieRepositoryMock
             .Setup(x => x.GetAll())
@@ -202,7 +200,7 @@ public class MovieServiceTests
             
         var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
         var jobRepositoryMock = new Mock<IJobRepository>();
-        return new MovieService(_movieRepositoryMock.Object, settingsServiceMock.Object, 
+        return new MovieService(_movieRepositoryMock.Object, configurationService.Object, 
             statisticsRepositoryMock.Object, jobRepositoryMock.Object, _mediaServerRepositoryMock.Object, _logger.Object);
     }
 
@@ -460,7 +458,7 @@ public class MovieServiceTests
     public async Task Get_TotalPlayLengthStat()
     {
         var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddRunTimeTicks(56, 34, 1).Build();
-        var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
+        var service = CreateMovieService(_configurationServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
         var stat = await service.GetStatistics();
         stat.Cards.Count(x => x.Title == Constants.Movies.TotalPlayLength).Should().Be(1);
 
@@ -512,7 +510,7 @@ public class MovieServiceTests
     [Fact]
     public async Task Calculate_OfficialRatingChart_Without_Movies()
     {
-        var service = CreateMovieService(_settingsServiceMock);
+        var service = CreateMovieService(_configurationServiceMock);
         var stat = await service.GetStatistics();
 
         stat.Should().NotBeNull();
@@ -583,7 +581,7 @@ public class MovieServiceTests
     [Fact]
     public async Task Calculate_RatingChart_Without_Movies()
     {
-        var service = CreateMovieService(_settingsServiceMock);
+        var service = CreateMovieService(_configurationServiceMock);
         var stat = await service.GetStatistics();
 
         stat.Should().NotBeNull();
@@ -645,7 +643,7 @@ public class MovieServiceTests
             .Build();
         var movieSix = new MovieBuilder(Guid.NewGuid().ToString()).AddPremiereDate(new DateTime(1989, 3, 12))
             .Build();
-        var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour,
+        var service = CreateMovieService(_configurationServiceMock, _movieOne, _movieTwo, _movieThree, movieFour,
             movieFive, movieSix);
 
         var stat = await service.GetStatistics();
@@ -670,7 +668,7 @@ public class MovieServiceTests
     [Fact]
     public async Task Calculate_PremiereYearChart_Without_Movies()
     {
-        var service = CreateMovieService(_settingsServiceMock);
+        var service = CreateMovieService(_configurationServiceMock);
 
         var stat = await service.GetStatistics();
         stat.Should().NotBeNull();
@@ -730,7 +728,7 @@ public class MovieServiceTests
     public async Task MoviesWithoutImdb()
     {
         var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddImdb(string.Empty).Build();
-        var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
+        var service = CreateMovieService(_configurationServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
         var stat = await service.GetStatistics();
         
         stat.Should().NotBeNull();
@@ -747,7 +745,7 @@ public class MovieServiceTests
     public async Task MoviesWithoutPrimaryImage()
     {
         var movieFour = new MovieBuilder(Guid.NewGuid().ToString()).AddPrimaryImage(string.Empty).Build();
-        var service = CreateMovieService(_settingsServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
+        var service = CreateMovieService(_configurationServiceMock, _movieOne, _movieTwo, _movieThree, movieFour);
         var stat = await service.GetStatistics();
         
         stat.Should().NotBeNull();

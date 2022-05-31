@@ -1,7 +1,7 @@
 ﻿using System;
 using EmbyStat.Common;
+using EmbyStat.Core.Jobs.Interfaces;
 using EmbyStat.Jobs.Jobs.Interfaces;
-using EmbyStat.Services.Interfaces;
 using Hangfire;
 
 namespace EmbyStat.Jobs;

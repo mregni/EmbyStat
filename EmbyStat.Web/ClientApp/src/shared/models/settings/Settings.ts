@@ -1,39 +1,70 @@
+export interface Settings {
+    userConfig: UserConfig;
+    systemConfig: SystemConfig;
+}
+
+export interface UserConfig {
+    language: string;
+    toShortMovieEnabled: boolean;
+    toShortMovie: number;
+    keepLogsCount: number;
+    logLevel: number;
+    enableRollbarLogging: boolean;
+    wizardFinished: boolean;
+    hosting: Hosting;
+    mediaServer: MediaServerSettings;
+    tmdb: TmdbSettings;
+}
+
+export interface SystemConfig {
+    autoUpdate: boolean;
+    version: string;
+    processName: string;
+    appName: string;
+    id: string | null;
+    updateInProgress: boolean;
+    updatesDisabled: boolean;
+    migration: number;
+    updateTrain: number;
+    rollbar: Rollbar;
+    dirs: Dirs;
+}
+
+export interface Hosting {
+    sslEnabled: boolean;
+    port: number;
+    sslPort: number;
+    url: string;
+    sslCertPath: string;
+    sslCertPassword: string;
+}
+
 export interface MediaServerSettings {
-  name: string;
-  apiKey: string;
-  address: string;
-  authorizationScheme: string;
-  type: number;
-  userId: string;
-  id: string;
+    name: string;
+    apiKey: string;
+    address: string;
+    authorizationScheme: string;
+    type: number;
+    userId: string;
+    id: string;
+    fullSocketAddress: string;
 }
 
 export interface TmdbSettings {
-  apiKey: string;
-  lastUpdate: Date | null;
+    apiKey: string;
 }
 
-export interface Settings {
-  id: string;
-  appName: string;
-  wizardFinished: boolean;
-  language: string;
-  toShortMovie: number;
-  toShortMovieEnabled: boolean;
-  keepLogsCount: number;
-  autoUpdate: boolean;
-  updateTrain: number;
-  updateInProgress: boolean;
-  version: string;
-  mediaServer: MediaServerSettings;
-  tmdb: TmdbSettings;
-  enableRollbarLogging: boolean;
-  noUpdates: boolean;
-  dataDir: string;
-  logDir: string;
-  configDir: string;
-  isLoaded: boolean;
+export interface Rollbar {
+    enabled: boolean;
 }
+
+export interface Dirs {
+    tempUpdate: string;
+    updater: string;
+    logs: string;
+    data: string;
+}
+
 
 export interface LibraryContainer {
   id: string;

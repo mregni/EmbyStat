@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Controllers.MediaServer;
-using EmbyStat.Services.Interfaces;
+using EmbyStat.Core.MediaServers.Interfaces;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

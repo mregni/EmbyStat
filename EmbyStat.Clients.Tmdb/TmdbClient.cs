@@ -4,18 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Models.Show;
-using EmbyStat.Services.Interfaces;
+using EmbyStat.Configuration;
+using EmbyStat.Configuration.Interfaces;
 using TMDbLib.Client;
 
 namespace EmbyStat.Clients.Tmdb;
 
 public class TmdbClient : ITmdbClient
 {
-    private readonly ISettingsService _settingsService;
+    private readonly Config _config;
     private readonly IMapper _mapper;
-    public TmdbClient(ISettingsService settingsService, IMapper mapper)
+    public TmdbClient(IConfigurationService configurationService, IMapper mapper)
     {
-        _settingsService = settingsService;
+        _config = configurationService.Get();
         _mapper = mapper;
     }
     public async Task<IEnumerable<VirtualEpisode>> GetEpisodesAsync(int? tmdbShowId)
@@ -25,8 +26,7 @@ public class TmdbClient : ITmdbClient
             return null;
         }
 
-        var settings = _settingsService.GetUserSettings();
-        var client = new TMDbClient(settings.Tmdb.ApiKey);
+        var client = new TMDbClient(_config.UserConfig.Tmdb.ApiKey);
             
         var show = await client.GetTvShowAsync(tmdbShowId.Value);
         if (show == null)

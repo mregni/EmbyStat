@@ -23,7 +23,7 @@ function WizardContainer() {
   const {t} = useTranslation();
   const {hasAdmins, isLoading} = useHasAnyAdmins();
   const {finishWizard} = useContext(WizardContext);
-  const {settings, load} = useContext(SettingsContext);
+  const {userConfig, load} = useContext(SettingsContext);
   const navigate = useNavigate();
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down('sm'));
@@ -35,10 +35,10 @@ function WizardContainer() {
 
   useEffect(() => {
     if (!isLoading && hasAdmins) {
-      updateSettings({...settings, wizardFinished: true});
+      updateSettings({...userConfig, wizardFinished: true});
       navigate('/login', {replace: true});
     }
-  }, [isLoading, hasAdmins, history, settings]);
+  }, [isLoading, hasAdmins, history, userConfig]);
 
   const introRef = useRef<React.ElementRef<typeof Intro>>(null);
   const userDetailRef = useRef<React.ElementRef<typeof UserDetails>>(null);
@@ -88,7 +88,7 @@ function WizardContainer() {
 
     // Last step
     if (activeStep === steps - 1) {
-      const result = await finishWizard(settings);
+      const result = await finishWizard(userConfig);
       if (result) {
         await load(true);
         navigate('/', {replace: true});

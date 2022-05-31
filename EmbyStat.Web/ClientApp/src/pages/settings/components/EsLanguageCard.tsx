@@ -16,15 +16,15 @@ type LanguageForm = {
 }
 
 export function EsLanguageCard() {
-  const {settings, languages, save} = useContext(SettingsContext);
+  const {userConfig, languages, save} = useContext(SettingsContext);
   const {getLocale} = useLocale();
-  const [privateLocale, setPrivateLocale] = useState(getLocale(settings.language));
+  const [privateLocale, setPrivateLocale] = useState(getLocale(userConfig.language));
   const {t} = useTranslation();
 
   const {handleSubmit, control} = useForm<LanguageForm>({
     mode: 'all',
     defaultValues: {
-      language: settings.language,
+      language: userConfig.language,
     },
   });
 
@@ -35,8 +35,8 @@ export function EsLanguageCard() {
   };
 
   const saveForm = async (data: LanguageForm) => {
-    settings.language = data.language;
-    await save(settings);
+    userConfig.language = data.language;
+    await save(userConfig);
   };
 
   return (

@@ -9,11 +9,11 @@ jobs:
   - template: '../templates/update.version.yml'
 
   - task: PowerShell@2
-    displayName: 'Update appsettings.json file'
+    displayName: 'Update configuration'
     inputs:
       targetType: filePath
       filePath: $(paths.script)/appsettings.ps1
-      arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -version $(GitVersion.SemVer)'
+      arguments: '-updatePackage $(package.win10-x64) -rollbarKey $(rollbar.key) -rollbarEnv $(rollbar.env) -version $(GitVersion.SemVer)'
 
   - task: DotNetCoreCLI@2
     displayName: 'Make win10-x64 package'

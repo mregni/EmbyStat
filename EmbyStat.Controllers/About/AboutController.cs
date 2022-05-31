@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using EmbyStat.Services.Interfaces;
+using EmbyStat.Core.About;
+using EmbyStat.Core.About.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmbyStat.Controllers.About;

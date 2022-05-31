@@ -9,7 +9,7 @@ import {
 
 import {SettingsContext} from '../../context/settings';
 import {useEsLocation} from '../../hooks';
-import {MediaMenuItems, MenuItem, ServerMenuItems, SimpleMenuItem} from '.';
+import {MediaMenuItems, MenuItem, ServerMenuItems, SimpleMenuItem} from './menuItems';
 
 const drawerWidth = 200;
 
@@ -101,7 +101,7 @@ function EsMenuItem(props: MenuItemProps) {
 }
 
 export function EsMenuDrawer() {
-  const {settings} = useContext(SettingsContext);
+  const {systemConfig} = useContext(SettingsContext);
 
   return (
     <Drawer
@@ -133,7 +133,7 @@ export function EsMenuDrawer() {
             variant='subtitle2'
             align='center'
             sx={{mb: 1}}>
-            {settings.version}
+            {systemConfig.version}
           </Typography>
         </Box>
       </Stack>

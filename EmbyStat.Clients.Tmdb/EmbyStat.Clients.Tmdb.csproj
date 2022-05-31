@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <ProjectGuid>{BE8AFEF2-E5F4-40A5-8413-C2C2190A061E}</ProjectGuid>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,7 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
-    <ProjectReference Include="..\EmbyStat.Services\EmbyStat.Services.csproj" />
+    <ProjectReference Include="..\EmbyStat.Configuration\EmbyStat.Configuration.csproj" />
   </ItemGroup>
 
 </Project>
