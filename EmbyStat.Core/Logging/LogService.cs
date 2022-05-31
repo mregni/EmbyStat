@@ -37,7 +37,7 @@ public class LogService : ILogService
     public async Task<MemoryStream> GetLogStream(string fileName, bool anonymous)
     {
         var config = _configurationService.Get();
-        var logStream = new FileStream(config.SystemConfig.Dirs.Logs.GetLocalFilePath(fileName), FileMode.Open, FileAccess.Read, FileShare.Read);
+        var logStream = new FileStream(config.SystemConfig.Dirs.Logs.GetLocalFilePath(fileName), FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
         var newLogStream = new MemoryStream();
         if (!anonymous)
