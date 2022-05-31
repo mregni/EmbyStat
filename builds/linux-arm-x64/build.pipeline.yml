@@ -14,7 +14,7 @@ jobs:
     inputs:
       targetType: filePath
       filePath: $(paths.script)/appsettings.ps1
-      arguments: '-updatePackage $(package.linux-arm-64) -rollbarKey $(rollbar.key) -rollbarEnv $(rollbar.env) -version $(GitVersion.SemVer)'
+      arguments: '-updatePackage $(package.linux-arm-x64) -rollbarKey $(rollbar.key) -rollbarEnv $(rollbar.env) -version $(GitVersion.SemVer)'
   
   - task: DotNetCoreCLI@2
     displayName: 'Make dotnet linux-ARM-x64 package'
