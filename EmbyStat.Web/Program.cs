@@ -65,7 +65,7 @@ public class Program
                 default:
                     break;
             }
-         
+
             return 0;
         }
         catch (Exception ex)
@@ -101,7 +101,7 @@ public class Program
 
         return null;
     }
-    
+
     private static ApplicationModes GetApplicationMode()
     {
         // if (OperatingSystem.IsWindows() && startupContext.RegisterUrl)
@@ -142,9 +142,9 @@ public class Program
     {
         CreateFolder("config");
         GenerateDefaultConfiguration();
-        
+
         var memoryConfig = options.ToKeyValuePairs();
-        
+
         var configurationRoot = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile(Path.Combine("config", "config.json"), false, true)
@@ -152,10 +152,10 @@ public class Program
             .Build();
 
         var config = configurationRoot.Get<Config>();
-        
+
         CreateFolder(config.SystemConfig.Dirs.Logs);
         CreateFolder(config.SystemConfig.Dirs.Data);
-        
+
         SetupLogger(config.SystemConfig.Dirs.Logs, options.LogLevel ?? 2);
         LogStartupParameters(config, options.LogLevel ?? 2, options.RunAsService ?? false);
 
@@ -164,7 +164,7 @@ public class Program
             Log.Logger.Debug("Generating JWT key");
             config.SystemConfig.Jwt.Key = KeyGenerator.GetUniqueKey(120);
         }
-        
+
         var bindAddress = config.UserConfig.Hosting.Url;
         var port = config.UserConfig.Hosting.Port;
         var sslPort = config.UserConfig.Hosting.SslPort;
@@ -172,13 +172,13 @@ public class Program
         var sslCertPath = config.UserConfig.Hosting.SslCertPath;
         var sslCertPassword = config.UserConfig.Hosting.SslCertPassword;
 
-        var urls = new List<string> { BuildUrl("http", bindAddress, port) };
+        var urls = new List<string> {BuildUrl("http", bindAddress, port)};
 
         if (sslEnalbed && !string.IsNullOrWhiteSpace(sslCertPath))
         {
             urls.Add(BuildUrl("https", bindAddress, sslPort));
         }
-        
+
         return Host
             .CreateDefaultBuilder()
             .ConfigureWebHostDefaults(webBuilder =>
@@ -192,7 +192,8 @@ public class Program
                         {
                             options.ConfigureHttpsDefaults(configureOptions =>
                             {
-                                configureOptions.ServerCertificate = ValidateSslCertificate(sslCertPath, sslCertPassword);
+                                configureOptions.ServerCertificate =
+                                    ValidateSslCertificate(sslCertPath, sslCertPassword);
                             });
                         }
                     })
@@ -225,7 +226,7 @@ public class Program
 
     private static void GenerateDefaultConfiguration()
     {
-        var path = Path.Combine(Directory.GetCurrentDirectory(),"config", "config.json");
+        var path = Path.Combine(Directory.GetCurrentDirectory(), "config", "config.json");
         if (!File.Exists(path))
         {
             using var writer = File.CreateText(path);
@@ -240,7 +241,7 @@ public class Program
             writer.Write(newJson);
         }
     }
-    
+
     private static X509Certificate2 ValidateSslCertificate(string cert, string password)
     {
         X509Certificate2 certificate;
@@ -261,7 +262,7 @@ public class Program
 
         return certificate;
     }
-    
+
     private static string BuildUrl(string scheme, string bindAddress, int port)
     {
         return $"{scheme}://{bindAddress}:{port}";
@@ -272,25 +273,26 @@ public class Program
         var levelSwitch = new LoggingLevelSwitch();
         levelSwitch.MinimumLevel = logLevel == 1 ? LogEventLevel.Debug : LogEventLevel.Information;
         var minimumLevel = logLevel == 1 ? LogEventLevel.Debug : LogEventLevel.Warning;
-        var logFormat = "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{SourceContext}]  [{Level:u3}] {Message:lj}{NewLine}{Exception}";
+        var logFormat =
+            "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{SourceContext}]  [{Level:u3}] {Message:lj}{NewLine}{Exception}";
         var fullLogPath = Path.Combine(logPath, "log.txt");
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.ControlledBy(levelSwitch)
             .WriteTo.Console(outputTemplate: logFormat)
-            .WriteTo.File(fullLogPath, rollingInterval: RollingInterval.Day, outputTemplate: logFormat)
-            .MinimumLevel.Override("Hangfire.BackgroundJobServer", LogEventLevel.Warning) 
-            .MinimumLevel.Override("Hangfire.Server.BackgroundServerProcess", LogEventLevel.Warning) 
-            .MinimumLevel.Override("Hangfire.Server.ServerHeartbeatProcess", LogEventLevel.Warning) 
+            .WriteTo.File(fullLogPath, rollingInterval: RollingInterval.Day, outputTemplate: logFormat, shared: true)
+            .MinimumLevel.Override("Hangfire.BackgroundJobServer", LogEventLevel.Warning)
+            .MinimumLevel.Override("Hangfire.Server.BackgroundServerProcess", LogEventLevel.Warning)
+            .MinimumLevel.Override("Hangfire.Server.ServerHeartbeatProcess", LogEventLevel.Warning)
             .MinimumLevel.Override("Hangfire.Processing.BackgroundExecution", LogEventLevel.Warning)
-            .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Infrastructure", LogEventLevel.Warning) 
-            .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Model", LogEventLevel.Warning) 
+            .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Infrastructure", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Model", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Connection", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.EntityFrameworkCore.ChangeTracking", LogEventLevel.Warning)
-            .MinimumLevel.Override("Microsoft.AspNetCore", minimumLevel) 
+            .MinimumLevel.Override("Microsoft.AspNetCore", minimumLevel)
             .MinimumLevel.Override("Microsoft.EntityFrameworkCore", minimumLevel)
-            .MinimumLevel.Override("Microsoft.AspNetCore.SpaServices", LogEventLevel.Warning) 
-            .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning) 
-            .MinimumLevel.Override("Microsoft.AspNetCore.StaticFiles", LogEventLevel.Warning) 
+            .MinimumLevel.Override("Microsoft.AspNetCore.SpaServices", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.AspNetCore.StaticFiles", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.DataProtection", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.SignalR", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.Server.Kestrel", LogEventLevel.Warning)
@@ -301,7 +303,6 @@ public class Program
             .Enrich.FromLogContext()
             .Enrich.WithExceptionDetails()
             .CreateLogger();
-        
     }
 
     private static void LogStartupParameters(Config config, int logLevel, bool service)
