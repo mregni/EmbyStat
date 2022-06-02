@@ -288,10 +288,13 @@ LIMIT {count}";
 
     public async Task SetLibraryAsSynced(string[] libraryIds, LibraryType type)
     {
-        var libraries = await _context.Libraries.Where(x => x.Type == type).ToListAsync();
+        var libraries = await _context.Libraries
+            .Where(x => x.Type == type)
+            .ToListAsync();
+        
         foreach (var library in libraries)
         {
-            library.Sync = library.Type == type;
+            library.Sync = libraryIds.Contains(library.Id);
         }
 
         await _context.SaveChangesAsync();
