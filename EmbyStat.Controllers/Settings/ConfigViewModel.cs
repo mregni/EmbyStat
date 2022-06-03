@@ -30,7 +30,7 @@ public class SystemConfigViewModel
     public string AppName { get; set; }
     public Guid? Id { get; set; }
     public bool UpdateInProgress { get; set; }
-    public bool UpdatesDisabled { get; set; }
+    public bool CanUpdate { get; set; }
     public long Migration { get; set; }
     public int UpdateTrain { get; set; }
     public RollbarViewModel Rollbar { get; set; }
