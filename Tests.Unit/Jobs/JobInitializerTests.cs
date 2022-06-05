@@ -47,7 +47,7 @@ public class JobInitializerTests
     [Fact]
     public void Setup_Should_Enable_All_Jobs()
     {
-        _jobInitializer.Setup(false);
+        _jobInitializer.Setup(true);
         _recurringJobManagerMock.Verify(
             x => x.AddOrUpdate(Constants.JobIds.CheckUpdateId.ToString(), It.IsAny<Hangfire.Common.Job>(),
                 "0 2 * * 1", It.IsAny<RecurringJobOptions>()), Times.Once());
@@ -68,7 +68,7 @@ public class JobInitializerTests
     [Fact]
     public void Setup_Should_Enable_All_Jobs_Excluding_Update_Job()
     {
-        _jobInitializer.Setup(true);
+        _jobInitializer.Setup(false);
         _recurringJobManagerMock.Verify(
             x => x.AddOrUpdate(Constants.JobIds.CheckUpdateId.ToString(), It.IsAny<Hangfire.Common.Job>(),
                 "0 2 * * 1", It.IsAny<RecurringJobOptions>()), Times.Never());
@@ -125,7 +125,7 @@ public class JobInitializerTests
     [Fact]
     public void UpdateTrigger_Should_Update_CheckUpdate_Job_Trigger()
     {
-        _jobInitializer.UpdateTrigger(Constants.JobIds.CheckUpdateId, "0 3 * * 1", false);
+        _jobInitializer.UpdateTrigger(Constants.JobIds.CheckUpdateId, "0 3 * * 1", true);
         _recurringJobManagerMock.Verify(
             x => x.AddOrUpdate(Constants.JobIds.CheckUpdateId.ToString(), It.IsAny<Hangfire.Common.Job>(),
                 "0 3 * * 1", It.IsAny<RecurringJobOptions>()), Times.Once());
@@ -134,7 +134,7 @@ public class JobInitializerTests
     [Fact]
     public void UpdateTrigger_Should_Not_Update_CheckUpdate_Job_Trigger()
     {
-        _jobInitializer.UpdateTrigger(Constants.JobIds.CheckUpdateId, "0 3 * * 1", true);
+        _jobInitializer.UpdateTrigger(Constants.JobIds.CheckUpdateId, "0 3 * * 1", false);
         _recurringJobManagerMock.Verify(
             x => x.AddOrUpdate(Constants.JobIds.CheckUpdateId.ToString(), It.IsAny<Hangfire.Common.Job>(),
                 "0 3 * * 1", It.IsAny<RecurringJobOptions>()), Times.Never());

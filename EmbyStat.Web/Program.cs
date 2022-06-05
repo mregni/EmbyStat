@@ -140,18 +140,19 @@ public class Program
 
     private static IHost BuildConsoleHost(StartupOptions options)
     {
-        CreateFolder("config");
-        GenerateDefaultConfiguration();
-
         var memoryConfig = options.ToKeyValuePairs();
+        var dicConfig = memoryConfig.ToDictionary(x => x.Key, x => x.Value);
+        GenerateDefaultConfiguration(dicConfig["SystemConfig:Dirs:Config"]);
 
         var configurationRoot = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(Path.Combine("config", "config.json"), false, true)
+            .AddJsonFile(Path.Combine(dicConfig["SystemConfig:Dirs:Config"], "config.json"), false, true)
             .AddInMemoryCollection(memoryConfig)
             .Build();
 
         var config = configurationRoot.Get<Config>();
+        
+        //Dirs in options object worden hier genegeerd!
 
         CreateFolder(config.SystemConfig.Dirs.Logs);
         CreateFolder(config.SystemConfig.Dirs.Data);
@@ -224,9 +225,10 @@ public class Program
         }
     }
 
-    private static void GenerateDefaultConfiguration()
+    private static void GenerateDefaultConfiguration(string configDir)
     {
-        var path = Path.Combine(Directory.GetCurrentDirectory(), "config", "config.json");
+        CreateFolder(configDir);
+        var path = Path.Combine(configDir, "config.json");
         if (!File.Exists(path))
         {
             using var writer = File.CreateText(path);
@@ -319,10 +321,10 @@ public class Program
         Log.Information($"\tSSL Port:\t{config.UserConfig.Hosting.SslPort}");
         Log.Information($"\tSSL Enabled:\t{config.UserConfig.Hosting.SslEnabled}");
         Log.Information($"\tURLs:\t\t{config.UserConfig.Hosting.Url}");
-        Log.Information($"\tConfig dir:\tconfig");
+        Log.Information($"\tConfig dir:\t{config.SystemConfig.Dirs.Config}");
         Log.Information($"\tLog dir:\t{config.SystemConfig.Dirs.Logs}");
         Log.Information($"\tData dir:\t{config.SystemConfig.Dirs.Data}");
-        Log.Information($"\tCan update:\t{!config.SystemConfig.UpdatesDisabled}");
+        Log.Information($"\tCan update:\t{config.SystemConfig.CanUpdate}");
         Log.Information($"\tAs service:\t{service}");
         Log.Information("--------------------------------------------------------------------");
     }
