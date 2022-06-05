@@ -1,8 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {useTranslation} from 'react-i18next';
 import {Cell, Label, Pie, PieChart, ResponsiveContainer, Sector} from 'recharts';
 
-import {darken, Paper, Stack, Typography, useTheme} from '@mui/material';
+import {darken, Paper, Stack, Typography} from '@mui/material';
 
 import i18n from '../../../i18n';
 import {theme} from '../../../styles/theme';
@@ -20,7 +19,7 @@ interface ActiveShapeProps {
   startAngle: number;
   endAngle: number;
   fill: string;
-  payload: {name: string};
+  payload: {label: string};
   percent: number;
   value: number;
 }
@@ -62,7 +61,9 @@ const renderActiveShape = (props: ActiveShapeProps) => {
       />
       <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
       <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill={color}>{`${value}`}</text>
+      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill={color}>
+        {`${value} ${payload.label}`}
+      </text>
       <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={15} fontSize={12} textAnchor={textAnchor} fill={colorDark}>
         {`${(percent * 100).toFixed(2)}%`}
       </text>
@@ -77,8 +78,6 @@ interface Props {
 
 export function EsPieGraph(props: Props) {
   const {chart, height = 250} = props;
-  const theme = useTheme();
-  const {t} = useTranslation();
   const [data, setData] = useState<SimpleData[]>(null!);
   const [activeIndex, setActiveIndex] = useState(0);
   const generatePalette = usePalette();
