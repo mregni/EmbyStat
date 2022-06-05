@@ -188,7 +188,7 @@ public class JobControllerTests
 
         _options.Verify(x => x.Value, Times.Once);
         _jobServiceMock.Verify(x => x.UpdateTrigger(jobOne.Id, "* * * 1 0"), Times.Once);
-        _jobInitializerMock.Verify(x => x.UpdateTrigger(jobOne.Id, "* * * 1 0", false));
+        _jobInitializerMock.Verify(x => x.UpdateTrigger(jobOne.Id, "* * * 1 0", true));
             
         _options.Verify(x => x.Value, Times.Once);
         _options.VerifyNoOtherCalls();
