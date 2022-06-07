@@ -21,7 +21,7 @@ public class ConfigurationService : IConfigurationService
 
     private async Task WriteConfiguration(Config config)
     {
-        var path = Path.Combine("config", "config.json");
+        var path = Path.Combine(config.SystemConfig.Dirs.Config, "config.json");
         if (!File.Exists(path))
         {
             throw new InvalidConfigFileException($"Config file cannot be found at {path}");

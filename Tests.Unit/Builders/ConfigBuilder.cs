@@ -21,7 +21,7 @@ public class ConfigBuilder
                 UpdateTrain = UpdateTrain.Beta,
                 Migration = 0,
                 ProcessName = "EmbyStat",
-                UpdatesDisabled = false,
+                CanUpdate = true,
                 Jwt = new Jwt
                 {
                     Audience = "jwt-audience",
@@ -136,7 +136,7 @@ public class ConfigBuilder
 
     public ConfigBuilder WithAutoUpdate(bool state)
     {
-        _config.SystemConfig.UpdatesDisabled = state;
+        _config.SystemConfig.CanUpdate = state;
         return this;
     }
 

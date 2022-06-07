@@ -30,7 +30,7 @@ public class JobControllerTests
     private Mock<IOptions<Config>> _options;
     private Mock<IHubHelper> _jobHubHelperMock;
 
-    private JobController CreateController(bool disableUpdateJob, params Job[] jobs)
+    private JobController CreateController(bool canUpdate, params Job[] jobs)
     {
         var profiles = new MapProfiles();
         var configuration = new MapperConfiguration(cfg => cfg.AddProfile(profiles));
@@ -56,9 +56,9 @@ public class JobControllerTests
             .Setup(x => x.Value)
             .Returns(new Config
             {
-                SystemConfig = new SystemConfig()
+                SystemConfig = new SystemConfig
                 {
-                    UpdatesDisabled = disableUpdateJob
+                    CanUpdate = canUpdate
                 }
             });
 
@@ -71,7 +71,7 @@ public class JobControllerTests
     {
         var jobOne = new Job {Id = Guid.NewGuid()};
         var jobTwo = new Job {Id = Guid.NewGuid()};
-        var controller = CreateController(false, jobOne, jobTwo);
+        var controller = CreateController(true, jobOne, jobTwo);
 
         var result = controller.GetAll();
         result.Should().BeOfType<OkObjectResult>();
@@ -101,7 +101,7 @@ public class JobControllerTests
         var jobOne = new Job {Id = Guid.NewGuid()};
         var jobTwo = new Job {Id = Guid.NewGuid()};
         var jobThree = new Job {Id = Constants.JobIds.CheckUpdateId};
-        var controller = CreateController(true, jobOne, jobTwo, jobThree);
+        var controller = CreateController(false, jobOne, jobTwo, jobThree);
 
         var result = controller.GetAll();
         result.Should().BeOfType<OkObjectResult>();
@@ -131,7 +131,7 @@ public class JobControllerTests
     {
         var jobOne = new Job {Id = Guid.NewGuid()};
         var jobTwo = new Job {Id = Guid.NewGuid()};
-        var controller = CreateController(true, jobOne, jobTwo);
+        var controller = CreateController(false, jobOne, jobTwo);
 
         var result = controller.Get(jobTwo.Id);
         var jobObject = result as OkObjectResult;
@@ -156,7 +156,7 @@ public class JobControllerTests
     {
         var jobOne = new Job {Id = Guid.NewGuid()};
         var jobTwo = new Job {Id = Guid.NewGuid()};
-        var controller = CreateController(true, jobOne, jobTwo);
+        var controller = CreateController(false, jobOne, jobTwo);
 
         var randomId = Guid.NewGuid();
         var result = controller.Get(randomId);
@@ -178,7 +178,7 @@ public class JobControllerTests
     {
         var jobOne = new Job {Id = Guid.NewGuid(), Trigger = "* * * * *"};
         var jobTwo = new Job {Id = Guid.NewGuid(), Trigger = "* * * * *"};
-        var controller = CreateController(false, jobOne, jobTwo);
+        var controller = CreateController(true, jobOne, jobTwo);
 
         var result = await controller.UpdateTrigger(jobOne.Id, "* * * 1 0");
 
@@ -188,7 +188,7 @@ public class JobControllerTests
 
         _options.Verify(x => x.Value, Times.Once);
         _jobServiceMock.Verify(x => x.UpdateTrigger(jobOne.Id, "* * * 1 0"), Times.Once);
-        _jobInitializerMock.Verify(x => x.UpdateTrigger(jobOne.Id, "* * * 1 0", false));
+        _jobInitializerMock.Verify(x => x.UpdateTrigger(jobOne.Id, "* * * 1 0", true));
             
         _options.Verify(x => x.Value, Times.Once);
         _options.VerifyNoOtherCalls();
@@ -201,7 +201,7 @@ public class JobControllerTests
     {
         var jobOne = new Job {Id = Guid.NewGuid(), Trigger = "* * * * *"};
         var jobTwo = new Job {Id = Guid.NewGuid(), Trigger = "* * * * *"};
-        var controller = CreateController(false, jobOne, jobTwo);
+        var controller = CreateController(true, jobOne, jobTwo);
 
         var randomId = Guid.NewGuid();
         var result = await controller.UpdateTrigger(randomId, "* * * 1 0");
@@ -230,7 +230,7 @@ public class JobControllerTests
 
         var jobOne = new Job {Id = Constants.JobIds.ShowSyncId, Trigger = "* * * * *"};
         var jobTwo = new Job {Id = Guid.NewGuid(), Trigger = "* * * * *"};
-        var controller = CreateController(false, jobOne, jobTwo);
+        var controller = CreateController(true, jobOne, jobTwo);
 
         var result = await controller.FireJob(jobOne.Id);
 
@@ -254,7 +254,7 @@ public class JobControllerTests
     {
         var jobOne = new Job {Id = Guid.NewGuid(), Trigger = "* * * * *"};
         var jobTwo = new Job {Id = Guid.NewGuid(), Trigger = "* * * * *"};
-        var controller = CreateController(false, jobOne, jobTwo);
+        var controller = CreateController(true, jobOne, jobTwo);
 
         var randomId = Guid.NewGuid();
         var result = await controller.FireJob(randomId);
