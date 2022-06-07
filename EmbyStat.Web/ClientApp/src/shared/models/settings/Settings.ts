@@ -23,7 +23,7 @@ export interface SystemConfig {
     appName: string;
     id: string | null;
     updateInProgress: boolean;
-    updatesDisabled: boolean;
+    canUpdate: boolean;
     migration: number;
     updateTrain: number;
     rollbar: Rollbar;

@@ -14,8 +14,6 @@ public static class DefaultConfig
             Dirs = new Dirs
             {
                 TempUpdate = "updateFiles",
-                Data = "data",
-                Logs = "logs",
                 Updater = "updater"
             },
             Jwt = new Jwt
@@ -32,7 +30,7 @@ public static class DefaultConfig
             Id = Guid.NewGuid(),
             Migration = 0,
             UpdateInProgress = false,
-            UpdatesDisabled = false,
+            CanUpdate = true,
             Rollbar = new Configuration.Rollbar(),
             Updater = new Updater
             {

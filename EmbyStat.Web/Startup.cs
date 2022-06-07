@@ -313,7 +313,7 @@ public class Startup
             SetupDirectories(config);
             accountService?.CreateRoles();
             SetMediaServerClientConfiguration(configurationService, clientStrategy);
-            jobInitializer?.Setup(config.SystemConfig.UpdatesDisabled);
+            jobInitializer?.Setup(config.SystemConfig.CanUpdate);
         }
         
         RemoveVersionFiles();
