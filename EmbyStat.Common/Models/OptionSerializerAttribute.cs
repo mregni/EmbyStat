@@ -27,12 +27,11 @@ public class OptionSerializerAttribute : Attribute
         if (NeedsCurrentDirPrefix && value != null)
         {
             var path = value.Cast<string>();
-            if (path.StartsWith('/'))
+            if (!path.StartsWith('/'))
             {
-                path = path.Remove(0, 1);
+                path = Path.Combine(Directory.GetCurrentDirectory(), path);
             }
             
-            path = Path.Combine(Directory.GetCurrentDirectory(), path);
             return new KeyValuePair<string, string>(Key, path);
         }
         
