@@ -299,11 +299,9 @@ __pycache__/
 **/updateFiles/**
 
 usersettings.json
-**/Embystat.Web/config/**
 **/issues.json
 **/coverage/**
 **/ClientApp/build/**
-EmbyStat.Web/ClientApp/.eslintcache
 **/logs
 
 *.db-shm
@@ -311,7 +309,10 @@ EmbyStat.Web/ClientApp/.eslintcache
 *.db-wal
 
 EmbyStat.Web/ClientApp/junit.xml
-
+EmbyStat.Web/ClientApp/.eslintcache
 EmbyStat.Web/ClientApp/report.json
-
 EmbyStat.Web/ClientApp/test-report.xml
+
+EmbyStat.Hosts.Cmd/config/
+EmbyStat.Hosts.Cmd/data/
+EmbyStat.Hosts.Cmd/logs/

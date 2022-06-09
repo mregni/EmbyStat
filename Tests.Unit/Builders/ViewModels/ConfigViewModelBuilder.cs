@@ -1,6 +1,5 @@
 ﻿using EmbyStat.Configuration;
 using EmbyStat.Controllers.Settings;
-using FluentAssertions;
 
 namespace Tests.Unit.Builders.ViewModels;
 

@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
-using EmbyStat.Configuration;
 using EmbyStat.Configuration.Interfaces;
 using EmbyStat.Core.Filters.Interfaces;
 using EmbyStat.Core.Genres.Interfaces;

@@ -1,9 +1,8 @@
-﻿using System;
-using EmbyStat.Common.Enums;
+﻿using EmbyStat.Common.Enums;
 using EmbyStat.Common.Generators;
 using EmbyStat.Configuration;
 
-namespace EmbyStat.Web;
+namespace EmbyStat.Hosts.Cmd;
 
 public static class DefaultConfig
 {

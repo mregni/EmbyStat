@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Configuration;
 using EmbyStat.Configuration.Interfaces;
@@ -15,7 +14,6 @@ using Moq;
 using Tests.Unit.Builders;
 using Tests.Unit.Builders.ViewModels;
 using Xunit;
-using Rollbar = EmbyStat.Configuration.Rollbar;
 
 namespace Tests.Unit.Controllers;
 

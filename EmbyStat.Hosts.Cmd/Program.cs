@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -11,11 +7,7 @@ using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Generators;
 using EmbyStat.Common.Models;
 using EmbyStat.Configuration;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.WindowsServices;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Serilog;
@@ -26,7 +18,7 @@ using Constants = EmbyStat.Common.Constants;
 
 // ReSharper disable All
 
-namespace EmbyStat.Web;
+namespace EmbyStat.Hosts.Cmd;
 
 public class Program
 {
@@ -51,9 +43,14 @@ public class Program
                 return 0;
             }
 
-            StartupOptions options = null;
+            StartupOptions? options = null;
             parseResult.MapResult(opt => options = opt, NotParedOptions);
             options = CheckEnvironmentVariables(options);
+
+            if (options == null)
+            {
+                return 1;
+            }
 
             var mode = GetApplicationMode();
             switch (mode)
@@ -82,7 +79,7 @@ public class Program
         }
     }
 
-    private static StartupOptions NotParedOptions(IEnumerable<Error> errs)
+    private static StartupOptions? NotParedOptions(IEnumerable<Error> errs)
     {
         var errors = errs.ToList();
         if (errors.Any(x => x is HelpRequestedError))
@@ -138,7 +135,7 @@ public class Program
         return ApplicationModes.Interactive;
     }
 
-    private static IHost BuildConsoleHost(StartupOptions options)
+    private static IHost BuildConsoleHost(StartupOptions? options)
     {
         var memoryConfig = options.ToKeyValuePairs();
         var dicConfig = memoryConfig.ToDictionary(x => x.Key, x => x.Value);
@@ -151,7 +148,7 @@ public class Program
             .Build();
 
         var config = configurationRoot.Get<Config>();
-        
+
         //Dirs in options object worden hier genegeerd!
 
         CreateFolder(config.SystemConfig.Dirs.Logs);
@@ -346,8 +343,13 @@ public class Program
         return str;
     }
 
-    private static StartupOptions CheckEnvironmentVariables(StartupOptions options)
+    private static StartupOptions? CheckEnvironmentVariables(StartupOptions? options)
     {
+        if (options == null)
+        {
+            return null;
+        }
+
         var portStr = Environment.GetEnvironmentVariable("EMBYSTAT_PORT");
         if (portStr != null && int.TryParse(portStr, out var port))
         {

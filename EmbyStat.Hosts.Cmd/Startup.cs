@@ -1,18 +1,11 @@
 using EmbyStat.Jobs;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Rollbar;
 using Rollbar.NetCore.AspNet;
-using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Api;
 using EmbyStat.Common;
@@ -23,7 +16,6 @@ using EmbyStat.Configuration;
 using EmbyStat.Configuration.Interfaces;
 using EmbyStat.Controllers;
 using EmbyStat.Controllers.Middleware;
-using EmbyStat.Core.Account;
 using EmbyStat.Core.Account.Interfaces;
 using EmbyStat.Core.DataStore;
 using EmbyStat.Core.Hubs;
@@ -41,14 +33,12 @@ using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Refit;
 using Rollbar.DTOs;
 
-namespace EmbyStat.Web;
+namespace EmbyStat.Hosts.Cmd;
 
 public class Startup
 {
@@ -282,7 +272,7 @@ public class Startup
         {
             if (env.IsDevelopment())
             {
-                spa.Options.SourcePath = "ClientApp";
+                spa.Options.SourcePath = Path.Combine("..", "EmbyStat.Web", "ClientApp");
                 spa.UseReactDevelopmentServer("start");
             }
             else

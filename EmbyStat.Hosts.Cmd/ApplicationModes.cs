@@ -1,4 +1,4 @@
-﻿namespace EmbyStat.Web;
+﻿namespace EmbyStat.Hosts.Cmd;
 
 public enum ApplicationModes
 {
