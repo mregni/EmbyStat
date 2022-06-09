@@ -218,10 +218,9 @@ public class Program
 
     private static void CreateFolder(string folder)
     {
-        var dir = Path.Combine(Directory.GetCurrentDirectory(), folder);
-        if (!Directory.Exists(dir))
+        if (!Directory.Exists(folder))
         {
-            Directory.CreateDirectory(dir);
+            Directory.CreateDirectory(folder);
         }
     }
 
