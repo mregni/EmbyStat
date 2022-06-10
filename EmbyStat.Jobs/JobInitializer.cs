@@ -30,16 +30,16 @@ public class JobInitializer : IJobInitializer
         _movieSyncJob = movieSyncJob;
     }
 
-    public void Setup(bool disableUpdates)
+    public void Setup(bool canUpdate)
     {
         var jobs = _jobService.GetAll();
         foreach (var job in jobs)
         {
-            UpdateTrigger(job.Id, job.Trigger, disableUpdates);
+            UpdateTrigger(job.Id, job.Trigger, canUpdate);
         }
     }
 
-    public void UpdateTrigger(Guid id, string trigger, bool disableUpdates)
+    public void UpdateTrigger(Guid id, string trigger, bool canUpdate)
     {
         if (id == Constants.JobIds.ShowSyncId)
         {
@@ -49,7 +49,7 @@ public class JobInitializer : IJobInitializer
         {
             _recurringJobManager.AddOrUpdate(id.ToString(), () => _movieSyncJob.Execute(), trigger);
         }
-        else if (id == Constants.JobIds.CheckUpdateId && !disableUpdates)
+        else if (id == Constants.JobIds.CheckUpdateId && canUpdate)
         {
             _recurringJobManager.AddOrUpdate(id.ToString(), () => _checkUpdateJob.Execute(), trigger);
         }

@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -11,11 +7,7 @@ using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Generators;
 using EmbyStat.Common.Models;
 using EmbyStat.Configuration;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.WindowsServices;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Serilog;
@@ -26,7 +18,7 @@ using Constants = EmbyStat.Common.Constants;
 
 // ReSharper disable All
 
-namespace EmbyStat.Web;
+namespace EmbyStat.Hosts.Cmd;
 
 public class Program
 {
@@ -51,9 +43,14 @@ public class Program
                 return 0;
             }
 
-            StartupOptions options = null;
+            StartupOptions? options = null;
             parseResult.MapResult(opt => options = opt, NotParedOptions);
             options = CheckEnvironmentVariables(options);
+
+            if (options == null)
+            {
+                return 1;
+            }
 
             var mode = GetApplicationMode();
             switch (mode)
@@ -82,7 +79,7 @@ public class Program
         }
     }
 
-    private static StartupOptions NotParedOptions(IEnumerable<Error> errs)
+    private static StartupOptions? NotParedOptions(IEnumerable<Error> errs)
     {
         var errors = errs.ToList();
         if (errors.Any(x => x is HelpRequestedError))
@@ -138,20 +135,21 @@ public class Program
         return ApplicationModes.Interactive;
     }
 
-    private static IHost BuildConsoleHost(StartupOptions options)
+    private static IHost BuildConsoleHost(StartupOptions? options)
     {
-        CreateFolder("config");
-        GenerateDefaultConfiguration();
-
         var memoryConfig = options.ToKeyValuePairs();
+        var dicConfig = memoryConfig.ToDictionary(x => x.Key, x => x.Value);
+        GenerateDefaultConfiguration(dicConfig["SystemConfig:Dirs:Config"]);
 
         var configurationRoot = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(Path.Combine("config", "config.json"), false, true)
+            .AddJsonFile(Path.Combine(dicConfig["SystemConfig:Dirs:Config"], "config.json"), false, true)
             .AddInMemoryCollection(memoryConfig)
             .Build();
 
         var config = configurationRoot.Get<Config>();
+
+        //Dirs in options object worden hier genegeerd!
 
         CreateFolder(config.SystemConfig.Dirs.Logs);
         CreateFolder(config.SystemConfig.Dirs.Data);
@@ -217,16 +215,16 @@ public class Program
 
     private static void CreateFolder(string folder)
     {
-        var dir = Path.Combine(Directory.GetCurrentDirectory(), folder);
-        if (!Directory.Exists(dir))
+        if (!Directory.Exists(folder))
         {
-            Directory.CreateDirectory(dir);
+            Directory.CreateDirectory(folder);
         }
     }
 
-    private static void GenerateDefaultConfiguration()
+    private static void GenerateDefaultConfiguration(string configDir)
     {
-        var path = Path.Combine(Directory.GetCurrentDirectory(), "config", "config.json");
+        CreateFolder(configDir);
+        var path = Path.Combine(configDir, "config.json");
         if (!File.Exists(path))
         {
             using var writer = File.CreateText(path);
@@ -319,10 +317,10 @@ public class Program
         Log.Information($"\tSSL Port:\t{config.UserConfig.Hosting.SslPort}");
         Log.Information($"\tSSL Enabled:\t{config.UserConfig.Hosting.SslEnabled}");
         Log.Information($"\tURLs:\t\t{config.UserConfig.Hosting.Url}");
-        Log.Information($"\tConfig dir:\tconfig");
+        Log.Information($"\tConfig dir:\t{config.SystemConfig.Dirs.Config}");
         Log.Information($"\tLog dir:\t{config.SystemConfig.Dirs.Logs}");
         Log.Information($"\tData dir:\t{config.SystemConfig.Dirs.Data}");
-        Log.Information($"\tCan update:\t{!config.SystemConfig.UpdatesDisabled}");
+        Log.Information($"\tCan update:\t{config.SystemConfig.CanUpdate}");
         Log.Information($"\tAs service:\t{service}");
         Log.Information("--------------------------------------------------------------------");
     }
@@ -345,8 +343,13 @@ public class Program
         return str;
     }
 
-    private static StartupOptions CheckEnvironmentVariables(StartupOptions options)
+    private static StartupOptions? CheckEnvironmentVariables(StartupOptions? options)
     {
+        if (options == null)
+        {
+            return null;
+        }
+
         var portStr = Environment.GetEnvironmentVariable("EMBYSTAT_PORT");
         if (portStr != null && int.TryParse(portStr, out var port))
         {

@@ -11,20 +11,20 @@ public class StartupOptions
     [OptionSerializer("Hosting:Port")]
     public int? Port { get; set; }
 
-    [Option('n', "disable-updates", Required = false, Default = null, HelpText = "Disable all update flow and pages on the server.")]
-    [OptionSerializer("UpdatesDisabled")]
+    [Option('n', "enable-updates", Required = false, Default = null, HelpText = "Disable all update flow and pages on the server.")]
+    [OptionSerializer("SystemConfig:CanUpdate")]
     public bool? NoUpdates { get; set; }
 
-    [Option('d', "data-dir", Required = false, Default = "", HelpText = "Folder where database is stored, default is <current-directory>")]
-    [OptionSerializer("Dirs:Data")]
+    [Option('d', "data-dir", Required = false, Default = "data", HelpText = "Folder where database is stored, default is /data")]
+    [OptionSerializer("SystemConfig:Dirs:Data", true)]
     public string DataDir { get; set; }
 
-    [Option('l', "log-dir", Required = false, Default = "", HelpText = "Folder where log files are stored, default is <current-directory>/logs")]
-    [OptionSerializer("Dirs:Logs")]
+    [Option('l', "log-dir", Required = false, Default = "logs", HelpText = "Folder where log files are stored, default is /logs")]
+    [OptionSerializer("SystemConfig:Dirs:Logs", true)]
     public string LogDir { get; set; }
 
-    [Option('c', "config-dir", Required = false, Default = "", HelpText = "Folder where config files are stored, default is <current-directory>")]
-    [OptionSerializer("Dirs:Config")]
+    [Option('c', "config-dir", Required = false, Default = "config", HelpText = "Folder where config files are stored, default is /config")]
+    [OptionSerializer("SystemConfig:Dirs:Config", true)]
     public string ConfigDir { get; set; }
 
     [Option('g', "log-level", Required = false, Default = null, HelpText = "Set the proper log level\n1: Debug\n2: Information")]

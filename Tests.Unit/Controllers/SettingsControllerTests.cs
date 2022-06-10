@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Configuration;
 using EmbyStat.Configuration.Interfaces;
@@ -15,7 +14,6 @@ using Moq;
 using Tests.Unit.Builders;
 using Tests.Unit.Builders.ViewModels;
 using Xunit;
-using Rollbar = EmbyStat.Configuration.Rollbar;
 
 namespace Tests.Unit.Controllers;
 
@@ -74,7 +72,7 @@ public class SettingsControllerTests : IDisposable
         settings.SystemConfig.Id.Should().Be(_config.SystemConfig.Id);
         settings.UserConfig.KeepLogsCount.Should().Be(_config.UserConfig.KeepLogsCount);
         settings.UserConfig.Language.Should().Be(_config.UserConfig.Language);
-        settings.SystemConfig.UpdatesDisabled.Should().Be(_config.SystemConfig.UpdatesDisabled);
+        settings.SystemConfig.CanUpdate.Should().Be(_config.SystemConfig.CanUpdate);
         settings.UserConfig.ToShortMovie.Should().Be(_config.UserConfig.ToShortMovie);
         settings.UserConfig.ToShortMovieEnabled.Should().Be(_config.UserConfig.ToShortMovieEnabled);
         settings.SystemConfig.UpdateInProgress.Should().Be(_config.SystemConfig.UpdateInProgress);

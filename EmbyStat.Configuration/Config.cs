@@ -35,7 +35,7 @@ public class SystemConfig
     public string AppName { get; set; }
     public Guid? Id { get; set; }
     public bool UpdateInProgress { get; set; }
-    public bool UpdatesDisabled { get; set; }
+    public bool CanUpdate { get; set; }
     public long Migration { get; set; }
     public UpdateTrain UpdateTrain { get; set; }
     public Updater Updater { get; set; }
@@ -98,6 +98,7 @@ public class Dirs
     public string Updater { get; set; }
     public string Logs { get; set; }
     public string Data { get; set; }
+    public string Config { get; set; }
 }
 
 public class Jwt

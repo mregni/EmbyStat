@@ -1,9 +1,8 @@
-﻿using System;
-using EmbyStat.Common.Enums;
+﻿using EmbyStat.Common.Enums;
 using EmbyStat.Common.Generators;
 using EmbyStat.Configuration;
 
-namespace EmbyStat.Web;
+namespace EmbyStat.Hosts.Cmd;
 
 public static class DefaultConfig
 {
@@ -14,8 +13,6 @@ public static class DefaultConfig
             Dirs = new Dirs
             {
                 TempUpdate = "updateFiles",
-                Data = "data",
-                Logs = "logs",
                 Updater = "updater"
             },
             Jwt = new Jwt
@@ -32,7 +29,7 @@ public static class DefaultConfig
             Id = Guid.NewGuid(),
             Migration = 0,
             UpdateInProgress = false,
-            UpdatesDisabled = false,
+            CanUpdate = true,
             Rollbar = new Configuration.Rollbar(),
             Updater = new Updater
             {

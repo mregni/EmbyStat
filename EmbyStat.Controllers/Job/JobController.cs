@@ -41,7 +41,7 @@ public class JobController : Controller
     {
         var jobs = _jobService.GetAll();
 
-        if (_config.SystemConfig.UpdatesDisabled)
+        if (!_config.SystemConfig.CanUpdate)
         {
             jobs = jobs.Where(x => x.Id != Constants.JobIds.CheckUpdateId);
         }
@@ -68,7 +68,7 @@ public class JobController : Controller
     {
         if (await _jobService.UpdateTrigger(id, cron))
         {
-            _jobInitializer.UpdateTrigger(id, cron, _config.SystemConfig.UpdatesDisabled);
+            _jobInitializer.UpdateTrigger(id, cron, _config.SystemConfig.CanUpdate);
             return NoContent();
         }
 

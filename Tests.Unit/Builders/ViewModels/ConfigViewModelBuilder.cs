@@ -1,6 +1,5 @@
 ﻿using EmbyStat.Configuration;
 using EmbyStat.Controllers.Settings;
-using FluentAssertions;
 
 namespace Tests.Unit.Builders.ViewModels;
 
@@ -20,7 +19,7 @@ public class ConfigViewModelBuilder
                 ProcessName = config.SystemConfig.ProcessName,
                 Id = config.SystemConfig.Id,
                 UpdateInProgress = config.SystemConfig.UpdateInProgress,
-                UpdatesDisabled = config.SystemConfig.UpdatesDisabled,
+                CanUpdate = config.SystemConfig.CanUpdate,
                 Migration = config.SystemConfig.Migration,
                 UpdateTrain = (int)config.SystemConfig.UpdateTrain,
                 Dirs = new DirsViewModel
