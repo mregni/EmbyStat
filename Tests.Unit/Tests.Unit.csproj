@@ -37,7 +37,6 @@
     <ProjectReference Include="..\EmbyStat.Clients.Emby\EmbyStat.Clients.Emby.csproj" />
     <ProjectReference Include="..\EmbyStat.Clients.Jellyfin\EmbyStat.Clients.Jellyfin.csproj" />
     <ProjectReference Include="..\EmbyStat.Controllers\EmbyStat.Controllers.csproj" />
-    <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
     <ProjectReference Include="..\EmbyStat.Web\EmbyStat.Web.csproj" />
   </ItemGroup>
 

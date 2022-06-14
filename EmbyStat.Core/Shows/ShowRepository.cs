@@ -130,7 +130,7 @@ WHERE se.IndexNumber != 0
 GROUP BY s.Id
 ORDER BY s.Id";
 
-        _logger.LogDebug(query);
+        _logger.LogDebug("{Query}", query);
         await using var connection = _sqliteBootstrap.CreateConnection();
         await connection.OpenAsync();
         return connection.Query<double>(query);
@@ -221,6 +221,8 @@ WHERE 1=1 ";
             var showQuery =
                 $@"INSERT OR REPLACE INTO {Constants.Tables.Shows} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,CommunityRating,IMDB,TMDB,TVDB,RunTimeTicks,OfficialRating,CumulativeRunTimeTicks,Status,ExternalSynced,SizeInMb)
 VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@CommunityRating,@IMDB,@TMDB,@TVDB,@RunTimeTicks,@OfficialRating,@CumulativeRunTimeTicks,@Status,@ExternalSynced,@SizeInMb)";
+            _logger.LogDebug("{ShowQuery}", showQuery);
+            
             await connection.ExecuteAsync(showQuery, show, transaction);
 
             if (show.Seasons.AnyNotNull())
@@ -228,6 +230,8 @@ VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate
                 var seasonQuery =
                     $@"INSERT OR REPLACE INTO {Constants.Tables.Seasons} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,IndexNumber,IndexNumberEnd,LocationType,ShowId)
 VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@IndexNumber,@IndexNumberEnd,@LocationType,@ShowId)";
+                _logger.LogDebug("{SeasonQuery}", seasonQuery);
+
                 await connection.ExecuteAsync(seasonQuery, show.Seasons, transaction);
             }
 
@@ -236,6 +240,8 @@ VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate
                 var genreQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.GenreShow} (GenresId, ShowsId) 
 VALUES (@GenreId, @ShowsId)";
                 var genreList = show.Genres.Select(x => new {GenreId = x.Id, ShowsId = show.Id});
+                _logger.LogDebug("{GenreQuery}", genreQuery);
+
                 await connection.ExecuteAsync(genreQuery, genreList, transaction);
             }
 
@@ -245,6 +251,8 @@ VALUES (@GenreId, @ShowsId)";
                     @$"INSERT OR REPLACE INTO {Constants.Tables.MediaPerson} (Type, ShowId, PersonId)
 VALUES (@Type, @ShowId, @PersonId)";
                 show.People.ForEach(x => x.ShowId = show.Id);
+                _logger.LogDebug("{PeopleQuery}", peopleQuery);
+
                 await connection.ExecuteAsync(peopleQuery, show.People, transaction);
             }
 
@@ -254,6 +262,8 @@ VALUES (@Type, @ShowId, @PersonId)";
                 var episodeQuery =
                     @$"INSERT OR REPLACE INTO {Constants.Tables.Episodes} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,Container,CommunityRating,IMDB,TMDB,TVDB,RunTimeTicks,OfficialRating,Video3DFormat,DvdEpisodeNumber,DvdSeasonNumber,IndexNumber,IndexNumberEnd,SeasonId,LocationType)
 VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@Container,@CommunityRating,@IMDB,@TMDB,@TVDB,@RunTimeTicks,@OfficialRating,@Video3DFormat,@DvdEpisodeNumber,@DvdSeasonNumber,@IndexNumber,@IndexNumberEnd,@SeasonId,@LocationType)";
+                _logger.LogDebug("{EpisodeQuery}", episodeQuery);
+
                 await connection.ExecuteAsync(episodeQuery, episodes, transaction);
 
                 foreach (var episode in episodes)
@@ -264,6 +274,8 @@ VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate
                             @$"INSERT OR REPLACE INTO {Constants.Tables.MediaSources} (Id,BitRate,Container,Path,Protocol,RunTimeTicks,SizeInMb,EpisodeId) 
 VALUES (@Id, @BitRate,@Container,@Path,@Protocol,@RunTimeTicks,@SizeInMb,@EpisodeId)";
                         episode.MediaSources.ForEach(x => x.EpisodeId = episode.Id);
+                        _logger.LogDebug("{MediaSourceQuery}", mediaSourceQuery);
+
                         await connection.ExecuteAsync(mediaSourceQuery, episode.MediaSources, transaction);
                     }
 
@@ -273,6 +285,8 @@ VALUES (@Id, @BitRate,@Container,@Path,@Protocol,@RunTimeTicks,@SizeInMb,@Episod
                             @$"INSERT OR REPLACE INTO {Constants.Tables.VideoStreams} (Id,AspectRatio,AverageFrameRate,BitRate,Channels,Height,Language,Width,BitDepth,Codec,IsDefault,VideoRange,EpisodeId) 
 VALUES (@Id,@AspectRatio,@AverageFrameRate,@BitRate,@Channels,@Height,@Language,@Width,@BitDepth,@Codec,@IsDefault,@VideoRange,@EpisodeId)";
                         episode.VideoStreams.ForEach(x => x.EpisodeId = episode.Id);
+                        _logger.LogDebug("{VideoStreamQuery}", videoStreamQuery);
+
                         await connection.ExecuteAsync(videoStreamQuery, episode.VideoStreams, transaction);
                     }
 
@@ -282,6 +296,8 @@ VALUES (@Id,@AspectRatio,@AverageFrameRate,@BitRate,@Channels,@Height,@Language,
                             @$"INSERT OR REPLACE INTO {Constants.Tables.AudioStreams} (Id,BitRate,ChannelLayout,Channels,Codec,Language,SampleRate,IsDefault,EpisodeId)
 VALUES (@Id,@BitRate,@ChannelLayout,@Channels,@Codec,@Language,@SampleRate,@IsDefault,@EpisodeId)";
                         episode.AudioStreams.ForEach(x => x.EpisodeId = episode.Id);
+                        _logger.LogDebug("{AudioStreamQuery}", audioStreamQuery);
+
                         await connection.ExecuteAsync(audioStreamQuery, episode.AudioStreams, transaction);
                     }
 
@@ -291,6 +307,8 @@ VALUES (@Id,@BitRate,@ChannelLayout,@Channels,@Codec,@Language,@SampleRate,@IsDe
                             @$"INSERT OR REPLACE INTO {Constants.Tables.SubtitleStreams} (Id,Codec,DisplayTitle,IsDefault,Language,EpisodeId)
 VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
                         episode.SubtitleStreams.ForEach(x => x.EpisodeId = episode.Id);
+                        _logger.LogDebug("{SubtitleStreamQuery}", subtitleStreamQuery);
+
                         await connection.ExecuteAsync(subtitleStreamQuery, episode.SubtitleStreams,
                             transaction);
                     }

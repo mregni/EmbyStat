@@ -38,6 +38,9 @@ public class StartupOptions
     [Option('s', "service", Required = false, Default = null, HelpText = "Indicate EmbyStat is running as a service")]
     [OptionSerializer("Hosting:Urls")]
     public bool? RunAsService { get; set; }
+    
+    [Option('a', "applicationName", Required = false, Default = "", HelpText = "Used for migrations, DONT use this in production")]
+    public string ApplicationName { get; set; }
 
     public IEnumerable<KeyValuePair<string, string>> ToKeyValuePairs()
     {

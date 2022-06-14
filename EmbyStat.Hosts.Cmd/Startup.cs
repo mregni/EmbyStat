@@ -102,7 +102,7 @@ public class Startup
                             Id = "Bearer"
                         }
                     },
-                    new string[] { }
+                    Array.Empty<string>()
                 }
             });
         });
@@ -126,7 +126,7 @@ public class Startup
         services.AddDbContext<EsDbContext>(options =>
         {
             options.EnableDetailedErrors();
-            options.UseSqlite($"Data Source={dbPath}", x => x.MigrationsAssembly("EmbyStat.Migrations"));
+            options.UseSqlite($"Data Source={dbPath}", x => x.MigrationsAssembly("EmbyStat.Core"));
         });
 
         services.AddAuthorization(options =>
@@ -287,6 +287,7 @@ public class Startup
     {
         using var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope();
         var db = serviceScope.ServiceProvider.GetRequiredService<EsDbContext>();
+        var boe = db.Database.GetPendingMigrations().ToList();
         db.Database.Migrate();
         
         var migrationRunner = serviceScope.ServiceProvider.GetService<IMigrationRunner>();

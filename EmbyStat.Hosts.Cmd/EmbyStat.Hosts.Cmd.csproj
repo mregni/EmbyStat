@@ -58,7 +58,6 @@
         <ProjectReference Include="..\EmbyStat.DI\EmbyStat.DI.csproj" />
         <ProjectReference Include="..\EmbyStat.Migrations\EmbyStat.Migrations.csproj" />
         <ProjectReference Include="..\EmbyStat.Migrator\EmbyStat.Migrator.csproj" />
-        <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
         <ProjectReference Include="..\EmbyStat.Jobs\EmbyStat.Jobs.csproj" />
     </ItemGroup>
 
@@ -79,6 +78,10 @@
 
     <ItemGroup>
         <Content Update="..\EmbyStat.Web\ClientApp\**\*" CopyToPublishDirectory="Never" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="config\config.json" />
     </ItemGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Debug'">

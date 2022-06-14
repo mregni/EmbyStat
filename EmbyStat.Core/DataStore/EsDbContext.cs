@@ -42,12 +42,6 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
         
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        
-    }
-
-
     protected override void OnModelCreating(ModelBuilder builder)
     {
         BuildPeople(builder);

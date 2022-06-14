@@ -198,7 +198,7 @@ public class MediaServerService : StatisticHelper, IMediaServerService
                 movieStatistics.Cards = movieStatistics.Cards
                     .Where(x => x.Title != Constants.Movies.TotalWatchedMovies)
                     .ToList();
-                movieStatistics?.Cards.AddIfNotNull(CalculateWatchedMovieCount());
+                movieStatistics.Cards.AddIfNotNull(CalculateWatchedMovieCount());
 
                 movieStatistics.TopCards = movieStatistics.TopCards
                     .Where(x => x.Title != Constants.Movies.MostWatchedMovies)
