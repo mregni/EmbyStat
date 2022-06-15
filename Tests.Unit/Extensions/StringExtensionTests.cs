@@ -121,4 +121,15 @@ public class StringExtensionTests
         result.Length.Should().Be(1);
         result[0].Should().Be(resultValue);
     }
+
+    [Theory]
+    [InlineData("migration", 0, "migration")]
+    [InlineData("migration", 1, "migration")]
+    [InlineData("migration", 2, "migrations")]
+    [InlineData("migration", 3, "migrations")]
+    public void MakePlural_Should_Return_Correct_Value(string input, int count, string output)
+    {
+        var result = input.MakePlural(count);
+        result.Should().Be(output);
+    }
 }

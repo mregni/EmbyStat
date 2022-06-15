@@ -35,7 +35,7 @@ public class EpisodeBuilder
             OfficialRating = "TV",
             IMDB = "12345",
             TMDB = 123456,
-            TVDB = "23456",
+            TVDB = 23456,
             AudioStreams = new List<AudioStream>{
                 new() { Id = "1", BitRate = 320000, ChannelLayout = "5.1", Channels = 6, Codec = "aac", Language = "en", SampleRate = 48000 }
             },

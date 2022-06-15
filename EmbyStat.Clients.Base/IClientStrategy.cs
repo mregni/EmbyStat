@@ -1,4 +1,5 @@
 ﻿using EmbyStat.Clients.Base.Http;
+using EmbyStat.Clients.Base.Metadata;
 using EmbyStat.Clients.Base.WebSocket;
 using EmbyStat.Common.Enums;
 
@@ -8,4 +9,5 @@ public interface IClientStrategy
 {
     IBaseHttpClient CreateHttpClient(ServerType type);
     IWebSocketClient CreateWebSocketClient(ServerType type);
+    IMetadataClient CreateMetadataClient(MetadataServerType type);
 }

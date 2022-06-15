@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmbyStat.Core.DataStore.Migrations.Sqlite
 {
     [DbContext(typeof(EsDbContext))]
-    [Migration("20220613132854_Init")]
+    [Migration("20220615060631_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -599,8 +599,8 @@ namespace EmbyStat.Core.DataStore.Migrations.Sqlite
                     b.Property<int?>("TMDB")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("TVDB")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("TVDB")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Thumb")
                         .HasColumnType("TEXT");
@@ -731,8 +731,8 @@ namespace EmbyStat.Core.DataStore.Migrations.Sqlite
                     b.Property<int?>("TMDB")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("TVDB")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("TVDB")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Thumb")
                         .HasColumnType("TEXT");
@@ -864,8 +864,8 @@ namespace EmbyStat.Core.DataStore.Migrations.Sqlite
                     b.Property<int?>("TMDB")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("TVDB")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("TVDB")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Thumb")
                         .HasColumnType("TEXT");

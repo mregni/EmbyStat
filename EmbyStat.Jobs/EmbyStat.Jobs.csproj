@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Clients.Tmdb\EmbyStat.Clients.Tmdb.csproj" />
+    <ProjectReference Include="..\EmbyStat.Clients.TvMaze\EmbyStat.Clients.TvMaze.csproj" />
     <ProjectReference Include="..\EmbyStat.Common\EmbyStat.Common.csproj" />
     <ProjectReference Include="..\EmbyStat.Core\EmbyStat.Core.csproj" />
   </ItemGroup>

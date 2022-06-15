@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
+using EmbyStat.Clients.Base.Metadata;
 using EmbyStat.Clients.Tmdb;
+using EmbyStat.Clients.TvMaze;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Exceptions;
@@ -35,7 +37,9 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
     private readonly IShowRepository _showRepository;
     private readonly IStatisticsRepository _statisticsRepository;
     private readonly IShowService _showService;
-    private readonly ITmdbClient _tmdbClient;
+    private readonly IMetadataClient _tvMazeClient;
+    private readonly IMetadataClient _tmdbClient;
+    
     private readonly IGenreRepository _genreRepository;
     private readonly IPersonRepository _personRepository;
     private readonly IMediaServerRepository _mediaServerRepository;
@@ -43,7 +47,7 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
 
     public ShowSyncJob(IHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService,
         IClientStrategy clientStrategy, IShowRepository showRepository,
-        IStatisticsRepository statisticsRepository, IShowService showService, ITmdbClient tmdbClient,
+        IStatisticsRepository statisticsRepository, IShowService showService,
         IGenreRepository genreRepository, IPersonRepository personRepository, 
         IMediaServerRepository mediaServerRepository, IFilterRepository filterRepository, ILogger<ShowSyncJob> logger)
         : base(hubHelper, jobRepository, configurationService, logger)
@@ -51,7 +55,6 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
         _showRepository = showRepository;
         _statisticsRepository = statisticsRepository;
         _showService = showService;
-        _tmdbClient = tmdbClient;
         _genreRepository = genreRepository;
         _personRepository = personRepository;
         _mediaServerRepository = mediaServerRepository;
@@ -59,6 +62,9 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
 
         var settings = configurationService.Get();
         _baseHttpClient = clientStrategy.CreateHttpClient(settings.UserConfig.MediaServer.Type);
+        
+        _tvMazeClient = clientStrategy.CreateMetadataClient(MetadataServerType.TvMaze);
+        _tmdbClient = clientStrategy.CreateMetadataClient(MetadataServerType.Tmdb);
     }
 
     protected sealed override Guid Id => Constants.JobIds.ShowSyncId;
@@ -136,6 +142,7 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
             const int limit = 50;
             do
             {
+                await LogInformation($"Fetching next block of {limit} shows...");
                 await ProcessShowBlock(library, genres, j, limit, increment);
 
                 processed += limit;
@@ -211,11 +218,16 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
     private async Task ProcessMissingEpisodesAsync(Show show)
     {
         var missingEpisodesCount = 0;
-        var externalEpisodes = await _tmdbClient.GetEpisodesAsync(show.TMDB);
+        var externalEpisodes = await _tvMazeClient.GetEpisodesAsync(show.TVDB);
+        if (externalEpisodes == null)
+        {
+            await LogWarning($"Could not find show {show.Name} with TVDB id {show.TVDB} on TvMaze. Searching on TMDB as fallback");
+            externalEpisodes = await _tmdbClient.GetEpisodesAsync(show.TMDB);
+        }
 
         if (externalEpisodes == null)
         {
-            throw new NotFoundException($"Could not find show {show.Name} with id {show.TMDB}");
+            throw new NotFoundException($"Could not find show {show.Name} with TMDB id {show.TMDB}");
         }
 
         foreach (var externalEpisode in externalEpisodes.Where(x => x.SeasonNumber != 0))

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
@@ -312,7 +313,7 @@ public abstract class BaseHttpClient
         var paramList = query.ConvertToStringDictionary();
         var client = _refitFactory.CreateClient(BaseUrl);
         var result = await client.GetItems(ApiKey, AuthorizationString, paramList);
-
+        
         var episodes = _mapper.Map<Episode[]>(result.Items);
         return episodes;
     }

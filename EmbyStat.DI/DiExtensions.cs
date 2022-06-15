@@ -3,6 +3,7 @@ using Aiursoft.XelNaga.Services;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Api;
 using EmbyStat.Clients.Base.Http;
+using EmbyStat.Clients.Base.Metadata;
 using EmbyStat.Clients.Base.WebSocket;
 using EmbyStat.Clients.Emby;
 using EmbyStat.Clients.Emby.Http;
@@ -11,6 +12,7 @@ using EmbyStat.Clients.GitHub;
 using EmbyStat.Clients.Jellyfin;
 using EmbyStat.Clients.Jellyfin.Http;
 using EmbyStat.Clients.Tmdb;
+using EmbyStat.Clients.TvMaze;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Configuration;
 using EmbyStat.Configuration.Interfaces;
@@ -127,13 +129,17 @@ public static class DiExtensions
     private static void RegisterClients(this IServiceCollection services)
     {
         services.AddSingleton<IClientStrategy, ClientStrategy>();
+        
         services.AddSingleton<IClientFactory, EmbyClientFactory>();
         services.AddSingleton<IClientFactory, JellyfinClientFactory>();
-            
         services.TryAddSingleton<IEmbyBaseHttpClient, EmbyBaseHttpClient>();
         services.TryAddSingleton<IJellyfinBaseHttpClient, JellyfinBaseHttpClient>();
 
+        services.AddSingleton<IMetadataClientFactory, TvMazeClientFactory>();
+        services.AddSingleton<IMetadataClientFactory, TmdbClientFactory>();
+        services.TryAddTransient<ITvMazeShowClient, TvMazeShowClient>();
         services.TryAddTransient<ITmdbClient, TmdbClient>();
+        
         services.TryAddTransient<IGitHubClient, GitHubClient>();
 
         services.TryAddSingleton<IWebSocketApi, WebSocketApi>();

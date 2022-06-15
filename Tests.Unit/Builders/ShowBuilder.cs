@@ -34,7 +34,7 @@ public class ShowBuilder
             Status = "Ended",
             TMDB = 12345,
             SizeInMb = 303,
-            TVDB = "12345",
+            TVDB = 12345,
             Thumb = "thumb.jpg",
             ExternalSynced = false,
             PremiereDate = new DateTime(2001, 01, 01, 0, 0, 0),
