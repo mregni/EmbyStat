@@ -71,7 +71,8 @@ public static class DefaultConfig
             Tmdb = new TmdbSettings
             {
                 ApiKey = "0ad9610e613fdbf0d62e71c96d903e0c",
-                LastUpdate = null
+                LastUpdate = null,
+                UseAsFallback = true
             }
         }
     };

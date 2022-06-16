@@ -84,6 +84,7 @@ public class TmdbSettings
 {
     public DateTime? LastUpdate { get; set; }
     public string ApiKey { get; set; }
+    public bool UseAsFallback { get; set; }
 }
 
 public class Rollbar

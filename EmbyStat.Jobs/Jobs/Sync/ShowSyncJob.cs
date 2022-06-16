@@ -207,10 +207,15 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
                 await LogWarning($"Can't seem to find {show.Name} on Imdb, skipping show for now");
             }
         }
+        catch (NotFoundException e)
+        {
+            await LogError(e.Message);
+            show.ExternalSynced = false;
+        }
         catch (Exception e)
         {
-            await LogError($"Can't seem to process show {show.Name}, check the logs for more details!");
             Logger.LogError(e, "Exception details");
+            await LogError($"Can't seem to process show {show.Name}, check the logs for more details!");
             show.ExternalSynced = false;
         }
     }
@@ -219,7 +224,7 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
     {
         var missingEpisodesCount = 0;
         var externalEpisodes = await _tvMazeClient.GetEpisodesAsync(show.TVDB);
-        if (externalEpisodes == null)
+        if (externalEpisodes == null && Configuration.UserConfig.Tmdb.UseAsFallback)
         {
             await LogWarning($"Could not find show {show.Name} with TVDB id {show.TVDB} on TvMaze. Searching on TMDB as fallback");
             externalEpisodes = await _tmdbClient.GetEpisodesAsync(show.TMDB);
@@ -227,7 +232,13 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
 
         if (externalEpisodes == null)
         {
-            throw new NotFoundException($"Could not find show {show.Name} with TMDB id {show.TMDB}");
+            var errorMessage = $"Could not find show {show.Name} with id {show.Id} anywhere. ";
+            if (!Configuration.UserConfig.Tmdb.UseAsFallback)
+            {
+                errorMessage += "TMDB fallback is disabled so show will be skipped.";
+            }
+
+            throw new NotFoundException(errorMessage);
         }
 
         foreach (var externalEpisode in externalEpisodes.Where(x => x.SeasonNumber != 0))

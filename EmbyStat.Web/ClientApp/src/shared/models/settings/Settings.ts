@@ -52,6 +52,7 @@ export interface MediaServerSettings {
 
 export interface TmdbSettings {
     apiKey: string;
+    useAsFallback: boolean;
 }
 
 export interface Rollbar {
