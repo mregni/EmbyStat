@@ -128,43 +128,73 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
 
         foreach (var library in librariesToProcess)
         {
-            var totalCount = await _baseHttpClient.GetMediaCount(library.Id, library.LastSynced, "Series");
-            if (totalCount == 0)
-            {
-                continue;
-            }
-
-            var increment = logIncrementBase / totalCount;
-
-            await LogInformation($"Found {totalCount} changed shows since last sync in {library.Name}");
-            var processed = 0;
-            var j = 0;
-            const int limit = 50;
-            do
-            {
-                await LogInformation($"Fetching next block of {limit} shows...");
-                await ProcessShowBlock(library, genres, j, limit, increment);
-
-                processed += limit;
-                j++;
-
-                var logProcessed = processed < totalCount ? processed : totalCount;
-                await LogInformation($"Processed {logProcessed} / {totalCount} shows");
-            } while (processed < totalCount);
-
+            await ProcessChangedShows(library, genres, logIncrementBase);
+            await ProcessFailedShows(library, genres, logIncrementBase);
             await _mediaServerRepository.UpdateLibrarySyncDate(library.Id, DateTime.UtcNow);
         }
     }
 
-    private async Task ProcessShowBlock(Library library, IEnumerable<Genre> genres, int index, int limit, double increment)
+    private async Task ProcessChangedShows(Library library, IEnumerable<Genre> genres, double logIncrementBase)
     {
-        var shows = await _baseHttpClient.GetShows(library.Id, index * limit, limit, library.LastSynced);
+        var totalCount = await _baseHttpClient.GetMediaCount(library.Id, library.LastSynced, "Series");
+        if (totalCount == 0)
+        {
+            return;
+        }
+        
+        var increment = logIncrementBase / totalCount;
+        
+        await LogInformation($"Found {totalCount} changed shows since last sync in {library.Name}");
+        var processed = 0;
+        var j = 0;
+        const int limit = 50;
+        do
+        {
+            await LogInformation($"Fetching next block of {limit} shows...");
+            var shows = await _baseHttpClient.GetShows(library.Id, j * limit, limit, library.LastSynced);
+            await ProcessShowBlock(library, shows, genres, increment);
+
+            processed += limit;
+            j++;
+
+            var logProcessed = processed < totalCount ? processed : totalCount;
+            await LogInformation($"Processed {logProcessed} / {totalCount} shows");
+        } while (processed < totalCount);
+    }
+
+    private async Task ProcessFailedShows(Library library, IEnumerable<Genre> genres, double logIncrementBase)
+    {
+        var failedShowIds = _showRepository.GetShowIdsThatFailedExternalSync(library.Id).ToArray();
+        var totalCount = failedShowIds.Length;
+        var increment = logIncrementBase / totalCount;
+        
+        await LogInformation($"Found {totalCount} failed shows, trying to sync them again.");
+        var processed = 0;
+        var j = 0;
+        const int limit = 50;
+        do
+        {
+            var shows = await _baseHttpClient.GetShows(failedShowIds, j * limit, limit);
+            await ProcessShowBlock(library, shows, genres, increment);
+
+            processed += limit;
+            j++;
+
+            var logProcessed = processed < totalCount ? processed : totalCount;
+            await LogInformation($"Processed {logProcessed} / {totalCount} shows");
+        } while (processed < totalCount);
+        
+    }
+
+    private async Task ProcessShowBlock(Library library, IReadOnlyList<Show> shows, IEnumerable<Genre> genres, double increment)
+    {
         shows.AddGenres(genres);
 
         foreach (var show in shows)
         {
-            var seasons = await _baseHttpClient.GetSeasons(show.Id, library.LastSynced);
-            var episodes = await _baseHttpClient.GetEpisodes(show.Id, library.LastSynced);
+            show.Library = library;
+            var seasons = await _baseHttpClient.GetSeasons(show.Id);
+            var episodes = await _baseHttpClient.GetEpisodes(show.Id);
 
             foreach (var season in seasons)
             {

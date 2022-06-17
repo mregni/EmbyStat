@@ -64,7 +64,7 @@ INNER JOIN {Constants.Tables.GenreShow} as gs ON (s.Id = gs.ShowsId)
 INNER JOIN {Constants.Tables.Genres} as g ON (g.Id = gs.GenresId)
 GROUP BY g.Name
 ORDER BY g.Name";
-
+        
         _logger.LogDebug("{Query}", query);
         await using var connection = _sqliteBootstrap.CreateConnection();
         await connection.OpenAsync();
@@ -93,7 +93,7 @@ FROM {Constants.Tables.Shows} AS s
 WHERE s.OfficialRating IS NOT NULL 
 GROUP BY upper(s.OfficialRating)
 ORDER BY OfficialRating";
-
+        
         _logger.LogDebug("{Query}", query);
         await using var connection = _sqliteBootstrap.CreateConnection();
         await connection.OpenAsync();
@@ -160,6 +160,14 @@ ORDER BY s.Id";
             .Take(count);
     }
 
+    public IEnumerable<string> GetShowIdsThatFailedExternalSync(string libraryId)
+    {
+        return _context.Shows
+            .Include(x => x.Library)
+            .Where(x => !x.ExternalSynced && x.LibraryId == libraryId)
+            .Select(x => x.Id);
+    }
+
     public async Task<int> CompleteCollectedCount()
     {
         var query = $@"SELECT COUNT(*) Count 
@@ -218,15 +226,18 @@ WHERE 1=1 ";
         {
             await using var transaction = connection.BeginTransaction();
 
+            
             var showQuery =
-                $@"INSERT OR REPLACE INTO {Constants.Tables.Shows} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,CommunityRating,IMDB,TMDB,TVDB,RunTimeTicks,OfficialRating,CumulativeRunTimeTicks,Status,ExternalSynced,SizeInMb)
-VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@CommunityRating,@IMDB,@TMDB,@TVDB,@RunTimeTicks,@OfficialRating,@CumulativeRunTimeTicks,@Status,@ExternalSynced,@SizeInMb)";
-
-            await connection.ExecuteAsync(showQuery, show, transaction);
+                $@"INSERT OR REPLACE INTO {Constants.Tables.Shows} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,CommunityRating,IMDB,TMDB,TVDB,RunTimeTicks,OfficialRating,CumulativeRunTimeTicks,Status,ExternalSynced,SizeInMb,LibraryId)
+VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@CommunityRating,@IMDB,@TMDB,@TVDB,@RunTimeTicks,@OfficialRating,@CumulativeRunTimeTicks,@Status,@ExternalSynced,@SizeInMb,@LibraryId)";
+            var showParams = new DynamicParameters(show);
+            showParams.Add("@LibraryId",show.Library.Id);
+            
+            await connection.ExecuteAsync(showQuery, showParams, transaction);
 
             if (show.Seasons.AnyNotNull())
             {
-                show.Seasons.ForEach(x => x.ShowId = show.Id); 
+                show.Seasons.ForEach(x => x.ShowId = show.Id);
                 var seasonQuery =
                     $@"INSERT OR REPLACE INTO {Constants.Tables.Seasons} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,IndexNumber,IndexNumberEnd,LocationType,ShowId)
 VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@IndexNumber,@IndexNumberEnd,@LocationType,@ShowId)";
@@ -254,58 +265,56 @@ VALUES (@Type, @ShowId, @PersonId)";
             }
 
             var episodes = show.Seasons.SelectMany(x => x.Episodes).ToList();
-            if (!episodes.AnyNotNull())
+            if (episodes.AnyNotNull())
             {
-                continue;
-            }
-
-            var episodeQuery =
-                @$"INSERT OR REPLACE INTO {Constants.Tables.Episodes} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,Container,CommunityRating,IMDB,TMDB,TVDB,RunTimeTicks,OfficialRating,Video3DFormat,DvdEpisodeNumber,DvdSeasonNumber,IndexNumber,IndexNumberEnd,SeasonId,LocationType)
+                var episodeQuery =
+                    @$"INSERT OR REPLACE INTO {Constants.Tables.Episodes} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,Container,CommunityRating,IMDB,TMDB,TVDB,RunTimeTicks,OfficialRating,Video3DFormat,DvdEpisodeNumber,DvdSeasonNumber,IndexNumber,IndexNumberEnd,SeasonId,LocationType)
 VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@Container,@CommunityRating,@IMDB,@TMDB,@TVDB,@RunTimeTicks,@OfficialRating,@Video3DFormat,@DvdEpisodeNumber,@DvdSeasonNumber,@IndexNumber,@IndexNumberEnd,@SeasonId,@LocationType)";
 
-            await connection.ExecuteAsync(episodeQuery, episodes, transaction);
+                await connection.ExecuteAsync(episodeQuery, episodes, transaction);
 
-            foreach (var episode in episodes)
-            {
-                if (episode.MediaSources.AnyNotNull())
+                foreach (var episode in episodes)
                 {
-                    var mediaSourceQuery =
-                        @$"INSERT OR REPLACE INTO {Constants.Tables.MediaSources} (Id,BitRate,Container,Path,Protocol,RunTimeTicks,SizeInMb,EpisodeId) 
+                    if (episode.MediaSources.AnyNotNull())
+                    {
+                        var mediaSourceQuery =
+                            @$"INSERT OR REPLACE INTO {Constants.Tables.MediaSources} (Id,BitRate,Container,Path,Protocol,RunTimeTicks,SizeInMb,EpisodeId) 
 VALUES (@Id, @BitRate,@Container,@Path,@Protocol,@RunTimeTicks,@SizeInMb,@EpisodeId)";
-                    episode.MediaSources.ForEach(x => x.EpisodeId = episode.Id);
+                        episode.MediaSources.ForEach(x => x.EpisodeId = episode.Id);
 
-                    await connection.ExecuteAsync(mediaSourceQuery, episode.MediaSources, transaction);
-                }
+                        await connection.ExecuteAsync(mediaSourceQuery, episode.MediaSources, transaction);
+                    }
 
-                if (episode.VideoStreams.AnyNotNull())
-                {
-                    var videoStreamQuery =
-                        @$"INSERT OR REPLACE INTO {Constants.Tables.VideoStreams} (Id,AspectRatio,AverageFrameRate,BitRate,Channels,Height,Language,Width,BitDepth,Codec,IsDefault,VideoRange,EpisodeId) 
+                    if (episode.VideoStreams.AnyNotNull())
+                    {
+                        var videoStreamQuery =
+                            @$"INSERT OR REPLACE INTO {Constants.Tables.VideoStreams} (Id,AspectRatio,AverageFrameRate,BitRate,Channels,Height,Language,Width,BitDepth,Codec,IsDefault,VideoRange,EpisodeId) 
 VALUES (@Id,@AspectRatio,@AverageFrameRate,@BitRate,@Channels,@Height,@Language,@Width,@BitDepth,@Codec,@IsDefault,@VideoRange,@EpisodeId)";
-                    episode.VideoStreams.ForEach(x => x.EpisodeId = episode.Id);
+                        episode.VideoStreams.ForEach(x => x.EpisodeId = episode.Id);
 
-                    await connection.ExecuteAsync(videoStreamQuery, episode.VideoStreams, transaction);
-                }
+                        await connection.ExecuteAsync(videoStreamQuery, episode.VideoStreams, transaction);
+                    }
 
-                if (episode.AudioStreams.AnyNotNull())
-                {
-                    var audioStreamQuery =
-                        @$"INSERT OR REPLACE INTO {Constants.Tables.AudioStreams} (Id,BitRate,ChannelLayout,Channels,Codec,Language,SampleRate,IsDefault,EpisodeId)
+                    if (episode.AudioStreams.AnyNotNull())
+                    {
+                        var audioStreamQuery =
+                            @$"INSERT OR REPLACE INTO {Constants.Tables.AudioStreams} (Id,BitRate,ChannelLayout,Channels,Codec,Language,SampleRate,IsDefault,EpisodeId)
 VALUES (@Id,@BitRate,@ChannelLayout,@Channels,@Codec,@Language,@SampleRate,@IsDefault,@EpisodeId)";
-                    episode.AudioStreams.ForEach(x => x.EpisodeId = episode.Id);
+                        episode.AudioStreams.ForEach(x => x.EpisodeId = episode.Id);
 
-                    await connection.ExecuteAsync(audioStreamQuery, episode.AudioStreams, transaction);
-                }
+                        await connection.ExecuteAsync(audioStreamQuery, episode.AudioStreams, transaction);
+                    }
 
-                if (episode.SubtitleStreams.AnyNotNull())
-                {
-                    var subtitleStreamQuery =
-                        @$"INSERT OR REPLACE INTO {Constants.Tables.SubtitleStreams} (Id,Codec,DisplayTitle,IsDefault,Language,EpisodeId)
+                    if (episode.SubtitleStreams.AnyNotNull())
+                    {
+                        var subtitleStreamQuery =
+                            @$"INSERT OR REPLACE INTO {Constants.Tables.SubtitleStreams} (Id,Codec,DisplayTitle,IsDefault,Language,EpisodeId)
 VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
-                    episode.SubtitleStreams.ForEach(x => x.EpisodeId = episode.Id);
+                        episode.SubtitleStreams.ForEach(x => x.EpisodeId = episode.Id);
 
-                    await connection.ExecuteAsync(subtitleStreamQuery, episode.SubtitleStreams,
-                        transaction);
+                        await connection.ExecuteAsync(subtitleStreamQuery, episode.SubtitleStreams,
+                            transaction);
+                    }
                 }
 
                 await transaction.CommitAsync();
@@ -316,7 +325,7 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
     public async Task<IEnumerable<Show>> GetAllShowsWithEpisodes()
     {
         var query = ShowExtensions.GenerateFullShowQuery();
-
+        
         _logger.LogDebug("{Query}", query);
         await using var connection = _sqliteBootstrap.CreateConnection();
         await connection.OpenAsync();
@@ -363,7 +372,7 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
         IEnumerable<Filter> filters)
     {
         var query = ShowExtensions.GenerateShowPageQuery(filters, sortField, sortOrder);
-
+        
         _logger.LogDebug("{Query}", query);
         await using var connection = _sqliteBootstrap.CreateConnection();
         await connection.OpenAsync();
@@ -400,7 +409,7 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
                         var season = x.First();
                         season.Episodes = Enumerable
                             .DistinctBy(x.Select(y => y.Episodes.SingleOrDefault())
-                                .Where(y => y != null), y => y.Id).ToList();
+                                    .Where(y => y != null), y => y.Id).ToList();
                         return season;
                     });
 
@@ -472,7 +481,7 @@ LIMIT {count}";
     {
         return _context.Shows
             .SelectMany(x => x.Genres)
-            .Select(x => new LabelValuePair {Value = x.Name, Label = x.Name})
+            .Select(x => new LabelValuePair { Value = x.Name, Label = x.Name })
             .Distinct()
             .OrderBy(x => x.Label);
     }

@@ -72,7 +72,7 @@ public static class DefaultConfig
             {
                 ApiKey = "0ad9610e613fdbf0d62e71c96d903e0c",
                 LastUpdate = null,
-                UseAsFallback = true
+                UseAsFallback = false
             }
         }
     };
