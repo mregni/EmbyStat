@@ -330,11 +330,37 @@ public class BaseHttpClientTests
         _factoryMock.Verify(x => x.CreateClient(_service.BaseUrl));
         _factoryMock.VerifyNoOtherCalls();
     }
+    
+    [Fact]
+    public async Task GetShows_ByShowIds_Should_Return_List_Of_Shows()
+    {
+        var ids = new[] {"1", "2"};
+        var result = await _service.GetShows(ids, 0, 10);
+
+        var list = result.ToList();
+        list.Should().NotBeNull();
+        list.Count.Should().Be(1);
+
+        list[0].Id.Should().Be("1");
+        list[0].Name.Should().Be("Lord of the rings");
+
+        _restClientMock.Verify(x => x.GetItems(_service.ApiKey,
+            _authorizationParameter,
+            It.Is<Dictionary<string, string>>(x =>
+                x["Ids"] == "1,2" &&
+                x["StartIndex"] == "0" &&
+                x["Limit"] == "10" &&
+                x["IncludeItemTypes"] == "Series")));
+        _restClientMock.VerifyNoOtherCalls();
+
+        _factoryMock.Verify(x => x.CreateClient(_service.BaseUrl));
+        _factoryMock.VerifyNoOtherCalls();
+    }
 
     [Fact]
     public async Task GetSeasons_Should_Return_List_Of_Season()
     {
-        var result = await _service.GetSeasons("1",  null);
+        var result = await _service.GetSeasons("1");
 
         var list = result.ToList();
         list.Should().NotBeNull();
@@ -357,7 +383,7 @@ public class BaseHttpClientTests
     [Fact]
     public async Task GetEpisodes_Should_Return_List_Of_Episodes()
     {
-        var result = await _service.GetEpisodes("1",  null);
+        var result = await _service.GetEpisodes("1");
 
         var list = result.ToList();
         list.Should().NotBeNull();
