@@ -53,12 +53,12 @@ public class MapProfiles : Profile
         CreateSettingMappings();
         CreateLibraryMappings();
         CreateMediaServerUserMappings();
-            
+
         //USED MAPPINGS
         CreateMap<MediaServerSettings, MediaServerSettingsViewModel>().ReverseMap();
         CreateMap<TmdbSettings, TmdbSettingsViewModel>().ReverseMap();
         CreateMap<Language, LanguageViewModel>();
-            
+
         CreateMap<Common.Models.Entities.Job, JobViewModel>()
             .ForMember(dest => dest.StartTimeUtcIso,
                 src => src.MapFrom((org, _) =>
@@ -70,7 +70,7 @@ public class MapProfiles : Profile
         CreateMap(typeof(Card<>), typeof(CardViewModel<>))
             .ForMember("Type", src => src.MapFrom((org, _) =>
             {
-                return ((Card<string>)org).Type switch
+                return ((Card<string>) org).Type switch
                 {
                     CardType.Text => "text",
                     CardType.Size => "size",
@@ -78,10 +78,10 @@ public class MapProfiles : Profile
                     _ => "text"
                 };
             }));
-            
+
         CreateMap<Library, LibraryViewModel>();
         CreateMap<Chart, ChartViewModel>();
-            
+
         CreateMap<SystemInfo, MediaServerInfo>()
             .ReverseMap()
             .ForMember(x => x.CompletedInstallations, y => y.Ignore());
@@ -92,7 +92,7 @@ public class MapProfiles : Profile
         CreateMap<SubtitleStream, SubtitleStreamViewModel>();
         CreateMap<VideoStream, VideoStreamViewModel>();
         CreateMap<BaseItemDto, Genre>();
-            
+
         CreateMap<TopCard, TopCardViewModel>();
         CreateMap<TopCardItem, TopCardItemViewModel>();
         CreateMap<LabelValuePair, LabelValuePairViewModel>();
@@ -100,15 +100,15 @@ public class MapProfiles : Profile
         CreateMap<MediaServerStatus, EmbyStatusViewModel>();
 
         CreateMap<LogFile, LogFileViewModel>();
-            
+
         //TODO: NOT USED
 
         CreateMap<MediaServerUdpBroadcast, UdpBroadcastViewModel>().ReverseMap();
         CreateMap<UpdateResult, UpdateResultViewModel>();
-            
+
         CreateMap<ShortMovie, ShortMovieViewModel>();
         CreateMap<SuspiciousTables, SuspiciousTablesViewModel>();
-            
+
         CreateMap<AboutModel, AboutViewModel>();
         CreateMap<SuspiciousMovie, SuspiciousMovieViewModel>();
 
@@ -173,7 +173,7 @@ public class MapProfiles : Profile
     {
         CreateMap<BaseItemDto, Person>()
             .ForMember(x => x.Primary, x => x.MapFrom(y => y.ImageTags.ConvertToImageTag()));
-            
+
         CreateMap<BaseItemPerson, MediaPerson>()
             .ForMember(x => x.PersonId, x => x.MapFrom(y => y.Id))
             .ForMember(x => x.Id, x => x.Ignore())
@@ -222,8 +222,9 @@ public class MapProfiles : Profile
                 .SelectMany(z => z.Episodes)
                 .Count(z => z.LocationType == LocationType.Virtual)))
             .ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(z => z.Name).Distinct()))
-            .ForMember(x => x.RunTime, x => x.MapFrom(y => Math.Round((decimal)(y.RunTimeTicks ?? 0) / 600000000)))
-            .ForMember(x => x.CumulativeRunTime, x => x.MapFrom(y => Math.Round((decimal)(y.CumulativeRunTimeTicks ?? 0) / 600000000)));
+            .ForMember(x => x.RunTime, x => x.MapFrom(y => Math.Round((decimal) (y.RunTimeTicks ?? 0) / 600000000)))
+            .ForMember(x => x.CumulativeRunTime,
+                x => x.MapFrom(y => Math.Round((decimal) (y.CumulativeRunTimeTicks ?? 0) / 600000000)));
 
         CreateMap<Common.Models.Entities.Shows.Show, ShowDetailViewModel>()
             .ForMember(x => x.SeasonCount, x => x.MapFrom(y => y.Seasons.Count))
@@ -236,21 +237,31 @@ public class MapProfiles : Profile
                 .SelectMany(z => z.Episodes)
                 .Count(z => z.LocationType == LocationType.Disk)))
             .ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(z => z.Name).Distinct()))
-            .ForMember(x => x.RunTime, x => x.MapFrom(y => Math.Round((decimal)(y.RunTimeTicks ?? 0) / 600000000)))
-            .ForMember(x => x.CumulativeRunTime, x => x.MapFrom(y => Math.Round((decimal)(y.CumulativeRunTimeTicks ?? 0) / 600000000)))
-
-            .ForMember(x => x.MissingSeasons, x => x.MapFrom(y => y.Seasons.Where(s => s.IndexNumber != 0 && s.Episodes.Any(e => e.LocationType == LocationType.Virtual))));
+            .ForMember(x => x.RunTime, x => x.MapFrom(y => Math.Round((decimal) (y.RunTimeTicks ?? 0) / 600000000)))
+            .ForMember(x => x.CumulativeRunTime,
+                x => x.MapFrom(y => Math.Round((decimal) (y.CumulativeRunTimeTicks ?? 0) / 600000000)))
+            .ForMember(x => x.MissingSeasons,
+                x => x.MapFrom(y => y.Seasons.Where(s =>
+                    s.IndexNumber != 0 && s.Episodes.Any(e => e.LocationType == LocationType.Virtual))));
 
         CreateMap<Season, VirtualSeasonViewModel>()
-            .ForMember(x => x.Episodes, x => x.MapFrom(y => y.Episodes.Where(z => z.LocationType == LocationType.Virtual)));
+            .ForMember(x => x.Episodes,
+                x => x.MapFrom(y => y.Episodes.Where(z => z.LocationType == LocationType.Virtual)));
         CreateMap<Episode, VirtualEpisodeViewModel>();
         CreateMap<TvSeasonEpisode, VirtualEpisode>()
             .ForMember(x => x.Id, x => x.MapFrom(y => y.Id.ToString()))
             .ForMember(x => x.FirstAired, x => x.MapFrom(y => y.AirDate));
-            
+
+        CreateMap<TvMaze.Api.Client.Models.Episode, VirtualEpisode>()
+            .ForMember(x => x.Id, x => x.MapFrom(y => y.Id.ToString()))
+            .ForMember(x => x.FirstAired,
+                x => x.MapFrom(y => y.AirStamp != null ? y.AirStamp.Value.DateTime : (DateTime?) null))
+            .ForMember(x => x.SeasonNumber, x => x.MapFrom(y => y.Season))
+            .ForMember(x => x.EpisodeNumber, x => x.MapFrom(y => y.Number ?? 0));
+
+
         CreateMap<ShowCharts, ShowChartsViewModel>();
         CreateMap<ShowStatistics, ShowStatisticsViewModel>();
-
     }
 
     private void CreateMovieMappings()
@@ -260,7 +271,7 @@ public class MapProfiles : Profile
             .ForMember(x => x.AudioLanguages,
                 x => x.MapFrom(y => y.AudioStreams.Select(z => z.Language).Distinct()))
             .ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(z => z.Name).Distinct()))
-            .ForMember(x => x.RunTime, x => x.MapFrom(y => Math.Round((decimal)(y.RunTimeTicks ?? 0) / 600000000)))
+            .ForMember(x => x.RunTime, x => x.MapFrom(y => Math.Round((decimal) (y.RunTimeTicks ?? 0) / 600000000)))
             .ForMember(x => x.Subtitles, x => x.MapFrom(y => y.SubtitleStreams.Select(z => z.Language).Distinct()))
             .ForMember(x => x.SizeInMb,
                 x => x.MapFrom(y => y.MediaSources.FirstOrDefault() != null ? y.MediaSources.First().SizeInMb : 0));
@@ -273,9 +284,9 @@ public class MapProfiles : Profile
             .AddStreamMappings();
         CreateMap<Common.Models.Entities.Movies.Movie, MovieViewModel>()
             .ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(z => z.Name).Distinct()))
-            .ForMember(x => x.RunTime, x => x.MapFrom(y => Math.Round((decimal)(y.RunTimeTicks ?? 0) / 600000000)))
+            .ForMember(x => x.RunTime, x => x.MapFrom(y => Math.Round((decimal) (y.RunTimeTicks ?? 0) / 600000000)))
             ;
-            
+
         CreateMap<MovieStatistics, MovieStatisticsViewModel>();
     }
 
@@ -298,10 +309,13 @@ public class MapProfiles : Profile
             .ForMember(x => x.Id, x => x.MapFrom(y => Guid.NewGuid().ToString()));
         CreateMap<BaseMediaStream, VideoStream>()
             .ForMember(x => x.Id, x => x.MapFrom(y => Guid.NewGuid().ToString()))
-            .ForMember(x => x.AverageFrameRate, x => x.MapFrom(y => y.AverageFrameRate.HasValue ? (float)Math.Round(y.AverageFrameRate.Value, 2) : (float?)null));
+            .ForMember(x => x.AverageFrameRate,
+                x => x.MapFrom(y =>
+                    y.AverageFrameRate.HasValue ? (float) Math.Round(y.AverageFrameRate.Value, 2) : (float?) null));
         CreateMap<BaseMediaSourceInfo, MediaSource>()
             .ForMember(x => x.Protocol, x => x.MapFrom(y => y.ToString()))
-            .ForMember(x => x.SizeInMb, x => x.MapFrom(y => Math.Round(y.Size / (double)1024 / 1024 ?? 0, MidpointRounding.AwayFromZero)));
+            .ForMember(x => x.SizeInMb,
+                x => x.MapFrom(y => Math.Round(y.Size / (double) 1024 / 1024 ?? 0, MidpointRounding.AwayFromZero)));
     }
 
     private void CreateLibraryMappings()
@@ -329,13 +343,13 @@ public static class SqlExtraMapperExtensions
     {
         return mapping.ForMember(x => x.CommunityRating,
             x => x.MapFrom(y =>
-                y.CommunityRating != null ? (float)Math.Round(y.CommunityRating.Value, 1) : (float?)null));
-
+                y.CommunityRating != null ? (float) Math.Round(y.CommunityRating.Value, 1) : (float?) null));
     }
+
     public static IMappingExpression<T1, T2> AddGenreMappings<T1, T2>(this IMappingExpression<T1, T2> mapping)
         where T1 : BaseItemDto where T2 : ILinkedMedia
     {
-        return mapping.ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(z => new Genre { Name = z })));
+        return mapping.ForMember(x => x.Genres, x => x.MapFrom(y => y.Genres.Select(z => new Genre {Name = z})));
     }
 
     public static IMappingExpression<T1, T2> AddImageMappings<T1, T2>(this IMappingExpression<T1, T2> mapping)
@@ -362,7 +376,7 @@ public static class SqlExtraMapperExtensions
             .ForMember(x => x.IMDB,
                 x => x.MapFrom(y => y.ProviderIds.FirstOrDefault(z => z.Key == "Imdb").Value ?? string.Empty))
             .ForMember(x => x.TVDB,
-                x => x.MapFrom(y => y.ProviderIds.FirstOrDefault(z => z.Key == "Tvdb").Value ?? string.Empty))
+                x => x.MapFrom(y => MapInt(y.ProviderIds.FirstOrDefault(z => z.Key == "Tvdb").Value ?? string.Empty)))
             .ForMember(x => x.TMDB,
                 x => x.MapFrom(
                     y => MapInt(y.ProviderIds.FirstOrDefault(z => z.Key == "Tmdb").Value ?? string.Empty)));
@@ -379,7 +393,7 @@ public static class SqlExtraMapperExtensions
             .ForMember(x => x.SubtitleStreams,
                 x => x.MapFrom(y => y.MediaStreams.Where(z => z.Type == MediaStreamType.Subtitle)));
     }
-        
+
     private static int? MapInt(string input)
     {
         if (int.TryParse(input, out var tmdbValue))

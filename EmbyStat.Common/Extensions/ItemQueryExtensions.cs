@@ -14,12 +14,17 @@ public static class ItemQueryExtensions
         {
             paramList.TryAdd("UserId", query.UserId);
         }
-
+        
         if (query.EnableTotalRecordCount)
         {
             paramList.TryAdd("EnableTotalRecordCount", query.EnableTotalRecordCount.ToString());
         }
 
+        if (query.Ids != null && query.Ids.Any())
+        {
+            paramList.TryAdd("Ids", string.Join(',', query.Ids));
+        }
+        
         if (query.Fields != null && query.Fields.Any())
         {
             paramList.TryAdd("Fields", string.Join(',', query.Fields));

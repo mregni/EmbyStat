@@ -37,6 +37,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Refit;
 using Rollbar.DTOs;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace EmbyStat.Hosts.Cmd;
 
@@ -286,10 +287,9 @@ public class Startup
     private void PerformPostStartup()
     {
         using var serviceScope = ApplicationBuilder.ApplicationServices.CreateScope();
-        var db = serviceScope.ServiceProvider.GetRequiredService<EsDbContext>();
-        var boe = db.Database.GetPendingMigrations().ToList();
-        db.Database.Migrate();
-        
+
+        MigrateDatabase(serviceScope);
+
         var migrationRunner = serviceScope.ServiceProvider.GetService<IMigrationRunner>();
         migrationRunner?.Migrate();
   
@@ -311,6 +311,22 @@ public class Startup
         
         var jobService = serviceScope.ServiceProvider.GetService<IJobService>();
         jobService?.ResetAllJobs();
+    }
+
+    private static void MigrateDatabase(IServiceScope serviceScope)
+    {
+        var db = serviceScope.ServiceProvider.GetRequiredService<EsDbContext>();
+        var migrations = db.Database.GetPendingMigrations().ToList();
+        var dbLogger = serviceScope.ServiceProvider.GetService<ILogger<EsDbContext>>();
+
+        var migrationText = "migration".MakePlural(migrations.Count);
+        dbLogger.LogInformation("Found {MigrationCount} pending database {MigrationText}", migrations.Count, migrationText);
+        if (migrations.Count > 0)
+        {
+            dbLogger.LogInformation("Migrating database now, please hold on");
+            db.Database.Migrate();
+            dbLogger.LogInformation("Migrating DONE");
+        }
     }
     
     private static void SetupDirectories(Config settings)

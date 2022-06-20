@@ -15,7 +15,7 @@ public class ShowDetailViewModel
     public string[] Genres { get; set; }
     public string Imdb { get; set; }
     public int? Tmdb { get; set; }
-    public string Tvdb { get; set; }
+    public int? Tvdb { get; set; }
     public string SortName { get; set; }
     public decimal? CommunityRating { get; set; }
     public long? RunTime { get; set; }

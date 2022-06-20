@@ -597,8 +597,8 @@ namespace EmbyStat.Core.DataStore.Migrations.Sqlite
                     b.Property<int?>("TMDB")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("TVDB")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("TVDB")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Thumb")
                         .HasColumnType("TEXT");
@@ -729,8 +729,8 @@ namespace EmbyStat.Core.DataStore.Migrations.Sqlite
                     b.Property<int?>("TMDB")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("TVDB")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("TVDB")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Thumb")
                         .HasColumnType("TEXT");
@@ -862,8 +862,8 @@ namespace EmbyStat.Core.DataStore.Migrations.Sqlite
                     b.Property<int?>("TMDB")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("TVDB")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("TVDB")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Thumb")
                         .HasColumnType("TEXT");

@@ -26,4 +26,8 @@
       <ProjectReference Include="..\EmbyStat.Configuration\EmbyStat.Configuration.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="DataStore\Migrations\Sqlite" />
+    </ItemGroup>
+
 </Project>

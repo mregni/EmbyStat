@@ -15,6 +15,7 @@
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="2.2.0" />
+    <PackageReference Include="TvMaze.Api.Client" Version="0.1.72" />
   </ItemGroup>
 
   <ItemGroup>

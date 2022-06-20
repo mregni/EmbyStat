@@ -86,4 +86,9 @@ public static class StringExtensions
         var result = Convert.ToDouble(decodedValue, CultureInfo.CurrentCulture) * multiplier;
         return new[] { result.FormatToDotDecimalString() };
     }
+
+    public static string MakePlural(this string value, int count)
+    {
+        return count > 1 ? $"{value}s" : value;
+    }
 }
