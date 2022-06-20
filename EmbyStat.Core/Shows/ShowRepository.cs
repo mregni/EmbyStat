@@ -10,6 +10,7 @@ using EmbyStat.Core.DataStore;
 using EmbyStat.Core.Shows.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using MoreLinq;
 using MoreLinq.Extensions;
 
 namespace EmbyStat.Core.Shows;
@@ -250,7 +251,7 @@ VALUES (@GenreId, @ShowsId)";
                 var peopleQuery =
                     @$"INSERT OR REPLACE INTO {Constants.Tables.MediaPerson} (Type, ShowId, PersonId)
 VALUES (@Type, @ShowId, @PersonId)";
-                show.People.ForEach(x => x.ShowId = show.Id);
+                ForEachExtension.ForEach(show.People, x => x.ShowId = show.Id);
                 _logger.LogDebug("{PeopleQuery}", peopleQuery);
 
                 await connection.ExecuteAsync(peopleQuery, show.People, transaction);
@@ -273,7 +274,7 @@ VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate
                         var mediaSourceQuery =
                             @$"INSERT OR REPLACE INTO {Constants.Tables.MediaSources} (Id,BitRate,Container,Path,Protocol,RunTimeTicks,SizeInMb,EpisodeId) 
 VALUES (@Id, @BitRate,@Container,@Path,@Protocol,@RunTimeTicks,@SizeInMb,@EpisodeId)";
-                        episode.MediaSources.ForEach(x => x.EpisodeId = episode.Id);
+                        ForEachExtension.ForEach(episode.MediaSources, x => x.EpisodeId = episode.Id);
                         _logger.LogDebug("{MediaSourceQuery}", mediaSourceQuery);
 
                         await connection.ExecuteAsync(mediaSourceQuery, episode.MediaSources, transaction);
@@ -284,7 +285,7 @@ VALUES (@Id, @BitRate,@Container,@Path,@Protocol,@RunTimeTicks,@SizeInMb,@Episod
                         var videoStreamQuery =
                             @$"INSERT OR REPLACE INTO {Constants.Tables.VideoStreams} (Id,AspectRatio,AverageFrameRate,BitRate,Channels,Height,Language,Width,BitDepth,Codec,IsDefault,VideoRange,EpisodeId) 
 VALUES (@Id,@AspectRatio,@AverageFrameRate,@BitRate,@Channels,@Height,@Language,@Width,@BitDepth,@Codec,@IsDefault,@VideoRange,@EpisodeId)";
-                        episode.VideoStreams.ForEach(x => x.EpisodeId = episode.Id);
+                        ForEachExtension.ForEach(episode.VideoStreams, x => x.EpisodeId = episode.Id);
                         _logger.LogDebug("{VideoStreamQuery}", videoStreamQuery);
 
                         await connection.ExecuteAsync(videoStreamQuery, episode.VideoStreams, transaction);
@@ -295,7 +296,7 @@ VALUES (@Id,@AspectRatio,@AverageFrameRate,@BitRate,@Channels,@Height,@Language,
                         var audioStreamQuery =
                             @$"INSERT OR REPLACE INTO {Constants.Tables.AudioStreams} (Id,BitRate,ChannelLayout,Channels,Codec,Language,SampleRate,IsDefault,EpisodeId)
 VALUES (@Id,@BitRate,@ChannelLayout,@Channels,@Codec,@Language,@SampleRate,@IsDefault,@EpisodeId)";
-                        episode.AudioStreams.ForEach(x => x.EpisodeId = episode.Id);
+                        ForEachExtension.ForEach(episode.AudioStreams, x => x.EpisodeId = episode.Id);
                         _logger.LogDebug("{AudioStreamQuery}", audioStreamQuery);
 
                         await connection.ExecuteAsync(audioStreamQuery, episode.AudioStreams, transaction);
@@ -306,7 +307,7 @@ VALUES (@Id,@BitRate,@ChannelLayout,@Channels,@Codec,@Language,@SampleRate,@IsDe
                         var subtitleStreamQuery =
                             @$"INSERT OR REPLACE INTO {Constants.Tables.SubtitleStreams} (Id,Codec,DisplayTitle,IsDefault,Language,EpisodeId)
 VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
-                        episode.SubtitleStreams.ForEach(x => x.EpisodeId = episode.Id);
+                        ForEachExtension.ForEach(episode.SubtitleStreams, x => x.EpisodeId = episode.Id);
                         _logger.LogDebug("{SubtitleStreamQuery}", subtitleStreamQuery);
 
                         await connection.ExecuteAsync(subtitleStreamQuery, episode.SubtitleStreams,
@@ -368,6 +369,10 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
     public async Task<IEnumerable<Show>> GetShowPage(int skip, int take, string sortField, string sortOrder,
         IEnumerable<Filter> filters)
     {
+        var sortingOnSeasonRequested = sortField == "seasons";
+        var sortingOnEpisodesRequested= sortField == "episodes";
+        sortField = sortingOnSeasonRequested || sortingOnEpisodesRequested ? string.Empty : sortField;
+        
         var query = ShowExtensions.GenerateShowPageQuery(filters, sortField, sortOrder);
         
         _logger.LogDebug(query);
@@ -387,7 +392,24 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
                 return s;
             });
 
-        return MapShows(list).Skip(skip).Take(take);
+        var shows = MapShows(list).ToList();
+        if (sortingOnSeasonRequested)
+        {
+            shows = sortOrder == "asc" 
+                ? shows.OrderBy(x => x.Seasons.Count).ThenBy(x => x.SortName).ToList() 
+                : shows.OrderByDescending(x => x.Seasons.Count).ThenBy(x => x.SortName).ToList() ;
+        }
+
+        if (sortingOnEpisodesRequested)
+        {
+            shows = MoreEnumerable.OrderBy(shows, x =>
+                    x.Seasons.SelectMany(y => y.Episodes).Count(y => y.LocationType == LocationType.Disk) /
+                    (double) x.Seasons.SelectMany(y => y.Episodes).Count(), sortOrder.Trim() == "asc" ? OrderByDirection.Ascending : OrderByDirection.Descending)
+                .ThenBy(x => x.SortName)
+                .ToList();
+        }
+        
+        return shows.Skip(skip).Take(take);
     }
 
     private static IEnumerable<Show> MapShows(IEnumerable<Show> list)
