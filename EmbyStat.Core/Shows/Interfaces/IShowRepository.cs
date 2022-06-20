@@ -15,6 +15,7 @@ public interface IShowRepository : IMediaRepository
     Task<Dictionary<Show, int>> GetShowsWithMostEpisodes(int count);
     Task<IEnumerable<Show>> GetShowPage(int skip, int take, string sortField, string sortOrder, IEnumerable<Filter> filters);
     IEnumerable<Show> GetShowsWithMostDiskSpaceUsed(int count);
+    IEnumerable<string> GetShowIdsThatFailedExternalSync(string libraryId);
 
     Task<int> CompleteCollectedCount();
     Task DeleteAll();

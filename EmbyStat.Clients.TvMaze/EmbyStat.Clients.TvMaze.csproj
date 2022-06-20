@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="TvMaze.Api.Client" Version="0.1.72" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\EmbyStat.Clients.Base\EmbyStat.Clients.Base.csproj" />
+      <ProjectReference Include="..\EmbyStat.Clients.Tmdb\EmbyStat.Clients.Tmdb.csproj" />
+    </ItemGroup>
+
+</Project>

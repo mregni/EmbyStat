@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using EmbyStat.Common.Models.Show;
+﻿using EmbyStat.Clients.Base.Metadata;
 
 namespace EmbyStat.Clients.Tmdb;
 
-public interface ITmdbClient
+public interface ITmdbClient : IMetadataClient
 {
-    Task<IEnumerable<VirtualEpisode>> GetEpisodesAsync(int? tmdbShowId);
+    
 }

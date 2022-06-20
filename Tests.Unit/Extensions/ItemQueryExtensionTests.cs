@@ -29,10 +29,13 @@ public class ItemQueryExtensionTests
             EnableImages = true,
             MediaTypes = new[] {"Video", "BoxSet"},
             IncludeItemTypes = new[] {"Movies", "Episodes"},
+            Ids = new[] { "12", "13"}
         };
 
         var result = query.ConvertToStringDictionary();
-        result.Count.Should().Be(15);
+        result.Count.Should().Be(16);
+        result.ContainsKey("Ids").Should().BeTrue();
+        result["Ids"].Should().Be(string.Join(',', query.Ids));
         result.ContainsKey("UserId").Should().BeTrue();
         result["UserId"].Should().Be(query.UserId);
         result.ContainsKey("EnableTotalRecordCount").Should().BeTrue();

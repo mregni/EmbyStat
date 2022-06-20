@@ -62,6 +62,7 @@ public class MediaServerSettingsViewModel
 public class TmdbSettingsViewModel
 {
     public string ApiKey { get; set; }
+    public bool UseAsFallback { get; set; }
 }
 
 public class RollbarViewModel

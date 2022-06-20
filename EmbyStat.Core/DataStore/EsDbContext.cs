@@ -42,12 +42,6 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
         
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        
-    }
-
-
     protected override void OnModelCreating(ModelBuilder builder)
     {
         BuildPeople(builder);
@@ -140,6 +134,11 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
             .HasForeignKey(x => x.ShowId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
+        
+        modelBuilder.Entity<Show>()
+            .HasOne(x => x.Library)
+            .WithMany(x => x.Shows)
+            .HasForeignKey(x => x.LibraryId);
 
         modelBuilder.Entity<Genre>()
             .HasMany(x => x.Shows)

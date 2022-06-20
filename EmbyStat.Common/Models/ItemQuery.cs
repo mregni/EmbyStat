@@ -22,15 +22,17 @@ public class ItemQuery
     public DateTime? MinDateLastSaved { get; set; }
     public bool? IsPlayed { get; set; }
     public bool? EnableUserData { get; set; }
+    public string[] Ids { get; set; }
 
     public ItemQuery()
     {
-        LocationTypes = new LocationType[] { };
-        ExcludeLocationTypes = new LocationType[] { };
-        Fields = new ItemFields[] { };
-        MediaTypes = new string[] { };
+        LocationTypes = Array.Empty<LocationType>();
+        ExcludeLocationTypes = Array.Empty<LocationType>();
+        Fields = Array.Empty<ItemFields>();
+        MediaTypes = Array.Empty<string>();
         EnableTotalRecordCount = true;
-        IncludeItemTypes = new string[] { };
-        EnableImageTypes = new ImageType[] { };
+        IncludeItemTypes = Array.Empty<string>();
+        EnableImageTypes = Array.Empty<ImageType>();
+        Ids = Array.Empty<string>();
     }
 }

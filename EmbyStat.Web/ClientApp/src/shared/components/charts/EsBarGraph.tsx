@@ -1,8 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {
-  Bar, BarChart, CartesianGrid, Cell, Label, LabelList, LabelProps, ResponsiveContainer, XAxis,
-  YAxis,
+  Bar, BarChart, CartesianGrid, Cell, LabelList, LabelProps, ResponsiveContainer, XAxis, YAxis,
 } from 'recharts';
 
 import {Box, Paper, Stack, Typography} from '@mui/material';

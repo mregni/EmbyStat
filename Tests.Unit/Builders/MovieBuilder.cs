@@ -29,7 +29,7 @@ public class MovieBuilder
             Banner = "bannerImage",
             TMDB = 1000,
             IMDB = "0001",
-            TVDB = "0003",
+            TVDB = 0003,
             Thumb = "thumbImage",
             Video3DFormat = Video3DFormat.None,
             Genres = new Genre[] {new() {Id = "1", Name = "Action"}},

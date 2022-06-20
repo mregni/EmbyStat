@@ -6,5 +6,6 @@ public enum ApplicationModes
     InstallService,
     UninstallService,
     Service,
-    RegisterUrl
+    RegisterUrl,
+    Migration
 }

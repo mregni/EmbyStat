@@ -52,12 +52,16 @@ public class Program
                 return 1;
             }
 
-            var mode = GetApplicationMode();
+            var mode = GetApplicationMode(options);
             switch (mode)
             {
                 case ApplicationModes.Interactive:
-                    var builder = BuildConsoleHost(options);
-                    builder.Run();
+                    var consoleHost = BuildConsoleHost(options);
+                    consoleHost.Run();
+                    break;
+                case ApplicationModes.Migration:
+                    var migrationHost = BuildMigationHost(options);
+                    migrationHost.Run();
                     break;
                 default:
                     break;
@@ -99,8 +103,13 @@ public class Program
         return null;
     }
 
-    private static ApplicationModes GetApplicationMode()
+    private static ApplicationModes GetApplicationMode(StartupOptions options)
     {
+        if (!string.IsNullOrWhiteSpace(options.ApplicationName))
+        {
+            return ApplicationModes.Migration;
+        }
+        
         // if (OperatingSystem.IsWindows() && startupContext.RegisterUrl)
         // {
         //     return ApplicationModes.RegisterUrl;
@@ -137,19 +146,8 @@ public class Program
 
     private static IHost BuildConsoleHost(StartupOptions? options)
     {
-        var memoryConfig = options.ToKeyValuePairs();
-        var dicConfig = memoryConfig.ToDictionary(x => x.Key, x => x.Value);
-        GenerateDefaultConfiguration(dicConfig["SystemConfig:Dirs:Config"]);
-
-        var configurationRoot = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(Path.Combine(dicConfig["SystemConfig:Dirs:Config"], "config.json"), false, true)
-            .AddInMemoryCollection(memoryConfig)
-            .Build();
-
+        var configurationRoot = GenerateConfig(options);
         var config = configurationRoot.Get<Config>();
-
-        //Dirs in options object worden hier genegeerd!
 
         CreateFolder(config.SystemConfig.Dirs.Logs);
         CreateFolder(config.SystemConfig.Dirs.Data);
@@ -213,6 +211,34 @@ public class Program
             .Build();
     }
 
+    private static IHost BuildMigationHost(StartupOptions options)
+    {
+        var configurationRoot = GenerateConfig(options);
+        return Host
+            .CreateDefaultBuilder()
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder
+                    .UseContentRoot(Directory.GetCurrentDirectory())
+                    .UseStartup<Startup>()
+                    .UseConfiguration(configurationRoot);
+            })
+            .Build();
+    }
+
+    private static IConfigurationRoot GenerateConfig(StartupOptions options)
+    {
+        var memoryConfig = options.ToKeyValuePairs();
+        var dicConfig = memoryConfig.ToDictionary(x => x.Key, x => x.Value);
+        GenerateDefaultConfiguration(dicConfig["SystemConfig:Dirs:Config"]);
+
+        return new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile(Path.Combine(dicConfig["SystemConfig:Dirs:Config"], "config.json"), false, true)
+            .AddInMemoryCollection(memoryConfig)
+            .Build();
+    }
+
     private static void CreateFolder(string folder)
     {
         if (!Directory.Exists(folder))
@@ -272,7 +298,7 @@ public class Program
         levelSwitch.MinimumLevel = logLevel == 1 ? LogEventLevel.Debug : LogEventLevel.Information;
         var minimumLevel = logLevel == 1 ? LogEventLevel.Debug : LogEventLevel.Warning;
         var logFormat =
-            "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff}] [{SourceContext}]  [{Level:u3}] {Message:lj}{NewLine}{Exception}";
+            "[{Timestamp:yyyy-MM-dd HH:mm:ss}] [{SourceContext}]  [{Level:u3}] {Message:lj}{NewLine}{Exception}";
         var fullLogPath = Path.Combine(logPath, "log.txt");
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.ControlledBy(levelSwitch)
@@ -298,6 +324,8 @@ public class Program
             .MinimumLevel.Override("Microsoft.AspNetCore.Cors", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.Authentication.JwtBearer", LogEventLevel.Warning)
             .MinimumLevel.Override("System.Net.Http.HttpClient", minimumLevel)
+            .MinimumLevel.Override("System.Net.Http.HttpClient.mediaServerClient.ClientHandler", minimumLevel)
+            .MinimumLevel.Override("System.Net.Http.HttpClient.mediaServerClient.LogicalHandler", minimumLevel)
             .Enrich.FromLogContext()
             .Enrich.WithExceptionDetails()
             .CreateLogger();

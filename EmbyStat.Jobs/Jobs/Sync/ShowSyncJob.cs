@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
+using EmbyStat.Clients.Base.Metadata;
 using EmbyStat.Clients.Tmdb;
+using EmbyStat.Clients.TvMaze;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Exceptions;
@@ -35,7 +37,9 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
     private readonly IShowRepository _showRepository;
     private readonly IStatisticsRepository _statisticsRepository;
     private readonly IShowService _showService;
-    private readonly ITmdbClient _tmdbClient;
+    private readonly IMetadataClient _tvMazeClient;
+    private readonly IMetadataClient _tmdbClient;
+    
     private readonly IGenreRepository _genreRepository;
     private readonly IPersonRepository _personRepository;
     private readonly IMediaServerRepository _mediaServerRepository;
@@ -43,7 +47,7 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
 
     public ShowSyncJob(IHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService,
         IClientStrategy clientStrategy, IShowRepository showRepository,
-        IStatisticsRepository statisticsRepository, IShowService showService, ITmdbClient tmdbClient,
+        IStatisticsRepository statisticsRepository, IShowService showService,
         IGenreRepository genreRepository, IPersonRepository personRepository, 
         IMediaServerRepository mediaServerRepository, IFilterRepository filterRepository, ILogger<ShowSyncJob> logger)
         : base(hubHelper, jobRepository, configurationService, logger)
@@ -51,7 +55,6 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
         _showRepository = showRepository;
         _statisticsRepository = statisticsRepository;
         _showService = showService;
-        _tmdbClient = tmdbClient;
         _genreRepository = genreRepository;
         _personRepository = personRepository;
         _mediaServerRepository = mediaServerRepository;
@@ -59,6 +62,9 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
 
         var settings = configurationService.Get();
         _baseHttpClient = clientStrategy.CreateHttpClient(settings.UserConfig.MediaServer.Type);
+        
+        _tvMazeClient = clientStrategy.CreateMetadataClient(MetadataServerType.TvMaze);
+        _tmdbClient = clientStrategy.CreateMetadataClient(MetadataServerType.Tmdb);
     }
 
     protected sealed override Guid Id => Constants.JobIds.ShowSyncId;
@@ -122,42 +128,73 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
 
         foreach (var library in librariesToProcess)
         {
-            var totalCount = await _baseHttpClient.GetMediaCount(library.Id, library.LastSynced, "Series");
-            if (totalCount == 0)
-            {
-                continue;
-            }
-
-            var increment = logIncrementBase / totalCount;
-
-            await LogInformation($"Found {totalCount} changed shows since last sync in {library.Name}");
-            var processed = 0;
-            var j = 0;
-            const int limit = 50;
-            do
-            {
-                await ProcessShowBlock(library, genres, j, limit, increment);
-
-                processed += limit;
-                j++;
-
-                var logProcessed = processed < totalCount ? processed : totalCount;
-                await LogInformation($"Processed {logProcessed} / {totalCount} shows");
-            } while (processed < totalCount);
-
+            await ProcessChangedShows(library, genres, logIncrementBase);
+            await ProcessFailedShows(library, genres, logIncrementBase);
             await _mediaServerRepository.UpdateLibrarySyncDate(library.Id, DateTime.UtcNow);
         }
     }
 
-    private async Task ProcessShowBlock(Library library, IEnumerable<Genre> genres, int index, int limit, double increment)
+    private async Task ProcessChangedShows(Library library, IEnumerable<Genre> genres, double logIncrementBase)
     {
-        var shows = await _baseHttpClient.GetShows(library.Id, index * limit, limit, library.LastSynced);
+        var totalCount = await _baseHttpClient.GetMediaCount(library.Id, library.LastSynced, "Series");
+        if (totalCount == 0)
+        {
+            return;
+        }
+        
+        var increment = logIncrementBase / totalCount;
+        
+        await LogInformation($"Found {totalCount} changed shows since last sync in {library.Name}");
+        var processed = 0;
+        var j = 0;
+        const int limit = 50;
+        do
+        {
+            await LogInformation($"Fetching next block of {limit} shows...");
+            var shows = await _baseHttpClient.GetShows(library.Id, j * limit, limit, library.LastSynced);
+            await ProcessShowBlock(library, shows, genres, increment);
+
+            processed += limit;
+            j++;
+
+            var logProcessed = processed < totalCount ? processed : totalCount;
+            await LogInformation($"Processed {logProcessed} / {totalCount} shows");
+        } while (processed < totalCount);
+    }
+
+    private async Task ProcessFailedShows(Library library, IEnumerable<Genre> genres, double logIncrementBase)
+    {
+        var failedShowIds = _showRepository.GetShowIdsThatFailedExternalSync(library.Id).ToArray();
+        var totalCount = failedShowIds.Length;
+        var increment = logIncrementBase / totalCount;
+        
+        await LogInformation($"Found {totalCount} failed shows, trying to sync them again.");
+        var processed = 0;
+        var j = 0;
+        const int limit = 50;
+        do
+        {
+            var shows = await _baseHttpClient.GetShows(failedShowIds, j * limit, limit);
+            await ProcessShowBlock(library, shows, genres, increment);
+
+            processed += limit;
+            j++;
+
+            var logProcessed = processed < totalCount ? processed : totalCount;
+            await LogInformation($"Processed {logProcessed} / {totalCount} shows");
+        } while (processed < totalCount);
+        
+    }
+
+    private async Task ProcessShowBlock(Library library, IReadOnlyList<Show> shows, IEnumerable<Genre> genres, double increment)
+    {
         shows.AddGenres(genres);
 
         foreach (var show in shows)
         {
-            var seasons = await _baseHttpClient.GetSeasons(show.Id, library.LastSynced);
-            var episodes = await _baseHttpClient.GetEpisodes(show.Id, library.LastSynced);
+            show.Library = library;
+            var seasons = await _baseHttpClient.GetSeasons(show.Id);
+            var episodes = await _baseHttpClient.GetEpisodes(show.Id);
 
             foreach (var season in seasons)
             {
@@ -200,10 +237,15 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
                 await LogWarning($"Can't seem to find {show.Name} on Imdb, skipping show for now");
             }
         }
+        catch (NotFoundException e)
+        {
+            await LogError(e.Message);
+            show.ExternalSynced = false;
+        }
         catch (Exception e)
         {
-            await LogError($"Can't seem to process show {show.Name}, check the logs for more details!");
             Logger.LogError(e, "Exception details");
+            await LogError($"Can't seem to process show {show.Name}, check the logs for more details!");
             show.ExternalSynced = false;
         }
     }
@@ -211,11 +253,22 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
     private async Task ProcessMissingEpisodesAsync(Show show)
     {
         var missingEpisodesCount = 0;
-        var externalEpisodes = await _tmdbClient.GetEpisodesAsync(show.TMDB);
+        var externalEpisodes = await _tvMazeClient.GetEpisodesAsync(show.TVDB);
+        if (externalEpisodes == null && Configuration.UserConfig.Tmdb.UseAsFallback)
+        {
+            await LogWarning($"Could not find show {show.Name} with TVDB id {show.TVDB} on TvMaze. Searching on TMDB as fallback");
+            externalEpisodes = await _tmdbClient.GetEpisodesAsync(show.TMDB);
+        }
 
         if (externalEpisodes == null)
         {
-            throw new NotFoundException($"Could not find show {show.Name} with id {show.TMDB}");
+            var errorMessage = $"Could not find show {show.Name} with id {show.Id} anywhere. ";
+            if (!Configuration.UserConfig.Tmdb.UseAsFallback)
+            {
+                errorMessage += "TMDB fallback is disabled so show will be skipped.";
+            }
+
+            throw new NotFoundException(errorMessage);
         }
 
         foreach (var externalEpisode in externalEpisodes.Where(x => x.SeasonNumber != 0))

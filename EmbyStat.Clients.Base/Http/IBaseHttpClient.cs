@@ -21,8 +21,9 @@ public interface IBaseHttpClient
     Task<int> GetPeopleCount();
         
     Task<Show[]> GetShows(string parentId, int startIndex, int limit, DateTime? lastSynced);
-    Task<Season[]> GetSeasons(string parentId, DateTime? lastSynced);
-    Task<Episode[]> GetEpisodes(string parentId, DateTime? lastSynced);
+    Task<Show[]> GetShows(string[] showIds, int startIndex, int limit);
+    Task<Season[]> GetSeasons(string parentId);
+    Task<Episode[]> GetEpisodes(string parentId);
 
     Task<List<PluginInfo>> GetInstalledPlugins();
     Task<MediaServerInfo> GetServerInfo();

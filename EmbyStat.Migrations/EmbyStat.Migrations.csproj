@@ -12,12 +12,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.6" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EmbyStat.Core\EmbyStat.Core.csproj" />
-    <ProjectReference Include="..\EmbyStat.Repositories\EmbyStat.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

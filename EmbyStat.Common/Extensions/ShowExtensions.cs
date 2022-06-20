@@ -101,8 +101,7 @@ WHERE 1=1 ";
     /// <param name="sortField">Column on witch to sort</param>
     /// <param name="sortOrder">asc or desc depending on the sorting needed</param>
     /// <returns>Sqlite query <see cref="string"/> that can query shows</returns>
-    public static string GenerateShowPageQuery(IEnumerable<Filter> filters,
-        string sortField, string sortOrder)
+    public static string GenerateShowPageQuery(IEnumerable<Filter> filters, string sortField, string sortOrder)
     {
         var query = GenerateFullShowWithGenresQuery();
         query = filters.Aggregate(query, (current, filter) => current + AddShowFilters(filter));
