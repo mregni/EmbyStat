@@ -312,7 +312,8 @@
       "APIKEYWARNING": "Si lo desea, puede proporcionar a EmbyStat su propia clave API TMDb aquí. ¡Asegúrese de proporcionar una clave API funcional! Si la clave es incorrecta la tarea de sincronización fallará.",
       "LABEL": "TMDb API key",
       "NOAPIKEY": "La clave API no puede estar vacía",
-      "TITLE": "Conexión TMDb"
+      "TITLE": "Conexión TMDb",
+      "FALLBACK": "If you don't want to use TMDB as a fallback indexer you can uncheck this box. Some shows are not found in TvMaze and a fallback is always usefull to have but TMDB can return wrong results."
     }
   },
   "SHOWS": {
