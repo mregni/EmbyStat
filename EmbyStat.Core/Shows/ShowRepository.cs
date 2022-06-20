@@ -10,6 +10,7 @@ using EmbyStat.Core.DataStore;
 using EmbyStat.Core.Shows.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using MoreLinq;
 using MoreLinq.Extensions;
 
 namespace EmbyStat.Core.Shows;
@@ -371,6 +372,10 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
     public async Task<IEnumerable<Show>> GetShowPage(int skip, int take, string sortField, string sortOrder,
         IEnumerable<Filter> filters)
     {
+        var sortingOnSeasonRequested = sortField == "seasons";
+        var sortingOnEpisodesRequested= sortField == "episodes";
+        sortField = sortingOnSeasonRequested || sortingOnEpisodesRequested ? string.Empty : sortField;
+        
         var query = ShowExtensions.GenerateShowPageQuery(filters, sortField, sortOrder);
         
         _logger.LogDebug("{Query}", query);
@@ -390,7 +395,24 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
                 return s;
             });
 
-        return MapShows(list).Skip(skip).Take(take);
+        var shows = MapShows(list).ToList();
+        if (sortingOnSeasonRequested)
+        {
+            shows = sortOrder == "asc" 
+                ? shows.OrderBy(x => x.Seasons.Count).ThenBy(x => x.SortName).ToList() 
+                : shows.OrderByDescending(x => x.Seasons.Count).ThenBy(x => x.SortName).ToList() ;
+        }
+
+        if (sortingOnEpisodesRequested)
+        {
+            shows = MoreEnumerable.OrderBy(shows, x =>
+                    x.Seasons.SelectMany(y => y.Episodes).Count(y => y.LocationType == LocationType.Disk) /
+                    (double) x.Seasons.SelectMany(y => y.Episodes).Count(), sortOrder.Trim() == "asc" ? OrderByDirection.Ascending : OrderByDirection.Descending)
+                .ThenBy(x => x.SortName)
+                .ToList();
+        }
+        
+        return shows.Skip(skip).Take(take);
     }
 
     private static IEnumerable<Show> MapShows(IEnumerable<Show> list)
