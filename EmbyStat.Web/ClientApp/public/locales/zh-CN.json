@@ -312,7 +312,8 @@
       "APIKEYWARNING": "你可以在此处填入自己的 TheTVDB API 密钥。确保你提供的API密钥有效，如果密钥失效，同步任务也将失败。",
       "LABEL": "TMDb API key",
       "NOAPIKEY": "API 密钥不能为空",
-      "TITLE": "TMDb 连接"
+      "TITLE": "TMDb 连接",
+      "FALLBACK": "If you don't want to use TMDB as a fallback indexer you can uncheck this box. Some shows are not found in TvMaze and a fallback is always usefull to have but TMDB can return wrong results."
     }
   },
   "SHOWS": {
