@@ -15,7 +15,7 @@
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
         <PackageReference Include="morelinq" Version="3.3.2" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-        <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.5" />
+        <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.6" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.5" />
     </ItemGroup>
 
