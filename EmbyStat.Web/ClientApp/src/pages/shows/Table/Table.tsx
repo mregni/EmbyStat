@@ -47,7 +47,7 @@ export function ShowTable() {
     {label: '', field: '', sortable: false, width: 30, align: 'left'},
     {label: 'COMMON.TITLE', field: 'sortName', sortable: true, width: 300, align: 'left'},
     {label: 'COMMON.GENRES', field: '', sortable: false, align: 'left'},
-    {label: 'COMMON.STATUS', field: '', sortable: false, align: 'right'},
+    {label: 'COMMON.STATUS', field: 'status', sortable: true, align: 'right'},
     {label: 'COMMON.SIZEINMB', field: 'sizeInMb', sortable: true, align: 'right'},
     {label: 'COMMON.RUNTIME', field: 'runTimeTicks', sortable: true, align: 'right'},
     {label: 'COMMON.TOTALRUNTIME', field: 'cumulativeRunTimeTicks', sortable: false, align: 'right'},
