@@ -238,7 +238,7 @@ VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate
 
             if (show.Seasons.AnyNotNull())
             {
-                show.Seasons.ForEach(x => x.ShowId = show.Id);
+                ForEachExtension.ForEach(show.Seasons, x => x.ShowId = show.Id);
                 var seasonQuery =
                     $@"INSERT OR REPLACE INTO {Constants.Tables.Seasons} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,IndexNumber,IndexNumberEnd,LocationType,ShowId)
 VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@IndexNumber,@IndexNumberEnd,@LocationType,@ShowId)";
@@ -260,7 +260,7 @@ VALUES (@GenreId, @ShowsId)";
                 var peopleQuery =
                     @$"INSERT OR REPLACE INTO {Constants.Tables.MediaPerson} (Type, ShowId, PersonId)
 VALUES (@Type, @ShowId, @PersonId)";
-                show.People.ForEach(x => x.ShowId = show.Id);
+                ForEachExtension.ForEach(show.People, x => x.ShowId = show.Id);
 
                 await connection.ExecuteAsync(peopleQuery, show.People, transaction);
             }
@@ -281,7 +281,7 @@ VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate
                         var mediaSourceQuery =
                             @$"INSERT OR REPLACE INTO {Constants.Tables.MediaSources} (Id,BitRate,Container,Path,Protocol,RunTimeTicks,SizeInMb,EpisodeId) 
 VALUES (@Id, @BitRate,@Container,@Path,@Protocol,@RunTimeTicks,@SizeInMb,@EpisodeId)";
-                        episode.MediaSources.ForEach(x => x.EpisodeId = episode.Id);
+                        ForEachExtension.ForEach(episode.MediaSources, x => x.EpisodeId = episode.Id);
 
                         await connection.ExecuteAsync(mediaSourceQuery, episode.MediaSources, transaction);
                     }
@@ -291,7 +291,7 @@ VALUES (@Id, @BitRate,@Container,@Path,@Protocol,@RunTimeTicks,@SizeInMb,@Episod
                         var videoStreamQuery =
                             @$"INSERT OR REPLACE INTO {Constants.Tables.VideoStreams} (Id,AspectRatio,AverageFrameRate,BitRate,Channels,Height,Language,Width,BitDepth,Codec,IsDefault,VideoRange,EpisodeId) 
 VALUES (@Id,@AspectRatio,@AverageFrameRate,@BitRate,@Channels,@Height,@Language,@Width,@BitDepth,@Codec,@IsDefault,@VideoRange,@EpisodeId)";
-                        episode.VideoStreams.ForEach(x => x.EpisodeId = episode.Id);
+                        ForEachExtension.ForEach(episode.VideoStreams, x => x.EpisodeId = episode.Id);
 
                         await connection.ExecuteAsync(videoStreamQuery, episode.VideoStreams, transaction);
                     }
@@ -301,7 +301,7 @@ VALUES (@Id,@AspectRatio,@AverageFrameRate,@BitRate,@Channels,@Height,@Language,
                         var audioStreamQuery =
                             @$"INSERT OR REPLACE INTO {Constants.Tables.AudioStreams} (Id,BitRate,ChannelLayout,Channels,Codec,Language,SampleRate,IsDefault,EpisodeId)
 VALUES (@Id,@BitRate,@ChannelLayout,@Channels,@Codec,@Language,@SampleRate,@IsDefault,@EpisodeId)";
-                        episode.AudioStreams.ForEach(x => x.EpisodeId = episode.Id);
+                        ForEachExtension.ForEach(episode.AudioStreams, x => x.EpisodeId = episode.Id);
 
                         await connection.ExecuteAsync(audioStreamQuery, episode.AudioStreams, transaction);
                     }
@@ -311,7 +311,7 @@ VALUES (@Id,@BitRate,@ChannelLayout,@Channels,@Codec,@Language,@SampleRate,@IsDe
                         var subtitleStreamQuery =
                             @$"INSERT OR REPLACE INTO {Constants.Tables.SubtitleStreams} (Id,Codec,DisplayTitle,IsDefault,Language,EpisodeId)
 VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
-                        episode.SubtitleStreams.ForEach(x => x.EpisodeId = episode.Id);
+                        ForEachExtension.ForEach(episode.SubtitleStreams, x => x.EpisodeId = episode.Id);
 
                         await connection.ExecuteAsync(subtitleStreamQuery, episode.SubtitleStreams,
                             transaction);
