@@ -6,7 +6,7 @@ namespace EmbyStat.Controllers.Movie;
 
 public class MovieStatisticsViewModel
 {
-    public List<CardViewModel<string>> Cards { get; set; }
+    public List<CardViewModel> Cards { get; set; }
     public List<TopCardViewModel> TopCards { get; set; }
     public List<Chart> Charts { get; set; }
     public List<ShortMovieViewModel> Shorts { get; set; }

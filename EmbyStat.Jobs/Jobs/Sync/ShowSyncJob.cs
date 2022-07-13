@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Clients.Base.Metadata;
-using EmbyStat.Clients.Tmdb;
-using EmbyStat.Clients.TvMaze;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Exceptions;
@@ -118,7 +116,7 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
 
     private async Task ProcessShowsAsync()
     {
-        var librariesToProcess = await _mediaServerRepository.GetAllLibraries(LibraryType.TvShow, true);
+        var librariesToProcess = await _mediaServerRepository.GetAllSyncedLibraries(LibraryType.TvShow);
         await LogInformation("Processing shows");
         await LogInformation(
             $"{librariesToProcess.Count} libraries are selected, getting ready for processing");
@@ -128,17 +126,21 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
 
         foreach (var library in librariesToProcess)
         {
+            await LogInformation($"Processing {library.Name}");
             await ProcessChangedShows(library, genres, logIncrementBase);
             await ProcessFailedShows(library, genres, logIncrementBase);
-            await _mediaServerRepository.UpdateLibrarySyncDate(library.Id, DateTime.UtcNow);
+            await _mediaServerRepository.UpdateLibrarySyncDate(library.Id, DateTime.UtcNow, LibraryType.TvShow);
+            await LogInformation($"Processing {library.Name} done");
         }
     }
 
     private async Task ProcessChangedShows(Library library, IEnumerable<Genre> genres, double logIncrementBase)
     {
-        var totalCount = await _baseHttpClient.GetMediaCount(library.Id, library.LastSynced, "Series");
+        var lastSynced = library.SyncTypes.GetLastSyncedDateForLibrary(library.Id, LibraryType.TvShow);
+        var totalCount = await _baseHttpClient.GetMediaCount(library.Id, lastSynced, "Series");
         if (totalCount == 0)
         {
+            await LogInformation("No changes detected to sync");
             return;
         }
         
@@ -151,7 +153,7 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
         do
         {
             await LogInformation($"Fetching next block of {limit} shows...");
-            var shows = await _baseHttpClient.GetShows(library.Id, j * limit, limit, library.LastSynced);
+            var shows = await _baseHttpClient.GetShows(library.Id, j * limit, limit, lastSynced);
             await ProcessShowBlock(library, shows, genres, increment);
 
             processed += limit;
@@ -166,6 +168,13 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
     {
         var failedShowIds = _showRepository.GetShowIdsThatFailedExternalSync(library.Id).ToArray();
         var totalCount = failedShowIds.Length;
+
+        if (totalCount == 0)
+        {
+            await LogInformation($"No failed shows detected to resync");
+            return;
+        }
+        
         var increment = logIncrementBase / totalCount;
         
         await LogInformation($"Found {totalCount} failed shows, trying to sync them again.");

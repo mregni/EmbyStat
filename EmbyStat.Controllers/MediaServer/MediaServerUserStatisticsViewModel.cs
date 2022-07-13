@@ -5,6 +5,5 @@ namespace EmbyStat.Controllers.MediaServer;
 
 public class MediaServerUserStatisticsViewModel
 {
-    public List<CardViewModel<string>> Cards { get; set; }
-
+    public List<CardViewModel> Cards { get; set; }
 }

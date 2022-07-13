@@ -11,13 +11,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmbyStat.Core.DataStore.Migrations.Sqlite
 {
     [DbContext(typeof(EsDbContext))]
-    [Migration("20220615060631_Init")]
+    [Migration("20220622095519_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.6");
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Device", b =>
                 {
@@ -525,8 +525,8 @@ namespace EmbyStat.Core.DataStore.Migrations.Sqlite
                     b.Property<DateTime>("LastPlayedDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("MediaType")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("MediaType")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("MovieId")
                         .HasColumnType("TEXT");

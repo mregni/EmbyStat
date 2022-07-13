@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
 
@@ -16,6 +16,7 @@ type User = {
 export function EsUserCard() {
   const {user, changeUserName} = useContext(UserContext);
   const {t} = useTranslation();
+  const [saving, setSaving] = useState(false);
 
   const {register, handleSubmit, getValues, formState: {errors}} = useForm<User>({
     mode: 'all',
@@ -26,7 +27,10 @@ export function EsUserCard() {
 
   const submitForm = async (data: User) => {
     if (user !== null) {
+      setSaving(true);
       const result = await changeUserName(data.username);
+
+      setSaving(false);
       if (result) {
         SnackbarUtils.success(t('SETTINGS.ACCOUNT.USERNAMEUPDATED'));
         return;
@@ -42,6 +46,7 @@ export function EsUserCard() {
       title='SETTINGS.ACCOUNT.USERNAME'
       saveForm={submitForm}
       handleSubmit={handleSubmit}
+      saving={saving}
     >
       <Typography variant="body1">
         {t('SETTINGS.ACCOUNT.CONTENT')}

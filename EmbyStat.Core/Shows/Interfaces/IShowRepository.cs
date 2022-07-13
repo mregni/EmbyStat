@@ -19,6 +19,7 @@ public interface IShowRepository : IMediaRepository
 
     Task<int> CompleteCollectedCount();
     Task DeleteAll();
+    Task RemoveUnwantedShows(IEnumerable<string> libraryIds);
     #endregion
 
     #region Charts

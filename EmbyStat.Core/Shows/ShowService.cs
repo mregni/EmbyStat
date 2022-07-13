@@ -92,16 +92,18 @@ public class ShowService : MediaService, IShowService
         return _showRepository.GetShowByIdWithEpisodes(id);
     }
         
-    public Task SetLibraryAsSynced(string[] libraryIds)
+    public async Task SetLibraryAsSynced(string[] libraryIds)
     {
-        return _mediaServerRepository.SetLibraryAsSynced(libraryIds, LibraryType.TvShow);
+        await _mediaServerRepository.SetLibraryAsSynced(libraryIds, LibraryType.TvShow);
+        await _showRepository.RemoveUnwantedShows(libraryIds);
+        await _statisticsRepository.MarkTypesAsInvalid(StatisticType.Show);
     }
 
     #region Cards
 
-    private async Task<List<Card<string>>> CalculateCards()
+    private async Task<List<Card>> CalculateCards()
     {
-        var list = new List<Card<string>>();
+        var list = new List<Card>();
         list.AddIfNotNull(await CalculateTotalShowCount());
         list.AddIfNotNull(await CalculateCompleteCollectedShowCount());
         list.AddIfNotNull(await CalculateTotalEpisodeCount());
@@ -114,13 +116,13 @@ public class ShowService : MediaService, IShowService
         return list;
     }
 
-    private Task<Card<string>> CalculateTotalShowCount()
+    private Task<Card> CalculateTotalShowCount()
     {
         return CalculateStat(async () =>
         {
             var count = await _showRepository.Count();
 
-            return new Card<string>
+            return new Card
             {
                 Title = Constants.Shows.TotalShows,
                 Value = count.ToString(),
@@ -130,12 +132,12 @@ public class ShowService : MediaService, IShowService
         }, "Calculate total show count failed:");
     }
 
-    private Task<Card<string>> CalculateCompleteCollectedShowCount()
+    private Task<Card> CalculateCompleteCollectedShowCount()
     {
         return CalculateStat(async () =>
         {
             var count = await _showRepository.CompleteCollectedCount();
-            return new Card<string>
+            return new Card
             {
                 Title = Constants.Shows.TotalCompleteCollectedShows,
                 Value = count.ToString(),
@@ -145,13 +147,13 @@ public class ShowService : MediaService, IShowService
         }, "Calculate total completed collected show count failed:");
     }
 
-    private Task<Card<string>> CalculateTotalEpisodeCount()
+    private Task<Card> CalculateTotalEpisodeCount()
     {
         return CalculateStat(async () =>
         {
             var total = await _showRepository.GetEpisodeCount(LocationType.Disk);
 
-            return new Card<string>
+            return new Card
             {
                 Title = Constants.Shows.TotalEpisodes,
                 Value = total.ToString(),
@@ -161,12 +163,12 @@ public class ShowService : MediaService, IShowService
         }, "Calculate total episode count failed:");
     }
 
-    private Task<Card<string>> CalculateTotalShowGenres()
+    private Task<Card> CalculateTotalShowGenres()
     {
         return CalculateStat(async () =>
         {
             var totalGenres = await _showRepository.GetGenreCount();
-            return new Card<string>
+            return new Card
             {
                 Title = Constants.Common.TotalGenres,
                 Value = totalGenres.ToString(),
@@ -176,13 +178,13 @@ public class ShowService : MediaService, IShowService
         }, "Calculate total show genres count failed:");
     }
 
-    private Task<Card<string>> CalculateTotalMissingEpisodeCount()
+    private Task<Card> CalculateTotalMissingEpisodeCount()
     {
         return CalculateStat(async () =>
         {
             var total = await _showRepository.GetEpisodeCount(LocationType.Virtual);
 
-            return new Card<string>
+            return new Card
             {
                 Title = Constants.Shows.TotalMissingEpisodes,
                 Value = total.ToString(),
@@ -192,14 +194,14 @@ public class ShowService : MediaService, IShowService
         }, "Calculate total missing episodes failed:");
     }
 
-    private Task<Card<string>> CalculatePlayableTime()
+    private Task<Card> CalculatePlayableTime()
     {
         return CalculateStat(async () =>
         {
             var totalRunTimeTicks = await _showRepository.GetTotalRunTimeTicks();
             var playLength = new TimeSpan(totalRunTimeTicks);
 
-            return new Card<string>
+            return new Card
             {
                 Title = Constants.Shows.TotalPlayLength,
                 Value = $"{playLength.Days}|{playLength.Hours}|{playLength.Minutes}",
@@ -209,13 +211,13 @@ public class ShowService : MediaService, IShowService
         }, "Calculate total playable time failed:");
     }
 
-    private Task<Card<string>> CalculateTotalDiskSpace()
+    private Task<Card> CalculateTotalDiskSpace()
     {
         return CalculateStat(async () =>
         {
             var total = await _showRepository.GetTotalDiskSpaceUsed();
 
-            return new Card<string>
+            return new Card
             {
                 Value = total.ToString(CultureInfo.InvariantCulture),
                 Title = Constants.Common.TotalDiskSpace,
@@ -225,12 +227,12 @@ public class ShowService : MediaService, IShowService
         }, "Calculate total disk space failed:");
     }
         
-    private Card<string> TotalPersonTypeCount(PersonType type, string title)
+    private Card TotalPersonTypeCount(PersonType type, string title)
     {
         return CalculateStat(() =>
         {
             var value = _showRepository.GetPeopleCount(type);
-            return new Card<string>
+            return new Card
             {
                 Value = value.ToString(),
                 Title = title,

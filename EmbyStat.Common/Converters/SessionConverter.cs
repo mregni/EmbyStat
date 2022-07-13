@@ -27,7 +27,7 @@ public static class SessionConverter
 
             if (session["PlayState"]["MediaSourceId"] != null)
             {
-                Enum.TryParse(session["NowPlayingItem"]["Type"].Value<string>(), true, out PlayType playType);
+                Enum.TryParse(session["NowPlayingItem"]["Type"].Value<string>(), true, out MediaType playType);
                 var play = new Play
                 {
                     MediaId = session["NowPlayingItem"]["Id"].Value<string>(),

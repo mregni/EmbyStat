@@ -18,6 +18,7 @@ type LanguageForm = {
 export function EsLanguageCard() {
   const {userConfig, languages, save} = useContext(SettingsContext);
   const {getLocale} = useLocale();
+  const [saving, setSaving] = useState(false);
   const [privateLocale, setPrivateLocale] = useState(getLocale(userConfig.language));
   const {t} = useTranslation();
 
@@ -36,7 +37,9 @@ export function EsLanguageCard() {
 
   const saveForm = async (data: LanguageForm) => {
     userConfig.language = data.language;
+    setSaving(true);
     await save(userConfig);
+    setSaving(false);
   };
 
   return (
@@ -44,6 +47,7 @@ export function EsLanguageCard() {
       title={t('SETTINGS.LANGUAGE.TITLE')}
       saveForm={saveForm}
       handleSubmit={handleSubmit}
+      saving={saving}
     >
       <Controller
         render={({

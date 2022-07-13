@@ -82,7 +82,8 @@ public class MediaServerController : Controller
     public async Task<IActionResult> GetMediaServerLibraries()
     {
         var result = await _mediaServerService.GetMediaServerLibraries();
-        return Ok(_mapper.Map<IList<LibraryViewModel>>(result));
+        var map = _mapper.Map<IList<LibraryViewModel>>(result);
+        return Ok(map);
     }
 
     [HttpPost]
@@ -144,13 +145,11 @@ public class MediaServerController : Controller
 
         var mappedUser = _mapper.Map<UserFullViewModel>(user);
 
-        var viewedEpisodeCount = _mediaServerService.GetViewedEpisodeCountByUserId(id);
-        var viewedMovieCount = _mediaServerService.GetViewedMovieCountByUserId(id);
-        var lastWatchedMedia = _mediaServerService.GetUserViewPageByUserId(id, 0,10).ToList();
+        var viewedEpisodeCount = await _mediaServerService.GetViewedEpisodeCountByUserId(id);
+        var viewedMovieCount = await _mediaServerService.GetViewedMovieCountByUserId(id);
 
-        mappedUser.ViewedEpisodeCount = _mapper.Map<CardViewModel<int>>(viewedEpisodeCount);
-        mappedUser.ViewedMovieCount = _mapper.Map<CardViewModel<int>>(viewedMovieCount);
-        mappedUser.LastWatchedMedia = _mapper.Map<IList<UserMediaViewViewModel>>(lastWatchedMedia);
+        mappedUser.ViewedEpisodeCount = _mapper.Map<CardViewModel>(viewedEpisodeCount);
+        mappedUser.ViewedMovieCount = _mapper.Map<CardViewModel>(viewedMovieCount);
 
         return Ok(mappedUser);
     }

@@ -67,10 +67,10 @@ public class MapProfiles : Profile
                 src => src.MapFrom((org, _) =>
                     org.EndTimeUtc?.ToString("O") ?? string.Empty));
 
-        CreateMap(typeof(Card<>), typeof(CardViewModel<>))
+        CreateMap<Card, CardViewModel>()
             .ForMember("Type", src => src.MapFrom((org, _) =>
             {
-                return ((Card<string>) org).Type switch
+                return ((Card) org).Type switch
                 {
                     CardType.Text => "text",
                     CardType.Size => "size",
@@ -79,7 +79,8 @@ public class MapProfiles : Profile
                 };
             }));
 
-        CreateMap<Library, LibraryViewModel>();
+        CreateMap<Library, LibraryViewModel>()
+            .ForMember(x => x.Sync, x => x.Ignore());
         CreateMap<Chart, ChartViewModel>();
 
         CreateMap<SystemInfo, MediaServerInfo>()
@@ -145,13 +146,16 @@ public class MapProfiles : Profile
             .ForMember(x => x.DisplayMissingEpisodes, x => x.MapFrom(y => y.Configuration.DisplayMissingEpisodes))
             .ForMember(x => x.SubtitleMode, x => x.MapFrom(y => y.Configuration.SubtitleMode));
 
+        CreateMap<UserMediaView, UserMediaViewViewModel>();
         CreateMap<MediaServerUserRow, MediaServerUserRowViewModel>();
         CreateMap<MediaServerUser, UserOverviewViewModel>();
+        CreateMap<MediaServerUser, UserFullViewModel>();
+
         CreateMap<MediaServerUserStatistics, MediaServerUserStatisticsViewModel>();
 
         CreateMap<BaseItemDto, MediaServerUserView>()
             .ForMember(x => x.MediaId, x => x.MapFrom(y => y.Id))
-            .ForMember(x => x.MediaType, x => x.MapFrom(y => y.Type))
+            .ForMember(x => x.MediaType, x => x.MapFrom(y => MapMediaType(y.Type)))
             .ForMember(x => x.PlayCount, x => x.MapFrom(y => y.UserData.PlayCount))
             .ForMember(x => x.UserId, x => x.Ignore())
             .ForMember(x => x.LastPlayedDate, x => x.MapFrom(y => y.UserData.LastPlayedDate));
@@ -324,6 +328,16 @@ public class MapProfiles : Profile
             .ForMember(x => x.Type, x => x.MapFrom(y => y.CollectionType.ToLibraryType()))
             .ForMember(x => x.Primary, x => x.MapFrom(y => y.ImageTags.ConvertToImageTag()));
     }
+    
+    private static MediaType MapMediaType(string type)
+    {
+        return type switch
+        {
+            "Movie" => MediaType.Movie,
+            "Episode" => MediaType.Episode,
+            _ => MediaType.Unknown
+        };
+    } 
 }
 
 public static class DictionaryMappingExtensions

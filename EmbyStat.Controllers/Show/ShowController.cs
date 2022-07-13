@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Core.Shows.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using MoreLinq.Extensions;
 using Newtonsoft.Json;
 
 namespace EmbyStat.Controllers.Show;
@@ -28,10 +31,17 @@ public class ShowController : Controller
     public async Task<IActionResult> GetLibraries()
     {
         var result = await _showService.GetShowLibraries();
-        var convert = _mapper.Map<IList<LibraryViewModel>>(result);
-        return Ok(convert);
+        var map = _mapper.Map<IList<LibraryViewModel>>(result, opts =>
+            opts.AfterMap((src, dest) =>
+            {
+                dest.ForEach(x => x.Sync = result
+                    .Single(y => y.Id == x.Id).SyncTypes
+                    .Any(y => y.SyncType == LibraryType.TvShow));
+            }));
+
+        return Ok(map);
     }
-        
+
     [HttpPost]
     [Route("libraries")]
     public async Task<IActionResult> UpdateLibraries([FromBody] string[] libraryIds)
@@ -51,7 +61,8 @@ public class ShowController : Controller
 
     [HttpGet]
     [Route("list")]
-    public async Task<IActionResult> GetShowPageList(int skip, int take, string sortField, string sortOrder, bool requireTotalCount, string filter)
+    public async Task<IActionResult> GetShowPageList(int skip, int take, string sortField, string sortOrder,
+        bool requireTotalCount, string filter)
     {
         var filtersObj = Array.Empty<Filter>();
         if (filter != null)

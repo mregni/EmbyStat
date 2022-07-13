@@ -37,7 +37,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Refit;
 using Rollbar.DTOs;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace EmbyStat.Hosts.Cmd;
 
