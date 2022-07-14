@@ -89,7 +89,8 @@
     "UPDATELEVEL": "Canal de distribution",
     "VERSION": "Version",
     "VIDEORANGE": "Video range",
-    "WIDTH": "Largeur"
+    "WIDTH": "Largeur",
+    "NEVER": "Never"
   },
   "DIALOGS": {
     "EDIT_TRIGGER": {
@@ -344,6 +345,7 @@
     "HIDDEN": "Hidden",
     "IDLEUSERS": "Idle users",
     "LASTACTIVE": "Dernière activité",
+    "LASTLOGIN": "Last login",
     "LOADER": "Loading user info",
     "USERS": "Utilisateurs",
     "WATCHED": {

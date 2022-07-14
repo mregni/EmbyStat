@@ -7,4 +7,5 @@ public interface ILinkedMedia
     ICollection<MediaPerson> People { get; set; }
     ICollection<Genre> Genres { get; set; }
     Library Library { get; set; }
+    public string LibraryId { get; set; }
 }

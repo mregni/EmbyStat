@@ -84,7 +84,9 @@ public class MediaServerRepository : IMediaServerRepository
 
     public Task<MediaServerInfo> GetServerInfo()
     {
-        return _context.MediaServerInfo.AsNoTracking().SingleOrDefaultAsync();
+        return _context.MediaServerInfo
+            .AsNoTracking()
+            .SingleOrDefaultAsync();
     }
 
     public async Task DeleteAndInsertServerInfo(MediaServerInfo entity)
@@ -108,10 +110,10 @@ public class MediaServerRepository : IMediaServerRepository
     {
         var query = MediaServerExtensions.UserInsertQuery;
         _logger.LogDebug(query);
-        
+
         await using var connection = _sqliteBootstrap.CreateConnection();
         await connection.OpenAsync();
-        
+
         await using var transaction = connection.BeginTransaction();
         await connection.ExecuteAsync(query, users, transaction);
         await transaction.CommitAsync();
@@ -119,16 +121,17 @@ public class MediaServerRepository : IMediaServerRepository
         var usersToDelete = await _context.MediaServerUsers
             .Where(x => !users.Select(u => u.Id).Contains(x.Id))
             .ToListAsync();
-        
+
         _context.MediaServerUsers.RemoveRange(usersToDelete);
         await _context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<MediaServerUserRow>> GetUserPage(int skip, int take, string sortField, string sortOrder)
+    public async Task<IEnumerable<MediaServerUserRow>> GetUserPage(int skip, int take, string sortField,
+        string sortOrder)
     {
         var query = MediaServerExtensions.GenerateUserPageQuery(skip, take, sortField, sortOrder);
         _logger.LogDebug(query);
-        
+
         await using var connection = _sqliteBootstrap.CreateConnection();
         await connection.OpenAsync();
         return await connection.QueryAsync<MediaServerUserRow>(query);
@@ -150,7 +153,7 @@ public class MediaServerRepository : IMediaServerRepository
             .ToArrayAsync();
     }
 
-    public Task<MediaServerUser> GetUserById(string id)
+    public Task<MediaServerUser?> GetUserById(string id)
     {
         return _context.MediaServerUsers
             .AsNoTracking()
@@ -174,7 +177,7 @@ UPDATE SET LastPlayedDate=excluded.LastPlayedDate, PlayCount=excluded.PlayCount;
         _logger.LogDebug(query);
         await using var connection = _sqliteBootstrap.CreateConnection();
         await connection.OpenAsync();
-        
+
         await using var transaction = connection.BeginTransaction();
         await connection.ExecuteAsync(query, views, transaction);
         await transaction.CommitAsync();
@@ -185,7 +188,7 @@ UPDATE SET LastPlayedDate=excluded.LastPlayedDate, PlayCount=excluded.PlayCount;
         return _context.MediaServerUsers.CountAsync();
     }
 
-    public int GetUserViewsForType(string type)
+    public int GetUserViewsForType(MediaType type)
     {
         var list = _context.MediaServerUserViews
             .AsNoTracking()
@@ -207,18 +210,18 @@ WHERE vi.MediaType = 'Episode'
 GROUP BY s.Id
 ORDER BY ViewCount DESC
 LIMIT {count}";
-        
+
         _logger.LogDebug(query);
         await using var connection = _sqliteBootstrap.CreateConnection();
         await connection.OpenAsync();
         var result = await connection
             .QueryAsync<Show, long, KeyValuePair<Show, int>>(query,
-            (s, c) => new KeyValuePair<Show, int>(s, Convert.ToInt32(c)),
-            splitOn: "ViewCount");
+                (s, c) => new KeyValuePair<Show, int>(s, Convert.ToInt32(c)),
+                splitOn: "ViewCount");
 
         return result.ToDictionary(x => x.Key, x => x.Value);
     }
-    
+
     public async Task<Dictionary<Movie, int>> GetMostWatchedMovies(int count)
     {
         var query = $@"
@@ -229,7 +232,7 @@ WHERE vi.MediaType = 'Movie'
 GROUP BY m.Id
 ORDER BY ViewCount DESC
 LIMIT {count}";
-        
+
         _logger.LogDebug(query);
         await using var connection = _sqliteBootstrap.CreateConnection();
         await connection.OpenAsync();
@@ -239,6 +242,14 @@ LIMIT {count}";
                 splitOn: "ViewCount");
 
         return result.ToDictionary(x => x.Key, x => x.Value);
+    }
+
+    public Task<int> GetMediaServerViewsForUser(string id, MediaType type)
+    {
+        return _context.MediaServerUserViews
+            .AsNoTracking()
+            .Where(x => x.UserId == id && x.MediaType == type)
+            .CountAsync();
     }
 
     #endregion
@@ -274,27 +285,41 @@ LIMIT {count}";
 
     public Task<List<Library>> GetAllLibraries(LibraryType type)
     {
+        var types = new[] {type, LibraryType.Other};
         return _context.Libraries
+            .Include(x => x.SyncTypes)
             .AsNoTracking()
-            .Where(x => x.Type == type).ToListAsync();
+            .Where(x => types.Contains(x.Type))
+            .ToListAsync();
     }
 
-    public Task<List<Library>> GetAllLibraries(LibraryType type, bool synced)
+    public Task<List<Library>> GetAllSyncedLibraries(LibraryType type)
     {
         return _context.Libraries
-            .Where(x => x.Type == type && x.Sync == synced)
+            .Include(x => x.SyncTypes)
+            .AsNoTracking()
+            .Where(x => x.SyncTypes.Any(y => y.SyncType == type))
             .ToListAsync();
     }
 
     public async Task SetLibraryAsSynced(string[] libraryIds, LibraryType type)
     {
         var libraries = await _context.Libraries
-            .Where(x => x.Type == type)
+            .Include(x => x.SyncTypes)
             .ToListAsync();
-        
+
         foreach (var library in libraries)
         {
-            library.Sync = libraryIds.Contains(library.Id);
+            if (library.SyncTypes.Any(x => x.SyncType == type && !libraryIds.Contains(library.Id)))
+            {
+                
+                library.SyncTypes = library.SyncTypes.Where(x => x.SyncType != type).ToList();
+            }
+
+            if (libraryIds.Contains(library.Id) && !library.SyncTypes.Any(x => x.LibraryId == library.Id && x.SyncType == type))
+            {
+                library.SyncTypes.Add(new LibrarySyncType {SyncType = type, Id = Guid.NewGuid().ToString()});
+            }
         }
 
         await _context.SaveChangesAsync();
@@ -313,10 +338,10 @@ LIMIT {count}";
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateLibrarySyncDate(string libraryId, DateTime date)
+    public async Task UpdateLibrarySyncDate(string libraryId, DateTime date, LibraryType type)
     {
-        var library = await _context.Libraries
-            .Where(x => x.Id == libraryId)
+        var library = await _context.LibrarySyncTypes
+            .Where(x => x.LibraryId == libraryId &&x.SyncType == type)
             .FirstOrDefaultAsync();
 
         if (library != null)

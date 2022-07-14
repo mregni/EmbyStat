@@ -27,5 +27,6 @@ public class Movie : Video, ILinkedMedia
     public ICollection<MediaPerson> People { get; set; }
     public ICollection<Genre> Genres { get; set; }
     public Library Library { get; set; }
+    public string LibraryId { get; set; }
     #endregion
 }

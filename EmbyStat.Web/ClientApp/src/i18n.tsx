@@ -3,10 +3,10 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import HttpApi from 'i18next-http-backend';
 import {initReactI18next} from 'react-i18next';
 
-const translationFilePath = '/locales/{{lng}}.json';
-// if (process.env.NODE_ENV === 'development' && module.hot) {
-//   translationFilePath = '/locales/base.json';
-// }
+let translationFilePath = '/locales/{{lng}}.json';
+if (process.env.NODE_ENV === 'development' && module.hot) {
+  translationFilePath = '/locales/base.json';
+}
 
 i18n
   .use(HttpApi)

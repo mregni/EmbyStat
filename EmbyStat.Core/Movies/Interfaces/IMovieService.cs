@@ -12,6 +12,6 @@ public interface IMovieService
     Task<MovieStatistics> CalculateMovieStatistics();
     bool TypeIsPresent();
     Task<Page<Movie>> GetMoviePage(int skip, int take, string sortField, string sortOrder, Filter[] filters, bool requireTotalCount);
-    Task<Movie> GetMovie(string id);
+    Task<Movie?> GetMovie(string id);
     Task SetLibraryAsSynced(string[] libraryIds);
 }

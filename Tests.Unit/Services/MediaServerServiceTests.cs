@@ -583,13 +583,13 @@ public class MediaServerServiceTests
     {
         var libraries = new List<Library>
         {
-            new() {Id = "1", Sync = true},
+            new() {Id = "1"},
             new() {Id = "2"}
         }.ToArray();
 
         _mediaServerRepositoryMock
             .Setup(x => x.GetAllLibraries())
-            .ReturnsAsync(new List<Library> {new() {Id = "1", Sync = true}});
+            .ReturnsAsync(new List<Library> {new() {Id = "1"}});
 
         var strategy = new Mock<IClientStrategy>();
         _httpClientMock.Setup(x => x.GetLibraries())

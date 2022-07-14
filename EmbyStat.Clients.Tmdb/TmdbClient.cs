@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using EmbyStat.Clients.Base.Metadata;
 using EmbyStat.Common.Models.Show;
 using EmbyStat.Configuration;
 using EmbyStat.Configuration.Interfaces;

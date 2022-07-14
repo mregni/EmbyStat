@@ -36,9 +36,9 @@ public interface IMediaServerService
     Task<Page<MediaServerUserRow>> GetUserPage(int skip, int take, string sortField, string sortOrder, bool requireTotalCount);
     Task<MediaServerUser[]> GetAllUsers();
     Task<MediaServerUser[]> GetAllAdministrators();
-    Task<MediaServerUser> GetUserById(string id);
-    Card<int> GetViewedEpisodeCountByUserId(string id);
-    Card<int> GetViewedMovieCountByUserId(string id);
+    Task<MediaServerUser?> GetUserById(string id);
+    Task<Card> GetViewedEpisodeCountByUserId(string id);
+    Task<Card> GetViewedMovieCountByUserId(string id);
     IEnumerable<UserMediaView> GetUserViewPageByUserId(string id, int page, int size);
     Task<int> ProcessViewsForUser(string id);
     Task<MediaServerUserStatistics> CalculateMediaServerUserStatistics();

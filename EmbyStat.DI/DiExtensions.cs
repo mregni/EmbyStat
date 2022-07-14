@@ -3,7 +3,6 @@ using Aiursoft.XelNaga.Services;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Api;
 using EmbyStat.Clients.Base.Http;
-using EmbyStat.Clients.Base.Metadata;
 using EmbyStat.Clients.Base.WebSocket;
 using EmbyStat.Clients.Emby;
 using EmbyStat.Clients.Emby.Http;

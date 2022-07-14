@@ -2,17 +2,20 @@ import React, {ReactNode} from 'react';
 import {SubmitHandler} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
 
-import {Button, Card, CardContent, Stack, Typography} from '@mui/material';
+import {Button, Card, CardContent, CircularProgress, Stack, Typography} from '@mui/material';
+
+import {EsSaveButton} from '../buttons';
 
 type Props<T> = {
   title: string;
   children: ReactNode | ReactNode[];
   saveForm: SubmitHandler<T>;
+  saving: boolean;
   handleSubmit: (onValid: SubmitHandler<T>) => (e?: React.BaseSyntheticEvent) =>Promise<void>;
 }
 
 export function EsSaveCard<T, >(props: Props<T>) {
-  const {title, children, saveForm, handleSubmit} = props;
+  const {title, children, saveForm, handleSubmit, saving} = props;
   const {t} = useTranslation();
 
   return (
@@ -32,8 +35,12 @@ export function EsSaveCard<T, >(props: Props<T>) {
               {children}
             </Stack>
             <Stack direction="row" justifyContent="flex-end">
-              <Button variant="contained" color="primary" type="submit">
-                {t('COMMON.SAVE')}
+              <Button variant="contained" color="primary" type="submit" disabled={saving}>
+                {saving ? (
+                  <CircularProgress color="inherit" size={22} />
+                ) : (
+                  t('COMMON.SAVE')
+                )}
               </Button>
             </Stack>
           </Stack>

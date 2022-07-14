@@ -1,4 +1,6 @@
-﻿using EmbyStat.Common.Enums;
+﻿using System;
+using System.Collections.Generic;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
 
 namespace Tests.Unit.Builders;
@@ -14,7 +16,16 @@ public class LibraryBuilder
             Id = $"id{index}",
             Name = $"collection{index}",
             Primary = $"image{index}",
-            Type = type
+            Type = type,
+            SyncTypes = new List<LibrarySyncType>
+            {
+                new()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    SyncType = type,
+                    LibraryId = $"id{index}",
+                }
+            }
         };
     }
 

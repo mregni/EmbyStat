@@ -89,7 +89,8 @@
     "UPDATELEVEL": "Update level",
     "VERSION": "Version",
     "VIDEORANGE": "Video range",
-    "WIDTH": "Width"  
+    "WIDTH": "Width",
+    "NEVER": "Never"
   },
   "DIALOGS": {
     "EDIT_TRIGGER": {
@@ -344,13 +345,14 @@
     "HIDDEN": "Hidden",
     "IDLEUSERS": "Idle users",
     "LASTACTIVE": "Last active",
+    "LASTLOGIN": "Last login",
     "LOADER": "Loading user info",
     "USERS": "Users",
     "WATCHED": {
       "EPISODES": "Episodes watched",
       "MOVIES": "Movies watched",
       "TOTAL": "Total watched"
-    }
+    }    
   },
   "WIZARD": {
     "ACCOUNT": "User details",

@@ -24,6 +24,7 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
     
     public DbSet<MediaServerUser> MediaServerUsers { get; set; }
     public DbSet<Library> Libraries { get; set; }
+    public DbSet<LibrarySyncType> LibrarySyncTypes { get; set; }
     public DbSet<Device> Devices { get; set; }
     public DbSet<FilterValues> Filters { get; set; }
     public DbSet<Job> Jobs { get; set; }
@@ -44,6 +45,7 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        BuildLibrary(builder);
         BuildPeople(builder);
         BuildMovies(builder);
         BuildShows(builder);
@@ -61,6 +63,16 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
 
     #region Builders
 
+    private static void BuildLibrary(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Library>()
+            .HasMany(x => x.SyncTypes)
+            .WithOne(x => x.Library)
+            .HasForeignKey(x => x.LibraryId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+    
     private static void BuildUserViews(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<MediaServerUserView>()

@@ -78,6 +78,7 @@ function EsLibrarySelectorContainer(props: Props) {
   const {fetch, type, push} = props;
   const {load, libraries, save} = useContext(LibrariesContext);
   const {handleSubmit} = useForm();
+  const [saving, setSaving] = useState(false);
   const {t} = useTranslation();
 
   useEffect(() => {
@@ -87,7 +88,9 @@ function EsLibrarySelectorContainer(props: Props) {
   }, [fetch]);
 
   const submitForm = async () => {
+    setSaving(true);
     await save(push);
+    setSaving(false);
   };
 
   return (
@@ -95,6 +98,7 @@ function EsLibrarySelectorContainer(props: Props) {
       title='SETTINGS.LIBRARIES.TITLE'
       saveForm={submitForm}
       handleSubmit={handleSubmit}
+      saving={saving}
     >
       <Typography variant="body1">
         {t('SETTINGS.LIBRARIES.CONTENT', {type: t(type)})}

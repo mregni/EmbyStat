@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
-using EmbyStat.Clients.Base.Metadata;
-using EmbyStat.Clients.Tmdb;
 using EmbyStat.Common.Models.Show;
-using EmbyStat.Configuration;
 using EmbyStat.Configuration.Interfaces;
 using TvMaze.Api.Client;
 using TvMaze.Api.Client.Models;

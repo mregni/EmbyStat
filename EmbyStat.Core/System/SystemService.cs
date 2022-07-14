@@ -45,13 +45,6 @@ public class SystemService : ISystemService
     {
         await _hub.BroadcastResetLogLine("Deleting statistics");
         await _statisticsRepository.DeleteStatistics();
-
-        await _hub.BroadcastResetLogLine("Deleting server info");
-        await _mediaServerRepository.DeleteAllPlugins();
-        await _mediaServerRepository.DeleteAllDevices();
-        await _mediaServerRepository.DeleteServerInfo();
-        await _mediaServerRepository.DeleteAllUsers();
-        await _mediaServerRepository.DeleteAllLibraries();
         
         await _hub.BroadcastResetLogLine("Deleting show data");
         await _showRepository.DeleteAll();
@@ -67,6 +60,13 @@ public class SystemService : ISystemService
 
         await _hub.BroadcastResetLogLine("Deleting filters");
         await _filterRepository.DeleteAll();
+        
+        await _hub.BroadcastResetLogLine("Deleting server info");
+        await _mediaServerRepository.DeleteAllPlugins();
+        await _mediaServerRepository.DeleteAllDevices();
+        await _mediaServerRepository.DeleteServerInfo();
+        await _mediaServerRepository.DeleteAllUsers();
+        await _mediaServerRepository.DeleteAllLibraries();
 
         await _hub.BroadcastResetLogLine("Testing new media server info");
         var config = _configurationService.Get();

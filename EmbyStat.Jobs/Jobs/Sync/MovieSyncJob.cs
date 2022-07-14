@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
+using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Movies;
 using EmbyStat.Configuration.Interfaces;
 using EmbyStat.Core.Filters.Interfaces;
@@ -18,6 +20,7 @@ using EmbyStat.Core.Statistics.Interfaces;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using Hangfire;
 using Microsoft.Extensions.Logging;
+using MoreLinq.Extensions;
 
 namespace EmbyStat.Jobs.Jobs.Sync;
 
@@ -103,7 +106,7 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
 
     private async Task ProcessMoviesAsync()
     {
-        var librariesToProcess = await _mediaServerRepository.GetAllLibraries(LibraryType.Movies, true);
+        var librariesToProcess = await _mediaServerRepository.GetAllSyncedLibraries(LibraryType.Movies);
         await LogInformation("Lets start processing movies");
         await LogInformation($"{librariesToProcess.Count} libraries are selected, getting ready for processing");
 
@@ -112,35 +115,43 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
 
         foreach (var library in librariesToProcess)
         {
-            var totalCount = await _baseHttpClient.GetMediaCount(library.Id, library.LastSynced, "Movie");
-            if (totalCount == 0)
-            {
-                continue;
-            }
-            
-
-            await LogInformation($"Found {totalCount} changed movies since last sync in {library.Name}");
-            var processed = 0;
-            var j = 0;
-            const int limit = 50;
-            
-            var increment = logIncrementBase / (totalCount / (double)limit);
-            do
-            {
-                var movies = await _baseHttpClient.GetMedia<Movie>(library.Id, j * limit, limit, library.LastSynced, "Movie");
-
-                movies.AddGenres(genres);
-                await _movieRepository.UpsertRange(movies);
-
-                processed += limit;
-                j++;
-                var logProcessed = processed < totalCount ? processed : totalCount;
-                await LogInformation($"Processed { logProcessed } / { totalCount } movies");
-                await LogProgressIncrement(increment);
-            } while (processed < totalCount);
-            
-            await _mediaServerRepository.UpdateLibrarySyncDate(library.Id, DateTime.UtcNow);
+            await LogInformation($"Processing {library.Name}");
+            await ProcessChangedMovies(library, genres, logIncrementBase);
+            await _mediaServerRepository.UpdateLibrarySyncDate(library.Id, DateTime.UtcNow, LibraryType.Movies);
+            await LogInformation($"Processing {library.Name} done");
         }
+    }
+
+    private async Task ProcessChangedMovies(Library library, IReadOnlyList<Genre> genres, double logIncrementBase)
+    {
+        var lastSynced = library.SyncTypes.GetLastSyncedDateForLibrary(library.Id, LibraryType.TvShow);
+        var totalCount = await _baseHttpClient.GetMediaCount(library.Id, lastSynced, "Movie");
+        if (totalCount == 0)
+        {
+            await LogInformation("No changes detected to sync");
+            return;
+        }
+
+        await LogInformation($"Found {totalCount} changed movies since last sync in {library.Name}");
+        var processed = 0;
+        var j = 0;
+        const int limit = 50;
+            
+        var increment = logIncrementBase / (totalCount / (double)limit);
+        do
+        {
+            var movies = await _baseHttpClient.GetMedia<Movie>(library.Id, j * limit, limit, lastSynced, "Movie");
+
+            movies.AddGenres(genres);
+            movies.ForEach(x => x.Library = library);
+            await _movieRepository.UpsertRange(movies);
+
+            processed += limit;
+            j++;
+            var logProcessed = processed < totalCount ? processed : totalCount;
+            await LogInformation($"Processed { logProcessed } / { totalCount } movies");
+            await LogProgressIncrement(increment);
+        } while (processed < totalCount);
     }
 
     private async Task CalculateStatistics()

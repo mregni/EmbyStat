@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
 
@@ -14,10 +14,13 @@ type RollbarForm = {
 export function EsRollbarCard() {
   const {userConfig, save} = useContext(SettingsContext);
   const {t} = useTranslation();
+  const [saving, setSaving] = useState(false);
 
   const saveForm = async (data: RollbarForm) => {
     userConfig.enableRollbarLogging = data.enabled;
+    setSaving(true);
     await save(userConfig);
+    setSaving(false);
   };
 
   const {handleSubmit, control} = useForm<RollbarForm>({
@@ -36,6 +39,7 @@ export function EsRollbarCard() {
       title='SETTINGS.ROLLBAR.TITLE'
       saveForm={saveForm}
       handleSubmit={handleSubmit}
+      saving={saving}
     >
       <Typography variant="body1">
         {t('SETTINGS.ROLLBAR.EXCEPTIONLOGGING')}

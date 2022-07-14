@@ -5,7 +5,7 @@ namespace EmbyStat.Core.Sessions.Interfaces;
 
 public interface ISessionService
 {
-    IEnumerable<string> GetMediaIdsForUser(string id, PlayType type);
+    IEnumerable<string> GetMediaIdsForUser(string id, MediaType type);
     IEnumerable<Session> GetSessionsForUser(string id);
     int GetPlayCountForUser(string id);
     void ProcessSessions(List<Session> sessions);

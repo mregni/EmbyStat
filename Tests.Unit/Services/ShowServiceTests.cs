@@ -215,6 +215,7 @@ public class ShowServiceTests
         _mediaServerRepositoryMock.Verify(x => x.SetLibraryAsSynced(list, LibraryType.TvShow));
         _mediaServerRepositoryMock.VerifyNoOtherCalls();
             
+        _showRepositoryMock.Verify(x => x.RemoveUnwantedShows(list));
         _showRepositoryMock.VerifyNoOtherCalls();
     }
         

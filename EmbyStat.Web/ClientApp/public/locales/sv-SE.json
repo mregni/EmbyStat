@@ -89,7 +89,8 @@
     "UPDATELEVEL": "Update level",
     "VERSION": "Version",
     "VIDEORANGE": "Längd på video",
-    "WIDTH": "Bredd"
+    "WIDTH": "Bredd",
+    "NEVER": "Never"
   },
   "DIALOGS": {
     "EDIT_TRIGGER": {
@@ -344,6 +345,7 @@
     "HIDDEN": "Hidden",
     "IDLEUSERS": "Idle users",
     "LASTACTIVE": "Senast aktiv",
+    "LASTLOGIN": "Last login",
     "LOADER": "Loading user info",
     "USERS": "Användare",
     "WATCHED": {

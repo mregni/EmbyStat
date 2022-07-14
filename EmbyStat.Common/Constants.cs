@@ -123,4 +123,10 @@ public static class Constants
 
     //COMMON
     public static string Unknown => "UNKNOWN";
+
+    public static class Users
+    {
+        public static string TotalWatchedEpisodes => "USERS.WATCHED.EPISODES";
+        public static string TotalWatchedMovies => "USERS.WATCHED.MOVIES";
+    }
 }

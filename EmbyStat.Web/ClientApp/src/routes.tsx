@@ -15,6 +15,7 @@ import {
 } from './pages/settings';
 import {General as ShowGeneral, List as ShowList, Shows} from './pages/shows';
 import {Users} from './pages/users';
+import {UserDetails} from './pages/users/subpages';
 import Wizard from './pages/wizard';
 import {SettingsContext} from './shared/context/settings';
 
@@ -52,6 +53,7 @@ function RoutesContainer() {
         <Route path="movie" element={<MovieSettings />} />
       </Route>
       <Route path="/users" element={<RequireAuth><Users /></RequireAuth>} />
+      <Route path="/users/:id" element={<RequireAuth><UserDetails /></RequireAuth>} />
       <Route path="/about" element={<RequireAuth><About /></RequireAuth>} />
       <Route path="/wizard" element={<Wizard />} />
       <Route path="/" element={<Navigate to="/home" replace={true} />} />

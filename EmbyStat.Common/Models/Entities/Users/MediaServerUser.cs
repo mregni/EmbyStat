@@ -14,12 +14,10 @@ public class MediaServerUser
     public string PrimaryImageTag { get; set; }
     public DateTimeOffset? LastLoginDate { get; set; }
     public DateTimeOffset? LastActivityDate { get; set; }
-    
     public bool PlayDefaultAudioTrack { get; set; }
     public string SubtitleLanguagePreference { get; set; }
     public bool DisplayMissingEpisodes { get; set; }
     public string SubtitleMode { get; set; }
-    
     public bool IsAdministrator { get; set; }
     public bool IsHidden { get; set; }
     public bool IsHiddenRemotely { get; set; }

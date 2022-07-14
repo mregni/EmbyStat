@@ -89,7 +89,8 @@
     "UPDATELEVEL": "更新等级",
     "VERSION": "版本",
     "VIDEORANGE": "视频范围",
-    "WIDTH": "宽"
+    "WIDTH": "宽",
+    "NEVER": "Never"
   },
   "DIALOGS": {
     "EDIT_TRIGGER": {
@@ -344,6 +345,7 @@
     "HIDDEN": "Hidden",
     "IDLEUSERS": "Idle users",
     "LASTACTIVE": "上次登录:",
+    "LASTLOGIN": "Last login",
     "LOADER": "Loading user info",
     "USERS": "用户",
     "WATCHED": {

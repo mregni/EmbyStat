@@ -236,9 +236,9 @@ public class MediaServerService : StatisticHelper, IMediaServerService
 
     #region Cards
 
-    private async Task<List<Card<string>>> CalculateCards()
+    private async Task<List<Card>> CalculateCards()
     {
-        var list = new List<Card<string>>();
+        var list = new List<Card>();
         list.AddIfNotNull(await CalculateActiveUsers());
         list.AddIfNotNull(await CalculateIdleUsers());
         list.AddIfNotNull(CalculateWatchedEpisodeCount());
@@ -247,13 +247,13 @@ public class MediaServerService : StatisticHelper, IMediaServerService
     }
 
 
-    private Task<Card<string>> CalculateActiveUsers()
+    private Task<Card> CalculateActiveUsers()
     {
         return CalculateStat(async () =>
         {
             var users = await _mediaServerRepository.GetAllUsers();
             var count = users.Count(x => x.LastActivityDate > DateTime.Now.AddMonths(-6));
-            return new Card<string>
+            return new Card
             {
                 Title = Constants.MediaServer.TotalActiveUsers,
                 Value = count.ToString(),
@@ -263,13 +263,13 @@ public class MediaServerService : StatisticHelper, IMediaServerService
         }, "Calculate total active user count failed:");
     }
 
-    private Task<Card<string>> CalculateIdleUsers()
+    private Task<Card> CalculateIdleUsers()
     {
         return CalculateStat(async () =>
         {
             var users = await _mediaServerRepository.GetAllUsers();
             var count = users.Count(x => x.LastActivityDate <= DateTime.Now.AddMonths(-6));
-            return new Card<string>
+            return new Card
             {
                 Title = Constants.MediaServer.TotalIdleUsers,
                 Value = count.ToString(),
@@ -279,12 +279,12 @@ public class MediaServerService : StatisticHelper, IMediaServerService
         }, "Calculate total idle user count failed:");
     }
 
-    private Card<string> CalculateWatchedMovieCount()
+    private Card CalculateWatchedMovieCount()
     {
         return CalculateStat(() =>
         {
-            var viewCount = _mediaServerRepository.GetUserViewsForType("Movie");
-            return new Card<string>
+            var viewCount = _mediaServerRepository.GetUserViewsForType(MediaType.Movie);
+            return new Card
             {
                 Title = Constants.Movies.TotalWatchedMovies,
                 Value = viewCount.ToString(),
@@ -294,12 +294,12 @@ public class MediaServerService : StatisticHelper, IMediaServerService
         }, "Calculate total idle user count failed:");
     }
 
-    private Card<string> CalculateWatchedEpisodeCount()
+    private Card CalculateWatchedEpisodeCount()
     {
         return CalculateStat(() =>
         {
-            var viewCount = _mediaServerRepository.GetUserViewsForType("Episode");
-            return new Card<string>
+            var viewCount = _mediaServerRepository.GetUserViewsForType(MediaType.Episode);
+            return new Card
             {
                 Title = Constants.Shows.TotalWatchedEpisodes,
                 Value = viewCount.ToString(),
@@ -373,28 +373,28 @@ public class MediaServerService : StatisticHelper, IMediaServerService
         return await _mediaServerRepository.GetAllAdministrators();
     }
 
-    public Task<MediaServerUser> GetUserById(string id)
+    public Task<MediaServerUser?> GetUserById(string id)
     {
         return _mediaServerRepository.GetUserById(id);
     }
 
-    public Card<int> GetViewedEpisodeCountByUserId(string id)
+    public async Task<Card> GetViewedEpisodeCountByUserId(string id)
     {
-        var episodeIds = _sessionService.GetMediaIdsForUser(id, PlayType.Episode);
-        return new Card<int>
+        var count = await _mediaServerRepository.GetMediaServerViewsForUser(id, MediaType.Episode);
+        return new Card
         {
-            Title = "Constants.Users.TotalWatchedEpisodes",
-            Value = episodeIds.Count()
+            Title = Constants.Users.TotalWatchedEpisodes,
+            Value = count.ToString()
         };
     }
 
-    public Card<int> GetViewedMovieCountByUserId(string id)
+    public async Task<Card> GetViewedMovieCountByUserId(string id)
     {
-        var movieIds = _sessionService.GetMediaIdsForUser(id, PlayType.Movie);
-        return new Card<int>
+        var count = await _mediaServerRepository.GetMediaServerViewsForUser(id, MediaType.Movie);
+        return new Card
         {
-            Title = "Constants.Users.TotalWatchedMovies",
-            Value = movieIds.Count()
+            Title = Constants.Users.TotalWatchedMovies,
+            Value = count.ToString()
         };
     }
 
@@ -496,9 +496,9 @@ public class MediaServerService : StatisticHelper, IMediaServerService
 
         foreach (var library in libraries)
         {
-            library.Sync = currentLibraries
-                .FirstOrDefault(x => x.Id == library.Id)?
-                .Sync ?? false;
+            library.SyncTypes = currentLibraries
+                .FirstOrDefault(x => x.Id == library.Id)
+                ?.SyncTypes ?? null;
         }
 
         await _mediaServerRepository.DeleteAndInsertLibraries(libraries);

@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace EmbyStat.Migrations.Sqlite
+namespace EmbyStat.Core.DataStore.Migrations.Sqlite
 {
     public partial class Init : Migration
     {
@@ -361,7 +360,7 @@ namespace EmbyStat.Migrations.Sqlite
                     CommunityRating = table.Column<decimal>(type: "TEXT", nullable: true),
                     IMDB = table.Column<string>(type: "TEXT", nullable: true),
                     TMDB = table.Column<int>(type: "INTEGER", nullable: true),
-                    TVDB = table.Column<string>(type: "TEXT", nullable: true),
+                    TVDB = table.Column<int>(type: "INTEGER", nullable: true),
                     RunTimeTicks = table.Column<long>(type: "INTEGER", nullable: true),
                     OfficialRating = table.Column<string>(type: "TEXT", nullable: true),
                     Container = table.Column<string>(type: "TEXT", nullable: true),
@@ -400,7 +399,7 @@ namespace EmbyStat.Migrations.Sqlite
                     CommunityRating = table.Column<decimal>(type: "TEXT", nullable: true),
                     IMDB = table.Column<string>(type: "TEXT", nullable: true),
                     TMDB = table.Column<int>(type: "INTEGER", nullable: true),
-                    TVDB = table.Column<string>(type: "TEXT", nullable: true),
+                    TVDB = table.Column<int>(type: "INTEGER", nullable: true),
                     RunTimeTicks = table.Column<long>(type: "INTEGER", nullable: true),
                     OfficialRating = table.Column<string>(type: "TEXT", nullable: true)
                 },
@@ -551,7 +550,7 @@ namespace EmbyStat.Migrations.Sqlite
                     CommunityRating = table.Column<decimal>(type: "TEXT", nullable: true),
                     IMDB = table.Column<string>(type: "TEXT", nullable: true),
                     TMDB = table.Column<int>(type: "INTEGER", nullable: true),
-                    TVDB = table.Column<string>(type: "TEXT", nullable: true),
+                    TVDB = table.Column<int>(type: "INTEGER", nullable: true),
                     RunTimeTicks = table.Column<long>(type: "INTEGER", nullable: true),
                     OfficialRating = table.Column<string>(type: "TEXT", nullable: true),
                     Container = table.Column<string>(type: "TEXT", nullable: true),
@@ -606,7 +605,7 @@ namespace EmbyStat.Migrations.Sqlite
                 {
                     UserId = table.Column<string>(type: "TEXT", nullable: false),
                     MediaId = table.Column<string>(type: "TEXT", nullable: false),
-                    MediaType = table.Column<string>(type: "TEXT", nullable: true),
+                    MediaType = table.Column<int>(type: "INTEGER", nullable: false),
                     PlayCount = table.Column<int>(type: "INTEGER", nullable: false),
                     LastPlayedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     EpisodeId = table.Column<string>(type: "TEXT", nullable: true),

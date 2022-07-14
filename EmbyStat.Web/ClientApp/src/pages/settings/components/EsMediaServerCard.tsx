@@ -70,6 +70,7 @@ export function EsMediaServerCard() {
   const {serverType} = useServerType();
   const {userConfig, save, resetFinished, resetLogLine} = useContext(SettingsContext);
   const [openBackdrop, setOpenBackdrop] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [openWarningDialog, setOpenWarningDialog] = useState(false);
   const {t} = useTranslation();
 
@@ -101,7 +102,9 @@ export function EsMediaServerCard() {
     await save(userConfig);
     if (reset) {
       setOpenBackdrop(true);
+      setSaving(true);
       await resetEmbyStat();
+      setSaving(false);
     }
   };
 
@@ -119,6 +122,7 @@ export function EsMediaServerCard() {
       title={t('SETTINGS.MEDIASERVER.TITLE', {type: serverType})}
       saveForm={processForm}
       handleSubmit={handleSubmit}
+      saving={saving}
     >
       <Stack spacing={3}>
         <Box display="flex">

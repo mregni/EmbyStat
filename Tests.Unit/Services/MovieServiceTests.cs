@@ -266,6 +266,7 @@ public class MovieServiceTests
         _mediaServerRepositoryMock.Verify(x => x.SetLibraryAsSynced(list, LibraryType.Movies));
         _mediaServerRepositoryMock.VerifyNoOtherCalls();
             
+        _movieRepositoryMock.Verify(x => x.RemoveUnwantedMovies(list));
         _movieRepositoryMock.VerifyNoOtherCalls();
     }
         
