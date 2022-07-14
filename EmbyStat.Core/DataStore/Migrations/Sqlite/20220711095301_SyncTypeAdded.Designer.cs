@@ -8,16 +8,16 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace EmbyStat.Migrations.Sqlite
+namespace EmbyStat.Core.DataStore.Migrations.Sqlite
 {
     [DbContext(typeof(EsDbContext))]
-    [Migration("20220510134722_Init")]
-    partial class Init
+    [Migration("20220711095301_SyncTypeAdded")]
+    partial class SyncTypeAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.4");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.6");
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Device", b =>
                 {
@@ -394,7 +394,7 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<string>("Primary")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("Sync")
+                    b.Property<int?>("SyncType")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Type")
@@ -525,8 +525,8 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<DateTime>("LastPlayedDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("MediaType")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("MediaType")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("MovieId")
                         .HasColumnType("TEXT");
@@ -599,8 +599,8 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<int?>("TMDB")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("TVDB")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("TVDB")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Thumb")
                         .HasColumnType("TEXT");
@@ -731,8 +731,8 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<int?>("TMDB")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("TVDB")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("TVDB")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Thumb")
                         .HasColumnType("TEXT");
@@ -864,8 +864,8 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<int?>("TMDB")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("TVDB")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("TVDB")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Thumb")
                         .HasColumnType("TEXT");

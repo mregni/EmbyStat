@@ -39,7 +39,7 @@ export function EsServerDetails() {
           <img src={serverType === 'Emby' ? Emby : Jellyfin} alt="Media server logo" width="80" height="80" />
           <Stack spacing={1}>
             <EsChipTitle
-              variant="h4"
+              variant="h6"
               content={serverInfo.serverName}
               isFirst
               chipContent={serverInfo.version}

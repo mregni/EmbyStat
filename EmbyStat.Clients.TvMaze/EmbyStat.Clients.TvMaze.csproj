@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="TvMaze.Api.Client" Version="0.1.72" />
+      <PackageReference Include="TvMaze.Api.Client" Version="0.1.75" />
     </ItemGroup>
 
     <ItemGroup>

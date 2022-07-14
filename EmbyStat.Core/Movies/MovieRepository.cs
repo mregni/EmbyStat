@@ -1,3 +1,4 @@
+using System.Linq;
 using Dapper;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
@@ -39,9 +40,11 @@ public class MovieRepository : IMovieRepository
                 await connection.ExecuteAsync($"DELETE FROM {Constants.Tables.AudioStreams} WHERE MovieId = @Id", movie, transaction);
                 await connection.ExecuteAsync($"DELETE FROM {Constants.Tables.SubtitleStreams} WHERE MovieId = @Id", movie, transaction);
 
-                var movieQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.Movies} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,OriginalTitle,Container,CommunityRating,IMDB,TMDB,TVDB,RunTimeTicks,OfficialRating,Video3DFormat)
-VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@OriginalTitle,@Container,@CommunityRating,@IMDB,@TMDB,@TVDB,@RunTimeTicks,@OfficialRating,@Video3DFormat)";
-                await connection.ExecuteAsync(movieQuery, movie, transaction);
+                var movieQuery = @$"INSERT OR REPLACE INTO {Constants.Tables.Movies} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,OriginalTitle,Container,CommunityRating,IMDB,TMDB,TVDB,RunTimeTicks,OfficialRating,Video3DFormat,LibraryId)
+VALUES (@Id,@DateCreated,@Banner,@Logo,@Primary,@Thumb,@Name,@Path,@PremiereDate,@ProductionYear,@SortName,@OriginalTitle,@Container,@CommunityRating,@IMDB,@TMDB,@TVDB,@RunTimeTicks,@OfficialRating,@Video3DFormat,@LibraryId)";
+                var movieParams = new DynamicParameters(movie);
+                movieParams.Add("@LibraryId",movie.Library.Id);
+                await connection.ExecuteAsync(movieQuery, movieParams, transaction);
 
                 if (movie.MediaSources.AnyNotNull())
                 {
@@ -106,6 +109,12 @@ VALUES (@Type, @MovieId, @PersonId)";
         await _context.SaveChangesAsync();
     }
 
+    public async Task RemoveUnwantedMovies(IEnumerable<string> libraryIds)
+    {
+        _context.Movies.RemoveRange(_context.Movies.Where(x => !libraryIds.Any(y => y == x.LibraryId)));
+        await _context.SaveChangesAsync();
+    }
+
     public IEnumerable<Movie> GetAll()
     {
         return GetAll(false);
@@ -114,7 +123,6 @@ VALUES (@Type, @MovieId, @PersonId)";
     public IEnumerable<Movie> GetAll(bool includeGenres)
     {
         var query = _context.Movies.AsQueryable();
-
         if (includeGenres)
         {
             query = query.Include(x => x.Genres);
@@ -130,7 +138,7 @@ VALUES (@Type, @MovieId, @PersonId)";
             .OrderBy(x => x.SortName);
     }
 
-    public Task<Movie> GetById(string id)
+    public Task<Movie?> GetById(string id)
     {
         return _context.Movies
             .Include(x => x.Genres)

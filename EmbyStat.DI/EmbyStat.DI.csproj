@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aiursoft.XelNaga" Version="6.0.5" />
+    <PackageReference Include="Aiursoft.XelNaga" Version="6.0.6" />
   </ItemGroup>
 
 </Project>

@@ -1,13 +1,13 @@
 import {format} from 'date-fns';
 import React, {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router';
 
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import {
-  Avatar, Box, Paper, Table, TableBody, TableCell, TableContainer, TableRow,
-} from '@mui/material';
+import {Box, Paper, Table, TableBody, TableCell, TableContainer, TableRow} from '@mui/material';
 
-import {EsHyperLinkButton} from '../../../shared/components/buttons';
+import {EsButton, EsHyperLinkButton} from '../../../shared/components/buttons';
+import {EsAvatar} from '../../../shared/components/esAvatar';
 import {EsTableHeader, EsTablePagination, Header} from '../../../shared/components/table';
 import {useLocale, useMediaServerUrls, useServerType} from '../../../shared/hooks';
 import {MediaServerUserRow} from '../../../shared/models/mediaServer';
@@ -19,28 +19,19 @@ type EsUserRowProps = {
 
 function EsUserRow(props: EsUserRowProps) {
   const {user} = props;
-  const {getPrimaryUserImageLink} = useMediaServerUrls();
   const {locale} = useLocale();
+  const navigate = useNavigate();
   const {serverType} = useServerType();
   const {getUserDetailLink} = useMediaServerUrls();
-  const [backgroundColor, setBackgroundColor] = useState<string>('#000000');
 
-  useEffect(() => {
-    setBackgroundColor('#' + user.id.substring(9, 6));
-  }, [user.id]);
+  const openUser = () => {
+    navigate(`/users/${user.id}`);
+  };
 
   return (
-    <TableRow>
+    <TableRow hover>
       <TableCell sx={{width: 50}}>
-        <Avatar
-          alt={user.name.charAt(0).toUpperCase()}
-          sx={{
-            'borderRadius': 1,
-            backgroundColor,
-            'color': (theme) => theme.palette.getContrastText(backgroundColor),
-          }}
-          src={getPrimaryUserImageLink(user.id)}
-        />
+        <EsAvatar name={user.name} id={user.id} />
       </TableCell>
       <TableCell>{user.name}</TableCell>
       <TableCell>{format(new Date(user.lastActivityDate ?? ''), 'p P', {locale})}</TableCell>
@@ -60,6 +51,13 @@ function EsUserRow(props: EsUserRowProps) {
         {!user.isDisabled && (<HighlightOffIcon color="error" />)}
       </TableCell>
       <TableCell align="right">
+        <EsButton
+          type="button"
+          fullWidth={false}
+          onClick={openUser}
+        >
+          { <>Details</>}
+        </EsButton>
         <EsHyperLinkButton label={serverType} href={getUserDetailLink(user.id)} />
       </TableCell>
     </TableRow>

@@ -52,36 +52,8 @@ public class MovieControllerTests
         _movieServiceMock.Setup(x => x.GetMovie(It.IsAny<string>()))
             .ReturnsAsync(_movie);
 
-        var mapperMock = new Mock<IMapper>();
-        mapperMock
-            .Setup(x => x.Map<MovieStatisticsViewModel>(It.IsAny<MovieStatistics>()))
-            .Returns(new MovieStatisticsViewModel
-                {TopCards = new List<TopCardViewModel> {new() {Title = "The lord of the rings"}}});
-        mapperMock
-            .Setup(x => x.Map<IList<LibraryViewModel>>(It.IsAny<List<Library>>()))
-            .Returns(
-                new List<LibraryViewModel>
-                {
-                    new()
-                    {
-                        Name = "collection1",
-                        Primary = "image1",
-                        Type = (int) LibraryType.Movies
-                    },
-                    new()
-                    {
-                        Name = "collection2",
-                        Primary = "image2",
-                        Type = (int) LibraryType.Movies
-                    }
-                });
-        mapperMock
-            .Setup(x => x.Map<MovieViewModel>(It.IsAny<Movie>()))
-            .Returns(new MovieViewModel
-            {
-                Id = "1"
-            });
-        _subject = new MovieController(_movieServiceMock.Object, mapperMock.Object);
+        var mapper = CreateMapper();
+        _subject = new MovieController(_movieServiceMock.Object, mapper);
     }
 
     [Fact]

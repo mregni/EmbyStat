@@ -29,8 +29,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Clients.Jellyfin",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Clients.Tmdb", "EmbyStat.Clients.Tmdb\EmbyStat.Clients.Tmdb.csproj", "{4D486D10-E1D4-478A-BDFE-B600FEAC0A92}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmbyStat.Migrations", "EmbyStat.Migrations\EmbyStat.Migrations.csproj", "{B3D26C6D-13F2-4E90-9DA9-2F636204C3AD}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbyStat.Core", "EmbyStat.Core\EmbyStat.Core.csproj", "{9B5790D1-6CAC-4592-B338-85D8549B4DC2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbyStat.Configuration", "EmbyStat.Configuration\EmbyStat.Configuration.csproj", "{6829F708-CA6A-4EB8-99F1-27D1B64FA7EE}"
@@ -290,24 +288,6 @@ Global
 		{4D486D10-E1D4-478A-BDFE-B600FEAC0A92}.Release|x64.Build.0 = Release|Any CPU
 		{4D486D10-E1D4-478A-BDFE-B600FEAC0A92}.Release|x86.ActiveCfg = Release|Any CPU
 		{4D486D10-E1D4-478A-BDFE-B600FEAC0A92}.Release|x86.Build.0 = Release|Any CPU
-		{B3D26C6D-13F2-4E90-9DA9-2F636204C3AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B3D26C6D-13F2-4E90-9DA9-2F636204C3AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B3D26C6D-13F2-4E90-9DA9-2F636204C3AD}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{B3D26C6D-13F2-4E90-9DA9-2F636204C3AD}.Debug|x64.Build.0 = Debug|Any CPU
-		{B3D26C6D-13F2-4E90-9DA9-2F636204C3AD}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{B3D26C6D-13F2-4E90-9DA9-2F636204C3AD}.Debug|x86.Build.0 = Debug|Any CPU
-		{B3D26C6D-13F2-4E90-9DA9-2F636204C3AD}.DefaultBuild|Any CPU.ActiveCfg = Debug|Any CPU
-		{B3D26C6D-13F2-4E90-9DA9-2F636204C3AD}.DefaultBuild|Any CPU.Build.0 = Debug|Any CPU
-		{B3D26C6D-13F2-4E90-9DA9-2F636204C3AD}.DefaultBuild|x64.ActiveCfg = Debug|Any CPU
-		{B3D26C6D-13F2-4E90-9DA9-2F636204C3AD}.DefaultBuild|x64.Build.0 = Debug|Any CPU
-		{B3D26C6D-13F2-4E90-9DA9-2F636204C3AD}.DefaultBuild|x86.ActiveCfg = Debug|Any CPU
-		{B3D26C6D-13F2-4E90-9DA9-2F636204C3AD}.DefaultBuild|x86.Build.0 = Debug|Any CPU
-		{B3D26C6D-13F2-4E90-9DA9-2F636204C3AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B3D26C6D-13F2-4E90-9DA9-2F636204C3AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B3D26C6D-13F2-4E90-9DA9-2F636204C3AD}.Release|x64.ActiveCfg = Release|Any CPU
-		{B3D26C6D-13F2-4E90-9DA9-2F636204C3AD}.Release|x64.Build.0 = Release|Any CPU
-		{B3D26C6D-13F2-4E90-9DA9-2F636204C3AD}.Release|x86.ActiveCfg = Release|Any CPU
-		{B3D26C6D-13F2-4E90-9DA9-2F636204C3AD}.Release|x86.Build.0 = Release|Any CPU
 		{9B5790D1-6CAC-4592-B338-85D8549B4DC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9B5790D1-6CAC-4592-B338-85D8549B4DC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B5790D1-6CAC-4592-B338-85D8549B4DC2}.Debug|x64.ActiveCfg = Debug|Any CPU

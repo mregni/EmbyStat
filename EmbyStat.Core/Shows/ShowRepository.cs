@@ -226,7 +226,6 @@ WHERE 1=1 ";
         foreach (var show in showList)
         {
             await using var transaction = connection.BeginTransaction();
-
             
             var showQuery =
                 $@"INSERT OR REPLACE INTO {Constants.Tables.Shows} (Id,DateCreated,Banner,Logo,""Primary"",Thumb,Name,Path,PremiereDate,ProductionYear,SortName,CommunityRating,IMDB,TMDB,TVDB,RunTimeTicks,OfficialRating,CumulativeRunTimeTicks,Status,ExternalSynced,SizeInMb,LibraryId)
@@ -472,6 +471,12 @@ LIMIT {count}";
     public async Task DeleteAll()
     {
         _context.Shows.RemoveRange(_context.Shows);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task RemoveUnwantedShows(IEnumerable<string> libraryIds)
+    {
+        _context.Shows.RemoveRange(_context.Shows.Where(x => !libraryIds.Any(y => y == x.LibraryId)));
         await _context.SaveChangesAsync();
     }
 

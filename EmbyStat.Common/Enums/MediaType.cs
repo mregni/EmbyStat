@@ -1,6 +1,6 @@
 ﻿namespace EmbyStat.Common.Enums;
 
-public enum PlayType
+public enum MediaType
 {
     Unknown = 0,
     Movie = 1,

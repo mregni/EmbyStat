@@ -3,19 +3,21 @@ using System;
 using EmbyStat.Core.DataStore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace EmbyStat.Migrations.Sqlite
+namespace EmbyStat.Core.DataStore.Migrations.Sqlite
 {
     [DbContext(typeof(EsDbContext))]
-    partial class EsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220712101203_MovedSyncTypeTable")]
+    partial class MovedSyncTypeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.4");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.6");
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Device", b =>
                 {
@@ -392,7 +394,7 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<string>("Primary")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("Sync")
+                    b.Property<int?>("SyncType")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Type")
@@ -401,6 +403,25 @@ namespace EmbyStat.Migrations.Sqlite
                     b.HasKey("Id");
 
                     b.ToTable("Libraries");
+                });
+
+            modelBuilder.Entity("EmbyStat.Common.Models.Entities.LibrarySyncType", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LibraryId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("SyncType")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LibraryId");
+
+                    b.ToTable("LibrarySyncType");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.MediaServerInfo", b =>
@@ -523,8 +544,8 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<DateTime>("LastPlayedDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("MediaType")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("MediaType")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("MovieId")
                         .HasColumnType("TEXT");
@@ -597,8 +618,8 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<int?>("TMDB")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("TVDB")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("TVDB")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Thumb")
                         .HasColumnType("TEXT");
@@ -729,8 +750,8 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<int?>("TMDB")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("TVDB")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("TVDB")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Thumb")
                         .HasColumnType("TEXT");
@@ -862,8 +883,8 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Property<int?>("TMDB")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("TVDB")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("TVDB")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Thumb")
                         .HasColumnType("TEXT");
@@ -1354,6 +1375,17 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Navigation("Show");
                 });
 
+            modelBuilder.Entity("EmbyStat.Common.Models.Entities.LibrarySyncType", b =>
+                {
+                    b.HasOne("EmbyStat.Common.Models.Entities.Library", "Library")
+                        .WithMany("SyncTypes")
+                        .HasForeignKey("LibraryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Library");
+                });
+
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.MediaServerUserView", b =>
                 {
                     b.HasOne("EmbyStat.Common.Models.Entities.Shows.Episode", null)
@@ -1516,6 +1548,8 @@ namespace EmbyStat.Migrations.Sqlite
                     b.Navigation("Movies");
 
                     b.Navigation("Shows");
+
+                    b.Navigation("SyncTypes");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Movies.Movie", b =>

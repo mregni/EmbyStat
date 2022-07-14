@@ -105,21 +105,23 @@ public class MovieService : MediaService, IMovieService
         return page;
     }
 
-    public Task<Movie> GetMovie(string id)
+    public Task<Movie?> GetMovie(string id)
     {
         return _movieRepository.GetById(id);
     }
 
-    public Task SetLibraryAsSynced(string[] libraryIds)
+    public async Task SetLibraryAsSynced(string[] libraryIds)
     {
-        return _mediaServerRepository.SetLibraryAsSynced(libraryIds, LibraryType.Movies);
+        await _mediaServerRepository.SetLibraryAsSynced(libraryIds, LibraryType.Movies);
+        await _movieRepository.RemoveUnwantedMovies(libraryIds);
+        await _statisticsRepository.MarkTypesAsInvalid(StatisticType.Movie);
     }
 
     #region Cards
 
-    private async Task<List<Card<string>>> CalculateCards()
+    private async Task<List<Card>> CalculateCards()
     {
-        var list = new List<Card<string>>();
+        var list = new List<Card>();
         list.AddIfNotNull(await CalculateTotalMovieCount());
         list.AddIfNotNull(await CalculateTotalMovieGenres());
         list.AddIfNotNull(CalculateTotalPlayLength());
@@ -131,12 +133,12 @@ public class MovieService : MediaService, IMovieService
         return list;
     }
 
-    private Task<Card<string>> CalculateTotalMovieCount()
+    private Task<Card> CalculateTotalMovieCount()
     {
         return CalculateStat(async () =>
         {
             var count = await _movieRepository.Count();
-            return new Card<string>
+            return new Card
             {
                 Title = Constants.Movies.TotalMovies,
                 Value = count.ToString(),
@@ -146,12 +148,12 @@ public class MovieService : MediaService, IMovieService
         }, "Calculate total movie count failed:");
     }
 
-    private Task<Card<string>> CalculateTotalMovieGenres()
+    private Task<Card> CalculateTotalMovieGenres()
     {
         return CalculateStat(async () =>
         {
             var totalGenres = await _movieRepository.GetGenreCount();
-            return new Card<string>
+            return new Card
             {
                 Title = Constants.Common.TotalGenres,
                 Value = totalGenres.ToString(),
@@ -161,14 +163,14 @@ public class MovieService : MediaService, IMovieService
         }, "Calculate total movie genres failed:");
     }
 
-    private Card<string> CalculateTotalPlayLength()
+    private Card CalculateTotalPlayLength()
     {
         return CalculateStat(() =>
         {
             var playLengthTicks = _movieRepository.GetTotalRuntime() ?? 0;
             var playLength = new TimeSpan(playLengthTicks);
 
-            return new Card<string>
+            return new Card
             {
                 Title = Constants.Movies.TotalPlayLength,
                 Value = $"{playLength.Days}|{playLength.Hours}|{playLength.Minutes}",
@@ -178,12 +180,12 @@ public class MovieService : MediaService, IMovieService
         }, "Calculate total movie play length failed:");
     }
 
-    private Card<string> CalculateTotalDiskSpace()
+    private Card CalculateTotalDiskSpace()
     {
         return CalculateStat(() =>
         {
             var sum = _movieRepository.GetTotalDiskSpace();
-            return new Card<string>
+            return new Card
             {
                 Value = sum.ToString(CultureInfo.InvariantCulture),
                 Title = Constants.Common.TotalDiskSpace,
@@ -193,12 +195,12 @@ public class MovieService : MediaService, IMovieService
         }, "Calculate total movie disk space failed:");
     }
 
-    private Card<string> TotalPersonTypeCount(PersonType type, string title)
+    private Card TotalPersonTypeCount(PersonType type, string title)
     {
         return CalculateStat(() =>
         {
             var value = _movieRepository.GetPeopleCount(type);
-            return new Card<string>
+            return new Card
             {
                 Value = value.ToString(),
                 Title = title,

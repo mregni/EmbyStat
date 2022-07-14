@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
 
@@ -17,12 +17,15 @@ type Password = {
 
 export function EsPasswordCard() {
   const {changePassword, user, login} = useContext(UserContext);
+  const [saving, setSaving] = useState(false);
   const {t} = useTranslation();
 
   const submitForm = async (data: Password) => {
     if (user !== null) {
+      setSaving(true);
       const result = await changePassword(data.password, data.currentPassword);
 
+      setSaving(false);
       if (result) {
         await login(user.username, data.password);
         SnackbarUtils.success(t('SETTINGS.PASSWORD.PASSWORDUPDATED'));
@@ -53,6 +56,7 @@ export function EsPasswordCard() {
       title='SETTINGS.PASSWORD.TITLE'
       saveForm={submitForm}
       handleSubmit={handleSubmit}
+      saving={saving}
     >
       <Typography variant="body1">
         {t('SETTINGS.PASSWORD.CONTENT')}

@@ -1,5 +1,6 @@
-import {Button} from '@mui/material';
 import React, {ReactElement} from 'react';
+
+import {Button} from '@mui/material';
 
 type Props = {
   disabled?: boolean;
@@ -8,6 +9,7 @@ type Props = {
   fullWidth?: boolean;
   variant?: 'text'| 'contained';
   color?: 'primary' |'secondary';
+  type?: 'submit' | 'button';
 }
 
 export function EsButton(props: Props) {
@@ -18,11 +20,12 @@ export function EsButton(props: Props) {
     onClick,
     variant = 'contained',
     color = 'primary',
+    type = 'submit',
   } = props;
 
   return (
     <Button
-      type="submit"
+      type={type}
       color={color}
       variant={variant}
       disabled={disabled}

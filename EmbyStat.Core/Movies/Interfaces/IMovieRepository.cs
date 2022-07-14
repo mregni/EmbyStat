@@ -7,7 +7,7 @@ namespace EmbyStat.Core.Movies.Interfaces;
 
 public interface IMovieRepository : IMediaRepository
 {
-    Task<Movie> GetById(string id);
+    Task<Movie?> GetById(string id);
     Task UpsertRange(IEnumerable<Movie> movies);
     IEnumerable<Movie> GetAll();
     IEnumerable<Movie> GetAllWithImdbId();
@@ -25,4 +25,5 @@ public interface IMovieRepository : IMediaRepository
     IEnumerable<LabelValuePair> CalculateCodecFilterValues();
     IEnumerable<LabelValuePair> CalculateVideoRangeFilterValues();
     Task DeleteAll();
+    Task RemoveUnwantedMovies(IEnumerable<string> libraryIds);
 }

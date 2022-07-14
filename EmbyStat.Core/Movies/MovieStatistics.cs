@@ -5,7 +5,7 @@ namespace EmbyStat.Core.Movies;
 
 public class MovieStatistics
 {
-    public List<Card<string>> Cards { get; set; }
+    public List<Card> Cards { get; set; }
     public List<TopCard> TopCards { get; set; }
     public List<Chart> Charts { get; set; }
     public IEnumerable<ShortMovie> Shorts { get; set; }

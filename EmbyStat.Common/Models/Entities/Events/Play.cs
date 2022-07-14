@@ -9,7 +9,7 @@ public class Play
     public Guid Id { get; set; }
     public string SessionId { get; set; }
     public string UserId { get; set; }
-    public PlayType Type { get; set; }
+    public MediaType Type { get; set; }
     public string MediaId { get; set; }
     public ICollection<PlayState> PlayStates { get; set; }
     public string SubtitleCodec { get; set; }

@@ -80,9 +80,7 @@ public abstract class BaseJob : IBaseJob, IDisposable
         State = JobState.Running;
         
         await BroadcastProgress(0);
-        await LogInformation("---------------------------------");
-        await LogInformation("Starting job");
-        await LogInformation("---------------------------------");
+        await LogInformation("-------------- Starting job --------------");
         await _jobRepository.StartJob(Id);
     }
 
@@ -94,12 +92,10 @@ public abstract class BaseJob : IBaseJob, IDisposable
         await BroadcastProgress(100, now);
 
         var runTime = now.Subtract(StartTimeUtc ?? now).TotalMinutes;
-        await LogInformation("---------------------------------");
         await LogInformation(Math.Abs(Math.Ceiling(runTime) - 1) < 0.1
             ? "Job finished after 1 minute."
             : $"Job finished after {Math.Ceiling(runTime)} minutes.");
         await LogInformation("---------------------------------");
-
     }
 
     private async Task FailExecution()

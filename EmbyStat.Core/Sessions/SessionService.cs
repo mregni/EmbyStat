@@ -12,7 +12,7 @@ public class SessionService : ISessionService
     {
     }
 
-    public IEnumerable<string> GetMediaIdsForUser(string id, PlayType type)
+    public IEnumerable<string> GetMediaIdsForUser(string id, MediaType type)
     {
         throw new NotImplementedException();
         // return _sessionRepository.GetMediaIdsForUser(id, type);

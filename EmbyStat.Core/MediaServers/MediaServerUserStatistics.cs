@@ -4,5 +4,5 @@ namespace EmbyStat.Core.MediaServers;
 
 public class MediaServerUserStatistics
 {
-    public List<Card<string>> Cards { get; set; }
+    public List<Card> Cards { get; set; }
 }

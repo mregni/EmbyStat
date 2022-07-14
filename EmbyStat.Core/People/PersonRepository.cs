@@ -30,6 +30,14 @@ public class PersonRepository : IPersonRepository
 
     public async Task DeleteAll()
     {
+        await using var connection = _sqliteBootstrap.CreateConnection();
+        await connection.OpenAsync();
+        await using var transaction = connection.BeginTransaction();
+
+        var query = $"DELETE FROM {Constants.Tables.People}";
+        await connection.ExecuteAsync(query, transaction);
+        await transaction.CommitAsync();
+        
         _context.People.RemoveRange(_context.People);
         await _context.SaveChangesAsync();
     }

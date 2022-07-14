@@ -1,5 +1,5 @@
 import {t} from 'i18next';
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 
 import {Checkbox, FormControlLabel, Typography} from '@mui/material';
@@ -15,6 +15,7 @@ type TmdbApiForm = {
 
 export function EsTmdbApiCard() {
   const {userConfig, save} = useContext(SettingsContext);
+  const [saving, setSaving] = useState(false);
 
   const {handleSubmit, register, getValues, formState: {errors}, control} = useForm<TmdbApiForm>({
     mode: 'all',
@@ -27,7 +28,10 @@ export function EsTmdbApiCard() {
   const saveForm = async (data: TmdbApiForm) => {
     userConfig.tmdb.apiKey = data.apiKey;
     userConfig.tmdb.useAsFallback = data.enableFallback;
+
+    setSaving(true);
     await save(userConfig);
+    setSaving(false);
   };
 
   const apiKeyRegister = register('apiKey', {required: true});
@@ -37,6 +41,7 @@ export function EsTmdbApiCard() {
       title={t('SETTINGS.TMDB.TITLE')}
       saveForm={saveForm}
       handleSubmit={handleSubmit}
+      saving={saving}
     >
       <Typography variant="body1">
         {t('SETTINGS.TMDB.APIKEYWARNING')}

@@ -32,13 +32,15 @@ public interface IMediaServerRepository
     Task<IEnumerable<MediaServerUserRow>> GetUserPage(int skip, int take, string sortField, string sortOrder);
     Task<MediaServerUser[]> GetAllUsers();
     Task<MediaServerUser[]>  GetAllAdministrators();
-    Task<MediaServerUser> GetUserById(string id);
+    Task<MediaServerUser?> GetUserById(string id);
     Task DeleteAllUsers();
     Task InsertOrUpdateUserViews(List<MediaServerUserView> views);
     Task<int> GetUserCount();
-    int GetUserViewsForType(string type);
+    int GetUserViewsForType(MediaType type);
+    Task<int> GetMediaServerViewsForUser(string id, MediaType type);
     Task<Dictionary<Show, int>> GetMostWatchedShows(int count);
     Task<Dictionary<Movie, int>> GetMostWatchedMovies(int count);
+    
     #endregion
 
     #region Devices
@@ -50,10 +52,10 @@ public interface IMediaServerRepository
     #region Libraries
     Task<List<Library>> GetAllLibraries();
     Task<List<Library>> GetAllLibraries(LibraryType type);
-    Task<List<Library>> GetAllLibraries(LibraryType type, bool synced);
+    Task<List<Library>> GetAllSyncedLibraries(LibraryType type);
     Task SetLibraryAsSynced(string[] libraryIds, LibraryType type);
     Task DeleteAndInsertLibraries(Library[] libraries);
     Task DeleteAllLibraries();
-    Task UpdateLibrarySyncDate(string libraryId, DateTime date);
+    Task UpdateLibrarySyncDate(string libraryId, DateTime date, LibraryType type);
     #endregion
 }

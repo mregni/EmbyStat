@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Controllers.HelperClasses;
 using EmbyStat.Core.Movies.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using MoreLinq;
 using Newtonsoft.Json;
 
 namespace EmbyStat.Controllers.Movie;
@@ -53,12 +56,13 @@ public class MovieController : Controller
     public async Task<IActionResult> GetMovie(string id)
     {
         var result = await _movieService.GetMovie(id);
-        if (result != null)
+        if (result == null)
         {
-            var movie = _mapper.Map<MovieViewModel>(result);
-            return Ok(movie);
+            return NotFound(id);
         }
-        return NotFound(id);
+        
+        var movie = _mapper.Map<MovieViewModel>(result);
+        return Ok(movie);
     }
 
     [HttpGet]
@@ -66,7 +70,15 @@ public class MovieController : Controller
     public async Task<IActionResult> GetLibraries()
     {
         var result = await _movieService.GetMovieLibraries();
-        return Ok(_mapper.Map<IList<LibraryViewModel>>(result));
+        var map = _mapper.Map<IList<LibraryViewModel>>(result, opts =>
+            opts.AfterMap((src, dest) =>
+            {
+                dest.ForEach(x => x.Sync = result
+                    .Single(y => y.Id == x.Id).SyncTypes
+                    .Any(y => y.SyncType == LibraryType.Movies));
+            }));
+        
+        return Ok(map);
     }
         
     [HttpPost]
