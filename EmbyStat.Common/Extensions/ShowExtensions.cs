@@ -62,7 +62,7 @@ public static class ShowExtensions
         var query = $@"
 SELECT COUNT() AS Count
 FROM {Constants.Tables.Shows} as s
-WHERE 1=1";
+WHERE 1=1 ";
         query = filters.Aggregate(query, (current, filter) => current + AddShowFilters(filter));
 
         return query;
@@ -79,7 +79,7 @@ SELECT s.*, se.*, e.*
 FROM {Constants.Tables.Shows} as s
 LEFT JOIN {Constants.Tables.Seasons} AS se ON (s.Id = se.ShowId)
 LEFT JOIN {Constants.Tables.Episodes} AS e ON (se.Id = e.SeasonId)
-WHERE 1=1";
+WHERE 1=1 ";
     }
 
     public static string GenerateFullShowWithGenresQuery()
