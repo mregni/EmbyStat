@@ -53,7 +53,7 @@ export function ShowTable() {
     {label: 'COMMON.TOTALRUNTIME', field: 'cumulativeRunTimeTicks', sortable: false, align: 'right'},
     {label: 'COMMON.SEASONS', field: 'seasons', sortable: true, align: 'right'},
     {label: 'COMMON.EPISODES', field: 'episodes', sortable: true, align: 'right', width: 220},
-    {label: 'COMMON.OFFICIALRATING', field: 'officielRating', sortable: true, align: 'right'},
+    {label: 'COMMON.OFFICIALRATING', field: 'officialRating', sortable: true, align: 'right'},
     {label: 'COMMON.LINKS', field: '', sortable: false, align: 'right'},
   ];
 
