@@ -89,7 +89,8 @@
     "UPDATELEVEL": "Nivel de actualización",
     "VERSION": "Versión",
     "VIDEORANGE": "Rango de video",
-    "WIDTH": "Anchura"
+    "WIDTH": "Anchura",
+    "NEVER": "Never"
   },
   "DIALOGS": {
     "EDIT_TRIGGER": {
@@ -344,6 +345,7 @@
     "HIDDEN": "Hidden",
     "IDLEUSERS": "Idle users",
     "LASTACTIVE": "Última conexión",
+    "LASTLOGIN": "Last login",
     "LOADER": "Loading user info",
     "USERS": "Usuarios",
     "WATCHED": {
