@@ -57,17 +57,17 @@ public class RoundNumberExtensionTests
     }
 
     [Theory]
-    [InlineData(0d, 0)]
-    [InlineData(0.1d, 0)]
-    [InlineData(0.2d, 0)]
-    [InlineData(0.3d, 0.5)]
-    [InlineData(0.4d, 0.5)]
-    [InlineData(0.5d, 0.5)]
-    [InlineData(0.6d, 0.5)]
-    [InlineData(0.7d, 0.5)]
-    [InlineData(0.8d, 1)]
-    [InlineData(0.9d, 1)]
-    [InlineData(1d, 1)]
+    [InlineData(0d, 0d)]
+    [InlineData(0.1d, 0d)]
+    [InlineData(0.2d, 0d)]
+    [InlineData(0.3d, 0.5d)]
+    [InlineData(0.4d, 0.5d)]
+    [InlineData(0.5d, 0.5d)]
+    [InlineData(0.6d, 0.5d)]
+    [InlineData(0.7d, 0.5d)]
+    [InlineData(0.8d, 1d)]
+    [InlineData(0.9d, 1d)]
+    [InlineData(1d, 1d)]
     [InlineData(null, null)]
     public void RoundToHalf_Should_Round_Number_To_Half(double? input, double? output)
     {
