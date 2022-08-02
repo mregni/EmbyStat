@@ -192,7 +192,7 @@ ${If} $_INSTALLSERVICE_ == "Yes" ; Only run this if we're going to install the s
     DetailPrint "EmbyStat Server service statuscode, $0"
     ${If} $0 == 0
         InstallRetry:
-        ExecWait '"$INSTDIR\nssm.exe" install EmbyStatServer "$INSTDIR\EmbyStat.exe" --service true --data-dir \"$_EMBYSTATDATADIR_\"' $0
+        ExecWait '"$INSTDIR\nssm.exe" install EmbyStatServer "$INSTDIR\EmbyStat.exe" --service true -d $_EMBYSTATDATADIR_ -l $_EMBYSTATDATADIR_/logs -c $_EMBYSTATDATADIR_' $0
         ${If} $0 <> 0
             !insertmacro ShowError "Could not install the EmbyStat Server service." InstallRetry
         ${EndIf}
@@ -208,7 +208,7 @@ ${If} $_INSTALLSERVICE_ == "Yes" ; Only run this if we're going to install the s
         DetailPrint "EmbyStat Server Service setting (Application), $0"
 
         ConfigureAppParametersRetry:
-        ExecWait '"$INSTDIR\nssm.exe" set EmbyStatServer AppParameters --service --data-dir \"$_EMBYSTATDATADIR_\"' $0
+        ExecWait '"$INSTDIR\nssm.exe" set EmbyStatServer AppParameters --service true -d $_EMBYSTATDATADIR_ -l $_EMBYSTATDATADIR_/logs -c $_EMBYSTATDATADIR_' $0
         ${If} $0 <> 0
             !insertmacro ShowError "Could not configure the EmbyStat Server service." ConfigureAppParametersRetry
         ${EndIf}
