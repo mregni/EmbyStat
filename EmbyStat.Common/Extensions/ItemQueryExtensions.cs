@@ -46,7 +46,6 @@ public static class ItemQueryExtensions
         }
 
         paramList.AddIfNotNull("MinDateLastSaved", query.MinDateLastSaved);
-        paramList.AddIfNotNull("MinDateLastSavedForUser", query.MinDateLastSaved);
         paramList.AddIfNotNull("ParentId", query.ParentId);
         paramList.AddIfNotNull("StartIndex", query.StartIndex);
         paramList.AddIfNotNull("Limit", query.Limit);
