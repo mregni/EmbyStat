@@ -124,7 +124,7 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
 
     private async Task ProcessChangedMovies(Library library, IReadOnlyList<Genre> genres, double logIncrementBase)
     {
-        var lastSynced = library.SyncTypes.GetLastSyncedDateForLibrary(library.Id, LibraryType.TvShow);
+        var lastSynced = library.SyncTypes.GetLastSyncedDateForLibrary(library.Id, LibraryType.Movies);
         var totalCount = await _baseHttpClient.GetMediaCount(library.Id, lastSynced, "Movie");
         if (totalCount == 0)
         {
