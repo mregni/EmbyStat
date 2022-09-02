@@ -1,6 +1,6 @@
 {
   "ABOUT": {
-    "ACTIONS": "Actions",
+    "ACTIONS": "Azioni",
     "GITHUBRELEASE": "Rilasci su Github",
     "HELPTRANSLATE": "Aiuta a tradurre l'app",
     "LOGBUG": "Log bug su Github",
@@ -8,7 +8,7 @@
     "REQUESTFEATURE": "Richiedi funzionalità",
     "SERVERINFO": "Informazioni sul server",
     "THANKS": {
-      "MISSINGNAME": "Se il tuo nome non è presente in questa lista, inviami un messaggio su Crowdin!",
+      "MISSINGNAME": "Se il tuo nome non è presente in questo elenco, inviami un messaggio su Crowdin!",
       "TEXT": "Un grande ringraziamento alle seguenti persone per aver tradotto l'app nella loro lingua o per aver aiutato a testare l'applicazione:",
       "TITLE": "Grazie"
     }
@@ -163,30 +163,30 @@
       "MOVIE-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
       "PING": "Verifica il collegamento a {{type}}",
       "PINGDESCRIPTION": "Esegui il ping al server Emby per verificare se è ancora online.",
-      "SHOW-SYNC": "Show synchronization",
-      "SHOW-SYNCDESCRIPTION": "Perform an incremental sync for your show collection. This can take some time to run!",
-      "SYSTEM-SYNC": "Sync {{type}} info",
-      "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
-      "UPDATE-CHECKER": "Check for new updates",
-      "UPDATE-CHECKERDESCRIPTION": "Checks for new updates on your selected update train."
+      "SHOW-SYNC": "Sincronizzazione Serie",
+      "SHOW-SYNCDESCRIPTION": "Esegui una sincronizzazione incrementale per la tua raccolta di serie. Questo può richiedere del tempo per l'esecuzione!",
+      "SYSTEM-SYNC": "Sincronizza informazioni {{type}}",
+      "SYSTEM-SYNCDESCRIPTION": "Esegui una piccola sincronizzazione con il server Emby. Questo è un aggiornamento di sistema rapido e di piccole dimensioni.",
+      "UPDATE-CHECKER": "Controlla nuovi aggiornamenti",
+      "UPDATE-CHECKERDESCRIPTION": "Verifica la presenza di nuovi aggiornamenti sul canale di aggiornamento selezionato."
     },
     "JOBLOGS": "Job logs",
     "LASTRUN": "Ultima esecuzione",
     "NORUN": "Non ancora eseguito",
     "OPENJOBPAGE": "Go to job page",
     "PROCESSING": "Processing",
-    "STARTMEDIASYNC": "Start media sync"
+    "STARTMEDIASYNC": "Avvia sincronizzazione media"
   },
   "LOGIN": {
-    "ERROR": "Username or password unknown",
-    "LOGIN": "Login",
-    "LOGOUT": "Log out",
-    "RECOVERPASSWORD": "Recover password",
-    "RESETCOMPLETED": "Check logs for new password",
-    "RESETFAILED": "Username reset failed"
+    "ERROR": "Nome utente o password non riconosciuti",
+    "LOGIN": "Accedi",
+    "LOGOUT": "Disconnetti",
+    "RECOVERPASSWORD": "Recupera password",
+    "RESETCOMPLETED": "Controlla i registri per la nuova password",
+    "RESETFAILED": "Ripristino del nome utente non riuscito"
   },
   "LOGS": {
-    "ACTIONS": "Actions",
+    "ACTIONS": "Azioni",
     "ANONYMISED": "Anonymised"
   },
   "MENU": {
@@ -203,8 +203,8 @@
   "MOVIES": {
     "HIGHESTRATED": "Valutazioni più alte",
     "LATESTADDED": "Aggiunti di recente",
-    "LOADER": "Loading movie statistics",
-    "LOADINGLIST": "Loading movie list",
+    "LOADER": "Caricamento statistiche film",
+    "LOADINGLIST": "Caricamento elenco film",
     "LONGEST": "Più Lungo",
     "LOWESTRATED": "Valutazioni più basse",
     "MOSTWATCHED": "Most watched",
@@ -216,45 +216,45 @@
     "TOTALWATCHED": "Total watched movies"
   },
   "PAGINATION": {
-    "NEXTPAGE": "Next page",
-    "PREVIOUSPAGE": "Previous page",
-    "ROWSPERPAGE": "Rows per page"
+    "NEXTPAGE": "Pagina successiva",
+    "PREVIOUSPAGE": "Pagina precedente",
+    "ROWSPERPAGE": "Righe per pagina"
   },
   "SERVER": {
-    "ACTIVEDEVICES": "ACtive devices",
-    "AUTORUNSUPPORT": "Supports auto run at startup",
-    "CACHEPATH": "Cache path",
-    "CANLAUNCHBROWSER": "Can launch browser",
-    "CANSELFRESTART": "Can self restart",
-    "CANSELFUPDATE": "Can self update",
-    "FEATURES": "Features",
-    "HTTPSSUPPORT": "HTTPS support",
-    "IDLEDEVICES": "Idle devices",
+    "ACTIVEDEVICES": "Dispositivi attivi",
+    "AUTORUNSUPPORT": "Supporta l'esecuzione automatica all'avvio",
+    "CACHEPATH": "Percorso cache",
+    "CANLAUNCHBROWSER": "Può avviare il browser",
+    "CANSELFRESTART": "Può riavviarsi automaticamente",
+    "CANSELFUPDATE": "Può aggiornarsi automaticamente",
+    "FEATURES": "Funzionalità",
+    "HTTPSSUPPORT": "Supporto HTTPS",
+    "IDLEDEVICES": "Dispositivi inattivi",
     "INFO": "Informazioni sul server",
     "ITEMSBYNAMEPATH": "Items by name path",
-    "LANADDRESS": "LAN",
-    "LOGPATH": "Log path",
-    "METADATAPATH": "Internal metadata path",
-    "MONITORSUPPORT": "Supports library monitoring",
+    "LANADDRESS": "LAN (Rete locale)",
+    "LOGPATH": "Percorso Log",
+    "METADATAPATH": "Percorso dei metadati interni",
+    "MONITORSUPPORT": "Supporta il monitoraggio della libreria",
     "OPENSERVER": "Open server page",
-    "PENDINGRESTART": "Has pending restart",
+    "PENDINGRESTART": "Ha un riavvio in attesa",
     "PLUGINS": "Plugins",
-    "PROGRAMDATAPATH": "Program data path",
-    "TRANSCODINGPATH": "Transcoding path",
-    "UPDATEAVAILABLE": "Has update available",
-    "WANADDRESS": "WAN",
-    "WEBSOCKETPORT": "Websocket port"
+    "PROGRAMDATAPATH": "Percorso dati del programma",
+    "TRANSCODINGPATH": "Percorso di transcodifica",
+    "UPDATEAVAILABLE": "Aggiornamento disponibile",
+    "WANADDRESS": "WAN (rete esterna)",
+    "WEBSOCKETPORT": "Porta Websocket"
   },
   "SETTINGS": {
     "ACCOUNT": {
-      "CONTENT": "Change your admin username here. New username will be required on next login.",
+      "CONTENT": "Modifica il nome utente dell'amministratore. Il nuovo nome utente sarà richiesto al prossimo accesso.",
       "NOUSERNAME": "Il nome utente è obbligatorio",
       "USERNAME": "Nome utente",
-      "USERNAMEUPDATED": "Username updated succesfully",
-      "USERNAMEUPDATEFAILED": "Username update failed, check the logs for more info"
+      "USERNAMEUPDATED": "Nome utente aggiornato con successo",
+      "USERNAMEUPDATEFAILED": "Aggiornamento del nome utente non riuscito, controlla i registri per maggiori informazioni"
     },
     "LANGUAGE": {
-      "LABEL": "Select language",
+      "LABEL": "Seleziona lingua",
       "LANGUAGEUPDATED": "Updating language to {{lang}}",
       "SAMPLES": "Localisation examples",
       "TITLE": "Language"
