@@ -16,7 +16,7 @@
   "COMMON": {
     "AND": "und",
     "AUDIO": "Sprache",
-    "BACK": "Back",
+    "BACK": "Zurück",
     "BIT": "bit",
     "BITDEPTH": "Bittiefe",
     "CANCEL": "abbrechen",
@@ -25,17 +25,17 @@
     "COMMUNITYRATING": "Community-Bewertung",
     "CONTAINER": "Container",
     "COUNT": "Anzahl",
-    "CREATE": "Create",
+    "CREATE": "Erstellen",
     "CREATEDDATE": "Media added",
     "CRON": "Cron Intervall",
-    "DATE": "Date",
+    "DATE": "Datum",
     "DAYSABBR": "d",
-    "DESCRIPTION": "Description",
+    "DESCRIPTION": "Beschreibung",
     "DISCARD": "verwerfen",
-    "DISKSPACE": "Disk space",
-    "DOWNLOAD": "Download",
-    "DOWNLOADCSV": "Download list as CSV",
-    "EPISODE": "Episode",
+    "DISKSPACE": "Festplattenspeicher",
+    "DOWNLOAD": "Herunterladen",
+    "DOWNLOADCSV": "Als CSV herunterladen",
+    "EPISODE": "Folge",
     "EPISODES": "Episoden",
     "FILTER": "Filter",
     "FILTERS": "Filter",
@@ -45,8 +45,8 @@
     "GRAPHS": "Diagramme",
     "HEIGHT": "Höhe",
     "HOURSABBR": "h",
-    "HTTPPORT": "HTTP port",
-    "HTTPSPORT": "HTTPS port",
+    "HTTPPORT": "HTTP Port",
+    "HTTPSPORT": "HTTPS Port",
     "ID": "ID",
     "ISDEFAULT": "is default",
     "LINKS": "Links",
@@ -59,38 +59,38 @@
     "NUMBERS": "Numbers",
     "OFFICIALRATING": "Altersfreigabe",
     "OS": "Betriebssystem",
-    "OTHER": "Other",
-    "PATHS": "Paths",
+    "OTHER": "Sonstiges",
+    "PATHS": "Pfade",
     "PIXELS": "px",
     "PREMIEREDATE": "Premierendatum",
     "PROTOCOL": "Protokoll",
     "RUNTIME": "Laufzeit",
     "SAVE": "speichern",
-    "SEASON": "Season",
-    "SEASONS": "Seasons",
+    "SEASON": "Staffel",
+    "SEASONS": "Staffeln",
     "SELECTVALUE": "Wert auswählen",
     "SHOW": "Serie",
     "SHOWS": "Serien",
     "SIZE": "Größe",
-    "SIZEINMB": "Size in Mb",
+    "SIZEINMB": "Größe in MB",
     "STATUS": "Status",
     "STREAMS": "Streams",
     "SUBTITLES": "Untertitel",
-    "TIME": "Time",
+    "TIME": "Zeit",
     "TITLE": "Titel",
-    "TOTAL": "Total",
+    "TOTAL": "Gesamt",
     "TOTALACTORS": "Anzahl Schauspieler",
     "TOTALDIRECTORS": "Anzahl Regisseure",
     "TOTALDISKSIZE": "Gesamte Festplattengröße",
     "TOTALGENRES": "Alle Genres",
     "TOTALRUNTIME": "Gesamte Laufzeit",
     "TOTALWRITERS": "Anzahl Autoren",
-    "UNKNOWN": "Unknown",
+    "UNKNOWN": "Unbekannt",
     "UPDATELEVEL": "Update-Kanal",
     "VERSION": "Version",
     "VIDEORANGE": "Videobereich",
     "WIDTH": "Breite",
-    "NEVER": "Never"
+    "NEVER": "Niemals"
   },
   "DIALOGS": {
     "EDIT_TRIGGER": {
@@ -117,11 +117,11 @@
   "FILTERS": {
     "DIALOG": {
       "CONTENT": "Select field on which you want to add a new filter",
-      "TITLE": "Add new filter"
+      "TITLE": "Neuen Filter hinzufügen"
     },
     "OPERATIONS": {
       "BETWEEN": "is between",
-      "CONTAINS": "contains",
+      "CONTAINS": "enthält",
       "ENDSWITH": "ends with",
       "EQUAL": "equals",
       "HAS": "has",
@@ -136,7 +136,7 @@
       "NOTCONTAINS": "does not contain",
       "SHORTER": "is shorter then",
       "SMALLER": "is smaller then",
-      "STARTSWITH": "starts with"
+      "STARTSWITH": "beginnt mit"
     },
     "TITLES": {
       "CONTAINER": "Container",
@@ -150,7 +150,7 @@
   },
   "FORMLABELS": {
     "CRON": "Cron Intervall",
-    "FIELD": "Field",
+    "FIELD": "Feld",
     "OPERATION": "Operation"
   },
   "JOB": {
@@ -207,7 +207,7 @@
     "LOADINGLIST": "Loading movie list",
     "LONGEST": "Am längsten",
     "LOWESTRATED": "Schlechteste Bewertung",
-    "MOSTWATCHED": "Most watched",
+    "MOSTWATCHED": "Meist gesehen",
     "NEWESTPREMIERED": "Neueste Premiere",
     "OLDESTPREMIERED": "Früheste Premiere",
     "SHORTEST": "Am kürzesten",
@@ -223,12 +223,12 @@
   "SERVER": {
     "ACTIVEDEVICES": "ACtive devices",
     "AUTORUNSUPPORT": "Supports auto run at startup",
-    "CACHEPATH": "Cache path",
+    "CACHEPATH": "Cache-Pfad",
     "CANLAUNCHBROWSER": "Can launch browser",
     "CANSELFRESTART": "Can self restart",
     "CANSELFUPDATE": "Can self update",
-    "FEATURES": "Features",
-    "HTTPSSUPPORT": "HTTPS support",
+    "FEATURES": "Funktionen",
+    "HTTPSSUPPORT": "HTTPS-Unterstützung",
     "IDLEDEVICES": "Idle devices",
     "INFO": "Serverinfo",
     "ITEMSBYNAMEPATH": "Items by name path",
@@ -254,24 +254,24 @@
       "USERNAMEUPDATEFAILED": "Username update failed, check the logs for more info"
     },
     "LANGUAGE": {
-      "LABEL": "Select language",
+      "LABEL": "Sprache auswählen",
       "LANGUAGEUPDATED": "Updating language to {{lang}}",
       "SAMPLES": "Localisation examples",
       "TITLE": "Sprache"
     },
     "LIBRARIES": {
       "CONTENT": "Select here all {{type}} libraries that should be synced with EmbyStat ",
-      "TITLE": "Libraries"
+      "TITLE": "Bibliotheken"
     },
     "MEDIASERVER": {
       "ADDRESS": "Full server URL",
-      "ADDRESSHINT": "Example: https://example.com:8096/base",
+      "ADDRESSHINT": "Beispiel: https://example.com:8096/base\nCONTEXTREQUEST",
       "APIKEY": "API-Schlüssel",
       "APIKEYHINT": "Gehen Sie auf Ihrem {{type}} Server zu Erweitert -> API-Schlüssel, um ein neues API-Token zu generieren.",
       "DIALOG": {
         "CONTENT": "Because you are changing the server configuration it might be a good idea to also reset the EmbyStat statistics. Do this only when you are connecting to a new server with different media/users/... If you are still connecting to the same server you don't need to reset the EmbyStat statistics.",
         "RESET": "Save and reset",
-        "TITLE": "Reset database?"
+        "TITLE": "Datenbank zurücksetzen?"
       },
       "NOADDRESS": "Server URL is required",
       "NOAPIKEY": "API-Schlüssel ist erforderlich",
@@ -283,17 +283,17 @@
     },
     "PASSWORD": {
       "CONTENT": "For changing your password, fill in the current one and your new one twice.",
-      "CURRENTPASSWORD": "Current password",
-      "NEWPASSWORD": "New password",
-      "NOCURRENTPASSWORD": "Current password is required",
-      "NOPASSWORD": "Password is required",
-      "PASSWORD": "Password",
+      "CURRENTPASSWORD": "Aktuelles Passwort",
+      "NEWPASSWORD": "Neues Passwort",
+      "NOCURRENTPASSWORD": "Das aktuelle Passwort ist erforderlich",
+      "NOPASSWORD": "Passwort erforderlich",
+      "PASSWORD": "Passwort",
       "PASSWORDMINLENGTH": "Password length must be minimal 6 characters",
-      "PASSWORDNOTEQUAL": "Passwords are not equal",
-      "PASSWORDUPDATED": "Password updated succesfully",
+      "PASSWORDNOTEQUAL": "Passwörter stimmen nicht überein",
+      "PASSWORDUPDATED": "Passwort erfolgreich aktualisiert",
       "PASSWORDUPDATEFAILED": "Password update failed",
-      "REPEATNEWPASSWORD": "Repeat new password",
-      "TITLE": "Password"
+      "REPEATNEWPASSWORD": "Neues Passwort wiederholen",
+      "TITLE": "Passwort"
     },
     "ROLLBAR": {
       "ENABLEROLLBAR": "Ausnahmeprotokollierung aktivieren",
@@ -304,10 +304,10 @@
     "SAVEFAILED": "Updating settings failed",
     "SERVER": {
       "CONNECTIONS": "Connection settings",
-      "USER": "User settings"
+      "USER": "Benutzereinstellungen"
     },
     "SHOWS": {
-      "TITLE": "Show settings"
+      "TITLE": "Einstellungen anzeigen"
     },
     "TMDB": {
       "APIKEYWARNING": "Wenn Sie möchten, können Sie EmbyStat hier mit Ihrem eigenen TMDb-API-Schlüssel versorgen. Stellen Sie sicher, dass Sie einen funktionierenden API-Schlüssel angeben! Wenn der Schlüssel falsch ist, schlägt die Synchronisierungsaufgabe fehl.",
@@ -320,13 +320,13 @@
   "SHOWS": {
     "COMPLETECOLLECTEDSHOWS": "Full collected shows",
     "HIGHESTRATED": "Beste Bewertung",
-    "LATESTADDED": "Latest added",
+    "LATESTADDED": "Zuletzt hinzugefügt",
     "LOADER": "lade Serien-Statistik",
     "LOADINGLIST": "Loading show list",
     "LOWESTRATED": "Schlechteste Bewertung",
     "MISSINGEPISODES": "Fehlende Episoden",
     "MOSTDISKSPACE": "Most used disk space",
-    "MOSTWATCHED": "Most watched",
+    "MOSTWATCHED": "Meist gesehen",
     "NEWESTPREMIERED": "Neueste Premiere",
     "NOMISSINGEPS": "No missing episodes",
     "OLDESTPREMIERED": "Früheste Premiere",
@@ -341,11 +341,11 @@
   "USERS": {
     "ACTIVEUSERS": "Active users",
     "ADMIN": "Admin",
-    "DISABLED": "Disabled",
-    "HIDDEN": "Hidden",
+    "DISABLED": "Deaktiviert",
+    "HIDDEN": "Ausgeblendet",
     "IDLEUSERS": "Idle users",
     "LASTACTIVE": "Zuletzt aktiv",
-    "LASTLOGIN": "Last login",
+    "LASTLOGIN": "Letzter Login",
     "LOADER": "Loading user info",
     "USERS": "Benutzer",
     "WATCHED": {
@@ -375,10 +375,10 @@
     "LIBRARIES": {
       "TITLE": "Select {{type}} libraries"
     },
-    "NEXT": "Next",
+    "NEXT": "Weiter",
     "NOTFOUNDTEXT": "Jetzt werden wir die Verbindung zu {{type}} einrichten. Wir haben versucht deinen {{type}} Server im Netzwerk zu finden, konnten aber keinen erkennen. Bitte fülle alle Felder aus, sodass EmbyStat deinen {{type}} Server finden kann.",
     "SEARCHSERVERS": "Searching media servers",
-    "SELECTLANGUAGE": "Select your prefered language",
+    "SELECTLANGUAGE": "Bitte wählen Sie Ihre bevorzugte Sprache aus",
     "SELECTLIBRARIES": "Wählen Sie alle Bibliotheken aus, die Sie in die {{type}} Statistikberechnungen einbeziehen möchten. Alle {{type}} Bibliotheken sind standardmäßig ausgewählt. Wenn Sie möchten, können Sie das später auf der Einstellungsseite ändern.",
     "SERVERCONFIGURATION": "Server-Konfiguration",
     "SERVERCONFIGURATIONTEST": "Test der Server-Konfiguration",
@@ -388,7 +388,7 @@
     "STEPONE": "Überprüft, ob der API-Schlüssel gültig ist ({{step}}/{{total}})",
     "STEPTHREE": "Abrufen der Administratorkonten ({{step}}/{{total}})",
     "STEPTWO": "Serverinformationen werden abgerufen ({{step}}/{{total}})",
-    "TITLE": "Wizard",
+    "TITLE": "Assistent",
     "USERDETAILTEXT": "Geben Sie einen Benutzernamen und ein Passwort für Ihren Admin-Benutzer ein"
   }
 }
