@@ -21,7 +21,7 @@
     "BITDEPTH": "Bittiefe",
     "CANCEL": "abbrechen",
     "CODEC": "Codec",
-    "COLLECTEDPERCENTAGE": "Amount collected",
+    "COLLECTEDPERCENTAGE": "Menge gesammelt",
     "COMMUNITYRATING": "Community-Bewertung",
     "CONTAINER": "Container",
     "COUNT": "Anzahl",
@@ -56,7 +56,7 @@
     "MOVIE": "Film",
     "MOVIES": "Filme",
     "NAME": "Name",
-    "NUMBERS": "Numbers",
+    "NUMBERS": "Zahlen",
     "OFFICIALRATING": "Altersfreigabe",
     "OS": "Betriebssystem",
     "OTHER": "Sonstiges",
@@ -98,44 +98,44 @@
       "FORMAT_ERROR": "Der angegebene Cron-String hat ein falsches Format. Schauen Sie <a href=\"https://crontab.guru/\" target=\"_blank\">hier</a> für Formatierungsregeln. Es sind nur Zahlen, Leerzeichen, *, / und - zulässig."
     },
     "MOVIEJOBRUNNING": {
-      "BODY": "Movie job is running, please wait until it is finished",
-      "TITLE": "Movie job running"
+      "BODY": "Filmaufgabe wird ausgeführt, bitte warten Sie, bis die Aufgabe beendet ist",
+      "TITLE": "Filmaufgabe wird ausgeführt"
     },
     "NOMOVIETYPEFOUND": {
-      "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in {{type}} you should try starting a new movie syncronisation task.",
+      "BODY": "Wir konnten keine Filme in der EmbyStat-Datenbank finden. Wenn Sie Filme in {{type}} haben, dann sollten Sie versuchen eine neue Mediensynchronisation zu starten.",
       "TITLE": "Keine Filme gefunden"
     },
     "NOSHOWTYPEFOUND": {
-      "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in {{type}} you should try starting a new show syncronisation task.",
+      "BODY": "Wir konnten keine Serien in der EmbyStat-Datenbank finden. Wenn Sie Serien in {{type}} haben, dann sollten Sie versuchen eine neue Mediensynchronisation zu starten.",
       "TITLE": "Keine Serien gefunden"
     },
     "SHOWJOBRUNNING": {
-      "BODY": "Show job is running, please wait until it is finished",
-      "TITLE": "Show job running"
+      "BODY": "Serienaufgabe wird ausgeführt, bitte warten Sie, bis die Aufgabe beendet ist",
+      "TITLE": "Serienaufgabe wird ausgeführt"
     }
   },
   "FILTERS": {
     "DIALOG": {
-      "CONTENT": "Select field on which you want to add a new filter",
+      "CONTENT": "Wählen Sie das Feld aus, zu dem Sie einen neuen Filter hinzufügen möchten",
       "TITLE": "Neuen Filter hinzufügen"
     },
     "OPERATIONS": {
-      "BETWEEN": "is between",
+      "BETWEEN": "ist zwischen",
       "CONTAINS": "enthält",
-      "ENDSWITH": "ends with",
-      "EQUAL": "equals",
-      "HAS": "has",
-      "HASNO": "has no",
-      "HASNONE": "has none",
-      "IS": "is",
-      "ISNOT": "is not",
-      "ISNULL": "is null",
-      "ISZERO": "is 0",
-      "LARGER": "is larger then",
-      "LONGER": "is longer then",
-      "NOTCONTAINS": "does not contain",
-      "SHORTER": "is shorter then",
-      "SMALLER": "is smaller then",
+      "ENDSWITH": "endet mit",
+      "EQUAL": "entspricht",
+      "HAS": "mit",
+      "HASNO": "ohne",
+      "HASNONE": "ohne",
+      "IS": "ist",
+      "ISNOT": "ist nicht",
+      "ISNULL": "ist nicht gesetzt",
+      "ISZERO": "ist 0",
+      "LARGER": "ist größer als",
+      "LONGER": "ist länger als",
+      "NOTCONTAINS": "enthält nicht",
+      "SHORTER": "ist kürzer als",
+      "SMALLER": "ist kleiner als",
       "STARTSWITH": "beginnt mit"
     },
     "TITLES": {
@@ -204,7 +204,7 @@
     "HIGHESTRATED": "Beste Bewertung",
     "LATESTADDED": "Zuletzt hinzugefügt",
     "LOADER": "Laden der Film-Statistiken",
-    "LOADINGLIST": "Loading movie list",
+    "LOADINGLIST": "Laden der Film-Statistiken",
     "LONGEST": "Am längsten",
     "LOWESTRATED": "Schlechteste Bewertung",
     "MOSTWATCHED": "Meist gesehen",
@@ -213,7 +213,7 @@
     "SHORTEST": "Am kürzesten",
     "TOTALMOVIES": "Gesamtanzahl Filme",
     "TOTALPLAYLENGTH": "Gesamte Abspielzeit",
-    "TOTALWATCHED": "Total watched movies"
+    "TOTALWATCHED": "Insgesamt gesehene Filme"
   },
   "PAGINATION": {
     "NEXTPAGE": "Nächste Seite",
@@ -221,37 +221,37 @@
     "ROWSPERPAGE": "Zeilen pro Seite"
   },
   "SERVER": {
-    "ACTIVEDEVICES": "ACtive devices",
-    "AUTORUNSUPPORT": "Supports auto run at startup",
+    "ACTIVEDEVICES": "Aktive Geräte",
+    "AUTORUNSUPPORT": "Automatisch beim Start starten",
     "CACHEPATH": "Cache-Pfad",
-    "CANLAUNCHBROWSER": "Can launch browser",
-    "CANSELFRESTART": "Can self restart",
-    "CANSELFUPDATE": "Can self update",
+    "CANLAUNCHBROWSER": "Kann Browser starten",
+    "CANSELFRESTART": "Kann sich selbst neu starten",
+    "CANSELFUPDATE": "Kann sich selbst aktualisieren",
     "FEATURES": "Funktionen",
     "HTTPSSUPPORT": "HTTPS-Unterstützung",
-    "IDLEDEVICES": "Idle devices",
+    "IDLEDEVICES": "Leerlaufgeräte",
     "INFO": "Serverinfo",
-    "ITEMSBYNAMEPATH": "Items by name path",
+    "ITEMSBYNAMEPATH": "Elemente nach Namenspfad",
     "LANADDRESS": "LAN",
-    "LOGPATH": "Log path",
-    "METADATAPATH": "Internal metadata path",
-    "MONITORSUPPORT": "Supports library monitoring",
-    "OPENSERVER": "Open server page",
-    "PENDINGRESTART": "Has pending restart",
+    "LOGPATH": "Log Pfad",
+    "METADATAPATH": "Interner Metadatenpfad",
+    "MONITORSUPPORT": "Unterstützt Bibliotheksüberwachung",
+    "OPENSERVER": "Serverseite öffnen",
+    "PENDINGRESTART": "Hat ausstehenden Neustart",
     "PLUGINS": "Plugins",
-    "PROGRAMDATAPATH": "Program data path",
-    "TRANSCODINGPATH": "Transcoding path",
+    "PROGRAMDATAPATH": "Programmverzeichnis",
+    "TRANSCODINGPATH": "Transkodierungspfad",
     "UPDATEAVAILABLE": "Aktualisierung verfügbar",
     "WANADDRESS": "WAN",
-    "WEBSOCKETPORT": "Websocket port"
+    "WEBSOCKETPORT": "Websocket-Port"
   },
   "SETTINGS": {
     "ACCOUNT": {
-      "CONTENT": "Change your admin username here. New username will be required on next login.",
+      "CONTENT": "Ändern Sie hier Ihren Admin-Benutzernamen. Bei der nächsten Anmeldung wird ein neuer Benutzername benötigt.",
       "NOUSERNAME": "Der Benutzername ist erforderlich",
       "USERNAME": "Benutzername",
       "USERNAMEUPDATED": "Benutzername erfolgreich aktualisiert",
-      "USERNAMEUPDATEFAILED": "Username update failed, check the logs for more info"
+      "USERNAMEUPDATEFAILED": "Aktualisierung des Benutzernamens fehlgeschlagen. Überprüfen Sie die Logs nach weiteren Informationen"
     },
     "LANGUAGE": {
       "LABEL": "Sprache auswählen",
