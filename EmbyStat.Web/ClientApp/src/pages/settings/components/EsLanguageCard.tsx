@@ -13,30 +13,37 @@ import {Language} from '../../../shared/models/language';
 
 type LanguageForm = {
   language: string;
+  dateTimeLanguage: string;
 }
 
 export function EsLanguageCard() {
   const {userConfig, languages, save} = useContext(SettingsContext);
   const {getLocale} = useLocale();
   const [saving, setSaving] = useState(false);
-  const [privateLocale, setPrivateLocale] = useState(getLocale(userConfig.language));
+  const [privateLocale, setPrivateLocale] = useState(getLocale(userConfig.dateTimeLanguage));
   const {t} = useTranslation();
 
   const {handleSubmit, control} = useForm<LanguageForm>({
     mode: 'all',
     defaultValues: {
       language: userConfig.language,
+      dateTimeLanguage: userConfig.dateTimeLanguage,
     },
   });
 
   const handleLanguageChange = (event: any) => {
     const lang = event.target.value;
-    setPrivateLocale(getLocale(lang));
     i18n.changeLanguage(lang);
+  };
+
+  const handleDateTumeLanguageChange = (event: any) => {
+    const lang = event.target.value;
+    setPrivateLocale(getLocale(lang));
   };
 
   const saveForm = async (data: LanguageForm) => {
     userConfig.language = data.language;
+    userConfig.dateTimeLanguage = data.dateTimeLanguage;
     setSaving(true);
     await save(userConfig);
     setSaving(false);
@@ -50,6 +57,9 @@ export function EsLanguageCard() {
       saving={saving}
     >
       <Controller
+        name="language"
+        control={control}
+        rules={{required: true}}
         render={({
           field: {onChange, onBlur, value, ref},
         }) => (
@@ -72,10 +82,36 @@ export function EsLanguageCard() {
             ))}
           </TextField>
         )}
-        name="language"
-        control={control}
-        rules={{required: true}}
       />
+      <Box sx={{pt: 2}}>
+        <Controller
+          name="dateTimeLanguage"
+          control={control}
+          rules={{required: true}}
+          render={({
+            field: {onChange, onBlur, value, ref},
+          }) => (
+            <TextField
+              select
+              fullWidth
+              label={t('SETTINGS.DATETIMELANGUAGE.LABEL')}
+              value={value}
+              onChange={(event) => {
+                onChange(event);
+                handleDateTumeLanguageChange(event);
+              }}
+              onBlur={onBlur}
+              inputRef={ref}
+            >
+              {languages.map((x: Language) => (
+                <MenuItem key={x.code} value={x.code}>
+                  {x.name}
+                </MenuItem>
+              ))}
+            </TextField>
+          )}
+        />
+      </Box>
       <Box>
         <Typography variant="h6" sx={{mt: 2}}>
           {t('SETTINGS.LANGUAGE.SAMPLES')}

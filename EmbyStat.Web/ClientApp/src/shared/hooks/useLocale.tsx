@@ -11,7 +11,7 @@ export const useLocale = () => {
 
   useEffect(() => {
     if (userConfig !== null) {
-      setLocale(getLocale(userConfig.language));
+      setLocale(getLocale(userConfig.dateTimeLanguage));
     }
   }, [userConfig]);
 

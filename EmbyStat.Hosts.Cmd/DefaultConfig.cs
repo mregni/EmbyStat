@@ -43,6 +43,7 @@ public static class DefaultConfig
         UserConfig = new UserConfig
         {
             Language = "en-US",
+            DateTimeLanguage = "en-US",
             WizardFinished = false,
             ToShortMovieEnabled = true,
             ToShortMovie = 10,

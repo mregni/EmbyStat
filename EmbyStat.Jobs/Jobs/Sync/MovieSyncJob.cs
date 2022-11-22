@@ -124,8 +124,7 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
 
     private async Task ProcessMovies(Library library, IReadOnlyList<Genre> genres, double logIncrementBase)
     {
-        var lastSynced = library.SyncTypes.GetLastSyncedDateForLibrary(library.Id, LibraryType.Movies);
-        var totalCount = await _baseHttpClient.GetMediaCount(library.Id, lastSynced, "Movie");
+        var totalCount = await _baseHttpClient.GetMediaCount(library.Id, null, "Movie");
         if (totalCount == 0)
         {
             await LogInformation("No changes detected to sync");
@@ -140,7 +139,7 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
         var increment = logIncrementBase / (totalCount / (double)limit);
         do
         {
-            var movies = await _baseHttpClient.GetMovies(library.Id, j * limit, limit, lastSynced);
+            var movies = await _baseHttpClient.GetMovies(library.Id, j * limit, limit, null);
 
             movies.AddGenres(genres);
             movies.ForEach(x => x.Library = library);

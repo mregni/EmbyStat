@@ -43,6 +43,7 @@ public class ConfigViewModelBuilder
                     SslCertPath = config.UserConfig.Hosting.SslCertPath
                 },
                 Language = config.UserConfig.Language,
+                DateTimeLanguage = config.UserConfig.DateTimeLanguage,
                 Tmdb = new TmdbSettingsViewModel()
                 {
                     ApiKey = config.UserConfig.Tmdb.ApiKey

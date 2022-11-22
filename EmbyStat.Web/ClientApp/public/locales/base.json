@@ -259,6 +259,9 @@
       "SAMPLES": "Localisation examples",
       "TITLE": "Language"
     },
+    "DATETIMELANGUAGE": {
+      "LABEL": "Select datetime format"
+    },
     "LIBRARIES": {
       "CONTENT": "Select here all {{type}} libraries that should be synced with EmbyStat ",
       "TITLE": "Libraries"

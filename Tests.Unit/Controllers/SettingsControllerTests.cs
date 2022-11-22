@@ -72,6 +72,7 @@ public class SettingsControllerTests : IDisposable
         settings.SystemConfig.Id.Should().Be(_config.SystemConfig.Id);
         settings.UserConfig.KeepLogsCount.Should().Be(_config.UserConfig.KeepLogsCount);
         settings.UserConfig.Language.Should().Be(_config.UserConfig.Language);
+        settings.UserConfig.DateTimeLanguage.Should().Be(_config.UserConfig.DateTimeLanguage);
         settings.SystemConfig.CanUpdate.Should().Be(_config.SystemConfig.CanUpdate);
         settings.UserConfig.ToShortMovie.Should().Be(_config.UserConfig.ToShortMovie);
         settings.UserConfig.ToShortMovieEnabled.Should().Be(_config.UserConfig.ToShortMovieEnabled);

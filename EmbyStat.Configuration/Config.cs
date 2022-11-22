@@ -12,6 +12,7 @@ public class Config
 public class UserConfig
 {
     public string Language { get; set; }
+    public string DateTimeLanguage { get; set; }
     public bool ToShortMovieEnabled { get; set; }
     public int ToShortMovie { get; set; }
     public int KeepLogsCount { get; set; }

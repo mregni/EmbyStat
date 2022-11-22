@@ -137,14 +137,13 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
 
     private async Task ProcessChangedShows(Library library, IEnumerable<Genre> genres, double logIncrementBase)
     {
-        var lastSynced = library.SyncTypes.GetLastSyncedDateForLibrary(library.Id, LibraryType.TvShow);
-        var items = await _baseHttpClient.GetShowsToSync(library.Id, lastSynced, nameof(Episode));
-        items.AddRange(await _baseHttpClient.GetShowsToSync(library.Id, lastSynced, nameof(Season)));
+        var items = await _baseHttpClient.GetShowsToSync(library.Id, null, nameof(Episode));
+        items.AddRange(await _baseHttpClient.GetShowsToSync(library.Id, null, nameof(Season)));
         var showList = items
             .Select(x => x.SeriesId)
             .ToList();
         
-        var shows = await _baseHttpClient.GetShowsToSync(library.Id, lastSynced, "Series");
+        var shows = await _baseHttpClient.GetShowsToSync(library.Id, null, "Series");
         showList.AddRange(shows.Select(x => x.Id));
         var showIds = showList.Distinct().ToArray();
         
@@ -236,7 +235,7 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
                  await GetMissingEpisodesFromProviderAsync(show);
             } else
             {
-                await LogInformation($" show {show.Name}");
+                await LogInformation($"{show.Name} done");
                 show.ExternalSynced = true;
             }
             
