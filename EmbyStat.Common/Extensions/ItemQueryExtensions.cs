@@ -45,6 +45,8 @@ public static class ItemQueryExtensions
             paramList.TryAdd("ExcludeLocationTypes", string.Join(',', query.ExcludeLocationTypes));
         }
 
+        paramList.AddIfNotNull("SortBy", query.SortBy);
+        paramList.AddIfNotNull("SortOrder", query.SortOrder);
         paramList.AddIfNotNull("MinDateLastSaved", query.MinDateLastSaved);
         paramList.AddIfNotNull("ParentId", query.ParentId);
         paramList.AddIfNotNull("StartIndex", query.StartIndex);

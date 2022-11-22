@@ -327,7 +327,7 @@ public class Program
             .MinimumLevel.Override("Microsoft.AspNetCore.Authentication.JwtBearer", LogEventLevel.Warning)
             .MinimumLevel.Override("System.Net.Http.HttpClient", minimumLevel)
             .MinimumLevel.Override("System.Net.Http.HttpClient.mediaServerClient.ClientHandler", minimumLevel)
-            .MinimumLevel.Override("System.Net.Http.HttpClient.mediaServerClient.LogicalHandler", minimumLevel)
+            .MinimumLevel.Override("System.Net.Http.HttpClient.mediaServerClient.LogicalHandler", LogEventLevel.Warning)
             .Enrich.FromLogContext()
             .Enrich.WithExceptionDetails()
             .CreateLogger();

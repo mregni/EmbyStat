@@ -29,11 +29,13 @@ public class ItemQueryExtensionTests
             EnableImages = true,
             MediaTypes = new[] {"Video", "BoxSet"},
             IncludeItemTypes = new[] {"Movies", "Episodes"},
-            Ids = new[] { "12", "13"}
+            Ids = new[] { "12", "13"},
+            SortBy = "SortName",
+            SortOrder = SortOrder.Ascending
         };
 
         var result = query.ConvertToStringDictionary();
-        result.Count.Should().Be(15);
+        result.Count.Should().Be(17);
         result.ContainsKey("Ids").Should().BeTrue();
         result["Ids"].Should().Be(string.Join(',', query.Ids));
         result.ContainsKey("UserId").Should().BeTrue();
@@ -65,6 +67,10 @@ public class ItemQueryExtensionTests
         result["MediaTypes"].Should().Be(string.Join('|', query.MediaTypes));
         result.ContainsKey("IncludeItemTypes").Should().BeTrue();
         result["IncludeItemTypes"].Should().Be(string.Join('|', query.IncludeItemTypes));
+        result.ContainsKey("SortBy").Should().BeTrue();
+        result["SortBy"].Should().Be(query.SortBy);
+        result.ContainsKey("SortOrder").Should().BeTrue();
+        result["SortOrder"].Should().Be(query.SortOrder.ToString());
     }
     
 }

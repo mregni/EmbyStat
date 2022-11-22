@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MediaBrowser.Model.Entities;
 
 namespace EmbyStat.Common.Extensions;
 
@@ -40,6 +41,14 @@ public static class DictionaryExtensions
     }
 
     public static void AddIfNotNull<T1>(this Dictionary<T1, string> items, T1 key, bool? value)
+    {
+        if (value.HasValue)
+        {
+            items.TryAdd(key, value.Value.ToString());
+        }
+    }
+    
+    public static void AddIfNotNull<T1>(this Dictionary<T1, string> items, T1 key, SortOrder? value)
     {
         if (value.HasValue)
         {

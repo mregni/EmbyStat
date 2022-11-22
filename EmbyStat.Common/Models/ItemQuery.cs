@@ -23,6 +23,8 @@ public class ItemQuery
     public bool? IsPlayed { get; set; }
     public bool? EnableUserData { get; set; }
     public string[] Ids { get; set; }
+    public string SortBy { get; set; }
+    public SortOrder? SortOrder { get; set; }
 
     public ItemQuery()
     {

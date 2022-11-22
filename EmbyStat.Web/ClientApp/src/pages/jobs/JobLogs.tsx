@@ -1,5 +1,4 @@
-import {parseISO} from 'date-fns';
-import {format} from 'date-fns-tz';
+import {format, parseISO} from 'date-fns';
 import React, {useContext} from 'react';
 
 import {Paper, Table, TableBody, TableCell, TableRow, Zoom} from '@mui/material';
@@ -33,10 +32,10 @@ export function JobLogs() {
                     },
                   }}>
                   <TableCell sx={{
-                    width: '130px',
+                    width: '150px',
                     color: 'inherit',
                   }}>
-                    {format(parseISO(line.dateTimeUtc), 'p P', {locale})}
+                    {format(parseISO(line.dateTimeUtc), 'pp P', {locale})}
                   </TableCell>
                   <TableCell sx={{width: '120px', color: 'inherit'}}>{line.jobName}</TableCell>
                   <TableCell sx={{color: 'inherit'}}>{line.value}</TableCell>

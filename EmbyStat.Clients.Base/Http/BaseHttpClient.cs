@@ -264,6 +264,8 @@ public abstract class BaseHttpClient
             StartIndex = startIndex,
             Limit = limit,
             IncludeItemTypes = new[] {"Series"},
+            SortBy = "SortName",
+            SortOrder = SortOrder.Ascending,
             Fields = new[]
             {
                 ItemFields.OriginalTitle, ItemFields.Genres, ItemFields.DateCreated, ItemFields.ExternalUrls,
