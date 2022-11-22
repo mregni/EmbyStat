@@ -20,6 +20,7 @@ using EmbyStat.Core.Account.Interfaces;
 using EmbyStat.Core.DataStore;
 using EmbyStat.Core.Hubs;
 using EmbyStat.Core.Jobs.Interfaces;
+using EmbyStat.Core.WebSockets;
 using EmbyStat.DI;
 using EmbyStat.Migrator;
 using EmbyStat.Migrator.Interfaces;

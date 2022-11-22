@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
@@ -9,8 +10,10 @@ using EmbyStat.Clients.Base.Api;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Movies;
 using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Entities.Users;
+using EmbyStat.Common.Models.Net;
 using MediaBrowser.Model.Entities;
 using MediaBrowser.Model.Querying;
 using Microsoft.AspNetCore.Http;
@@ -195,8 +198,7 @@ public abstract class BaseHttpClient
         return _mapper.Map<IList<Genre>>(baseItems.Items);
     }
 
-    public async Task<T[]> GetMedia<T>(string parentId, int startIndex, int limit, DateTime? lastSynced,
-        string itemType)
+    public Task<Movie[]> GetMovies(string parentId, int startIndex, int limit, DateTime? lastSynced)
     {
         var query = new ItemQuery
         {
@@ -205,7 +207,7 @@ public abstract class BaseHttpClient
             ParentId = parentId,
             Recursive = true,
             LocationTypes = new[] {LocationType.FileSystem},
-            IncludeItemTypes = new[] {itemType},
+            IncludeItemTypes = new[] {"Movie"},
             StartIndex = startIndex,
             Limit = limit,
             EnableImages = true,
@@ -221,11 +223,7 @@ public abstract class BaseHttpClient
             }
         };
 
-        var paramList = query.ConvertToStringDictionary();
-        var client = _refitFactory.CreateClient(BaseUrl);
-        var result = await client.GetItems(ApiKey, AuthorizationString, paramList);
-
-        return _mapper.Map<T[]>(result.Items);
+        return GetItems<Movie>(query);
     }
 
     public Task<Show[]> GetShows(string parentId, int startIndex, int limit, DateTime? lastSynced)
@@ -251,9 +249,9 @@ public abstract class BaseHttpClient
             }
         };
 
-        return GetShows(query);
+        return GetItems<Show>(query);
     }
-    
+
     public Task<Show[]> GetShows(string[] showIds, int startIndex, int limit)
     {
         var query = new ItemQuery
@@ -276,20 +274,10 @@ public abstract class BaseHttpClient
             }
         };
 
-        return GetShows(query);
+        return GetItems<Show>(query);
     }
 
-    private async Task<Show[]> GetShows(ItemQuery query)
-    {
-        var paramList = query.ConvertToStringDictionary();
-        var client = _refitFactory.CreateClient(BaseUrl);
-        var result = await client.GetItems(ApiKey, AuthorizationString, paramList);
-
-        var shows = _mapper.Map<Show[]>(result.Items);
-        return shows;
-    }
-
-    public async Task<Season[]> GetSeasons(string parentId)
+    public Task<Season[]> GetSeasons(string parentId)
     {
         var query = new ItemQuery
         {
@@ -309,15 +297,29 @@ public abstract class BaseHttpClient
             }
         };
 
+        return GetItems<Season>(query);
+    }
+
+    public async Task<List<BaseItemDto>> GetShowsToSync(string parentId, DateTime? lastSynced, string type)
+    {
+        var query = new ItemQuery
+        {
+            UserId = UserId,
+            ParentId = parentId,
+            LocationTypes = new[] {LocationType.FileSystem},
+            Recursive = true,
+            MinDateLastSaved = lastSynced,
+            IncludeItemTypes = new[] {type},
+            Fields = new[] {ItemFields.ParentId}
+        };
+
         var paramList = query.ConvertToStringDictionary();
         var client = _refitFactory.CreateClient(BaseUrl);
         var result = await client.GetItems(ApiKey, AuthorizationString, paramList);
-
-        var seasons = _mapper.Map<Season[]>(result.Items);
-        return seasons;
+        return result.Items.ToList();
     }
 
-    public async Task<Episode[]> GetEpisodes(string parentId)
+    public Task<Episode[]> GetEpisodes(string parentId)
     {
         var query = new ItemQuery
         {
@@ -337,12 +339,17 @@ public abstract class BaseHttpClient
             }
         };
 
+        return GetItems<Episode>(query);
+    }
+
+    private async Task<T[]> GetItems<T>(ItemQuery query)
+    {
         var paramList = query.ConvertToStringDictionary();
         var client = _refitFactory.CreateClient(BaseUrl);
         var result = await client.GetItems(ApiKey, AuthorizationString, paramList);
-        
-        var episodes = _mapper.Map<Episode[]>(result.Items);
-        return episodes;
+
+        var list = _mapper.Map<T[]>(result.Items);
+        return list;
     }
 
     public async Task<int> GetMediaCount(string parentId, DateTime? lastSynced, string mediaType)
@@ -377,19 +384,16 @@ public abstract class BaseHttpClient
             StartIndex = startIndex,
             Limit = limit
         };
-        
+
         var paramList = query.ConvertToStringDictionary();
         var client = _refitFactory.CreateClient(BaseUrl);
         var result = await client.GetPlayedItemForUser(ApiKey, AuthorizationString, userId, paramList);
-        
-        var views = _mapper.Map<MediaServerUserView[]>(result.Items, 
-            opt =>
-            {
-                opt.AfterMap((src, dest) => dest.ForEach(y => y.UserId = userId));
-            });
+
+        var views = _mapper.Map<MediaServerUserView[]>(result.Items,
+            opt => { opt.AfterMap((src, dest) => dest.ForEach(y => y.UserId = userId)); });
         return views;
     }
-    
+
     public async Task<int> GetPlayedMediaCountForUser(string userId)
     {
         var query = new ItemQuery
@@ -401,7 +405,7 @@ public abstract class BaseHttpClient
             Limit = 0,
             EnableTotalRecordCount = true
         };
-        
+
         var paramList = query.ConvertToStringDictionary();
         var client = _refitFactory.CreateClient(BaseUrl);
         var result = await client.GetPlayedItemForUser(ApiKey, AuthorizationString, userId, paramList);

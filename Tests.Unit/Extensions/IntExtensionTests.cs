@@ -9,6 +9,18 @@ namespace Tests.Unit.Extensions;
 public class IntExtensionTests
 {
     [Theory]
+    [InlineData("file1.xml", "boe")]
+    [InlineData("file2.xml", "boe2")]
+    [InlineData("file3.xml", "boe3")]
+    public void TestXml(string path, string result)
+    {
+        //READ FILE
+        //var result2 = service.process(path);
+        //
+    }
+    
+    
+    [Theory]
     [InlineData(1, "Season 1")]
     [InlineData(2, "Season 2")]
     [InlineData(0, "Special")]

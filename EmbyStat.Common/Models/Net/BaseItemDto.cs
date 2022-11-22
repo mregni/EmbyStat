@@ -33,6 +33,7 @@ public class BaseItemDto
     public int? IndexNumber { get; set; }
     public int? IndexNumberEnd { get; set; }
     public string SeriesName { get; set; }
+    public string SeriesId { get; set; }
     public string CollectionType { get; set; }
     public string Etag { get; set; }
     public string Overview { get; set; }

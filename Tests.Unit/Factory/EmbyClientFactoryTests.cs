@@ -1,6 +1,7 @@
 ﻿using System;
 using EmbyStat.Clients.Emby;
 using EmbyStat.Clients.Emby.Http;
+using EmbyStat.Clients.Emby.WebSocket;
 using EmbyStat.Clients.Jellyfin;
 using EmbyStat.Clients.Jellyfin.Http;
 using EmbyStat.Common.Enums;
@@ -16,7 +17,8 @@ public class EmbyClientFactoryTests
     public void CreateHttpClient_Should_Return_Client()
     {
         var baseHttpClientMock = new Mock<IEmbyBaseHttpClient>();
-        var factory = new EmbyClientFactory(baseHttpClientMock.Object);
+        var baseSocketClientMock = new Mock<IEmbyWebSocketHandler>();
+        var factory = new EmbyClientFactory(baseHttpClientMock.Object, baseSocketClientMock.Object);
 
         var client = factory.CreateHttpClient();
         client.Should().NotBeNull();
@@ -26,10 +28,11 @@ public class EmbyClientFactoryTests
     public void CreateWebSocketClient_Should_Return_Client()
     {
         var baseHttpClientMock = new Mock<IEmbyBaseHttpClient>();
-        var factory = new EmbyClientFactory(baseHttpClientMock.Object);
+        var baseSocketClientMock = new Mock<IEmbyWebSocketHandler>();
+        var factory = new EmbyClientFactory(baseHttpClientMock.Object, baseSocketClientMock.Object);
 
-        var act = () => factory.CreateWebSocketClient();
-        act.Should().Throw<NotImplementedException>();
+        var client = factory.CreateWebSocketClient();
+        client.Should().NotBeNull();
     }
     
     [Theory]
@@ -38,7 +41,8 @@ public class EmbyClientFactoryTests
     public void AppliesTo_Should_Return_Correct_Value(ServerType serverType, bool result)
     {
         var baseHttpClientMock = new Mock<IEmbyBaseHttpClient>();
-        var factory = new EmbyClientFactory(baseHttpClientMock.Object);
+        var baseSocketClientMock = new Mock<IEmbyWebSocketHandler>();
+        var factory = new EmbyClientFactory(baseHttpClientMock.Object, baseSocketClientMock.Object);
 
         var client = factory.AppliesTo(serverType);
         client.Should().Be(result);

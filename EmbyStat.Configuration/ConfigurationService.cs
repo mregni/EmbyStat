@@ -16,7 +16,7 @@ public class ConfigurationService : IConfigurationService
 
     public Config Get()
     {
-        return _config;
+        return _config; 
     }
 
     private async Task WriteConfiguration(Config config)

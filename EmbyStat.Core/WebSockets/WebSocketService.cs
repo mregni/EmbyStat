@@ -1,5 +1,7 @@
-﻿using EmbyStat.Clients.Base.WebSocket;
+﻿using EmbyStat.Clients.Base;
+using EmbyStat.Clients.Base.WebSocket;
 using EmbyStat.Common.Converters;
+using EmbyStat.Common.Models;
 using EmbyStat.Configuration.Interfaces;
 using EmbyStat.Core.Sessions.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,12 +11,10 @@ using Newtonsoft.Json.Linq;
 
 namespace EmbyStat.Core.WebSockets;
 
-public class WebSocketService : IHostedService, IDisposable
+public class WebSocketService : IHostedService
 {
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly ILogger<WebSocketService> _logger;
-
-    private Timer _timer;
 
     public WebSocketService(IServiceScopeFactory scopeFactory, ILogger<WebSocketService> logger)
     {
@@ -22,103 +22,74 @@ public class WebSocketService : IHostedService, IDisposable
         _logger = logger;
     }
 
-    public Task StartAsync(CancellationToken cancellationToken)
-    {
-        _timer = new Timer(TryToConnect, null, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(5));
-        return Task.CompletedTask;
-    }
-
-    private async void TryToConnect(object state)
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
         using var scope = _scopeFactory.CreateScope();
         var settingsService = scope.ServiceProvider.GetRequiredService<IConfigurationService>();
-        var webSocketApi = scope.ServiceProvider.GetRequiredService<IWebSocketApi>();
-
-        if (!webSocketApi.IsWebSocketOpenOrConnecting)
+        var settings = settingsService.Get();
+        
+        var client = CreateClient(scope);
+        if (string.IsNullOrWhiteSpace(settings.UserConfig.MediaServer.ApiKey))
         {
-            var settings = settingsService.Get();
-            if (!string.IsNullOrWhiteSpace(settings.UserConfig.MediaServer.ApiKey))
-            {
-                try
-                {
-                    var deviceId = settings.SystemConfig.Id.ToString();
-
-                    webSocketApi.OnWebSocketConnected += ClientOnWebSocketConnected;
-                    webSocketApi.OnWebSocketClosed += WebSocketApiOnWebSocketClosed;
-                    webSocketApi.SessionsUpdated += WebSocketApiSessionsUpdated;
-                    webSocketApi.UserDataChanged += WebSocketApiUserDataChanged;
-                    await webSocketApi.OpenWebSocket(settings.UserConfig.MediaServer.FullSocketAddress, settings.UserConfig.MediaServer.ApiKey, deviceId);
-                }
-                catch (Exception e)
-                {
-                    _logger.LogError(e, "Failed to open socket connection to MediaServer");
-                    throw;
-                }
-            }
+            return;
         }
-        else
+        
+        try
         {
-            _timer.Change(60000, 60000);
+            var deviceId = settings.SystemConfig.Id.ToString();
+            var socketAddress = settings.UserConfig.MediaServer.FullSocketAddress;
+            var apiKey = settings.UserConfig.MediaServer.ApiKey;
+
+            client.OnWebSocketClosed += WebSocketApiOnWebSocketClosed;
+            await client.OpenWebSocket(socketAddress, apiKey, deviceId);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to open socket connection to MediaServer");
         }
     }
 
-    private void WebSocketApiOnWebSocketClosed(object sender, EventArgs e)
+    private void WebSocketApiOnWebSocketClosed(object? sender, EventArgs e)
     {
-        using (var scope = _scopeFactory.CreateScope())
+        using var scope = _scopeFactory.CreateScope();
+        var client = CreateClient(scope);
+        
+        try
         {
-            try
-            {
-                var webSocketApi = scope.ServiceProvider.GetRequiredService<IWebSocketApi>();
-                webSocketApi.SessionsUpdated -= WebSocketApiSessionsUpdated;
-                webSocketApi.UserDataChanged -= WebSocketApiUserDataChanged;
-                webSocketApi.OnWebSocketConnected -= ClientOnWebSocketConnected;
-                webSocketApi.OnWebSocketClosed -= WebSocketApiOnWebSocketClosed;
-
-                _timer.Change(5000, 5000);
-            }
-            catch (Exception)
-            {
-                _logger.LogInformation("Application is closing, socket is closed!");
-            }
+            client.OnWebSocketClosed -= WebSocketApiOnWebSocketClosed;
+        }
+        catch (Exception)
+        {
+            _logger.LogInformation("Application is closing, socket is closed!");
         }
     }
 
-    private async void ClientOnWebSocketConnected(object sender, EventArgs e)
-    {
-        using (var scope = _scopeFactory.CreateScope())
-        {
-            var webSocketApi = scope.ServiceProvider.GetRequiredService<IWebSocketApi>();
-            await webSocketApi.StopReceivingSessionUpdates();
-            await webSocketApi.StartReceivingSessionUpdates(10000);
-        }
-    }
-
-    private void WebSocketApiUserDataChanged(object sender, Common.Models.GenericEventArgs<JArray> e)
+    private void WebSocketApiUserDataChanged(object? sender, GenericEventArgs<JArray> e)
     {
         _logger.LogInformation("EmbyUser data changed");
     }
 
-    private void WebSocketApiSessionsUpdated(object sender, Common.Models.GenericEventArgs<JArray> e)
+    private void WebSocketApiSessionsUpdated(object? sender, GenericEventArgs<JArray> e)
     {
-        using (var scope = _scopeFactory.CreateScope())
-        {
-            var sessionService = scope.ServiceProvider.GetRequiredService<ISessionService>();
-            var sessions = SessionConverter.ConvertToSessions(e.Argument).ToList();
-            sessionService.ProcessSessions(sessions);
-        }
+        using var scope = _scopeFactory.CreateScope();
+        var sessionService = scope.ServiceProvider.GetRequiredService<ISessionService>();
+        var sessions = SessionConverter.ConvertToSessions(e.Argument).ToList();
+        sessionService.ProcessSessions(sessions);
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)
     {
-        using (var scope = _scopeFactory.CreateScope())
-        {
-            var webSocketApi = scope.ServiceProvider.GetRequiredService<IWebSocketApi>();
-            await webSocketApi.CloseWebSocket();
-        }
+        using var scope = _scopeFactory.CreateScope();
+        var client = CreateClient(scope);
+        await client.CloseWebSocket();
     }
-
-    public void Dispose()
+    
+    private static IWebSocketHandler CreateClient(IServiceScope scope)
     {
-        _timer?.Dispose();
+        var settingsService = scope.ServiceProvider.GetRequiredService<IConfigurationService>();
+        var strategy = scope.ServiceProvider.GetRequiredService<IClientStrategy>();
+        
+        var settings = settingsService.Get();
+        return strategy.CreateWebSocketClient(settings.UserConfig.MediaServer.Type);
     }
 }

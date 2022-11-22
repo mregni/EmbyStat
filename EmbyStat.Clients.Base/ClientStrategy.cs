@@ -22,7 +22,6 @@ public class ClientStrategy : IClientStrategy
     public IBaseHttpClient CreateHttpClient(ServerType type)
     {
         var factory = _httpFactories.FirstOrDefault(x => x.AppliesTo(type));
-
         if (factory == null)
         {
             throw new TypeLoadException("type not registered");
@@ -31,10 +30,9 @@ public class ClientStrategy : IClientStrategy
         return factory.CreateHttpClient();
     }
 
-    public IWebSocketClient CreateWebSocketClient(ServerType type)
+    public IWebSocketHandler CreateWebSocketClient(ServerType type)
     {
         var factory = _httpFactories.FirstOrDefault(x => x.AppliesTo(type));
-
         if (factory == null)
         {
             throw new TypeLoadException("type not registered");
@@ -45,9 +43,7 @@ public class ClientStrategy : IClientStrategy
 
     public IMetadataClient CreateMetadataClient(MetadataServerType type)
     {
-        var factory = _metadataHttpClientFactories
-            .FirstOrDefault(x => x.AppliesTo(type));
-
+        var factory = _metadataHttpClientFactories.FirstOrDefault(x => x.AppliesTo(type));
         if (factory == null)
         {
             throw new TypeLoadException("type not registered");

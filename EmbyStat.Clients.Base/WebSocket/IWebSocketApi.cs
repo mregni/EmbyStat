@@ -16,10 +16,4 @@ public interface IWebSocketApi
     event EventHandler<EventArgs> ServerShuttingDown;
     event EventHandler<GenericEventArgs<JArray>> SessionsUpdated;
     event EventHandler<EventArgs> RestartRequired;
-
-    Task OpenWebSocket(string url, string accessToken, string deviceId);
-    Task CloseWebSocket();
-    Task StartReceivingSessionUpdates(int intervalMs);
-    Task StopReceivingSessionUpdates();
-    bool IsWebSocketOpenOrConnecting { get; }
 }

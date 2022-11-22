@@ -1,4 +1,5 @@
-﻿using EmbyStat.Common.Enums;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities.Helpers;
 
 namespace EmbyStat.Common.Models.Entities.Shows;
@@ -12,4 +13,6 @@ public class Episode : Video
     public LocationType LocationType { get; set; }
     public Season Season { get; set; }
     public string SeasonId { get; set; }
+    [NotMapped]
+    public string ShowId { get; set; }
 }

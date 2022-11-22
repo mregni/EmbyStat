@@ -23,6 +23,7 @@ using EmbyStat.Core.Shows.Interfaces;
 using EmbyStat.Core.Statistics.Interfaces;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using Hangfire;
+using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Net;
 using Microsoft.Extensions.Logging;
 
@@ -137,7 +138,17 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
     private async Task ProcessChangedShows(Library library, IEnumerable<Genre> genres, double logIncrementBase)
     {
         var lastSynced = library.SyncTypes.GetLastSyncedDateForLibrary(library.Id, LibraryType.TvShow);
-        var totalCount = await _baseHttpClient.GetMediaCount(library.Id, lastSynced, "Series");
+        var items = await _baseHttpClient.GetShowsToSync(library.Id, lastSynced, nameof(Episode));
+        items.AddRange(await _baseHttpClient.GetShowsToSync(library.Id, lastSynced, nameof(Season)));
+        var showList = items
+            .Select(x => x.SeriesId)
+            .ToList();
+        
+        var shows = await _baseHttpClient.GetShowsToSync(library.Id, lastSynced, "Series");
+        showList.AddRange(shows.Select(x => x.Id));
+        var showIds = showList.Distinct().ToArray();
+        
+        var totalCount = showIds.Length;
         if (totalCount == 0)
         {
             await LogInformation("No changes detected to sync");
@@ -153,8 +164,8 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
         do
         {
             await LogInformation($"Fetching next block of {limit} shows...");
-            var shows = await _baseHttpClient.GetShows(library.Id, j * limit, limit, lastSynced);
-            await ProcessShowBlock(library, shows, genres, increment);
+            var showPage = await _baseHttpClient.GetShows(showIds, j * limit, limit);
+            await ProcessShowBlock(library, showPage, genres, increment);
 
             processed += limit;
             j++;
@@ -222,7 +233,11 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
 
             if (show.HasShowChangedEpisodes(localShow) || localShow is {ExternalSynced: false})
             {
-                await GetMissingEpisodesFromProviderAsync(show);
+                 await GetMissingEpisodesFromProviderAsync(show);
+            } else
+            {
+                await LogInformation($" show {show.Name}");
+                show.ExternalSynced = true;
             }
             
             await LogProgressIncrement(increment);
@@ -302,8 +317,9 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
                 missingEpisodesCount++;
             }
         }
-
-        await LogInformation($"Found {missingEpisodesCount} missing episodes for show {show.Name}");
+        
+        var episodeCount = show.Seasons.SelectMany(x => x.Episodes.Where(y => y.LocationType == LocationType.Disk)).Count();
+        await LogInformation($"Found {episodeCount} and {missingEpisodesCount} missing episodes for show {show.Name}");
 
         show.ExternalSynced = true;
     }

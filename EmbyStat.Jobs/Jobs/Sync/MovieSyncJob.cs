@@ -116,13 +116,13 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
         foreach (var library in librariesToProcess)
         {
             await LogInformation($"Processing {library.Name}");
-            await ProcessChangedMovies(library, genres, logIncrementBase);
+            await ProcessMovies(library, genres, logIncrementBase);
             await _mediaServerRepository.UpdateLibrarySyncDate(library.Id, DateTime.UtcNow, LibraryType.Movies);
             await LogInformation($"Processing {library.Name} done");
         }
     }
 
-    private async Task ProcessChangedMovies(Library library, IReadOnlyList<Genre> genres, double logIncrementBase)
+    private async Task ProcessMovies(Library library, IReadOnlyList<Genre> genres, double logIncrementBase)
     {
         var lastSynced = library.SyncTypes.GetLastSyncedDateForLibrary(library.Id, LibraryType.Movies);
         var totalCount = await _baseHttpClient.GetMediaCount(library.Id, lastSynced, "Movie");
@@ -140,7 +140,7 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
         var increment = logIncrementBase / (totalCount / (double)limit);
         do
         {
-            var movies = await _baseHttpClient.GetMedia<Movie>(library.Id, j * limit, limit, lastSynced, "Movie");
+            var movies = await _baseHttpClient.GetMovies(library.Id, j * limit, limit, lastSynced);
 
             movies.AddGenres(genres);
             movies.ForEach(x => x.Library = library);

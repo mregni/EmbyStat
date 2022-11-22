@@ -33,7 +33,7 @@ public class ItemQueryExtensionTests
         };
 
         var result = query.ConvertToStringDictionary();
-        result.Count.Should().Be(16);
+        result.Count.Should().Be(15);
         result.ContainsKey("Ids").Should().BeTrue();
         result["Ids"].Should().Be(string.Join(',', query.Ids));
         result.ContainsKey("UserId").Should().BeTrue();
@@ -51,8 +51,6 @@ public class ItemQueryExtensionTests
         result.ContainsKey("MinDateLastSaved").Should().BeTrue();
         var date = query.MinDateLastSaved?.ToString("O");
         result["MinDateLastSaved"].Should().Be(date);
-        result.ContainsKey("MinDateLastSavedForUser").Should().BeTrue();
-        result["MinDateLastSavedForUser"].Should().Be(date);
         result.ContainsKey("ParentId").Should().BeTrue();
         result["ParentId"].Should().Be(query.ParentId);
         result.ContainsKey("StartIndex").Should().BeTrue();

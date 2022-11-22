@@ -10,6 +10,7 @@ using EmbyStat.Clients.Emby.WebSocket;
 using EmbyStat.Clients.GitHub;
 using EmbyStat.Clients.Jellyfin;
 using EmbyStat.Clients.Jellyfin.Http;
+using EmbyStat.Clients.Jellyfin.WebSocket;
 using EmbyStat.Clients.Tmdb;
 using EmbyStat.Clients.TvMaze;
 using EmbyStat.Common.Exceptions;
@@ -133,6 +134,9 @@ public static class DiExtensions
         services.AddSingleton<IClientFactory, JellyfinClientFactory>();
         services.TryAddSingleton<IEmbyBaseHttpClient, EmbyBaseHttpClient>();
         services.TryAddSingleton<IJellyfinBaseHttpClient, JellyfinBaseHttpClient>();
+        
+        services.TryAddSingleton<IEmbyWebSocketHandler, EmbyWebSocketHandler>();
+        services.TryAddSingleton<IJellyfinWebSocketHandler, JellyfinWebSocketHandler>();
 
         services.AddSingleton<IMetadataClientFactory, TvMazeClientFactory>();
         services.AddSingleton<IMetadataClientFactory, TmdbClientFactory>();
@@ -142,7 +146,7 @@ public static class DiExtensions
         services.TryAddTransient<IGitHubClient, GitHubClient>();
 
         services.TryAddSingleton<IWebSocketApi, WebSocketApi>();
-        services.TryAddSingleton<IWebSocketClient, EmbyWebSocketClient>();
+        services.TryAddSingleton<IWebSocketHandler, EmbyWebSocketHandler>();
     }
 
     private static void RegisterHttp(this IServiceCollection services)

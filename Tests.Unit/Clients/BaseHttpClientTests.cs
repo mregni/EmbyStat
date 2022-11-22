@@ -285,7 +285,7 @@ public class BaseHttpClientTests
     [Fact]
     public async Task GetMedia_Should_Return_List_Of_Movies()
     {
-        var result = await _service.GetMedia<Movie>("1", 0, 10, null, "Movie");
+        var result = await _service.GetMovies("1", 0, 10, null);
 
         var list = result.ToList();
         list.Should().NotBeNull();

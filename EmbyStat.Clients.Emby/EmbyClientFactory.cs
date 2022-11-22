@@ -3,6 +3,7 @@ using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Clients.Base.WebSocket;
 using EmbyStat.Clients.Emby.Http;
+using EmbyStat.Clients.Emby.WebSocket;
 using EmbyStat.Common.Enums;
 
 namespace EmbyStat.Clients.Emby;
@@ -10,10 +11,12 @@ namespace EmbyStat.Clients.Emby;
 public class EmbyClientFactory : IClientFactory
 {
     private readonly IEmbyBaseHttpClient _baseHttpClient;
+    private readonly IEmbyWebSocketHandler _webSocketHandler;
 
-    public EmbyClientFactory(IEmbyBaseHttpClient baseHttpClient)
+    public EmbyClientFactory(IEmbyBaseHttpClient baseHttpClient, IEmbyWebSocketHandler webSocketHandler)
     {
         _baseHttpClient = baseHttpClient;
+        _webSocketHandler = webSocketHandler;
     }
 
     public IBaseHttpClient CreateHttpClient()
@@ -21,9 +24,9 @@ public class EmbyClientFactory : IClientFactory
         return _baseHttpClient;
     }
 
-    public IWebSocketClient CreateWebSocketClient()
+    public IWebSocketHandler CreateWebSocketClient()
     {
-        throw new NotImplementedException();
+        return _webSocketHandler;
     }
 
     public bool AppliesTo(ServerType type)

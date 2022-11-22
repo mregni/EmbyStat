@@ -3,6 +3,7 @@ using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Clients.Base.WebSocket;
 using EmbyStat.Clients.Jellyfin.Http;
+using EmbyStat.Clients.Jellyfin.WebSocket;
 using EmbyStat.Common.Enums;
 
 namespace EmbyStat.Clients.Jellyfin;
@@ -10,10 +11,12 @@ namespace EmbyStat.Clients.Jellyfin;
 public class JellyfinClientFactory : IClientFactory
 {
     private readonly IJellyfinBaseHttpClient _baseHttpClient;
+    private readonly IJellyfinWebSocketHandler _webSocketHandler;
 
-    public JellyfinClientFactory(IJellyfinBaseHttpClient baseHttpClient)
+    public JellyfinClientFactory(IJellyfinBaseHttpClient baseHttpClient, IJellyfinWebSocketHandler webSocketHandler)
     {
         _baseHttpClient = baseHttpClient;
+        _webSocketHandler = webSocketHandler;
     }
 
     public IBaseHttpClient CreateHttpClient()
@@ -21,9 +24,9 @@ public class JellyfinClientFactory : IClientFactory
         return _baseHttpClient;
     }
 
-    public IWebSocketClient CreateWebSocketClient()
+    public IWebSocketHandler CreateWebSocketClient()
     {
-        throw new NotImplementedException();
+        return _webSocketHandler;
     }
 
     public bool AppliesTo(ServerType type)

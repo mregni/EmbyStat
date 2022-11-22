@@ -7,6 +7,6 @@ namespace EmbyStat.Clients.Base;
 public interface IClientFactory
 {
     IBaseHttpClient CreateHttpClient();
-    IWebSocketClient CreateWebSocketClient();
+    IWebSocketHandler CreateWebSocketClient();
     bool AppliesTo(ServerType type);
 }

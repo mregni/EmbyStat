@@ -206,6 +206,7 @@ public class MapProfiles : Profile
             .AddImageMappings();
         CreateMap<BaseItemDto, Episode>()
             .ForMember(x => x.SeasonId, x => x.MapFrom(y => y.ParentId))
+            .ForMember(x => x.ShowId, x => x.MapFrom(y => y.SeriesId))
             .AddImageMappings()
             .AddProviderMappings()
             .AddCommunityRatingMappings()

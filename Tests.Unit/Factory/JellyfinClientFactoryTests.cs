@@ -1,6 +1,7 @@
 ﻿using System;
 using EmbyStat.Clients.Jellyfin;
 using EmbyStat.Clients.Jellyfin.Http;
+using EmbyStat.Clients.Jellyfin.WebSocket;
 using EmbyStat.Common.Enums;
 using FluentAssertions;
 using Moq;
@@ -14,7 +15,9 @@ public class JellyfinClientFactoryTests
     public void CreateHttpClient_Should_Return_Client()
     {
         var baseHttpClientMock = new Mock<IJellyfinBaseHttpClient>();
-        var factory = new JellyfinClientFactory(baseHttpClientMock.Object);
+        var baseSocketClientMock = new Mock<IJellyfinWebSocketHandler>();
+
+        var factory = new JellyfinClientFactory(baseHttpClientMock.Object, baseSocketClientMock.Object);
 
         var client = factory.CreateHttpClient();
         client.Should().NotBeNull();
@@ -24,10 +27,12 @@ public class JellyfinClientFactoryTests
     public void CreateWebSocketClient_Should_Return_Client()
     {
         var baseHttpClientMock = new Mock<IJellyfinBaseHttpClient>();
-        var factory = new JellyfinClientFactory(baseHttpClientMock.Object);
+        var baseSocketClientMock = new Mock<IJellyfinWebSocketHandler>();
 
-        var act = () => factory.CreateWebSocketClient();
-        act.Should().Throw<NotImplementedException>();
+        var factory = new JellyfinClientFactory(baseHttpClientMock.Object, baseSocketClientMock.Object);
+
+        var client = factory.CreateWebSocketClient();
+        client.Should().NotBeNull();
     }
     
     [Theory]
@@ -36,7 +41,9 @@ public class JellyfinClientFactoryTests
     public void AppliesTo_Should_Return_Correct_Value(ServerType serverType, bool result)
     {
         var baseHttpClientMock = new Mock<IJellyfinBaseHttpClient>();
-        var factory = new JellyfinClientFactory(baseHttpClientMock.Object);
+        var baseSocketClientMock = new Mock<IJellyfinWebSocketHandler>();
+
+        var factory = new JellyfinClientFactory(baseHttpClientMock.Object, baseSocketClientMock.Object);
 
         var client = factory.AppliesTo(serverType);
         client.Should().Be(result);

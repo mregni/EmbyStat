@@ -9,7 +9,7 @@ using WebSocketState = WebSocket4Net.WebSocketState;
 
 namespace EmbyStat.Clients.Emby.WebSocket;
 
-public class EmbyWebSocketClient : IWebSocketClient, IDisposable
+public class EmbyWebSocketHandler : WebSocketHandler, IEmbyWebSocketHandler
 {
     private WebSocket4Net.WebSocket _socket;
     public WebSocketState State => _socket?.State ?? WebSocketState.Closed;
@@ -17,11 +17,11 @@ public class EmbyWebSocketClient : IWebSocketClient, IDisposable
     public event EventHandler Connected;
     public Action<byte[]> OnReceiveBytes { get; set; }
     public Action<string> OnReceive { get; set; }
-    private readonly ILogger<EmbyWebSocketClient> _logger;
+    //private readonly ILogger<EmbyWebSocketHandler> _logger;
 
-    public EmbyWebSocketClient(ILogger<EmbyWebSocketClient> logger)
+    public EmbyWebSocketHandler(ILogger<WebSocketHandler> logger): base(logger)
     {
-        _logger = logger;
+        
     }
 
     public Task ConnectAsync(string url)
@@ -89,7 +89,7 @@ public class EmbyWebSocketClient : IWebSocketClient, IDisposable
 
             if (state is WebSocketState.Open or WebSocketState.Connecting)
             {
-                _logger.LogInformation("Sending web socket close message");
+                //_logger.LogInformation("Sending web socket close message");
                 _socket.Close();
             }
 

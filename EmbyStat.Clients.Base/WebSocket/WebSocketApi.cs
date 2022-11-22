@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
+
 namespace EmbyStat.Clients.Base.WebSocket;
 
 public class WebSocketApi : IWebSocketApi, IDisposable
@@ -23,16 +24,16 @@ public class WebSocketApi : IWebSocketApi, IDisposable
     public event EventHandler<GenericEventArgs<JArray>> SessionsUpdated;
     public event EventHandler<EventArgs> RestartRequired;
 
-    private readonly IWebSocketClient _clientWebSocket;
+    private readonly IWebSocketHandler _handlerWebSocket;
     private readonly ILogger<WebSocketApi> _logger;
 
     private string ApiUrl { get; set; }
     public string AccessToken { get; set; }
     public string DeviceId { get; set; }
 
-    public WebSocketApi(IWebSocketClient clientWebSocket, ILogger<WebSocketApi> logger)
+    public WebSocketApi(IWebSocketHandler handlerWebSocket, ILogger<WebSocketApi> logger)
     {
-        _clientWebSocket = clientWebSocket;
+        _handlerWebSocket = handlerWebSocket;
         _logger = logger;
     }
 
@@ -54,27 +55,31 @@ public class WebSocketApi : IWebSocketApi, IDisposable
         //await _clientWebSocket.CloseConnection();
     }
 
-    private async Task EnsureConnectionAsync()
+    private Task EnsureConnectionAsync()
     {
-        if (!IsWebSocketOpenOrConnecting)
+        if (IsWebSocketOpenOrConnecting)
         {
-            var url = GetWebSocketUrl(ApiUrl);
-
-            try {
-                _logger.LogInformation($"Connecting to {url}");
-
-                //_clientWebSocket.OnReceiveBytes = OnMessageReceived;
-                //_clientWebSocket.OnReceive = OnMessageReceived;
-                //_clientWebSocket.Closed += ClientWebSocketClosed;
-                //_clientWebSocket.Connected += ClientWebSocketConnected;
-
-                //await _clientWebSocket.ConnectAsync(url);                
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, $"Error connecting to {url}");
-            }
+            return Task.CompletedTask;
         }
+
+        var url = GetWebSocketUrl(ApiUrl);
+        try
+        {
+            _logger.LogInformation($"Connecting to {url}");
+
+            //_clientWebSocket.OnReceiveBytes = OnMessageReceived;
+            //_clientWebSocket.OnReceive = OnMessageReceived;
+            //_clientWebSocket.Closed += ClientWebSocketClosed;
+            //_clientWebSocket.Connected += ClientWebSocketConnected;
+
+            //await _clientWebSocket.ConnectAsync(url);                
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, $"Error connecting to {url}");
+        }
+        
+        return Task.CompletedTask;
     }
 
     private void ClientWebSocketConnected(object sender, EventArgs e)
@@ -194,7 +199,8 @@ public class WebSocketApi : IWebSocketApi, IDisposable
         //}
     }
 
-    public bool IsWebSocketOpenOrConnecting => false; //_clientWebSocket.State == WebSocketState.Open || _clientWebSocket.State == WebSocketState.Connecting;
+    public bool IsWebSocketOpenOrConnecting =>
+        false; //_clientWebSocket.State == WebSocketState.Open || _clientWebSocket.State == WebSocketState.Connecting;
 
     private string GetMessageType(string json)
     {
@@ -202,7 +208,7 @@ public class WebSocketApi : IWebSocketApi, IDisposable
         return message.MessageType;
     }
 
-    private void FireEvent<T>(EventHandler<T> handler, object sender, T args)  where T : EventArgs
+    private void FireEvent<T>(EventHandler<T> handler, object sender, T args) where T : EventArgs
     {
         if (handler != null)
         {
@@ -219,7 +225,7 @@ public class WebSocketApi : IWebSocketApi, IDisposable
 
     private IEnumerable<byte> GetMessageBytes<T>(string messageName, T data)
     {
-        var msg = new WebSocketMessage<T> { MessageType = messageName, Data = data };
+        var msg = new WebSocketMessage<T> {MessageType = messageName, Data = data};
 
         return SerializeToBytes(msg);
     }
