@@ -1,4 +1,5 @@
 ﻿using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Events;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Movies;
 using EmbyStat.Common.Models.Entities.Shows;
@@ -33,6 +34,9 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
     public DbSet<Statistic> Statistics { get; set; }
     public DbSet<MediaServerUserView> MediaServerUserViews { get; set; }
 
+    public DbSet<Session> Sessions { get; set; }
+    public DbSet<MediaPlay> MediaPlays { get; set; }
+
     public EsDbContext()
     {
         
@@ -52,6 +56,7 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
         BuildUsers(builder);
         BuildFilterValues(builder);
         BuildUserViews(builder);
+        BuildSessions(builder);
         AddExtraIndexes(builder);
 
         SeedDatabase(builder);
@@ -97,6 +102,22 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
     private static void BuildUsers(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<MediaServerUser>().HasKey(x => x.Id);
+    }
+
+    private static void BuildSessions(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Session>().HasKey(x => x.Id);
+
+        modelBuilder.Entity<MediaPlay>()
+            .Property(x => x.Id)
+            .IsRequired()
+            .ValueGeneratedOnAdd();
+        modelBuilder.Entity<MediaPlay>().HasIndex(x => x.SessionId);
+        modelBuilder.Entity<MediaPlay>().HasIndex(x => x.UserId);
+        modelBuilder.Entity<MediaPlay>()
+            .HasOne(x => x.Session)
+            .WithMany(x => x.MediaPlays)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 
     private static void BuildPeople(ModelBuilder modelBuilder)

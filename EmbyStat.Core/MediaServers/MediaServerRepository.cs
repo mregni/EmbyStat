@@ -198,52 +198,6 @@ UPDATE SET LastPlayedDate=excluded.LastPlayedDate, PlayCount=excluded.PlayCount;
         return list.DistinctBy(x => x.MediaId).Count();
     }
 
-    public async Task<Dictionary<Show, int>> GetMostWatchedShows(int count)
-    {
-        var query = $@"
-SELECT s.*, COUNT(*) AS ViewCount
-FROM {Constants.Tables.MediaServerUserViews} AS vi
-INNER JOIN {Constants.Tables.Episodes} AS e ON (vi.MediaId = e.Id)
-INNER JOIN {Constants.Tables.Seasons} AS se ON (se.Id = e.SeasonId)
-INNER JOIN {Constants.Tables.Shows} AS s ON (s.Id = se.ShowId)
-WHERE vi.MediaType = 'Episode'
-GROUP BY s.Id
-ORDER BY ViewCount DESC
-LIMIT {count}";
-
-        _logger.LogDebug(query);
-        await using var connection = _sqliteBootstrap.CreateConnection();
-        await connection.OpenAsync();
-        var result = await connection
-            .QueryAsync<Show, long, KeyValuePair<Show, int>>(query,
-                (s, c) => new KeyValuePair<Show, int>(s, Convert.ToInt32(c)),
-                splitOn: "ViewCount");
-
-        return result.ToDictionary(x => x.Key, x => x.Value);
-    }
-
-    public async Task<Dictionary<Movie, int>> GetMostWatchedMovies(int count)
-    {
-        var query = $@"
-SELECT m.*, COUNT(*) AS ViewCount
-FROM {Constants.Tables.MediaServerUserViews} AS vi
-INNER JOIN {Constants.Tables.Movies} AS m ON (vi.MediaId = m.Id)
-WHERE vi.MediaType = 'Movie'
-GROUP BY m.Id
-ORDER BY ViewCount DESC
-LIMIT {count}";
-
-        _logger.LogDebug(query);
-        await using var connection = _sqliteBootstrap.CreateConnection();
-        await connection.OpenAsync();
-        var result = await connection
-            .QueryAsync<Movie, long, KeyValuePair<Movie, int>>(query,
-                (m, c) => new KeyValuePair<Movie, int>(m, Convert.ToInt32(c)),
-                splitOn: "ViewCount");
-
-        return result.ToDictionary(x => x.Key, x => x.Value);
-    }
-
     public Task<int> GetMediaServerViewsForUser(string id, MediaType type)
     {
         return _context.MediaServerUserViews

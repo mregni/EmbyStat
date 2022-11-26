@@ -1,4 +1,5 @@
-﻿using EmbyStat.Common.Models.Entities.Helpers;
+﻿using EmbyStat.Common.Models.Charts;
+using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Movies;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Core.MediaHelpers.Interfaces;
@@ -12,6 +13,7 @@ public interface IMovieRepository : IMediaRepository
     IEnumerable<Movie> GetAll();
     IEnumerable<Movie> GetAllWithImdbId();
     long? GetTotalRuntime();
+    Task<long> GetPlayedRuntime();
     IEnumerable<Movie> GetShortestMovie(long toShortMovieTicks, int count);
     IEnumerable<Movie> GetLongestMovie(int count);
     double GetTotalDiskSpace();
@@ -26,4 +28,9 @@ public interface IMovieRepository : IMediaRepository
     IEnumerable<LabelValuePair> CalculateVideoRangeFilterValues();
     Task DeleteAll();
     Task RemoveUnwantedMovies(IEnumerable<string> libraryIds);
+    int GetTotalWatchedMovieCount();
+    Task<Dictionary<Movie, int>> GetMostWatchedMovies(int count);
+    Task<IEnumerable<BarValue<string,int>>> GetWatchedPerHourOfDayChartValues();
+    Task<IEnumerable<BarValue<string, int>>> GetWatchedPerDayOfWeekChartValues();
+    Task<int> GetCurrentWatchingCount();
 }

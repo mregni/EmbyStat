@@ -6,9 +6,9 @@ namespace EmbyStat.Core.MediaHelpers.Interfaces;
 
 public interface IMediaRepository
 {
-    IEnumerable<Common.Models.Entities.Helpers.Media> GetLatestAddedMedia(int count);
-    Task<IEnumerable<Common.Models.Entities.Helpers.Media>> GetNewestPremieredMedia(int count);
-    Task<IEnumerable<Common.Models.Entities.Helpers.Media>> GetOldestPremieredMedia(int count);
+    IEnumerable<Media> GetLatestAddedMedia(int count);
+    Task<IEnumerable<Media>> GetNewestPremieredMedia(int count);
+    Task<IEnumerable<Media>> GetOldestPremieredMedia(int count);
     Task<IEnumerable<Extra>> GetHighestRatedMedia(int count);
     Task<IEnumerable<Extra>> GetLowestRatedMedia(int count);
 

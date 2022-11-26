@@ -3,6 +3,7 @@ using System;
 using EmbyStat.Core.DataStore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmbyStat.Core.DataStore.Migrations.Sqlite
 {
     [DbContext(typeof(EsDbContext))]
-    partial class EsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221123082849_AddedSessions")]
+    partial class AddedSessions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.7");
@@ -102,114 +104,6 @@ namespace EmbyStat.Core.DataStore.Migrations.Sqlite
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("EmbyStat.Common.Models.Entities.Events.MediaPlay", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("AudioChannelLayout")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("AudioCodec")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("AudioSampleRate")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Decoder")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool?>("DecoderIsHardware")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("DecoderMediaType")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Encoder")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool?>("EncoderIsHardware")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("EncoderMediaType")
-                        .HasColumnType("TEXT");
-
-                    b.Property<long>("EndPositionTicks")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsPaused")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("LastUpdate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MediaId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PlayMethod")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SessionId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("Start")
-                        .HasColumnType("TEXT");
-
-                    b.Property<long>("StartPositionTicks")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime?>("Stop")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SubtitleCodec")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SubtitleDisplayLanguage")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SubtitleLanguage")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SubtitleProtocol")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("TranscodeAudioCodec")
-                        .HasColumnType("TEXT");
-
-                    b.Property<double?>("TranscodeAverageCpuUsage")
-                        .HasColumnType("REAL");
-
-                    b.Property<double?>("TranscodeCurrentCpuUsage")
-                        .HasColumnType("REAL");
-
-                    b.Property<string>("TranscodeReasons")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("TranscodeSubProtocol")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("TranscodeVideoCodec")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<double>("WatchedPercentage")
-                        .HasColumnType("REAL");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SessionId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("MediaPlays");
                 });
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Events.Session", b =>
@@ -1488,22 +1382,6 @@ namespace EmbyStat.Core.DataStore.Migrations.Sqlite
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("EmbyStat.Common.Models.Entities.Events.MediaPlay", b =>
-                {
-                    b.HasOne("EmbyStat.Common.Models.Entities.Events.Session", "Session")
-                        .WithMany("MediaPlays")
-                        .HasForeignKey("SessionId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("EmbyStat.Common.Models.Entities.Users.MediaServerUser", "User")
-                        .WithMany("MediaPlays")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Session");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Helpers.MediaPerson", b =>
                 {
                     b.HasOne("EmbyStat.Common.Models.Entities.Movies.Movie", "Movie")
@@ -1699,11 +1577,6 @@ namespace EmbyStat.Core.DataStore.Migrations.Sqlite
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("EmbyStat.Common.Models.Entities.Events.Session", b =>
-                {
-                    b.Navigation("MediaPlays");
-                });
-
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Library", b =>
                 {
                     b.Navigation("Movies");
@@ -1760,8 +1633,6 @@ namespace EmbyStat.Core.DataStore.Migrations.Sqlite
 
             modelBuilder.Entity("EmbyStat.Common.Models.Entities.Users.MediaServerUser", b =>
                 {
-                    b.Navigation("MediaPlays");
-
                     b.Navigation("Views");
                 });
 #pragma warning restore 612, 618

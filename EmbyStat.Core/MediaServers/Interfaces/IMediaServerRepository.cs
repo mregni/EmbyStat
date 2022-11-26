@@ -38,9 +38,7 @@ public interface IMediaServerRepository
     Task<int> GetUserCount();
     int GetUserViewsForType(MediaType type);
     Task<int> GetMediaServerViewsForUser(string id, MediaType type);
-    Task<Dictionary<Show, int>> GetMostWatchedShows(int count);
-    Task<Dictionary<Movie, int>> GetMostWatchedMovies(int count);
-    
+
     #endregion
 
     #region Devices

@@ -1,12 +1,10 @@
 ﻿using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities.Events;
+using EmbyStat.Common.Models.Sessions;
 
 namespace EmbyStat.Core.Sessions.Interfaces;
 
 public interface ISessionService
 {
-    IEnumerable<string> GetMediaIdsForUser(string id, MediaType type);
-    IEnumerable<Session> GetSessionsForUser(string id);
-    int GetPlayCountForUser(string id);
-    void ProcessSessions(List<Session> sessions);
+    void ProcessSessions(IEnumerable<WebSocketSession> sessions);
 }

@@ -181,57 +181,7 @@ public class MediaServerService : StatisticHelper, IMediaServerService
         var json = JsonConvert.SerializeObject(statistics);
         await _statisticsRepository.ReplaceStatistic(json, DateTime.UtcNow, StatisticType.User);
 
-        await CalculateMovieStatistics();
-        await CalculateShowStatistics();
-
         return statistics;
-    }
-
-    private async Task CalculateMovieStatistics()
-    {
-        var movieStatistic = await _statisticsRepository.GetLastResultByType(StatisticType.Movie);
-        if (StatisticsAreValid(movieStatistic, Constants.JobIds.MovieSyncId))
-        {
-            var movieStatistics = JsonConvert.DeserializeObject<MovieStatistics>(movieStatistic.JsonResult);
-            if (movieStatistics != null)
-            {
-                movieStatistics.Cards = movieStatistics.Cards
-                    .Where(x => x.Title != Constants.Movies.TotalWatchedMovies)
-                    .ToList();
-                movieStatistics.Cards.AddIfNotNull(CalculateWatchedMovieCount());
-
-                movieStatistics.TopCards = movieStatistics.TopCards
-                    .Where(x => x.Title != Constants.Movies.MostWatchedMovies)
-                    .ToList();
-                movieStatistics?.TopCards.AddIfNotNull(await CalculateMostWatchedMovies());
-                var movieJson = JsonConvert.SerializeObject(movieStatistics);
-                await _statisticsRepository.ReplaceStatistic(movieJson, DateTime.UtcNow, StatisticType.Movie);
-            }
-        }
-    }
-
-    private async Task CalculateShowStatistics()
-    {
-        var showStatistic = await _statisticsRepository.GetLastResultByType(StatisticType.Show);
-        if (StatisticsAreValid(showStatistic, Constants.JobIds.ShowSyncId))
-        {
-            var showStatistics = JsonConvert.DeserializeObject<ShowStatistics>(showStatistic.JsonResult);
-            if (showStatistics != null)
-            {
-                showStatistics.Cards = showStatistics.Cards
-                    .Where(x => x.Title != Constants.Shows.TotalWatchedEpisodes)
-                    .ToList();
-                showStatistics?.Cards.AddIfNotNull(CalculateWatchedEpisodeCount());
-
-                showStatistics.TopCards = showStatistics.TopCards
-                    .Where(x => x.Title != Constants.Shows.MostWatchedShows)
-                    .ToList();
-                showStatistics?.TopCards.AddIfNotNull(await CalculateMostWatchedShows());
-
-                var showJson = JsonConvert.SerializeObject(showStatistics);
-                await _statisticsRepository.ReplaceStatistic(showJson, DateTime.UtcNow, StatisticType.Show);
-            }
-        }
     }
 
     #region Cards
@@ -241,8 +191,6 @@ public class MediaServerService : StatisticHelper, IMediaServerService
         var list = new List<Card>();
         list.AddIfNotNull(await CalculateActiveUsers());
         list.AddIfNotNull(await CalculateIdleUsers());
-        list.AddIfNotNull(CalculateWatchedEpisodeCount());
-        list.AddIfNotNull(CalculateWatchedMovieCount());
         return list;
     }
 
@@ -277,64 +225,6 @@ public class MediaServerService : StatisticHelper, IMediaServerService
                 Icon = Constants.Icons.PoundRoundedIcon
             };
         }, "Calculate total idle user count failed:");
-    }
-
-    private Card CalculateWatchedMovieCount()
-    {
-        return CalculateStat(() =>
-        {
-            var viewCount = _mediaServerRepository.GetUserViewsForType(MediaType.Movie);
-            return new Card
-            {
-                Title = Constants.Movies.TotalWatchedMovies,
-                Value = viewCount.ToString(),
-                Type = CardType.Text,
-                Icon = Constants.Icons.PoundRoundedIcon
-            };
-        }, "Calculate total idle user count failed:");
-    }
-
-    private Card CalculateWatchedEpisodeCount()
-    {
-        return CalculateStat(() =>
-        {
-            var viewCount = _mediaServerRepository.GetUserViewsForType(MediaType.Episode);
-            return new Card
-            {
-                Title = Constants.Shows.TotalWatchedEpisodes,
-                Value = viewCount.ToString(),
-                Type = CardType.Text,
-                Icon = Constants.Icons.PoundRoundedIcon
-            };
-        }, "Calculate total idle user count failed:");
-    }
-
-    #endregion
-
-    #region TopCards
-
-    private Task<TopCard> CalculateMostWatchedShows()
-    {
-        return CalculateStat(async () =>
-        {
-            var data = await _mediaServerRepository.GetMostWatchedShows(5);
-
-            return data.Count > 0
-                ? data.ConvertToTopCard(Constants.Shows.MostWatchedShows, "#", false)
-                : null;
-        }, "Calculate most watched shows failed:");
-    }
-
-    private Task<TopCard> CalculateMostWatchedMovies()
-    {
-        return CalculateStat(async () =>
-        {
-            var data = await _mediaServerRepository.GetMostWatchedMovies(5);
-
-            return data.Count > 0
-                ? data.ConvertToTopCard(Constants.Movies.MostWatchedMovies, "#", false)
-                : null;
-        }, "Calculate most watched shows failed:");
     }
 
     #endregion
@@ -426,11 +316,6 @@ public class MediaServerService : StatisticHelper, IMediaServerService
         //     //if media is null this means a user has watched something that is not yet in our DB
         //     //TODO: try starting a sync here
         // }
-    }
-
-    public int GetUserViewCount(string id)
-    {
-        return _sessionService.GetPlayCountForUser(id);
     }
 
     #endregion
@@ -531,60 +416,6 @@ public class MediaServerService : StatisticHelper, IMediaServerService
     //         DeviceLogo = device?.IconUrl ?? string.Empty
     //     };
     // }
-
-    private UserMediaView CreateUserMediaViewFromEpisode(Play play, Device device)
-    {
-        //var episode = _showRepository.GetEpisodeById(play.play.MediaId);
-        //TODO: fix implementation
-        Episode episode = null;
-        if (episode == null)
-        {
-            throw new BusinessException("EPISODENOTFOUND");
-        }
-
-        //var season = _showRepository.GetSeasonById(play.ParentId);
-        //var seasonNumber = season.IndexNumber;
-        //var name = $"{episode.ShowName} - {seasonNumber}x{episode.IndexNumber} - {episode.Name}";
-
-        //var startedPlaying = play.PlayStates.Min(x => x.TimeLogged);
-        //var endedPlaying = play.PlayStates.Max(x => x.TimeLogged);
-        //var watchedTime = endedPlaying - startedPlaying;
-
-
-        return new UserMediaView
-        {
-            Id = episode.Id,
-            //Name = name,
-            //ParentId = episode.ParentId,
-            //Primary = episode.Primary,
-            //StartedWatching = startedPlaying,
-            //EndedWatching = endedPlaying,
-            //WatchedTime = Math.Round(watchedTime.TotalSeconds),
-            WatchedPercentage = CalculateWatchedPercentage(play, episode),
-            DeviceId = device.Id,
-            DeviceLogo = device?.IconUrl ?? ""
-        };
-    }
-
-    private decimal? CalculateWatchedPercentage(Play play, long? runTimeTicks)
-    {
-        decimal? watchedPercentage = null;
-        if (runTimeTicks.HasValue)
-        {
-            var playStates = play.PlayStates.Where(x => x.PositionTicks.HasValue).ToList();
-            var watchedTicks = playStates.Max(x => x.PositionTicks) -
-                               playStates.Min(x => x.PositionTicks);
-            if (watchedTicks != null)
-                watchedPercentage = Math.Round((watchedTicks.Value / (decimal) runTimeTicks) * 1000) / 10;
-        }
-
-        return watchedPercentage;
-    }
-
-    private decimal? CalculateWatchedPercentage(Play play, Extra media)
-    {
-        return CalculateWatchedPercentage(play, media.RunTimeTicks);
-    }
 
     private void ChangeClientType(ServerType? type)
     {

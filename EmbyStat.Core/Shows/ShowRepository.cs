@@ -2,6 +2,7 @@ using Dapper;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
+using EmbyStat.Common.Models.Charts;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Shows;
@@ -208,6 +209,55 @@ WHERE 1=1 ";
             .SelectMany(x => x.People)
             .Distinct()
             .Count(x => x.Type == type);
+    }
+    
+    public int GetTotalWatchedEpisodeCount()
+    {
+        return _context.MediaPlays
+            .Where(x => x.Type == "Episode")
+            .Count();
+    }
+    
+    public async Task<Dictionary<Show, int>> GetMostWatchedShows(int count)
+    {
+        var query = $@"
+SELECT s.*, COUNT(*) AS ViewCount
+FROM {Constants.Tables.MediaPlays} AS mi
+INNER JOIN {Constants.Tables.Episodes} AS e ON (mi.MediaId = e.Id)
+INNER JOIN {Constants.Tables.Seasons} AS se ON (se.Id = e.SeasonId)
+INNER JOIN {Constants.Tables.Shows} AS s ON (s.Id = se.ShowId)
+WHERE mi.Type = 'Episode'
+GROUP BY s.Id
+ORDER BY ViewCount DESC
+LIMIT {count}";
+
+        _logger.LogDebug(query);
+        await using var connection = _sqliteBootstrap.CreateConnection();
+        await connection.OpenAsync();
+        var result = await connection
+            .QueryAsync<Show, long, KeyValuePair<Show, int>>(query,
+                (s, c) => new KeyValuePair<Show, int>(s, Convert.ToInt32(c)),
+                splitOn: "ViewCount");
+
+        return result.ToDictionary(x => x.Key, x => x.Value);
+    }
+    
+    public Task<long> GetPlayedRuntime()
+    {
+        return _context
+            .MediaPlays
+            .AsNoTracking()
+            .Where(x => x.Type == "Episode")
+            .SumAsync(x => x.EndPositionTicks - x.StartPositionTicks);
+    }
+
+    public Task<int> GetCurrentWatchingCount()
+    {
+        return _context
+            .MediaPlays
+            .AsNoTracking()
+            .Where(x => x.Type == "Episode" && x.Stop == null)
+            .CountAsync();
     }
 
     #region Shows
@@ -511,6 +561,40 @@ LIMIT {count}";
             .Select(x => new LabelValuePair { Value = x.Name, Label = x.Name })
             .Distinct()
             .OrderBy(x => x.Label);
+    }
+    
+    public async Task<IEnumerable<BarValue<string,int>>> GetWatchedPerHourOfDayChartValues()
+    {
+        var query = $@"
+SELECT COUNT(*) AS Y, STRFTIME('%H',mp.Start) X,
+	CASE when msu.Name IS NOT NULL
+	then msu.Name else mp.UserId END as Serie
+FROM {Constants.Tables.MediaPlays} AS mp
+LEFT JOIN {Constants.Tables.MediaServerUsers} AS msu ON (msu.Id = mp.UserId)
+WHERE Type = 'Episode'
+GROUP BY mp.UserId, msu.Name, STRFTIME('%H',mp.Start)
+";
+        
+        await using var connection = _sqliteBootstrap.CreateConnection();
+        await connection.OpenAsync();
+        return await connection.QueryAsync<BarValue<string,int>>(query);
+    }
+    
+    public async Task<IEnumerable<BarValue<string,int>>> GetWatchedPerDayOfWeekChartValues()
+    {
+        var query = $@"
+SELECT COUNT(*) AS Y, STRFTIME('%w',mp.Start) X,
+	CASE when msu.Name IS NOT NULL
+	then msu.Name else mp.UserId END as Serie
+FROM {Constants.Tables.MediaPlays} AS mp
+LEFT JOIN {Constants.Tables.MediaServerUsers} AS msu ON (msu.Id = mp.UserId)
+WHERE Type = 'Episode'
+GROUP BY mp.UserId, msu.Name, STRFTIME('%w',mp.Start)
+";
+        
+        await using var connection = _sqliteBootstrap.CreateConnection();
+        await connection.OpenAsync();
+        return await connection.QueryAsync<BarValue<string,int>>(query);
     }
 
     #endregion

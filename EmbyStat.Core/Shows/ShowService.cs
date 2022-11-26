@@ -9,6 +9,7 @@ using EmbyStat.Common.Models.DataGrid;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Query;
+using EmbyStat.Configuration.Interfaces;
 using EmbyStat.Core.Abstract;
 using EmbyStat.Core.Jobs.Interfaces;
 using EmbyStat.Core.MediaServers.Interfaces;
@@ -28,8 +29,8 @@ public class ShowService : MediaService, IShowService
 
     public ShowService(IJobRepository jobRepository, IShowRepository showRepository,
         IStatisticsRepository statisticsRepository, IMediaServerRepository mediaServerRepository,
-        ILogger<ShowService> logger) 
-        : base(jobRepository, logger)
+        ILogger<ShowService> logger, IConfigurationService configurationService) 
+        : base(jobRepository, logger, configurationService)
     {
         _showRepository = showRepository;
         _statisticsRepository = statisticsRepository;
@@ -43,14 +44,21 @@ public class ShowService : MediaService, IShowService
 
     public async Task<ShowStatistics> GetStatistics()
     {
-        var statistic = await _statisticsRepository.GetLastResultByType(StatisticType.Show);
+        var statisticsJson = await _statisticsRepository.GetLastResultByType(StatisticType.Show);
 
-        if (StatisticsAreValid(statistic, Constants.JobIds.ShowSyncId))
+        ShowStatistics statistics;
+        if (StatisticsAreValid(statisticsJson, Constants.JobIds.ShowSyncId))
         {
-            return JsonConvert.DeserializeObject<ShowStatistics>(statistic.JsonResult);
+            statistics = JsonConvert.DeserializeObject<ShowStatistics>(statisticsJson.JsonResult) ?? new ShowStatistics();
+        }
+        else
+        {
+            statistics = await CalculateShowStatistics();
         }
 
-        return await CalculateShowStatistics();
+        await AddLiveStatistics(statistics);
+
+        return statistics;
     }
 
     public async Task<ShowStatistics> CalculateShowStatistics()
@@ -67,6 +75,12 @@ public class ShowService : MediaService, IShowService
         await _statisticsRepository.ReplaceStatistic(json, DateTime.UtcNow, StatisticType.Show);
 
         return statistics;
+    }
+
+    private async Task AddLiveStatistics(ShowStatistics statistics)
+    {
+        statistics.ComplexCharts = await CalculateComplexCharts();
+        statistics.Cards.AddIfNotNull(await GetCurrentWatchingCount(_showRepository.GetCurrentWatchingCount));
     }
 
     public bool TypeIsPresent()
@@ -111,6 +125,8 @@ public class ShowService : MediaService, IShowService
         list.AddIfNotNull(await CalculateTotalShowGenres());
         list.AddIfNotNull(await CalculatePlayableTime());
         list.AddIfNotNull(await CalculateTotalDiskSpace());
+        list.AddIfNotNull(CalculateWatchedEpisodeCount());
+        list.AddIfNotNull(await CalculateTotalWatchedTime());
         list.AddIfNotNull(TotalPersonTypeCount(PersonType.Actor, Constants.Common.TotalActors));
 
         return list;
@@ -241,6 +257,38 @@ public class ShowService : MediaService, IShowService
             };
         }, $"Calculate total {type} count failed::");
     }
+    
+    private Card CalculateWatchedEpisodeCount()
+    {
+        return CalculateStat(() =>
+        {
+            var viewCount = _showRepository.GetTotalWatchedEpisodeCount();
+            return new Card
+            {
+                Title = Constants.Shows.TotalWatchedEpisodes,
+                Value = viewCount.ToString(),
+                Type = CardType.Text,
+                Icon = Constants.Icons.PoundRoundedIcon
+            };
+        }, "Calculate total watched episode count failed:");
+    }
+    
+    private Task<Card> CalculateTotalWatchedTime()
+    {
+        return CalculateStat(async () =>
+        {
+            var playLengthTicks = await _showRepository.GetPlayedRuntime();
+            var playLength = new TimeSpan(playLengthTicks);
+
+            return new Card
+            {
+                Title = Constants.Shows.PlayedPlayLength,
+                Value = $"{playLength.Days}|{playLength.Hours}|{playLength.Minutes}",
+                Type = CardType.Time,
+                Icon = Constants.Icons.QueryBuilderRoundedIcon
+            };
+        }, "Calculate played show play length failed:");
+    }
 
     #endregion
 
@@ -256,6 +304,7 @@ public class ShowService : MediaService, IShowService
         list.AddIfNotNull(await CalculateLowestRatedShow());
         list.AddIfNotNull(await CalculateShowWithMostEpisodes());
         list.AddIfNotNull(CalculateMostDiskSpaceUsedShow());
+        list.AddIfNotNull(await CalculateMostWatchedShows());
 
         return list;
     }
@@ -346,6 +395,18 @@ public class ShowService : MediaService, IShowService
                 ? list.ConvertToTopCard(Constants.Shows.MostDiskSpace, "#", false, ValueType.SizeInMb)
                 : null;
         }, "Calculate shows with most episodes failed:");
+    }
+    
+    private Task<TopCard?> CalculateMostWatchedShows()
+    {
+        return CalculateStat(async () =>
+        {
+            var data = await _showRepository.GetMostWatchedShows(5);
+
+            return data.Count > 0
+                ? data.ConvertToTopCard(Constants.Shows.MostWatchedShows, "#", false)
+                : null;
+        }, "Calculate most watched shows failed:");
     }
 
     #endregion
@@ -454,6 +515,23 @@ public class ShowService : MediaService, IShowService
             DataSets = rates,
             SeriesCount = 1
         };
+    }
+
+    #endregion
+
+    #region Complex charts
+
+    private async Task<List<MultiChart>> CalculateComplexCharts()
+    {
+        var list = new List<MultiChart>();
+        
+        var watchedPerHour = _showRepository.GetWatchedPerHourOfDayChartValues;
+        list.AddIfNotNull(await CalculateWatchedPerHourOfDayChart(watchedPerHour));
+        
+        var wachtedPerDay = _showRepository.GetWatchedPerDayOfWeekChartValues;
+        list.AddIfNotNull(await CalculateWatchedPerDayOfWeekChart(wachtedPerDay));
+
+        return list;
     }
 
     #endregion

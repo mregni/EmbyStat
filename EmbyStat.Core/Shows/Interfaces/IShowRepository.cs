@@ -1,4 +1,5 @@
 ﻿using EmbyStat.Common.Enums;
+using EmbyStat.Common.Models.Charts;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Query;
@@ -20,6 +21,7 @@ public interface IShowRepository : IMediaRepository
     Task<int> CompleteCollectedCount();
     Task DeleteAll();
     Task RemoveUnwantedShows(IEnumerable<string> libraryIds);
+    Task<Dictionary<Show, int>> GetMostWatchedShows(int count);
     #endregion
 
     #region Charts
@@ -31,7 +33,12 @@ public interface IShowRepository : IMediaRepository
     Task<int> GetEpisodeCount(LocationType locationType);
     Task<long> GetTotalRunTimeTicks();
     Task<double> GetTotalDiskSpaceUsed();
+    Task<IEnumerable<BarValue<string, int>>> GetWatchedPerDayOfWeekChartValues();
+    Task<IEnumerable<BarValue<string, int>>> GetWatchedPerHourOfDayChartValues();
     #endregion
 
     IEnumerable<LabelValuePair> CalculateGenreFilterValues();
+    int GetTotalWatchedEpisodeCount();
+    Task<long> GetPlayedRuntime();
+    Task<int> GetCurrentWatchingCount();
 }

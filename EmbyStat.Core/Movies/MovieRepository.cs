@@ -3,6 +3,7 @@ using Dapper;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Extensions;
+using EmbyStat.Common.Models.Charts;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Movies;
@@ -155,6 +156,15 @@ VALUES (@Type, @MovieId, @PersonId)";
     {
         return _context.Movies
             .Sum(x => x.RunTimeTicks);
+    }
+    
+    public Task<long> GetPlayedRuntime()
+    {
+        return _context
+            .MediaPlays
+            .AsNoTracking()
+            .Where(x => x.Type == "Movie")
+            .SumAsync(x => x.EndPositionTicks - x.StartPositionTicks);
     }
 
     public IEnumerable<Movie> GetShortestMovie(long toShortMovieTicks, int count)
@@ -373,7 +383,69 @@ ORDER BY OfficialRating";
     {
         return Count(Array.Empty<Filter>());
     }
+    
+    public int GetTotalWatchedMovieCount()
+    {
+        return _context.MediaPlays
+            .Where(x => x.Type == "Movie")
+            .Count();
+    }
 
+    public async Task<Dictionary<Movie, int>> GetMostWatchedMovies(int count)
+    {
+        var query = $@"
+SELECT m.*, COUNT(*) AS ViewCount
+FROM {Constants.Tables.MediaPlays} AS mp
+INNER JOIN {Constants.Tables.Movies} AS m ON (mp.MediaId = m.Id)
+WHERE mp.Type = 'Movie'
+GROUP BY m.Id
+ORDER BY ViewCount DESC
+LIMIT {count}";
+
+        await using var connection = _sqliteBootstrap.CreateConnection();
+        await connection.OpenAsync();
+        var result = await connection
+            .QueryAsync<Movie, long, KeyValuePair<Movie, int>>(query,
+                (m, c) => new KeyValuePair<Movie, int>(m, Convert.ToInt32(c)),
+                splitOn: "ViewCount");
+
+        return result.ToDictionary(x => x.Key, x => x.Value);
+    }
+
+    public async Task<IEnumerable<BarValue<string,int>>> GetWatchedPerHourOfDayChartValues()
+    {
+        var query = $@"
+SELECT COUNT(*) AS Y, STRFTIME('%H',mp.Start) X,
+	CASE when msu.Name IS NOT NULL
+	then msu.Name else mp.UserId END as Serie
+FROM {Constants.Tables.MediaPlays} AS mp
+LEFT JOIN {Constants.Tables.MediaServerUsers} AS msu ON (msu.Id = mp.UserId)
+WHERE Type = 'Movie'
+GROUP BY mp.UserId, msu.Name, STRFTIME('%H',mp.Start)
+";
+        
+        await using var connection = _sqliteBootstrap.CreateConnection();
+        await connection.OpenAsync();
+        return await connection.QueryAsync<BarValue<string,int>>(query);
+    }
+    
+    public async Task<IEnumerable<BarValue<string,int>>> GetWatchedPerDayOfWeekChartValues()
+    {
+        var query = $@"
+SELECT COUNT(*) AS Y, STRFTIME('%w',mp.Start) X,
+	CASE when msu.Name IS NOT NULL
+	then msu.Name else mp.UserId END as Serie
+FROM {Constants.Tables.MediaPlays} AS mp
+LEFT JOIN {Constants.Tables.MediaServerUsers} AS msu ON (msu.Id = mp.UserId)
+WHERE Type = 'Movie'
+GROUP BY mp.UserId, msu.Name, STRFTIME('%w',mp.Start)
+";
+        
+        await using var connection = _sqliteBootstrap.CreateConnection();
+        await connection.OpenAsync();
+        return await connection.QueryAsync<BarValue<string,int>>(query);
+    }
+    
     public async Task<int> Count(Filter[] filters)
     {
         var query = MovieExtensions.GenerateCountQuery(filters);
@@ -384,12 +456,21 @@ ORDER BY OfficialRating";
 
         return result;
     }
+    
+    public Task<int> GetCurrentWatchingCount()
+    {
+        return _context
+            .MediaPlays
+            .AsNoTracking()
+            .Where(x => x.Type == "Movie" && x.Stop == null)
+            .CountAsync();
+    }
 
     public bool Any()
     {
         return _context.Movies.Any();
     }
-
+    
     #region People
 
     public int GetPeopleCount(PersonType type)

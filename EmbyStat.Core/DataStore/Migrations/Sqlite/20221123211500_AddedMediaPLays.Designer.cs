@@ -3,6 +3,7 @@ using System;
 using EmbyStat.Core.DataStore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmbyStat.Core.DataStore.Migrations.Sqlite
 {
     [DbContext(typeof(EsDbContext))]
-    partial class EsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221123211500_AddedMediaPLays")]
+    partial class AddedMediaPLays
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.7");
@@ -116,8 +118,8 @@ namespace EmbyStat.Core.DataStore.Migrations.Sqlite
                     b.Property<string>("AudioCodec")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("AudioSampleRate")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("AudioSampleRate")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Decoder")
                         .HasColumnType("TEXT");
@@ -1492,8 +1494,7 @@ namespace EmbyStat.Core.DataStore.Migrations.Sqlite
                 {
                     b.HasOne("EmbyStat.Common.Models.Entities.Events.Session", "Session")
                         .WithMany("MediaPlays")
-                        .HasForeignKey("SessionId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .HasForeignKey("SessionId");
 
                     b.HasOne("EmbyStat.Common.Models.Entities.Users.MediaServerUser", "User")
                         .WithMany("MediaPlays")

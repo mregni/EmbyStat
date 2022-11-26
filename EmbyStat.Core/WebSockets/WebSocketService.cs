@@ -2,6 +2,7 @@
 using EmbyStat.Clients.Base.WebSocket;
 using EmbyStat.Common.Converters;
 using EmbyStat.Common.Models;
+using EmbyStat.Common.Models.Sessions;
 using EmbyStat.Configuration.Interfaces;
 using EmbyStat.Core.Sessions.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,13 +41,23 @@ public class WebSocketService : IHostedService
             var socketAddress = settings.UserConfig.MediaServer.FullSocketAddress;
             var apiKey = settings.UserConfig.MediaServer.ApiKey;
 
+            client.SessionsUpdated += ClientOnSessionsUpdated;
             client.OnWebSocketClosed += WebSocketApiOnWebSocketClosed;
             await client.OpenWebSocket(socketAddress, apiKey, deviceId);
+            
+            client.StartReceivingSessionUpdates(1500);
         }
         catch (Exception e)
         {
             _logger.LogError(e, "Failed to open socket connection to MediaServer");
         }
+    }
+
+    private void ClientOnSessionsUpdated(object? sender, GenericEventArgs<WebSocketSession[]> e)
+    {
+        using var scope = _scopeFactory.CreateScope();
+        var sessionService = scope.ServiceProvider.GetRequiredService<ISessionService>();
+        sessionService.ProcessSessions(e.Argument);
     }
 
     private void WebSocketApiOnWebSocketClosed(object? sender, EventArgs e)
@@ -56,25 +67,14 @@ public class WebSocketService : IHostedService
         
         try
         {
+            client.StopReceivingSessionUpdates();
+            client.SessionsUpdated -= ClientOnSessionsUpdated;
             client.OnWebSocketClosed -= WebSocketApiOnWebSocketClosed;
         }
         catch (Exception)
         {
             _logger.LogInformation("Application is closing, socket is closed!");
         }
-    }
-
-    private void WebSocketApiUserDataChanged(object? sender, GenericEventArgs<JArray> e)
-    {
-        _logger.LogInformation("EmbyUser data changed");
-    }
-
-    private void WebSocketApiSessionsUpdated(object? sender, GenericEventArgs<JArray> e)
-    {
-        using var scope = _scopeFactory.CreateScope();
-        var sessionService = scope.ServiceProvider.GetRequiredService<ISessionService>();
-        var sessions = SessionConverter.ConvertToSessions(e.Argument).ToList();
-        sessionService.ProcessSessions(sessions);
     }
 
     public async Task StopAsync(CancellationToken cancellationToken)

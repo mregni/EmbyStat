@@ -5,8 +5,10 @@ namespace EmbyStat.Core.Sessions.Interfaces;
 
 public interface ISessionRepository
 {
-    IEnumerable<string> GetMediaIdsForUser(string userId, MediaType type);
-    IEnumerable<Session> GetSessionsForUser(string userId);
-    int GetPlayCountForUser(string userId);
-    Session GetSessionById(string sessionId);
+    Task UpsertRange(IEnumerable<Session> sessions);
+    MediaPlay? GetActiveMediaPlay(string sessionId, string userId, string mediaId);
+    void InsertMediaPlay(MediaPlay play);
+    void UpdateMediaPlay(MediaPlay play);
+    void UpdateMediaPlays(IEnumerable<MediaPlay> plays);
+    IEnumerable<MediaPlay> GetRunningMediaPlays();
 }

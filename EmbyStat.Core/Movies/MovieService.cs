@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text.Json;
 using EmbyStat.Common;
 using EmbyStat.Common.Converters;
 using EmbyStat.Common.Enums;
@@ -16,7 +17,9 @@ using EmbyStat.Core.MediaServers.Interfaces;
 using EmbyStat.Core.Movies.Interfaces;
 using EmbyStat.Core.Statistics.Interfaces;
 using Microsoft.Extensions.Logging;
+using MoreLinq.Extensions;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ValueType = EmbyStat.Common.Models.Cards.ValueType;
 
 namespace EmbyStat.Core.Movies;
@@ -32,7 +35,7 @@ public class MovieService : MediaService, IMovieService
         IConfigurationService configurationService, IStatisticsRepository statisticsRepository,
         IJobRepository jobRepository, IMediaServerRepository mediaServerRepository,
         ILogger<MovieService> logger) 
-        : base(jobRepository, logger)
+        : base(jobRepository, logger, configurationService)
     {
         _movieRepository = movieRepository;
         _configurationService = configurationService;
@@ -52,7 +55,7 @@ public class MovieService : MediaService, IMovieService
         MovieStatistics statistics;
         if (StatisticsAreValid(statistic, Constants.JobIds.MovieSyncId))
         {
-            statistics = JsonConvert.DeserializeObject<MovieStatistics>(statistic.JsonResult);
+            statistics = JsonConvert.DeserializeObject<MovieStatistics>(statistic.JsonResult) ?? new MovieStatistics();
 
             if (!_configurationService.Get().UserConfig.ToShortMovieEnabled
                 && (statistics?.Shorts.Any() ?? false))
@@ -65,9 +68,17 @@ public class MovieService : MediaService, IMovieService
             statistics = await CalculateMovieStatistics();
         }
 
+        await AddLiveStatistics(statistics);
+
         return statistics;
     }
 
+    private async Task AddLiveStatistics(MovieStatistics statistics)
+    {
+        statistics.ComplexCharts = await CalculateComplexCharts();
+        statistics.Cards.AddIfNotNull(await GetCurrentWatchingCount(_movieRepository.GetCurrentWatchingCount));
+    }
+    
     public async Task<MovieStatistics> CalculateMovieStatistics()
     {
         var statistics = new MovieStatistics();
@@ -126,6 +137,8 @@ public class MovieService : MediaService, IMovieService
         list.AddIfNotNull(await CalculateTotalMovieGenres());
         list.AddIfNotNull(CalculateTotalPlayLength());
         list.AddIfNotNull(CalculateTotalDiskSpace());
+        list.AddIfNotNull(CalculateTotalWatchedMovies());
+        list.AddIfNotNull(await CalculateTotalWatchedTime());
         list.AddIfNotNull(TotalPersonTypeCount(PersonType.Actor, Constants.Common.TotalActors));
         list.AddIfNotNull(TotalPersonTypeCount(PersonType.Director, Constants.Common.TotalDirectors));
         list.AddIfNotNull(TotalPersonTypeCount(PersonType.Writer, Constants.Common.TotalWriters));
@@ -195,6 +208,38 @@ public class MovieService : MediaService, IMovieService
         }, "Calculate total movie disk space failed:");
     }
 
+    private Card CalculateTotalWatchedMovies()
+    {
+        return CalculateStat(() =>
+        {
+            var viewCount = _movieRepository.GetTotalWatchedMovieCount();
+            return new Card
+            {
+                Title = Constants.Movies.TotalWatchedMovies,
+                Value = viewCount.ToString(),
+                Type = CardType.Text,
+                Icon = Constants.Icons.PoundRoundedIcon
+            };
+        }, "Calculate total watched movie count failed:");
+    }
+    
+    private Task<Card> CalculateTotalWatchedTime()
+    {
+        return CalculateStat(async () =>
+        {
+            var playLengthTicks = await _movieRepository.GetPlayedRuntime();
+            var playLength = new TimeSpan(playLengthTicks);
+
+            return new Card
+            {
+                Title = Constants.Movies.PlayedPlayLength,
+                Value = $"{playLength.Days}|{playLength.Hours}|{playLength.Minutes}",
+                Type = CardType.Time,
+                Icon = Constants.Icons.QueryBuilderRoundedIcon
+            };
+        }, "Calculate played movie play length failed:");
+    }
+
     private Card TotalPersonTypeCount(PersonType type, string title)
     {
         return CalculateStat(() =>
@@ -224,6 +269,7 @@ public class MovieService : MediaService, IMovieService
         list.AddIfNotNull(ShortestMovie());
         list.AddIfNotNull(LongestMovie());
         list.AddIfNotNull(LatestAddedMovie());
+        list.AddIfNotNull(await MostWatchedMovies());
         return list;
     }
 
@@ -313,6 +359,18 @@ public class MovieService : MediaService, IMovieService
                 : null;
         }, "Calculate latest added movies failed:");
     }
+    
+    private Task<TopCard?> MostWatchedMovies()
+    {
+        return CalculateStat(async () =>
+        {
+            var data = await _movieRepository.GetMostWatchedMovies(5);
+
+            return data.Count > 0
+                ? data.ConvertToTopCard(Constants.Movies.MostWatchedMovies, "#", false)
+                : null;
+        }, "Calculate most watched shows failed:");
+    }
 
     #endregion
 
@@ -363,6 +421,22 @@ public class MovieService : MediaService, IMovieService
             var ratings = await _movieRepository.GetOfficialRatingChartValues();
             return CalculateOfficialRatingChart(ratings);
         }, "Calculate official movie rating chart failed:");
+    }
+    
+    #endregion
+
+    #region ComplexCharts
+
+    private async Task<List<MultiChart>> CalculateComplexCharts()
+    {
+        var list = new List<MultiChart>();
+        var watchedPerHour = _movieRepository.GetWatchedPerHourOfDayChartValues;
+        list.AddIfNotNull(await CalculateWatchedPerHourOfDayChart(watchedPerHour));
+
+        var wachtedPerDay = _movieRepository.GetWatchedPerDayOfWeekChartValues;
+        list.AddIfNotNull(await CalculateWatchedPerDayOfWeekChart(wachtedPerDay));
+
+        return list;
     }
 
     #endregion
