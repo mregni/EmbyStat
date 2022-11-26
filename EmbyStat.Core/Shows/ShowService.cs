@@ -80,7 +80,7 @@ public class ShowService : MediaService, IShowService
     private async Task AddLiveStatistics(ShowStatistics statistics)
     {
         statistics.ComplexCharts = await CalculateComplexCharts();
-        statistics.Cards.AddIfNotNull(await GetCurrentWatchingCount(_showRepository.GetCurrentWatchingCount));
+        statistics.Cards.AddIfNotNull(await GetCurrentWatchingCount(_showRepository.GetCurrentWatchingCount,Constants.Shows.CurrentPlayingCount));
     }
 
     public bool TypeIsPresent()
@@ -526,10 +526,10 @@ public class ShowService : MediaService, IShowService
         var list = new List<MultiChart>();
         
         var watchedPerHour = _showRepository.GetWatchedPerHourOfDayChartValues;
-        list.AddIfNotNull(await CalculateWatchedPerHourOfDayChart(watchedPerHour));
+        list.AddIfNotNull(await CalculateWatchedPerHourOfDayChart(watchedPerHour, Constants.Shows.WatchedPerHour));
         
         var wachtedPerDay = _showRepository.GetWatchedPerDayOfWeekChartValues;
-        list.AddIfNotNull(await CalculateWatchedPerDayOfWeekChart(wachtedPerDay));
+        list.AddIfNotNull(await CalculateWatchedPerDayOfWeekChart(wachtedPerDay, Constants.Shows.DaysOfTheWeek));
 
         return list;
     }

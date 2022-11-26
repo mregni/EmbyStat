@@ -76,7 +76,7 @@ public class MovieService : MediaService, IMovieService
     private async Task AddLiveStatistics(MovieStatistics statistics)
     {
         statistics.ComplexCharts = await CalculateComplexCharts();
-        statistics.Cards.AddIfNotNull(await GetCurrentWatchingCount(_movieRepository.GetCurrentWatchingCount));
+        statistics.Cards.AddIfNotNull(await GetCurrentWatchingCount(_movieRepository.GetCurrentWatchingCount, Constants.Movies.CurrentPlayingCount));
     }
     
     public async Task<MovieStatistics> CalculateMovieStatistics()
@@ -431,10 +431,10 @@ public class MovieService : MediaService, IMovieService
     {
         var list = new List<MultiChart>();
         var watchedPerHour = _movieRepository.GetWatchedPerHourOfDayChartValues;
-        list.AddIfNotNull(await CalculateWatchedPerHourOfDayChart(watchedPerHour));
+        list.AddIfNotNull(await CalculateWatchedPerHourOfDayChart(watchedPerHour, Constants.Movies.WatchedPerHour));
 
         var wachtedPerDay = _movieRepository.GetWatchedPerDayOfWeekChartValues;
-        list.AddIfNotNull(await CalculateWatchedPerDayOfWeekChart(wachtedPerDay));
+        list.AddIfNotNull(await CalculateWatchedPerDayOfWeekChart(wachtedPerDay, Constants.Movies.DaysOfTheWeek));
 
         return list;
     }

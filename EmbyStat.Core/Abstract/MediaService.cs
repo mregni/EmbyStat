@@ -113,7 +113,7 @@ public abstract class MediaService : StatisticHelper
         };
     }
 
-    internal Task<Card> GetCurrentWatchingCount(Func<Task<int>> action)
+    internal Task<Card> GetCurrentWatchingCount(Func<Task<int>> action, string title)
     {
         return CalculateStat(async () =>
         {
@@ -121,7 +121,7 @@ public abstract class MediaService : StatisticHelper
 
             return new Card
             {
-                Title = Constants.Shows.CurrentPlayingCount,
+                Title = title,
                 Value = $"{count}",
                 Type = CardType.Text,
                 Icon = Constants.Icons.PlayRoundedIcon
@@ -129,7 +129,7 @@ public abstract class MediaService : StatisticHelper
         }, "Calculate now playing count failed:");
     }
     
-    internal Task<MultiChart> CalculateWatchedPerHourOfDayChart(Func<Task<IEnumerable<BarValue<string, int>>>> action)
+    internal Task<MultiChart> CalculateWatchedPerHourOfDayChart(Func<Task<IEnumerable<BarValue<string, int>>>> action, string title)
     {
         var timeZone = _configurationService.GetLocalTimeZoneInfo();
         return CalculateStat(async () =>
@@ -163,7 +163,7 @@ public abstract class MediaService : StatisticHelper
 
             return new MultiChart
             {
-                Title = "Movie views per hour of the day",
+                Title = title,
                 DataSets = JsonConvert.SerializeObject(chartData),
                 FormatString = "p", // Format datetime to 23:00 or 11:00 PM
                 Series = list
@@ -175,7 +175,7 @@ public abstract class MediaService : StatisticHelper
         }, "Calculate movie views per hour chart failed:");
     }
     
-    internal Task<MultiChart> CalculateWatchedPerDayOfWeekChart(Func<Task<IEnumerable<BarValue<string, int>>>> action)
+    internal Task<MultiChart> CalculateWatchedPerDayOfWeekChart(Func<Task<IEnumerable<BarValue<string, int>>>> action, string title)
     {
         return CalculateStat(async () =>
         {
@@ -215,7 +215,7 @@ public abstract class MediaService : StatisticHelper
             
             return new MultiChart
             {
-                Title = "Movie views per day of the week",
+                Title = title,
                 DataSets = JsonConvert.SerializeObject(chartData),
                 FormatString = "week",
                 Series = list
