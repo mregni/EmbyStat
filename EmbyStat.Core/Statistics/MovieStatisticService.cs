@@ -194,19 +194,19 @@ public class MovieStatisticService : MediaStatisticService, IMovieStatisticsServ
     {
         return uniqueType switch
         {
-            Statistic.MovieHighestRatedList => HighestRatedMovie(),
-            Statistic.MovieLowestRatedList => LowestRatedMovie(),
-            Statistic.MovieOldestPremieredList => OldestPremieredMovie(),
-            Statistic.MovieNewestPremieredList => NewestPremieredMovie(),
-            Statistic.MovieShortestList => ShortestMovie(),
-            Statistic.MovieLongestList => LongestMovie(),
-            Statistic.MovieLatestAddedList => LatestAddedMovie(),
+            Statistic.MovieHighestRatedList => HighestRatedMovies(),
+            Statistic.MovieLowestRatedList => LowestRatedMovies(),
+            Statistic.MovieOldestPremieredList => OldestPremieredMovies(),
+            Statistic.MovieNewestPremieredList => NewestPremieredMovies(),
+            Statistic.MovieShortestList => ShortestMovies(),
+            Statistic.MovieLongestList => LongestMovies(),
+            Statistic.MovieLatestAddedList => LatestAddedMovies(),
             Statistic.MovieMostWatchedList => MostWatchedMovies(),
             _ => Task.FromResult((string) null!)
         };
     }
 
-    private Task<string> HighestRatedMovie()
+    private Task<string> HighestRatedMovies()
     {
         return CalculateStat(async () =>
         {
@@ -220,7 +220,7 @@ public class MovieStatisticService : MediaStatisticService, IMovieStatisticsServ
         }, "Calculate highest rated movies failed:");
     }
 
-    private Task<string> LowestRatedMovie()
+    private Task<string> LowestRatedMovies()
     {
         return CalculateStat(async () =>
         {
@@ -234,7 +234,7 @@ public class MovieStatisticService : MediaStatisticService, IMovieStatisticsServ
         }, "Calculate oldest premiered movies failed:");
     }
 
-    private Task<string> OldestPremieredMovie()
+    private Task<string> OldestPremieredMovies()
     {
         return CalculateStat(async () =>
         {
@@ -248,7 +248,7 @@ public class MovieStatisticService : MediaStatisticService, IMovieStatisticsServ
         }, "Calculate oldest premiered movies failed:");
     }
 
-    private Task<string> NewestPremieredMovie()
+    private Task<string> NewestPremieredMovies()
     {
         return CalculateStat(async () =>
         {
@@ -262,7 +262,7 @@ public class MovieStatisticService : MediaStatisticService, IMovieStatisticsServ
         }, "Calculate newest premiered movies failed:");
     }
 
-    private Task<string> ShortestMovie()
+    private Task<string> ShortestMovies()
     {
         return CalculateStat<Task<string>>(async () =>
         {
@@ -277,7 +277,7 @@ public class MovieStatisticService : MediaStatisticService, IMovieStatisticsServ
         }, "Calculate shortest movies failed:");
     }
 
-    private Task<string> LongestMovie()
+    private Task<string> LongestMovies()
     {
         return CalculateStat(async () =>
         {
@@ -289,7 +289,7 @@ public class MovieStatisticService : MediaStatisticService, IMovieStatisticsServ
         }, "Calculate longest movies failed:");
     }
 
-    private Task<string> LatestAddedMovie()
+    private Task<string> LatestAddedMovies()
     {
         return CalculateStat(async () =>
         {

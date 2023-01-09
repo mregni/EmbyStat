@@ -90,8 +90,8 @@ public class ShowServiceTests
             .Setup(x => x.GetLowestRatedMedia(5))
             .ReturnsAsync(shows.Where(x => x.CommunityRating != null).OrderBy(x => x.CommunityRating));
         _showRepositoryMock
-            .Setup(x => x.GetLatestAddedMedia(5))
-            .Returns(shows.OrderByDescending(x => x.DateCreated));
+            .Setup(x => x.GetLatestAddedShows(5))
+            .ReturnsAsync(shows.OrderByDescending(x => x.DateCreated).ToList());
         _showRepositoryMock
             .Setup(x => x.GetNewestPremieredMedia(5))
             .ReturnsAsync(shows.OrderByDescending(x => x.PremiereDate));
@@ -132,7 +132,7 @@ public class ShowServiceTests
             .ReturnsAsync(new[] {0.04, 0.26, 0.61});
         _showRepositoryMock
             .Setup(x => x.GetPremiereYears())
-            .Returns(shows.Select(x => x.PremiereDate));
+            .ReturnsAsync(shows.Select(x => x.PremiereDate).ToList());
         _showRepositoryMock
             .Setup(x => x.Count())
             .ReturnsAsync(shows.Length);
@@ -153,7 +153,7 @@ public class ShowServiceTests
                 .Sum(x => x.MediaSources.Any() ? x.MediaSources.First().SizeInMb : 0d));
         _showRepositoryMock
             .Setup(x => x.GetCommunityRatings())
-            .Returns(shows.Select(x => x.CommunityRating));
+            .ReturnsAsync(shows.Select(x => x.CommunityRating).ToList());
         _showRepositoryMock
             .Setup(x => x.GetShowByIdWithEpisodes(It.IsAny<string>()))
             .ReturnsAsync(_showOne);
@@ -194,15 +194,13 @@ public class ShowServiceTests
                 new LibraryBuilder(1, LibraryType.TvShow).Build(),
             });
 
-        var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
-        var jobRepositoryMock = new Mock<IJobRepository>();
+        var statisticsServiceMock = new Mock<IStatisticsService>();
         var configurationServiceMock = new Mock<IConfigurationService>();
         configurationServiceMock
             .Setup(x => x.GetLocalTimeZoneInfo())
             .Returns(TimeZoneInfo.FindSystemTimeZoneById("Europe/Brussels"));
         
-        return new ShowService(jobRepositoryMock.Object, _showRepositoryMock.Object,
-            statisticsRepositoryMock.Object, _mediaServerRepositoryMock.Object, _logger.Object, configurationServiceMock.Object);
+        return new ShowService(_showRepositoryMock.Object, _mediaServerRepositoryMock.Object, statisticsServiceMock.Object);
                 
     }
 
@@ -505,7 +503,7 @@ public class ShowServiceTests
 
         stat.Should().NotBeNull();
         stat.BarCharts.Should().NotBeNull();
-        stat.BarCharts.Count.Should().Be(5);
+        stat.BarCharts.Count().Should().Be(5);
         stat.BarCharts.Any(x => x.Title == Constants.CountPerGenre).Should().BeTrue();
 
         var graph = stat.BarCharts.Single(x => x.Title == Constants.CountPerGenre);
@@ -529,7 +527,7 @@ public class ShowServiceTests
 
         stat.Should().NotBeNull();
         stat.Should().NotBeNull();
-        stat.BarCharts.Count.Should().Be(5);
+        stat.BarCharts.Count().Should().Be(5);
         stat.BarCharts.Any(x => x.Title == Constants.CountPerCommunityRating).Should().BeTrue();
 
         var graph = stat.BarCharts.Single(x => x.Title == Constants.CountPerCommunityRating);
@@ -570,7 +568,7 @@ public class ShowServiceTests
 
         stat.Should().NotBeNull();
         stat.Should().NotBeNull();
-        stat.BarCharts.Count.Should().Be(5);
+        stat.BarCharts.Count().Should().Be(5);
         stat.BarCharts.Any(x => x.Title == Constants.CountPerPremiereYear).Should().BeTrue();
 
         var graph = stat.BarCharts.Single(x => x.Title == Constants.CountPerPremiereYear);
@@ -594,7 +592,7 @@ public class ShowServiceTests
 
         stat.Should().NotBeNull();
         stat.Should().NotBeNull();
-        stat.BarCharts.Count.Should().Be(5);
+        stat.BarCharts.Count().Should().Be(5);
         stat.BarCharts.Any(x => x.Title == Constants.CountPerCollectedPercentage).Should().BeTrue();
 
         var graph = stat.BarCharts.Single(x => x.Title == Constants.CountPerCollectedPercentage);
@@ -636,7 +634,7 @@ public class ShowServiceTests
 
         stat.Should().NotBeNull();
         stat.Should().NotBeNull();
-        stat.BarCharts.Count.Should().Be(5);
+        stat.BarCharts.Count().Should().Be(5);
         stat.BarCharts.Any(x => x.Title == Constants.CountPerOfficialRating).Should().BeTrue();
 
         var graph = stat.BarCharts.Single(x => x.Title == Constants.CountPerOfficialRating);
@@ -654,7 +652,7 @@ public class ShowServiceTests
 
         stat.Should().NotBeNull();
         stat.Should().NotBeNull();
-        stat.PieCharts.Count.Should().Be(1);
+        stat.PieCharts.Count().Should().Be(1);
         stat.PieCharts.Any(x => x.Title == Constants.Shows.ShowStatusChart).Should().BeTrue();
 
         var graph = stat.PieCharts.Single(x => x.Title == Constants.Shows.ShowStatusChart);
@@ -676,7 +674,7 @@ public class ShowServiceTests
 
         stat.Should().NotBeNull();
         stat.ComplexCharts.Should().NotBeNull();
-        stat.ComplexCharts.Count.Should().Be(2);
+        stat.ComplexCharts.Count().Should().Be(2);
         stat.ComplexCharts.Any(x => x.Title == Constants.Shows.WatchedPerHour).Should().BeTrue();
 
         var graph = stat.ComplexCharts.Single(x => x.Title == Constants.Shows.WatchedPerHour);
@@ -694,7 +692,7 @@ public class ShowServiceTests
 
         stat.Should().NotBeNull();
         stat.ComplexCharts.Should().NotBeNull();
-        stat.ComplexCharts.Count.Should().Be(2);
+        stat.ComplexCharts.Count().Should().Be(2);
         stat.ComplexCharts.Any(x => x.Title == Constants.Shows.DaysOfTheWeek).Should().BeTrue();
 
         var graph = stat.ComplexCharts.Single(x => x.Title == Constants.Shows.DaysOfTheWeek);
