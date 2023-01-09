@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EmbyStat.Common.Models.Entities.Events;
 
 namespace EmbyStat.Common.Models.Entities.Users;
 
@@ -36,4 +37,5 @@ public class MediaServerUser
     public int SimultaneousStreamLimit { get; set; }
     public bool EnableAllDevices { get; set; }
     public ICollection<MediaServerUserView> Views { get; set; }
+    public ICollection<MediaPlay> MediaPlays { get; set; }
 }

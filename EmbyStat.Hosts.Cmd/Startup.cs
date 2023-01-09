@@ -192,7 +192,7 @@ public class Startup
                 };
             });
             
-        //services.AddHostedService<WebSocketService>();
+        services.AddHostedService<WebSocketService>();
         services.AddJsonMigrator(typeof(DummyMigration).Assembly);
         
         services.AddHangfire(x =>

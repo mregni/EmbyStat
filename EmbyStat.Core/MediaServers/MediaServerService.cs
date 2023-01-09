@@ -1,26 +1,18 @@
 ﻿using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common;
-using EmbyStat.Common.Converters;
 using EmbyStat.Common.Enums;
-using EmbyStat.Common.Exceptions;
+using EmbyStat.Common.Enums.StatisticEnum;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Cards;
 using EmbyStat.Common.Models.DataGrid;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Entities.Events;
-using EmbyStat.Common.Models.Entities.Helpers;
-using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.MediaServer;
 using EmbyStat.Configuration.Interfaces;
 using EmbyStat.Core.Abstract;
-using EmbyStat.Core.Jobs.Interfaces;
 using EmbyStat.Core.MediaServers.Interfaces;
-using EmbyStat.Core.Movies;
-using EmbyStat.Core.Sessions.Interfaces;
-using EmbyStat.Core.Shows;
 using EmbyStat.Core.Statistics.Interfaces;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -31,18 +23,16 @@ public class MediaServerService : StatisticHelper, IMediaServerService
 {
     private IBaseHttpClient _baseHttpClient;
     private readonly IMediaServerRepository _mediaServerRepository;
-    private readonly ISessionService _sessionService;
     private readonly IConfigurationService _configurationService;
     private readonly IClientStrategy _clientStrategy;
     private readonly ILogger<MediaServerService> _logger;
     private readonly IStatisticsRepository _statisticsRepository;
 
     public MediaServerService(IClientStrategy clientStrategy, IMediaServerRepository mediaServerRepository,
-        ISessionService sessionService, IConfigurationService configurationService, ILogger<MediaServerService> logger,
-        IStatisticsRepository statisticsRepository, IJobRepository jobRepository) : base(logger, jobRepository)
+        IConfigurationService configurationService, ILogger<MediaServerService> logger,
+        IStatisticsRepository statisticsRepository) : base(logger)
     {
         _mediaServerRepository = mediaServerRepository;
-        _sessionService = sessionService;
         _configurationService = configurationService;
         _clientStrategy = clientStrategy;
         _logger = logger;
@@ -158,17 +148,17 @@ public class MediaServerService : StatisticHelper, IMediaServerService
     {
         var statistic = await _statisticsRepository.GetLastResultByType(StatisticType.User);
 
-        MediaServerUserStatistics statistics;
-        if (StatisticsAreValid(statistic, Constants.JobIds.SmallSyncId))
-        {
-            statistics = JsonConvert.DeserializeObject<MediaServerUserStatistics>(statistic.JsonResult);
-        }
-        else
-        {
-            statistics = await CalculateMediaServerUserStatistics();
-        }
+        // MediaServerUserStatistics statistics;
+        // if (StatisticsAreValid(statistic, Constants.JobIds.SmallSyncId))
+        // {
+        //     statistics = JsonConvert.DeserializeObject<MediaServerUserStatistics>(statistic.JsonResult);
+        // }
+        // else
+        // {
+        //     statistics = await CalculateMediaServerUserStatistics();
+        // }
 
-        return statistics;
+        return JsonConvert.DeserializeObject<MediaServerUserStatistics>(statistic.JsonResult);
     }
 
     public async Task<MediaServerUserStatistics> CalculateMediaServerUserStatistics()

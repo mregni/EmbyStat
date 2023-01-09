@@ -5,18 +5,20 @@ using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Cards;
 using EmbyStat.Common.Models.Charts;
 using EmbyStat.Configuration.Interfaces;
-using EmbyStat.Core.Jobs.Interfaces;
+using EmbyStat.Core.Abstract;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace EmbyStat.Core.Abstract;
+namespace EmbyStat.Core.Statistics;
 
-public abstract class MediaService : StatisticHelper
+public abstract class MediaStatisticService : StatisticHelper
 {
     private readonly IConfigurationService _configurationService;
-    protected MediaService(IJobRepository jobRepository, ILogger<MediaService> logger, IConfigurationService configurationService)
-    :base(logger, jobRepository)
+
+    protected MediaStatisticService(ILogger<MediaStatisticService> logger,
+        IConfigurationService configurationService)
+        : base(logger)
     {
         _configurationService = configurationService;
     }
@@ -113,7 +115,7 @@ public abstract class MediaService : StatisticHelper
         };
     }
 
-    internal Task<Card> GetCurrentWatchingCount(Func<Task<int>> action, string title)
+    internal Task<string> GetCurrentWatchingCount(Func<Task<int>> action, string title)
     {
         return CalculateStat(async () =>
         {
@@ -125,11 +127,12 @@ public abstract class MediaService : StatisticHelper
                 Value = $"{count}",
                 Type = CardType.Text,
                 Icon = Constants.Icons.PlayRoundedIcon
-            };
+            }.BuildJson();
         }, "Calculate now playing count failed:");
     }
-    
-    internal Task<MultiChart> CalculateWatchedPerHourOfDayChart(Func<Task<IEnumerable<BarValue<string, int>>>> action, string title)
+
+    internal Task<string> GetWatchedPerHourOfDayChart(Func<Task<IEnumerable<BarValue<string, int>>>> action,
+        string title)
     {
         var timeZone = _configurationService.GetLocalTimeZoneInfo();
         return CalculateStat(async () =>
@@ -146,9 +149,10 @@ public abstract class MediaService : StatisticHelper
                 {
                     serie.Add(new JProperty(barValue.Serie, barValue.Y));
                 }
+
                 chart.Add(serie);
             }
-            
+
             for (var i = 0; i < 24; i += 1)
             {
                 if (!chart.Any(x => x["label"]?.Value<DateTime>() == new DateTime().AddHours(i)))
@@ -171,11 +175,13 @@ public abstract class MediaService : StatisticHelper
                     .Select(x => x.Key)
                     .Distinct()
                     .ToArray()
-            };
+            }
+                .BuildJson();
         }, "Calculate movie views per hour chart failed:");
     }
-    
-    internal Task<MultiChart> CalculateWatchedPerDayOfWeekChart(Func<Task<IEnumerable<BarValue<string, int>>>> action, string title)
+
+    internal Task<string> GetWatchedPerDayOfWeekChart(Func<Task<IEnumerable<BarValue<string, int>>>> action,
+        string title)
     {
         return CalculateStat(async () =>
         {
@@ -191,9 +197,10 @@ public abstract class MediaService : StatisticHelper
                 {
                     serie.Add(new JProperty(barValue.Serie, barValue.Y));
                 }
+
                 chart.Add(serie);
             }
-            
+
             for (var i = 0; i < 7; i += 1)
             {
                 if (!chart.Any(x => x["label"]?.Value<int>() == i))
@@ -212,18 +219,19 @@ public abstract class MediaService : StatisticHelper
                 chartData.RemoveAt(0);
                 chartData.Add(tempSerie);
             }
-            
+
             return new MultiChart
-            {
-                Title = title,
-                DataSets = JsonConvert.SerializeObject(chartData),
-                FormatString = "week",
-                Series = list
-                    .GroupBy(x => x.Serie)
-                    .Select(x => x.Key)
-                    .Distinct()
-                    .ToArray()
-            };
+                {
+                    Title = title,
+                    DataSets = JsonConvert.SerializeObject(chartData),
+                    FormatString = "week",
+                    Series = list
+                        .GroupBy(x => x.Serie)
+                        .Select(x => x.Key)
+                        .Distinct()
+                        .ToArray()
+                }
+                .BuildJson();
         }, "Calculate movie views per day of the week chart failed:");
     }
 

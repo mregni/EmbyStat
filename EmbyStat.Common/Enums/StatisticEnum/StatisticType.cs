@@ -1,4 +1,4 @@
-﻿namespace EmbyStat.Common.Enums;
+﻿namespace EmbyStat.Common.Enums.StatisticEnum;
 
 public enum StatisticType
 {

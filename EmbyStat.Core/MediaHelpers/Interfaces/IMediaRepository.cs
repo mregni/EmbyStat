@@ -6,7 +6,6 @@ namespace EmbyStat.Core.MediaHelpers.Interfaces;
 
 public interface IMediaRepository
 {
-    IEnumerable<Media> GetLatestAddedMedia(int count);
     Task<IEnumerable<Media>> GetNewestPremieredMedia(int count);
     Task<IEnumerable<Media>> GetOldestPremieredMedia(int count);
     Task<IEnumerable<Extra>> GetHighestRatedMedia(int count);
@@ -14,8 +13,8 @@ public interface IMediaRepository
 
     #region Charts
     Task<Dictionary<string, int>> GetGenreChartValues();
-    IEnumerable<decimal?> GetCommunityRatings();
-    IEnumerable<DateTime?> GetPremiereYears();
+    Task<List<decimal?>> GetCommunityRatings();
+    Task<List<DateTime?>> GetPremiereYears();
     Task<Dictionary<string, int>> GetOfficialRatingChartValues();
     #endregion
 
@@ -23,5 +22,5 @@ public interface IMediaRepository
     Task<int> Count(Filter[] filters);
     bool Any();
     Task<int> GetGenreCount();
-    int GetPeopleCount(PersonType type);
+    Task<int> GetPeopleCount(PersonType type);
 }

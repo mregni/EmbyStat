@@ -5,9 +5,9 @@ namespace EmbyStat.Core.Shows;
 
 public class ShowStatistics
 {
-    public List<Card> Cards { get; set; }
-    public List<TopCard> TopCards { get; set; }
-    public List<Chart> BarCharts { get; set; }
-    public List<MultiChart> ComplexCharts { get; set; }
-    public List<Chart> PieCharts { get; set; }
+    public IEnumerable<Card> Cards { get; set; }
+    public IEnumerable<TopCard> TopCards { get; set; }
+    public IEnumerable<Chart> BarCharts { get; set; }
+    public IEnumerable<MultiChart> ComplexCharts { get; set; }
+    public IEnumerable<Chart> PieCharts { get; set; }
 }

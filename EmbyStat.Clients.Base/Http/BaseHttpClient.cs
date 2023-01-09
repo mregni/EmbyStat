@@ -213,6 +213,8 @@ public abstract class BaseHttpClient
             EnableImages = true,
             MediaTypes = new[] {"Video"},
             MinDateLastSaved = lastSynced,
+            SortOrder = SortOrder.Ascending,
+            SortBy = "SortName",
             Fields = new[]
             {
                 ItemFields.Genres, ItemFields.DateCreated, ItemFields.MediaSources, ItemFields.ExternalUrls,

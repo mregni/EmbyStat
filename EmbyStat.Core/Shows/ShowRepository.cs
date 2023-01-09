@@ -53,7 +53,7 @@ public class ShowRepository : IShowRepository
         return await ExecuteListQueryWithLibraryIds<Show>(query);
     }
 
-    public IEnumerable<Media> GetLatestAddedMedia(int count)
+    public Task<List<Show>> GetLatestAddedMedia(int count)
     {
         return _context.Shows.GetLatestAddedMedia(count);
     }
@@ -76,16 +76,18 @@ ORDER BY g.Name";
                 row => (int) row.Count);
     }
 
-    public IEnumerable<decimal?> GetCommunityRatings()
+    public Task<List<decimal?>> GetCommunityRatings()
     {
         return _context.Shows
-            .Select(x => x.CommunityRating);
+            .Select(x => x.CommunityRating)
+            .ToListAsync();
     }
 
-    public IEnumerable<DateTime?> GetPremiereYears()
+    public Task<List<DateTime?>> GetPremiereYears()
     {
         return _context.Shows
-            .Select(x => x.PremiereDate);
+            .Select(x => x.PremiereDate)
+            .ToListAsync();
     }
 
     public async Task<Dictionary<string, int>> GetOfficialRatingChartValues()
@@ -155,11 +157,12 @@ ORDER BY s.Id";
         return result;
     }
 
-    public IEnumerable<Show> GetShowsWithMostDiskSpaceUsed(int count)
+    public Task<List<Show>> GetShowsWithMostDiskSpaceUsed(int count)
     {
         return _context.Shows
             .OrderByDescending(x => x.SizeInMb)
-            .Take(count);
+            .Take(count)
+            .ToListAsync();
     }
 
     public IEnumerable<string> GetShowIdsThatFailedExternalSync(string libraryId)
@@ -202,20 +205,20 @@ WHERE 1=1 ";
         return await connection.QueryFirstAsync<int>(query);
     }
 
-    public int GetPeopleCount(PersonType type)
+    public Task<int> GetPeopleCount(PersonType type)
     {
         return _context.Shows
             .Include(x => x.People)
             .SelectMany(x => x.People)
             .Distinct()
-            .Count(x => x.Type == type);
+            .CountAsync(x => x.Type == type);
     }
     
-    public int GetTotalWatchedEpisodeCount()
+    public Task<int> GetTotalWatchedEpisodeCount()
     {
         return _context.MediaPlays
             .Where(x => x.Type == "Episode")
-            .Count();
+            .CountAsync();
     }
     
     public async Task<Dictionary<Show, int>> GetMostWatchedShows(int count)
@@ -258,6 +261,11 @@ LIMIT {count}";
             .AsNoTracking()
             .Where(x => x.Type == "Episode" && x.Stop == null)
             .CountAsync();
+    }
+
+    public Task<List<Show>> GetLatestAddedShows(int count)
+    {
+        return _context.Shows.GetLatestAddedMedia(count);
     }
 
     #region Shows

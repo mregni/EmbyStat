@@ -1,7 +1,5 @@
 ﻿using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Entities.Movies;
-using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.MediaServer;
 

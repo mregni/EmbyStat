@@ -9,7 +9,6 @@ using EmbyStat.Clients.Base.Http;
 using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Entities.Movies;
 using EmbyStat.Common.Models.Net;
 using EmbyStat.Controllers;
 using FluentAssertions;

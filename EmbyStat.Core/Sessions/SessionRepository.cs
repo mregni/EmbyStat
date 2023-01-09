@@ -1,6 +1,4 @@
-﻿using Dapper;
-using EmbyStat.Common;
-using EmbyStat.Common.Extensions;
+﻿using EmbyStat.Common;
 using EmbyStat.Common.Models.Entities.Events;
 using EmbyStat.Core.DataStore;
 using EmbyStat.Core.Sessions.Interfaces;

@@ -1,9 +1,11 @@
 /* eslint-disable max-len */
 import React, {ReactNode} from 'react';
-import TheatersIcon from '@mui/icons-material/Theaters';
-import StorageIcon from '@mui/icons-material/Storage';
+
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
+import StorageIcon from '@mui/icons-material/Storage';
+import TheatersIcon from '@mui/icons-material/Theaters';
 import SvgIcon from '@mui/material/SvgIcon';
 
 export const convertToIcon = (value: string): ReactNode => {
@@ -14,6 +16,8 @@ export const convertToIcon = (value: string): ReactNode => {
     return <StorageIcon />;
   case 'QueryBuilderRoundedIcon':
     return <QueryBuilderIcon />;
+  case 'PlayCircleOutline':
+    return <PlayCircleOutlineIcon />;
   case 'PoundRoundedIcon':
     return (
       <SvgIcon>

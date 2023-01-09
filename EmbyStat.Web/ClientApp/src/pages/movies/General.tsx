@@ -3,7 +3,7 @@ import React, {useContext} from 'react';
 import {Box, Grid, Stack} from '@mui/material';
 
 import {EsBasicCard, EsTopListCard} from '../../shared/components/cards';
-import {EsBarGraph} from '../../shared/components/charts';
+import {EsBarGraph, EsComplexBarGraph} from '../../shared/components/charts';
 import {EsTitle} from '../../shared/components/esTitle';
 import {MoviesContext} from '../../shared/context/movies';
 import {Card, TopCard} from '../../shared/models/common';
@@ -37,6 +37,12 @@ export function General() {
       <EsTitle content="COMMON.GRAPHS" />
       <Box>
         <Grid container spacing={2}>
+          {statistics.complexCharts != null && statistics.complexCharts.length > 0 ?
+            statistics.complexCharts.map((chart) => (
+              <Grid item xs={12} xl={6} key={chart.title}>
+                <EsComplexBarGraph chart={chart} />
+              </Grid>
+            )) : null}
           {statistics.charts != null && statistics.charts.length > 0 ?
             statistics.charts.map((chart) => (
               <Grid item xs={12} xl={6} key={chart.title}>

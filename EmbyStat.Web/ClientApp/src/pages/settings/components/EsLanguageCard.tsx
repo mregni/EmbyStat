@@ -2,8 +2,9 @@ import {format} from 'date-fns';
 import React, {useContext, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
+import timezones from 'timezones-list';
 
-import {Box, MenuItem, Stack, TextField, Typography} from '@mui/material';
+import {Box, MenuItem, Select, Stack, TextField, Typography} from '@mui/material';
 
 import i18n from '../../../i18n';
 import {EsSaveCard} from '../../../shared/components/cards';
@@ -14,6 +15,7 @@ import {Language} from '../../../shared/models/language';
 type LanguageForm = {
   language: string;
   dateTimeLanguage: string;
+  timeZone: string;
 }
 
 export function EsLanguageCard() {
@@ -28,8 +30,11 @@ export function EsLanguageCard() {
     defaultValues: {
       language: userConfig.language,
       dateTimeLanguage: userConfig.dateTimeLanguage,
+      timeZone: userConfig.timeZone,
     },
   });
+
+  console.log(userConfig.timeZone);
 
   const handleLanguageChange = (event: any) => {
     const lang = event.target.value;
@@ -44,6 +49,7 @@ export function EsLanguageCard() {
   const saveForm = async (data: LanguageForm) => {
     userConfig.language = data.language;
     userConfig.dateTimeLanguage = data.dateTimeLanguage;
+    userConfig.timeZone = data.timeZone;
     setSaving(true);
     await save(userConfig);
     setSaving(false);
@@ -112,6 +118,36 @@ export function EsLanguageCard() {
           )}
         />
       </Box>
+      <Box sx={{pt: 2}}>
+        <Controller
+          name="timeZone"
+          control={control}
+          rules={{required: true}}
+          render={({
+            field: {onChange, onBlur, value, ref},
+          }) => (
+            <TextField
+              select
+              fullWidth
+              label={t('SETTINGS.TIMEZONE.LABEL')}
+              value={value}
+              onChange={(event) => {
+                onChange(event);
+              }}
+              onBlur={onBlur}
+              inputRef={ref}
+            >
+              {
+                timezones.map((timezone) => <MenuItem
+                  key={timezone.tzCode}
+                  value={timezone.tzCode}>
+                  {`( ${timezone.utc} ) ${timezone.tzCode}`}
+                </MenuItem>)
+              }
+            </TextField>
+          )}
+        />
+      </Box>
       <Box>
         <Typography variant="h6" sx={{mt: 2}}>
           {t('SETTINGS.LANGUAGE.SAMPLES')}
@@ -119,10 +155,7 @@ export function EsLanguageCard() {
       </Box>
       <Stack>
         <Typography variant="body1">
-          {t('COMMON.TIME')}: {format(new Date('2022-02-23T17:30:00.000Z'), 'p', {locale: privateLocale})}
-        </Typography>
-        <Typography variant="body1">
-          {t('COMMON.DATE')}: {format(new Date('2022-02-23T17:30:00.000Z'), 'P', {locale: privateLocale})}
+          {t('COMMON.TIME')}: {format(new Date('2022-02-23T17:30:00.000Z'), 'p P', {locale: privateLocale})}
         </Typography>
       </Stack>
     </EsSaveCard>

@@ -1,5 +1,4 @@
-﻿using System;
-using EmbyStat.Clients.Jellyfin;
+﻿using EmbyStat.Clients.Jellyfin;
 using EmbyStat.Clients.Jellyfin.Http;
 using EmbyStat.Clients.Jellyfin.WebSocket;
 using EmbyStat.Common.Enums;

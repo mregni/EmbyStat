@@ -1,5 +1,6 @@
-﻿using EmbyStat.Common.Enums;
+﻿using EmbyStat.Common.Enums.StatisticEnum;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Statistics;
 using EmbyStat.Core.DataStore;
 using EmbyStat.Core.Statistics.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ public class StatisticsRepository : IStatisticsRepository
         _context = context;
     }
 
-    public Task<Statistic> GetLastResultByType(StatisticType type)
+    public Task<StatisticOld> GetLastResultByType(StatisticType type)
     {
         return _context.Statistics
             .Where(x => x.IsValid && x.Type == type)
@@ -27,7 +28,7 @@ public class StatisticsRepository : IStatisticsRepository
     {
         _context.Statistics.RemoveRange(_context.Statistics.Where(x => x.Type == type));
 
-        var statistic = new Statistic
+        var statistic = new StatisticOld
         {
             CalculationDateTime = calculationDateTime,
             Type = type,
@@ -53,5 +54,26 @@ public class StatisticsRepository : IStatisticsRepository
             statistic.IsValid = false;
             await _context.SaveChangesAsync();
         }
+    }
+
+
+    public Task<List<StatisticCard>> GetCardsByType(StatisticType type)
+    {
+        return _context.StatisticCards
+            .Where(x => x.PageCards.Any(y => y.StatisticCard.Type == type))
+            .ToListAsync();
+    }
+
+    public Task SaveChangesAsync()
+    {
+        return _context.SaveChangesAsync();
+    }
+
+    public Task<StatisticPage?> GetPage(Guid id)
+    {
+        return _context.StatisticPages
+            .Include(x => x.PageCards)
+            .ThenInclude(x => x.StatisticCard)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 }

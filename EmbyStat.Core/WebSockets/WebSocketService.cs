@@ -1,6 +1,5 @@
 ﻿using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.WebSocket;
-using EmbyStat.Common.Converters;
 using EmbyStat.Common.Models;
 using EmbyStat.Common.Models.Sessions;
 using EmbyStat.Configuration.Interfaces;
@@ -8,7 +7,6 @@ using EmbyStat.Core.Sessions.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
 
 namespace EmbyStat.Core.WebSockets;
 

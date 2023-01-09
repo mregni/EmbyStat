@@ -1,9 +1,10 @@
 ﻿using System;
-using EmbyStat.Common.Enums;
+using EmbyStat.Common.Enums.StatisticEnum;
 
 namespace EmbyStat.Common.Models.Entities;
 
-public class Statistic
+[Obsolete("Will be replaced with StatisticPage table")]
+public class StatisticOld
 {
     public Guid Id { get; set; }
     public DateTime CalculationDateTime { get; set; }

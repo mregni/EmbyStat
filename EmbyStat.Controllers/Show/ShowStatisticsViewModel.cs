@@ -10,4 +10,5 @@ public class ShowStatisticsViewModel
     public List<TopCardViewModel> TopCards { get; set; }
     public List<Chart> BarCharts { get; set; }
     public List<Chart> PieCharts { get; set; }
+    public List<MultiChart> ComplexCharts { get; set; }
 }

@@ -11,12 +11,14 @@ using EmbyStat.Common.Models.Cards;
 using EmbyStat.Common.Models.Charts;
 using EmbyStat.Common.Models.DataGrid;
 using EmbyStat.Common.Models.Entities;
+using EmbyStat.Common.Models.Entities.Events;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Entities.Streams;
 using EmbyStat.Common.Models.Entities.Users;
 using EmbyStat.Common.Models.MediaServer;
 using EmbyStat.Common.Models.Net;
+using EmbyStat.Common.Models.Sessions;
 using EmbyStat.Common.Models.Show;
 using EmbyStat.Configuration;
 using EmbyStat.Controllers.About;
@@ -53,6 +55,7 @@ public class MapProfiles : Profile
         CreateSettingMappings();
         CreateLibraryMappings();
         CreateMediaServerUserMappings();
+        CreateEventMappings();
 
         //USED MAPPINGS
         CreateMap<MediaServerSettings, MediaServerSettingsViewModel>().ReverseMap();
@@ -329,6 +332,44 @@ public class MapProfiles : Profile
             .ForMember(x => x.Type, x => x.MapFrom(y => y.CollectionType.ToLibraryType()))
             .ForMember(x => x.Primary, x => x.MapFrom(y => y.ImageTags.ConvertToImageTag()));
     }
+
+    private void CreateEventMappings()
+    {
+        CreateMap<WebSocketSession, Session>();
+        CreateMap<WebSocketSession, MediaPlay>()
+            .ForMember(x => x.Id, x => x.Ignore())
+            .ForMember(x => x.SessionId, x => x.MapFrom(y => y.Id))
+            .ForMember(x => x.UserId, x => x.MapFrom(y => y.UserId))
+            .ForMember(x => x.MediaId, x => x.MapFrom(y => y.NowPlayingItem.Id))
+            .ForMember(x => x.Type, x => x.MapFrom(y => y.NowPlayingItem.Type))
+            .ForMember(x => x.PlayMethod, x => x.MapFrom(y => y.PlayState.PlayMethod))
+            .ForMember(x => x.Start, x => x.Ignore())
+            .ForMember(x => x.LastUpdate, x => x.MapFrom(y => y.LastActivityDate))
+            .ForMember(x => x.Stop, x => x.Ignore())
+            .ForMember(x => x.StartPositionTicks, x => x.Ignore())
+            .ForMember(x => x.EndPositionTicks, x => x.MapFrom(y => y.PlayState.PositionTicks))
+            .ForMember(x => x.IsPaused, x => x.MapFrom(y => y.PlayState.IsPaused))
+            .ForMember(x => x.AudioCodec, x => x.MapFrom(y => y.NowPlayingItem.MediaStreams.GetStreamValue(y.PlayState.AudioStreamIndex, x => x.Codec)))
+            .ForMember(x => x.AudioChannelLayout, x => x.MapFrom(y => y.NowPlayingItem.MediaStreams.GetStreamValue(y.PlayState.AudioStreamIndex, x => x.ChannelLayout)))
+            .ForMember(x => x.AudioSampleRate, x => x.MapFrom(y => y.NowPlayingItem.MediaStreams.GetStreamValue(y.PlayState.AudioStreamIndex, x => x.SampleRate)))
+            .ForMember(x => x.SubtitleCodec, x => x.MapFrom(y => y.NowPlayingItem.MediaStreams.GetStreamValue(y.PlayState.SubtitleStreamIndex, x => x.Codec)))
+            .ForMember(x => x.SubtitleDisplayLanguage, x => x.MapFrom(y => y.NowPlayingItem.MediaStreams.GetStreamValue(y.PlayState.SubtitleStreamIndex, x => x.DisplayLanguage)))
+            .ForMember(x => x.SubtitleLanguage, x => x.MapFrom(y => y.NowPlayingItem.MediaStreams.GetStreamValue(y.PlayState.SubtitleStreamIndex, x => x.Language)))
+            .ForMember(x => x.SubtitleProtocol, x => x.MapFrom(y => y.NowPlayingItem.MediaStreams.GetStreamValue(y.PlayState.SubtitleStreamIndex, x => x.Protocol)))
+            .ForMember(x => x.TranscodeAverageCpuUsage, x => x.MapFrom(y => y.TranscodingInfo != null ? y.TranscodingInfo.AverageCpuUsage : (double?)null))
+            .ForMember(x => x.TranscodeCurrentCpuUsage, x => x.MapFrom(y => y.TranscodingInfo != null ? y.TranscodingInfo.CurrentCpuUsage : (double?)null))
+            .ForMember(x => x.TranscodeVideoCodec, x => x.MapFrom(y => y.TranscodingInfo != null ? y.TranscodingInfo.VideoCodec : null))
+            .ForMember(x => x.TranscodeAudioCodec, x => x.MapFrom(y => y.TranscodingInfo != null ? y.TranscodingInfo.AudioCodec : null))
+            .ForMember(x => x.TranscodeSubProtocol, x => x.MapFrom(y => y.TranscodingInfo != null ? y.TranscodingInfo.SubProtocol : null))
+            .ForMember(x => x.TranscodeReasons, x => x.MapFrom(y => y.TranscodingInfo != null ? string.Join(";", y.TranscodingInfo.TranscodeReasons) : null))
+            .ForMember(x => x.Encoder, x => x.MapFrom(y => y.TranscodingInfo != null ? y.TranscodingInfo.VideoEncoder : null))
+            .ForMember(x => x.EncoderIsHardware, x => x.MapFrom(y => y.TranscodingInfo != null ? y.TranscodingInfo.VideoEncoderIsHardware : (bool?)null))
+            .ForMember(x => x.EncoderMediaType, x => x.MapFrom(y => y.TranscodingInfo != null ? y.TranscodingInfo.VideoEncoderMediaType : null))
+            .ForMember(x => x.Decoder, x => x.MapFrom(y => y.TranscodingInfo != null ? y.TranscodingInfo.VideoDecoder : null))
+            .ForMember(x => x.DecoderIsHardware, x => x.MapFrom(y => y.TranscodingInfo != null ? y.TranscodingInfo.VideoDecoderIsHardware : (bool?)null))
+            .ForMember(x => x.DecoderMediaType, x => x.MapFrom(y => y.TranscodingInfo != null ? y.TranscodingInfo.VideoDecoderMediaType : null))
+            .ForMember(x => x.WatchedPercentage, x => x.MapFrom(y => Math.Round(y.PlayState.PositionTicks/(double)y.NowPlayingItem.RunTimeTicks, 4)*100));
+    }
     
     private static MediaType MapMediaType(string type)
     {
@@ -338,7 +379,24 @@ public class MapProfiles : Profile
             "Episode" => MediaType.Episode,
             _ => MediaType.Unknown
         };
-    } 
+    }
+}
+
+public static class MediaStreamMappingExtensions {
+    public static T GetStreamValue<T>(this IReadOnlyList<MediaStream> list, int index, Func<MediaStream, T> action)
+    {
+        if (index < 0)
+        {
+            return default;
+        }
+
+        if (index > list.Count)
+        {
+            return default;
+        }
+
+        return action(list[index]);
+    }
 }
 
 public static class DictionaryMappingExtensions
@@ -397,10 +455,10 @@ public static class SqlExtraMapperExtensions
                     y => MapInt(y.ProviderIds.FirstOrDefault(z => z.Key == "Tmdb").Value ?? string.Empty)));
     }
 
-    public static IMappingExpression<T1, T2> AddStreamMappings<T1, T2>(this IMappingExpression<T1, T2> mapping)
+    public static void AddStreamMappings<T1, T2>(this IMappingExpression<T1, T2> mapping)
         where T1 : BaseItemDto where T2 : Video
     {
-        return mapping
+        mapping
             .ForMember(x => x.AudioStreams,
                 x => x.MapFrom(y => y.MediaStreams.Where(z => z.Type == MediaStreamType.Audio)))
             .ForMember(x => x.VideoStreams,

@@ -1,9 +1,6 @@
-﻿using System;
-using EmbyStat.Clients.Emby;
+﻿using EmbyStat.Clients.Emby;
 using EmbyStat.Clients.Emby.Http;
 using EmbyStat.Clients.Emby.WebSocket;
-using EmbyStat.Clients.Jellyfin;
-using EmbyStat.Clients.Jellyfin.Http;
 using EmbyStat.Common.Enums;
 using FluentAssertions;
 using Moq;

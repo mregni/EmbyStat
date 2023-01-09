@@ -1,4 +1,5 @@
 ﻿using EmbyStat.Common.Enums;
+using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Generators;
 using EmbyStat.Configuration;
 
@@ -44,6 +45,7 @@ public static class DefaultConfig
         {
             Language = "en-US",
             DateTimeLanguage = "en-US",
+            TimeZone = TimeZoneInfoExtensions.GetTimeZoneName(),
             WizardFinished = false,
             ToShortMovieEnabled = true,
             ToShortMovie = 10,

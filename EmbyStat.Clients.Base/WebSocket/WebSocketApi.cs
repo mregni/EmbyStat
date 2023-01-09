@@ -78,7 +78,7 @@ public class WebSocketApi : IWebSocketApi, IDisposable
         {
             _logger.LogError(e, $"Error connecting to {url}");
         }
-        
+
         return Task.CompletedTask;
     }
 
@@ -154,53 +154,33 @@ public class WebSocketApi : IWebSocketApi, IDisposable
     private void OnMessageReceivedInternal(string json)
     {
         var messageType = GetMessageType(json);
-
-        if (string.Equals(messageType, "RestartRequired"))
+        switch (messageType)
         {
-            FireEvent(RestartRequired, this, EventArgs.Empty);
+            case "RestartRequired":
+                FireEvent(RestartRequired, this, EventArgs.Empty);
+                break;
+            case "ServerRestarting":
+                FireEvent(RestartRequired, this, EventArgs.Empty);
+                break;
+            case "ServerShuttingDown":
+                FireEvent(ServerShuttingDown, this, EventArgs.Empty);
+                break;
+            case "UserDeleted":
+                var userId = JsonConvert.DeserializeObject<WebSocketMessage<string>>(json)?.Data;
+                FireEvent(UserDeleted, this, new GenericEventArgs<string> {Argument = userId});
+                break;
+            case "UserUpdated":
+                var user = JsonConvert.DeserializeObject<WebSocketMessage<JObject>>(json)?.Data;
+                FireEvent(UserUpdated, this, new GenericEventArgs<JObject> {Argument = user});
+                break;
+            case "Sessions":
+                var session = JsonConvert.DeserializeObject<WebSocketMessage<JArray>>(json)?.Data;
+                FireEvent(SessionsUpdated, this, new GenericEventArgs<JArray> {Argument = session});
+                break;
         }
-        else if (string.Equals(messageType, "ServerRestarting"))
-        {
-            FireEvent(ServerRestarting, this, EventArgs.Empty);
-        }
-        else if (string.Equals(messageType, "ServerShuttingDown"))
-        {
-            FireEvent(ServerShuttingDown, this, EventArgs.Empty);
-        }
-        else if (string.Equals(messageType, "UserDeleted"))
-        {
-            var userId = JsonConvert.DeserializeObject<WebSocketMessage<string>>(json).Data;
-
-            FireEvent(UserDeleted, this, new GenericEventArgs<string>
-            {
-                Argument = userId
-            });
-        }
-        else if (string.Equals(messageType, "UserUpdated"))
-        {
-            FireEvent(UserUpdated, this, new GenericEventArgs<JObject>
-            {
-                Argument = JsonConvert.DeserializeObject<WebSocketMessage<JObject>>(json).Data
-            });
-        }
-        else if (string.Equals(messageType, "Sessions"))
-        {
-            FireEvent(SessionsUpdated, this, new GenericEventArgs<JArray>
-            {
-                Argument = JsonConvert.DeserializeObject<WebSocketMessage<JArray>>(json).Data
-            });
-        }
-        //else if (string.Equals(messageType, "UserDataChanged"))
-        //{
-        //    FireEvent(UserDataChanged, this, new GenericEventArgs<JArray>
-        //    {
-        //        Argument = JsonConvert.DeserializeObject<Common.Models.WebSocketMessage<JArray>>(json).Data
-        //    });
-        //}
     }
 
-    public bool IsWebSocketOpenOrConnecting =>
-        false; //_clientWebSocket.State == WebSocketState.Open || _clientWebSocket.State == WebSocketState.Connecting;
+    public bool IsWebSocketOpenOrConnecting => false;
 
     private string GetMessageType(string json)
     {

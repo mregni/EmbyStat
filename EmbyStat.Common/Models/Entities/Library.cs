@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities.Movies;
 

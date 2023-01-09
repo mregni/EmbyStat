@@ -73,7 +73,6 @@ public class StartupOptions
             {
                 yield return attribute.ToKeyValuePair(value);
             }
-            
         }
     }
 }

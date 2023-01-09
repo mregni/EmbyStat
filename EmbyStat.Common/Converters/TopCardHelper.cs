@@ -5,6 +5,7 @@ using System.Linq;
 using EmbyStat.Common.Models.Cards;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Shows;
+using Newtonsoft.Json;
 using ValueType = EmbyStat.Common.Models.Cards.ValueType;
 
 namespace EmbyStat.Common.Converters;
@@ -141,6 +142,11 @@ public static class ExtraTopCardHelper
             UnitNeedsTranslation = unitNeedsTranslation,
             ValueType = valueType
         };
+    }
+
+    public static string BuildJson(this TopCard card)
+    {
+        return JsonConvert.SerializeObject(card);
     }
 
     #endregion

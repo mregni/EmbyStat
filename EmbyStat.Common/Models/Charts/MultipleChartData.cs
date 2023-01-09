@@ -1,7 +1,9 @@
-﻿namespace EmbyStat.Common.Models.Charts;
+﻿using System.Collections.Generic;
 
-public class SimpleChartData
+namespace EmbyStat.Common.Models.Charts;
+
+public class MultipleChartData<T>
 {
     public string Label { get; set; }
-    public double Value { get; set; }
+    public Dictionary<string, T> Value { get; set; }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using EmbyStat.Common.Models;
 using Newtonsoft.Json.Linq;
 

@@ -213,7 +213,8 @@
     "SHORTEST": "Shortest",
     "TOTALMOVIES": "Total Movies",
     "TOTALPLAYLENGTH": "Total Watchable Time",
-    "TOTALWATCHED": "Total watched movies"
+    "TOTALWATCHED": "Total Watched Movies",
+    "PLAYEDPLAYLENGTH": "Total Watched Time"
   },
   "PAGINATION": {
     "NEXTPAGE": "Next page",
@@ -261,6 +262,9 @@
     },
     "DATETIMELANGUAGE": {
       "LABEL": "Select datetime format"
+    },
+    "TIMEZONE":{
+      "LABEL": "Select time zone"
     },
     "LIBRARIES": {
       "CONTENT": "Select here all {{type}} libraries that should be synced with EmbyStat ",
@@ -339,7 +343,9 @@
     "TOTALMISSINGEPISODES": "Total missing episodes",
     "TOTALPLAYLENGTH": "Total play length",
     "TOTALSHOWS": "Total shows",
-    "WITHMOESTEPISODES": "With most episodes"
+    "WITHMOESTEPISODES": "With most episodes",
+    "PLAYEDPLAYLENGTH": "Total Watched Time",
+    "CURRENTPLAYINGCOUNT": "Current playing count"
   },
   "USERS": {
     "ACTIVEUSERS": "Active users",

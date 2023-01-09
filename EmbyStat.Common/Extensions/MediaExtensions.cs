@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using Microsoft.EntityFrameworkCore;
@@ -31,12 +32,13 @@ LIMIT {count}";
     /// <param name="count">Amount of rows returned</param>
     /// <typeparam name="T">T should be of type <see cref="Media"/></typeparam>
     /// <returns>Returns <see cref="IEnumerable{T}"/></returns>
-    public static IEnumerable<T> GetLatestAddedMedia<T>(this DbSet<T> list, int count) where T : Media
+    public static Task<List<T>> GetLatestAddedMedia<T>(this DbSet<T> list, int count) where T : Media
     {
         return list
             .Where(x => x.DateCreated.HasValue)
             .OrderByDescending(x => x.DateCreated)
-            .Take(count);
+            .Take(count)
+            .ToListAsync();
     }
 
     /// <summary>

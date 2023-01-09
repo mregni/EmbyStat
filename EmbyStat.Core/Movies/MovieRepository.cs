@@ -1,4 +1,3 @@
-using System.Linq;
 using Dapper;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
@@ -152,10 +151,10 @@ VALUES (@Type, @MovieId, @PersonId)";
     }
 
 
-    public long? GetTotalRuntime()
+    public Task<long?> GetTotalRuntime()
     {
         return _context.Movies
-            .Sum(x => x.RunTimeTicks);
+            .SumAsync(x => x.RunTimeTicks);
     }
     
     public Task<long> GetPlayedRuntime()
@@ -167,27 +166,29 @@ VALUES (@Type, @MovieId, @PersonId)";
             .SumAsync(x => x.EndPositionTicks - x.StartPositionTicks);
     }
 
-    public IEnumerable<Movie> GetShortestMovie(long toShortMovieTicks, int count)
+    public Task<List<Movie>> GetShortestMovie(long toShortMovieTicks, int count)
     {
         return _context.Movies
             .Where(x => x.RunTimeTicks != null && x.RunTimeTicks > toShortMovieTicks)
             .OrderBy(x => x.RunTimeTicks)
-            .Take(count);
+            .Take(count)
+            .ToListAsync();
     }
 
-    public IEnumerable<Movie> GetLongestMovie(int count)
+    public Task<List<Movie>> GetLongestMovie(int count)
     {
         return _context.Movies
             .Where(x => x.RunTimeTicks != null)
             .OrderByDescending(x => x.RunTimeTicks)
-            .Take(count);
+            .Take(count)
+            .ToListAsync();
     }
 
-    public double GetTotalDiskSpace()
+    public Task<double> GetTotalDiskSpace()
     {
         return _context.Movies
             .SelectMany(x => x.MediaSources)
-            .Sum(x => x.SizeInMb);
+            .SumAsync(x => x.SizeInMb);
     }
 
     public IEnumerable<Movie> GetToShortMovieList(int toShortMovieMinutes)
@@ -308,7 +309,7 @@ VALUES (@Type, @MovieId, @PersonId)";
             .OrderBy(x => x.Label);
     }
 
-    public IEnumerable<Media> GetLatestAddedMedia(int count)
+    public Task<List<Movie>> GetLatestAddedMovie(int count)
     {
         return _context.Movies.GetLatestAddedMedia(count);
     }
@@ -353,15 +354,16 @@ ORDER BY g.Name";
                 row => (int)row.Count);
     }
 
-    public IEnumerable<decimal?> GetCommunityRatings()
+    public Task<List<decimal?>> GetCommunityRatings()
     {
-        return _context.Movies.Select(x => x.CommunityRating);
+        return _context.Movies.Select(x => x.CommunityRating).ToListAsync();
     }
 
-    public IEnumerable<DateTime?> GetPremiereYears()
+    public Task<List<DateTime?>> GetPremiereYears()
     {
         return _context.Movies
-            .Select(x => x.PremiereDate);
+            .Select(x => x.PremiereDate)
+            .ToListAsync();
     }
 
     public async Task<Dictionary<string, int>> GetOfficialRatingChartValues()
@@ -384,11 +386,11 @@ ORDER BY OfficialRating";
         return Count(Array.Empty<Filter>());
     }
     
-    public int GetTotalWatchedMovieCount()
+    public Task<int> GetTotalWatchedMovieCount()
     {
         return _context.MediaPlays
             .Where(x => x.Type == "Movie")
-            .Count();
+            .CountAsync();
     }
 
     public async Task<Dictionary<Movie, int>> GetMostWatchedMovies(int count)
@@ -473,13 +475,13 @@ GROUP BY mp.UserId, msu.Name, STRFTIME('%w',mp.Start)
     
     #region People
 
-    public int GetPeopleCount(PersonType type)
+    public Task<int> GetPeopleCount(PersonType type)
     {
         return _context.Movies
             .Include(x => x.People)
             .SelectMany(x => x.People)
             .Distinct()
-            .Count(x => x.Type == type);
+            .CountAsync(x => x.Type == type);
     }
 
     public async Task<int> GetGenreCount()

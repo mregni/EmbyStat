@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Net.WebSockets;
-using System.Threading;
-using System.Threading.Tasks;
 using EmbyStat.Clients.Base.WebSocket;
-using WebSocketState = WebSocket4Net.WebSocketState;
 
 namespace EmbyStat.Clients.Emby.WebSocket;
 

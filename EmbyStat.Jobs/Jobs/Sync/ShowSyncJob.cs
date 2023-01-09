@@ -7,6 +7,7 @@ using EmbyStat.Clients.Base.Http;
 using EmbyStat.Clients.Base.Metadata;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Enums.StatisticEnum;
 using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
@@ -23,7 +24,6 @@ using EmbyStat.Core.Shows.Interfaces;
 using EmbyStat.Core.Statistics.Interfaces;
 using EmbyStat.Jobs.Jobs.Interfaces;
 using Hangfire;
-using MediaBrowser.Model.Dto;
 using MediaBrowser.Model.Net;
 using Microsoft.Extensions.Logging;
 
@@ -34,10 +34,9 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
 {
     private readonly IBaseHttpClient _baseHttpClient;
     private readonly IShowRepository _showRepository;
-    private readonly IStatisticsRepository _statisticsRepository;
-    private readonly IShowService _showService;
     private readonly IMetadataClient _tvMazeClient;
     private readonly IMetadataClient _tmdbClient;
+    private readonly IStatisticsService _statisticsService;
     
     private readonly IGenreRepository _genreRepository;
     private readonly IPersonRepository _personRepository;
@@ -46,18 +45,16 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
 
     public ShowSyncJob(IHubHelper hubHelper, IJobRepository jobRepository, IConfigurationService configurationService,
         IClientStrategy clientStrategy, IShowRepository showRepository,
-        IStatisticsRepository statisticsRepository, IShowService showService,
         IGenreRepository genreRepository, IPersonRepository personRepository, 
-        IMediaServerRepository mediaServerRepository, IFilterRepository filterRepository, ILogger<ShowSyncJob> logger)
+        IMediaServerRepository mediaServerRepository, IFilterRepository filterRepository, ILogger<ShowSyncJob> logger, IStatisticsService statisticsService)
         : base(hubHelper, jobRepository, configurationService, logger)
     {
         _showRepository = showRepository;
-        _statisticsRepository = statisticsRepository;
-        _showService = showService;
         _genreRepository = genreRepository;
         _personRepository = personRepository;
         _mediaServerRepository = mediaServerRepository;
         _filterRepository = filterRepository;
+        _statisticsService = statisticsService;
 
         var settings = configurationService.Get();
         _baseHttpClient = clientStrategy.CreateHttpClient(settings.UserConfig.MediaServer.Type);
@@ -365,10 +362,9 @@ public class ShowSyncJob : BaseJob, IShowSyncJob
     private async Task CalculateStatistics()
     {
         await LogInformation("Calculating show statistics");
-        await _statisticsRepository.MarkTypesAsInvalid(StatisticType.Show);
         await LogProgress(75);
 
-        await _showService.CalculateShowStatistics();
+        await _statisticsService.CalculateStatisticsByType(StatisticType.Show);
         await _filterRepository.DeleteAll(LibraryType.TvShow);
 
         await LogInformation("Calculations done");

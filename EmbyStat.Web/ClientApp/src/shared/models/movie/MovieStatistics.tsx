@@ -1,4 +1,4 @@
-import {Card, Chart, TopCard} from '../common';
+import {Card, Chart, ComplexChart, TopCard} from '../common';
 
 export interface SuspiciousMovie {
   mediaId: string;
@@ -17,6 +17,7 @@ export interface MovieStatistics {
   cards: Card[];
   topCards: TopCard[];
   charts: Chart[];
+  complexCharts: ComplexChart[];
   shorts: ShortMovie[];
   noImdb: SuspiciousMovie[];
   noPrimary: SuspiciousMovie[];

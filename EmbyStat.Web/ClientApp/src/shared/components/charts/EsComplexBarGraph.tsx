@@ -1,14 +1,16 @@
+import {format} from 'date-fns';
 import React, {useEffect, useMemo, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {
-  Bar, BarChart, CartesianGrid, Cell, LabelList, LabelProps, ResponsiveContainer, XAxis, YAxis,
+  Bar, BarChart, CartesianGrid, Cell, LabelList, LabelProps, Legend, ResponsiveContainer, Tooltip,
+  XAxis, YAxis,
 } from 'recharts';
 
 import {Box, Paper, Stack, Typography} from '@mui/material';
 
 import i18n from '../../../i18n';
 import {theme} from '../../../styles/theme';
-import {usePalette} from '../../hooks';
+import {useLocale, usePalette} from '../../hooks';
 import {Chart, ComplexChart, SimpleData} from '../../models/common';
 
 type Props = {
@@ -27,8 +29,8 @@ const renderCustomizedLabel = (props: LabelProps): React.ReactNode => {
   }
 
   if (typeof x === 'string' ||
-  typeof y === 'string' ||
-  typeof width === 'string'
+    typeof y === 'string' ||
+    typeof width === 'string'
   ) {
     return (null);
   }
@@ -39,7 +41,7 @@ const renderCustomizedLabel = (props: LabelProps): React.ReactNode => {
     <g>
       <rect x={x} y={y - 20} width={width} height={15} fill={fill} />
       <text
-        x={x + width/2}
+        x={x + width / 2}
         y={y - 12}
         fontSize={14}
         fill={fontColor}
@@ -56,23 +58,32 @@ export function EsComplexBarGraph(props: Props) {
   const {chart, height = 250} = props;
   const generatePalette = usePalette();
   const {t} = useTranslation();
-  const [data, setData] = useState(null!);
-  const [toLongLabels, setToLongLabels] = useState(false);
-  const [isAnimation, setIsAnimation] = useState(true);
+  const {locale, getWeekDays} = useLocale();
+  const [data, setData] = useState<[]>(null!);
 
-  useEffect(() => {
-    if (data != null) {
-      setToLongLabels(data.some((x) => x.label.length >= 7));
-    }
-  }, [data]);
 
   useEffect(() => {
     setData(JSON.parse(chart.dataSets));
   }, [chart.dataSets]);
 
   const colors = useMemo(() => {
-    return generatePalette(chart.dataSets.length);
-  }, [chart.dataSets.length]);
+    return generatePalette(chart.series.length);
+  }, [chart.series.length]);
+
+  const formatX = (tickItem: string): string => {
+    if (chart.formatString === 'week') {
+      const weekDays = getWeekDays();
+      const index = weekDays.findIndex((x) => x.isoIndex === tickItem);
+      if (index !== -1) {
+        return weekDays[index].value;
+      }
+      return '';
+    } else if (['p'].includes(chart.formatString)) {
+      return format(new Date(tickItem), chart.formatString, {locale});
+    }
+
+    return '';
+  };
 
   const fontColor = theme.palette.getContrastText(theme.palette.background.paper);
   return (
@@ -97,26 +108,31 @@ export function EsComplexBarGraph(props: Props) {
               strokeDasharray="4" />
             <XAxis
               dataKey="label"
-              angle={toLongLabels ? -45 : 0}
+              angle={-45}
               stroke={fontColor}
-              dy={toLongLabels ? 12 : 5}
+              dy={5}
               height={50}
               fontSize={10}
               interval={0}
+              tickFormatter={(tickItem) => formatX(tickItem)}
             />
-            <YAxis stroke={fontColor}/>
-            <Bar dataKey='value'
-              isAnimationActive={false}
-            >
-              <LabelList content={renderCustomizedLabel} />
-              {data != null && data.map((e, index) => (
-                <Cell
-                  // eslint-disable-next-line react/no-array-index-key
-                  key={`cell-${index}`}
-                  fill={colors[index % colors.length] ?? '#fff'}
-                />
-              ))}
-            </Bar>
+            <Legend />
+            <Tooltip />
+            <YAxis stroke={fontColor} />
+            {
+              chart.series.map((id, i) => {
+                return (
+                  <Bar
+                    stackId="a"
+                    key={i}
+                    dataKey={id}
+                    isAnimationActive={false}
+                    fill={colors[i]}
+                  />
+                );
+              },
+              )
+            }
           </BarChart>
         </ResponsiveContainer>
       </Stack>

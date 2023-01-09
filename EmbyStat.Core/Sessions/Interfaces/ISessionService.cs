@@ -1,6 +1,4 @@
-﻿using EmbyStat.Common.Enums;
-using EmbyStat.Common.Models.Entities.Events;
-using EmbyStat.Common.Models.Sessions;
+﻿using EmbyStat.Common.Models.Sessions;
 
 namespace EmbyStat.Core.Sessions.Interfaces;
 

@@ -6,6 +6,7 @@ export interface Settings {
 export interface UserConfig {
     language: string;
     dateTimeLanguage: string;
+    timeZone: string;
     toShortMovieEnabled: boolean;
     toShortMovie: number;
     keepLogsCount: number;

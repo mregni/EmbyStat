@@ -15,7 +15,7 @@ public interface IShowRepository : IMediaRepository
     Task<Show> GetShowByIdWithEpisodes(string showId);
     Task<Dictionary<Show, int>> GetShowsWithMostEpisodes(int count);
     Task<IEnumerable<Show>> GetShowPage(int skip, int take, string sortField, string sortOrder, IEnumerable<Filter> filters);
-    IEnumerable<Show> GetShowsWithMostDiskSpaceUsed(int count);
+    Task<List<Show>> GetShowsWithMostDiskSpaceUsed(int count);
     IEnumerable<string> GetShowIdsThatFailedExternalSync(string libraryId);
 
     Task<int> CompleteCollectedCount();
@@ -38,7 +38,8 @@ public interface IShowRepository : IMediaRepository
     #endregion
 
     IEnumerable<LabelValuePair> CalculateGenreFilterValues();
-    int GetTotalWatchedEpisodeCount();
+    Task<int> GetTotalWatchedEpisodeCount();
     Task<long> GetPlayedRuntime();
     Task<int> GetCurrentWatchingCount();
+    Task<List<Show>> GetLatestAddedShows(int count);
 }

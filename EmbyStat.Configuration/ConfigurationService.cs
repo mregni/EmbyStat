@@ -19,6 +19,11 @@ public class ConfigurationService : IConfigurationService
         return _config; 
     }
 
+    public TimeZoneInfo GetLocalTimeZoneInfo()
+    {
+        return TimeZoneInfo.FindSystemTimeZoneById(_config.UserConfig.TimeZone);
+    }
+
     private async Task WriteConfiguration(Config config)
     {
         var path = Path.Combine(config.SystemConfig.Dirs.Config, "config.json");

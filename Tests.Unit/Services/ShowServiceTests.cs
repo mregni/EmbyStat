@@ -9,6 +9,7 @@ using EmbyStat.Common.Models.Charts;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Shows;
 using EmbyStat.Common.Models.Query;
+using EmbyStat.Configuration.Interfaces;
 using EmbyStat.Core.Jobs.Interfaces;
 using EmbyStat.Core.MediaServers.Interfaces;
 using EmbyStat.Core.Shows;
@@ -163,6 +164,28 @@ public class ShowServiceTests
         _showRepositoryMock
             .Setup(x => x.Count(It.IsAny<Filter[]>()))
             .ReturnsAsync(11);
+        _showRepositoryMock
+            .Setup(x => x.GetCurrentWatchingCount())
+            .ReturnsAsync(5);
+        _showRepositoryMock
+            .Setup(x => x.GetMostWatchedShows(5))
+            .ReturnsAsync(shows.ToDictionary(x => x, x => x.Genres.Count));
+        _showRepositoryMock
+            .Setup(x => x.GetWatchedPerDayOfWeekChartValues())
+            .ReturnsAsync(new[]
+            {
+                new BarValue<string, int> { Serie = "user1", X = "2", Y = 2},
+                new BarValue<string, int> { Serie = "user1", X = "3", Y = 1},
+                new BarValue<string, int> { Serie = "user2", X = "3", Y = 2},
+            });
+        _showRepositoryMock
+            .Setup(x => x.GetWatchedPerHourOfDayChartValues())
+            .ReturnsAsync(new[]
+            {
+                new BarValue<string, int> { Serie = "user1", X = "10", Y = 2},
+                new BarValue<string, int> { Serie = "user1", X = "11", Y = 1},
+                new BarValue<string, int> { Serie = "user2", X = "10", Y = 2},
+            });
             
         _mediaServerRepositoryMock.Setup(x => x.GetAllLibraries(It.IsAny<LibraryType>()))
             .ReturnsAsync(new List<Library>
@@ -173,8 +196,13 @@ public class ShowServiceTests
 
         var statisticsRepositoryMock = new Mock<IStatisticsRepository>();
         var jobRepositoryMock = new Mock<IJobRepository>();
+        var configurationServiceMock = new Mock<IConfigurationService>();
+        configurationServiceMock
+            .Setup(x => x.GetLocalTimeZoneInfo())
+            .Returns(TimeZoneInfo.FindSystemTimeZoneById("Europe/Brussels"));
+        
         return new ShowService(jobRepositoryMock.Object, _showRepositoryMock.Object,
-            statisticsRepositoryMock.Object, _mediaServerRepositoryMock.Object, _logger.Object);
+            statisticsRepositoryMock.Object, _mediaServerRepositoryMock.Object, _logger.Object, configurationServiceMock.Object);
                 
     }
 
@@ -310,6 +338,38 @@ public class ShowServiceTests
         var card = stat.Cards.First(x => x.Title == Constants.Shows.TotalPlayLength);
         card.Title.Should().Be(Constants.Shows.TotalPlayLength);
         card.Value.Should().Be("67|8|41");
+    }
+    
+    [Fact]
+    public async Task Get_CurrentWatchingCount()
+    {
+        var stat = await _subject.GetStatistics();
+
+        stat.Should().NotBeNull();
+        stat.Cards.Count(x => x.Title == Constants.Movies.CurrentPlayingCount).Should().Be(1);
+
+        var card = stat.Cards.First(x => x.Title == Constants.Movies.CurrentPlayingCount);
+        card.Should().NotBeNull();
+        card.Title.Should().Be(Constants.Movies.CurrentPlayingCount);
+        card.Value.Should().Be("5");
+    }
+    
+    [Fact]
+    public async Task GetCalculateMostWatchedShows()
+    {
+        var stat = await _subject.GetStatistics();
+
+        stat.Should().NotBeNull();
+        stat.TopCards.Count(x => x.Title == Constants.Shows.MostWatchedShows).Should().Be(1);
+
+        var card = stat.TopCards.First(x => x.Title == Constants.Shows.MostWatchedShows);
+        card.Should().NotBeNull();
+        card.Title.Should().Be(Constants.Shows.MostWatchedShows);
+        card.Unit.Should().Be("#");
+        card.Values[0].Value.Should().Be(_showOne.Genres.Count.ToString());
+        card.Values[0].Label.Should().Be(_showOne.Name);
+        card.UnitNeedsTranslation.Should().Be(false);
+        card.ValueType.Should().Be(ValueType.None);
     }
 
     [Fact]
@@ -605,6 +665,46 @@ public class ShowServiceTests
         TestDataSets(graph.DataSets[1], "Ended", 1);
     }
 
+    #endregion
+    
+    #region ComplexCarts
+
+    [Fact]
+    public async Task GetWatchedPerHourOfDayChartValues()
+    {
+        var stat = await _subject.GetStatistics();
+
+        stat.Should().NotBeNull();
+        stat.ComplexCharts.Should().NotBeNull();
+        stat.ComplexCharts.Count.Should().Be(2);
+        stat.ComplexCharts.Any(x => x.Title == Constants.Shows.WatchedPerHour).Should().BeTrue();
+
+        var graph = stat.ComplexCharts.Single(x => x.Title == Constants.Shows.WatchedPerHour);
+        graph.Should().NotBeNull();
+        graph.Series.Length.Should().Be(2);
+        graph.Series[0].Should().Be("user1");
+        graph.Series[1].Should().Be("user2");
+        graph.DataSets.Should().Be("[{\"label\":\"0001-01-01T00:00:00\"},{\"label\":\"0001-01-01T01:00:00\"},{\"label\":\"0001-01-01T02:00:00\"},{\"label\":\"0001-01-01T03:00:00\"},{\"label\":\"0001-01-01T04:00:00\"},{\"label\":\"0001-01-01T05:00:00\"},{\"label\":\"0001-01-01T06:00:00\"},{\"label\":\"0001-01-01T07:00:00\"},{\"label\":\"0001-01-01T08:00:00\"},{\"label\":\"0001-01-01T09:00:00\"},{\"label\":\"0001-01-01T10:00:00\"},{\"label\":\"0001-01-01T11:00:00\",\"user1\":2,\"user2\":2},{\"label\":\"0001-01-01T12:00:00\",\"user1\":1},{\"label\":\"0001-01-01T13:00:00\"},{\"label\":\"0001-01-01T14:00:00\"},{\"label\":\"0001-01-01T15:00:00\"},{\"label\":\"0001-01-01T16:00:00\"},{\"label\":\"0001-01-01T17:00:00\"},{\"label\":\"0001-01-01T18:00:00\"},{\"label\":\"0001-01-01T19:00:00\"},{\"label\":\"0001-01-01T20:00:00\"},{\"label\":\"0001-01-01T21:00:00\"},{\"label\":\"0001-01-01T22:00:00\"},{\"label\":\"0001-01-01T23:00:00\"}]");
+    }
+    
+    [Fact]
+    public async Task GetWatchedPerDayOfWeekChartValues()
+    {
+        var stat = await _subject.GetStatistics();
+
+        stat.Should().NotBeNull();
+        stat.ComplexCharts.Should().NotBeNull();
+        stat.ComplexCharts.Count.Should().Be(2);
+        stat.ComplexCharts.Any(x => x.Title == Constants.Shows.DaysOfTheWeek).Should().BeTrue();
+
+        var graph = stat.ComplexCharts.Single(x => x.Title == Constants.Shows.DaysOfTheWeek);
+        graph.Should().NotBeNull();
+        graph.Series.Length.Should().Be(2);
+        graph.Series[0].Should().Be("user1");
+        graph.Series[1].Should().Be("user2");
+        graph.DataSets.Should().Be("[{\"label\":\"1\"},{\"label\":\"2\",\"user1\":2},{\"label\":\"3\",\"user1\":1,\"user2\":2},{\"label\":\"4\"},{\"label\":\"5\"},{\"label\":\"6\"},{\"label\":\"0\"}]");
+    }
+    
     #endregion
 
     [Fact]

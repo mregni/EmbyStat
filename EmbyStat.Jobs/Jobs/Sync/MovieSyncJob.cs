@@ -5,9 +5,9 @@ using EmbyStat.Clients.Base;
 using EmbyStat.Clients.Base.Http;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Enums.StatisticEnum;
 using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Entities;
-using EmbyStat.Common.Models.Entities.Movies;
 using EmbyStat.Configuration.Interfaces;
 using EmbyStat.Core.Filters.Interfaces;
 using EmbyStat.Core.Genres.Interfaces;
@@ -29,27 +29,25 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
 {
     private readonly IBaseHttpClient _baseHttpClient;
     private readonly IMovieRepository _movieRepository;
-    private readonly IStatisticsRepository _statisticsRepository;
-    private readonly IMovieService _movieService;
     private readonly IGenreRepository _genreRepository;
     private readonly IPersonRepository _personRepository;
     private readonly IMediaServerRepository _mediaServerRepository;
     private readonly IFilterRepository _filterRepository;
+    private readonly IStatisticsService _statisticsService;
 
     public MovieSyncJob(IHubHelper hubHelper, IJobRepository jobRepository,
         IConfigurationService configurationService, IClientStrategy clientStrategy,
-        IMovieRepository movieRepository, IStatisticsRepository statisticsRepository, 
-        IMovieService movieService, IGenreRepository genreRepository, IPersonRepository personRepository, 
-        IMediaServerRepository mediaServerRepository, IFilterRepository filterRepository, ILogger<MovieSyncJob> logger) 
+        IMovieRepository movieRepository, IGenreRepository genreRepository, IPersonRepository personRepository,
+        IMediaServerRepository mediaServerRepository, IFilterRepository filterRepository, ILogger<MovieSyncJob> logger,
+        IStatisticsService statisticsService)
         : base(hubHelper, jobRepository, configurationService, logger)
     {
         _movieRepository = movieRepository;
-        _statisticsRepository = statisticsRepository;
-        _movieService = movieService;
         _genreRepository = genreRepository;
         _personRepository = personRepository;
         _mediaServerRepository = mediaServerRepository;
         _filterRepository = filterRepository;
+        _statisticsService = statisticsService;
 
         var settings = configurationService.Get();
         _baseHttpClient = clientStrategy.CreateHttpClient(settings.UserConfig.MediaServer.Type);
@@ -63,7 +61,8 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
         if (!await IsMediaServerOnline())
         {
             var address = Configuration.UserConfig.MediaServer.Address;
-            await LogWarning($"Halting task because we can't contact the server on {address}, please check the connection and try again.");
+            await LogWarning(
+                $"Halting task because we can't contact the server on {address}, please check the connection and try again.");
             return;
         }
 
@@ -110,7 +109,7 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
         await LogInformation("Lets start processing movies");
         await LogInformation($"{librariesToProcess.Count} libraries are selected, getting ready for processing");
 
-        var logIncrementBase = Math.Round(60 / (double)librariesToProcess.Count, 1);
+        var logIncrementBase = Math.Round(60 / (double) librariesToProcess.Count, 1);
         var genres = await _genreRepository.GetAll();
 
         foreach (var library in librariesToProcess)
@@ -135,8 +134,8 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
         var processed = 0;
         var j = 0;
         const int limit = 50;
-            
-        var increment = logIncrementBase / (totalCount / (double)limit);
+
+        var increment = logIncrementBase / (totalCount / (double) limit);
         do
         {
             var movies = await _baseHttpClient.GetMovies(library.Id, j * limit, limit, null);
@@ -148,7 +147,7 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
             processed += limit;
             j++;
             var logProcessed = processed < totalCount ? processed : totalCount;
-            await LogInformation($"Processed { logProcessed } / { totalCount } movies");
+            await LogInformation($"Processed {logProcessed} / {totalCount} movies");
             await LogProgressIncrement(increment);
         } while (processed < totalCount);
     }
@@ -156,9 +155,8 @@ public class MovieSyncJob : BaseJob, IMovieSyncJob
     private async Task CalculateStatistics()
     {
         await LogInformation("Calculating movie statistics");
-        await _statisticsRepository.MarkTypesAsInvalid(StatisticType.Movie);
         await LogProgress(77);
-        await _movieService.CalculateMovieStatistics();
+        await _statisticsService.CalculateStatisticsByType(StatisticType.Movie);
         await _filterRepository.DeleteAll(LibraryType.Movies);
 
         await LogInformation("Calculations done");

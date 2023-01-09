@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using EmbyStat.Common.Enums;
 using EmbyStat.Common.Models.Entities.Events;
 using EmbyStat.Common.Models.Sessions;
-using EmbyStat.Configuration.Interfaces;
 using EmbyStat.Core.Sessions.Interfaces;
-using MoreLinq.Extensions;
 
 namespace EmbyStat.Core.Sessions;
 

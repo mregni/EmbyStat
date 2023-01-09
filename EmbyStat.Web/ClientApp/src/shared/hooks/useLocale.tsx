@@ -1,4 +1,4 @@
-import {Locale} from 'date-fns';
+import {eachDayOfInterval, endOfWeek, format, Locale, startOfWeek} from 'date-fns';
 import enUs from 'date-fns/locale/en-US';
 import nl from 'date-fns/locale/nl';
 import {useContext, useEffect, useState} from 'react';
@@ -25,5 +25,20 @@ export const useLocale = () => {
     }
   };
 
-  return {locale, getLocale};
+  const getWeekDays = (): {isoIndex: string, value: string}[] => {
+    const now = new Date();
+    const weekDays: {isoIndex: string, value: string}[] = [];
+    const start = startOfWeek(now, {locale});
+    const end = endOfWeek(now, {locale});
+    eachDayOfInterval({start, end}).forEach((day) => {
+      let iso = format(day, 'i');
+      if (iso === '7') {
+        iso = '0';
+      };
+      weekDays.push({isoIndex: iso, value: format(day, 'EEEEEE', {locale})});
+    });
+    return weekDays;
+  };
+
+  return {locale, getLocale, getWeekDays};
 };

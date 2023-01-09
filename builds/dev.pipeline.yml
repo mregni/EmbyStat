@@ -14,14 +14,9 @@ pr:
     
 variables:
   - group: dev-build
-  - group: packages
-  - name: WinPool
-    value: 'windows-2022'
-  - name: LinuxPool
-    value: 'ubuntu-20.04'
 
 pool:
-  vmImage: $(WinPool)
+  vmImage: 'windows-latest'
 
 stages:
   - template: templates/test.stage.yml

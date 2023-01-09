@@ -3,6 +3,7 @@ using EmbyStat.Common.Models.Entities.Events;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Movies;
 using EmbyStat.Common.Models.Entities.Shows;
+using EmbyStat.Common.Models.Entities.Statistics;
 using EmbyStat.Common.Models.Entities.Streams;
 using EmbyStat.Core.DataStore.Seeds;
 using Microsoft.AspNetCore.Identity;
@@ -31,11 +32,16 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
     public DbSet<Job> Jobs { get; set; }
     public DbSet<Language> Languages { get; set; }
     public DbSet<MediaServerStatus> MediaServerStatus { get; set; }
-    public DbSet<Statistic> Statistics { get; set; }
+    public DbSet<StatisticOld> Statistics { get; set; }
     public DbSet<MediaServerUserView> MediaServerUserViews { get; set; }
 
     public DbSet<Session> Sessions { get; set; }
     public DbSet<MediaPlay> MediaPlays { get; set; }
+    
+    public DbSet<StatisticCard> StatisticCards { get; set; }
+    public DbSet<StatisticPageCard> StatisticPageCards { get; set; }
+    public DbSet<StatisticPage> StatisticPages { get; set; }
+
 
     public EsDbContext()
     {
@@ -45,6 +51,12 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
     public EsDbContext(DbContextOptions<EsDbContext> options): base(options)
     {
         
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.EnableSensitiveDataLogging();
+        base.OnConfiguring(optionsBuilder);
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -57,6 +69,7 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
         BuildFilterValues(builder);
         BuildUserViews(builder);
         BuildSessions(builder);
+        BuildStatistics(builder);
         AddExtraIndexes(builder);
 
         SeedDatabase(builder);
@@ -68,6 +81,25 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
 
     #region Builders
 
+    private static void BuildStatistics(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<StatisticPage>()
+            .HasMany(x => x.PageCards)
+            .WithOne(x => x.StatisticPage)
+            .HasForeignKey(x => x.StatisticPageId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        modelBuilder.Entity<StatisticCard>()
+            .HasMany(x => x.PageCards)
+            .WithOne(x => x.StatisticCard)
+            .HasForeignKey(x => x.StatisticCardId)
+            .IsRequired();
+
+        modelBuilder.Entity<StatisticPageCard>()
+            .HasKey(x => new {x.StatisticCardId, x.StatisticPageId});
+    }
+    
     private static void BuildLibrary(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Library>()
@@ -263,6 +295,9 @@ public class EsDbContext : IdentityDbContext<EmbyStatUser>
         modelBuilder.Entity<Job>().HasData(JobSeed.Jobs);
         modelBuilder.Entity<Language>().HasData(LanguageSeed.Languages);
         modelBuilder.Entity<MediaServerStatus>().HasData(MediaServerSeed.Status);
+        modelBuilder.Entity<StatisticPage>().HasData(StatisticPageSeed.Pages);
+        modelBuilder.Entity<StatisticCard>().HasData(StatisticPageSeed.Cards);
+        modelBuilder.Entity<StatisticPageCard>().HasData(StatisticPageSeed.PageCards);
     }
     #endregion
 }

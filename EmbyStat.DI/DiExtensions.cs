@@ -57,6 +57,8 @@ using Hangfire;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using MovieStatisticService = EmbyStat.Core.Statistics.MovieStatisticService;
+using ShowStatisticService = EmbyStat.Core.Statistics.ShowStatisticService;
 
 namespace EmbyStat.DI;
 
@@ -87,13 +89,16 @@ public static class DiExtensions
         services.TryAddTransient<IFilterService, FilterService>();
         services.TryAddTransient<ILanguageService, LanguageService>();
         services.TryAddTransient<ILogService, LogService>();
-        services.TryAddTransient<IMovieService, MovieService>();
+        services.TryAddTransient<IMovieService, Core.Movies.MovieService>();
         services.TryAddTransient<ISessionService, SessionService>();
         services.TryAddSingleton<IConfigurationService, ConfigurationService>();
-        services.TryAddTransient<IShowService, ShowService>();
+        services.TryAddTransient<IShowService, Core.Shows.ShowService>();
         services.TryAddTransient<ISystemService, SystemService>();
         services.TryAddTransient<IUpdateService, UpdateService>();
-
+        services.TryAddTransient<IStatisticsService, StatisticsService>();
+        services.TryAddTransient<IMovieStatisticsService, MovieStatisticService>();
+        services.TryAddTransient<IShowStatisticsService, ShowStatisticService>();
+        
         services.TryAddTransient<CannonService>();
     }
 
@@ -110,6 +115,7 @@ public static class DiExtensions
         services.TryAddTransient<ILanguageRepository, LanguageRepository>();
         services.TryAddTransient<IJobRepository, JobRepository>();
         services.TryAddTransient<IGenreRepository, GenreRepository>();
+        services.TryAddTransient<ISessionRepository, SessionRepository>();
     }
 
     private static void RegisterJobs(this IServiceCollection services)

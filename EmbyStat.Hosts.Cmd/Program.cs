@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using CommandLine;
 using EmbyStat.Common.Exceptions;
+using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Generators;
 using EmbyStat.Common.Models;
 using EmbyStat.Configuration;
@@ -109,7 +110,7 @@ public class Program
         {
             return ApplicationModes.Migration;
         }
-        
+
         // if (OperatingSystem.IsWindows() && startupContext.RegisterUrl)
         // {
         //     return ApplicationModes.RegisterUrl;
@@ -228,9 +229,12 @@ public class Program
 
     private static IConfigurationRoot GenerateConfig(StartupOptions options)
     {
-        var memoryConfig = options.ToKeyValuePairs();
+        var memoryConfig = options.ToKeyValuePairs().ToList();
         var dicConfig = memoryConfig.ToDictionary(x => x.Key, x => x.Value);
         GenerateDefaultConfiguration(dicConfig["SystemConfig:Dirs:Config"]);
+
+        memoryConfig.Add(new KeyValuePair<string, string>("UserConfig:TimeZone",
+            TimeZoneInfoExtensions.GetTimeZoneName()));
 
         return new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
@@ -320,12 +324,14 @@ public class Program
             .MinimumLevel.Override("Microsoft.AspNetCore.DataProtection", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.SignalR", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.Server.Kestrel", LogEventLevel.Warning)
-            .MinimumLevel.Override("Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker",
+                LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.Mvc.ModelBinding", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.Mvc.Infrastructure", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.Cors", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.Authentication.JwtBearer", LogEventLevel.Warning)
             .MinimumLevel.Override("System.Net.Http.HttpClient", minimumLevel)
+            .MinimumLevel.Override("Microsoft.Extensions.Http.DefaultHttpClientFactory", LogEventLevel.Warning)
             .MinimumLevel.Override("System.Net.Http.HttpClient.mediaServerClient.ClientHandler", minimumLevel)
             .MinimumLevel.Override("System.Net.Http.HttpClient.mediaServerClient.LogicalHandler", LogEventLevel.Warning)
             .Enrich.FromLogContext()
