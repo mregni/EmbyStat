@@ -928,5 +928,8 @@ public class MovieStatisticServiceTests
         var service = new MovieStatisticService(_movieRepositoryMock.Object, _logger.Object, _configurationServiceMock.Object);
         var result = await service.CalculateStatistic(type, uniqueId);
         result.Should().BeNull();
+        
+        _movieRepositoryMock.VerifyNoOtherCalls();
+        _configurationServiceMock.VerifyNoOtherCalls();
     }
 }

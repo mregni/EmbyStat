@@ -56,6 +56,12 @@ public class ShowBuilder
         };
     }
 
+    public ShowBuilder AddSizeInMb(int size)
+    {
+        _show.SizeInMb = size;
+        return this;
+    }
+
     public ShowBuilder AddName(string name)
     {
         _show.Name = name;

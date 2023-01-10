@@ -29,17 +29,13 @@ public class ShowServiceTests
     private readonly ShowService _subject;
 
     private readonly Show _showOne;
-    private readonly Show _showTwo;
-    private readonly Show _showThree;
 
     private readonly Mock<IShowRepository> _showRepositoryMock;
     private readonly Mock<IMediaServerRepository> _mediaServerRepositoryMock;
-    private readonly Mock<ILogger<ShowService>> _logger;
 
     public ShowServiceTests()
     {
         _showRepositoryMock = new Mock<IShowRepository>();
-        _logger = new Mock<ILogger<ShowService>>();
         _mediaServerRepositoryMock = new Mock<IMediaServerRepository>();
 
         var showOneId = Guid.NewGuid().ToString();
@@ -52,7 +48,7 @@ public class ShowServiceTests
             .AddGenre("Comedy", "Action")
             .AddCommunityRating(null)
             .Build();
-        _showTwo = new ShowBuilder(showTwoId)
+        var showTwo = new ShowBuilder(showTwoId)
             .AddName("The 100")
             .AddCommunityRating(8.3M)
             .AddPremiereDate(new DateTime(1992, 4, 1))
@@ -64,7 +60,7 @@ public class ShowServiceTests
             .AddEpisode(new EpisodeBuilder(Guid.NewGuid().ToString(), "1").Build())
             .AddMissingEpisodes(10, 1)
             .Build();
-        _showThree = new ShowBuilder(showThreeId)
+        var showThree = new ShowBuilder(showThreeId)
             .AddName("Dexter")
             .AddCommunityRating(8.4M)
             .AddPremiereDate(new DateTime(2018, 4, 10))
@@ -75,88 +71,14 @@ public class ShowServiceTests
             .AddMissingEpisodes(2, 1)
             .Build();
 
-        _subject = CreateShowService(_showOne, _showTwo, _showThree);
+        _subject = CreateShowService(_showOne, showTwo, showThree);
     }
 
     private ShowService CreateShowService(params Show[] shows)
     {
         _showRepositoryMock
-            .Setup(x => x.GetAllShowsWithEpisodes())
-            .ReturnsAsync(shows.ToList());
-        _showRepositoryMock
-            .Setup(x => x.GetHighestRatedMedia(5))
-            .ReturnsAsync(shows.OrderByDescending(x => x.CommunityRating));
-        _showRepositoryMock
-            .Setup(x => x.GetLowestRatedMedia(5))
-            .ReturnsAsync(shows.Where(x => x.CommunityRating != null).OrderBy(x => x.CommunityRating));
-        _showRepositoryMock
-            .Setup(x => x.GetLatestAddedShows(5))
-            .ReturnsAsync(shows.OrderByDescending(x => x.DateCreated).ToList());
-        _showRepositoryMock
-            .Setup(x => x.GetNewestPremieredMedia(5))
-            .ReturnsAsync(shows.OrderByDescending(x => x.PremiereDate));
-        _showRepositoryMock
-            .Setup(x => x.GetOldestPremieredMedia(5))
-            .ReturnsAsync(shows.OrderBy(x => x.PremiereDate));
-        _showRepositoryMock
-            .Setup(x => x.GetShowsWithMostEpisodes(5))
-            .ReturnsAsync(shows
-                .OrderByDescending(x => x.Seasons.SelectMany(y => y.Episodes).Count())
-                .ToDictionary(x => x, x => x.Seasons.SelectMany(y => y.Episodes).Count()));
-        _showRepositoryMock
             .Setup(x => x.Any())
             .Returns(true);
-        _showRepositoryMock
-            .Setup(x => x.GetGenreChartValues())
-            .ReturnsAsync(shows
-                .SelectMany(x => x.Genres)
-                .GroupBy(x => x.Name)
-                .OrderBy(x => x.Key)
-                .ToDictionary(x => x.Key, x => x.Count())
-            );
-        _showRepositoryMock
-            .Setup(x => x.GetOfficialRatingChartValues())
-            .ReturnsAsync(shows
-                .Select(x => x.OfficialRating)
-                .GroupBy(x => x)
-                .ToDictionary(x => x.Key, x => x.Count()));
-        _showRepositoryMock
-            .Setup(x => x.GetShowStatusCharValues())
-            .ReturnsAsync(shows
-                .Select(x => x.Status)
-                .GroupBy(x => x)
-                .OrderBy(x => x.Key)
-                .ToDictionary(x => x.Key, x => x.Count()));
-        _showRepositoryMock
-            .Setup(x => x.GetCollectedRateChart())
-            .ReturnsAsync(new[] {0.04, 0.26, 0.61});
-        _showRepositoryMock
-            .Setup(x => x.GetPremiereYears())
-            .ReturnsAsync(shows.Select(x => x.PremiereDate).ToList());
-        _showRepositoryMock
-            .Setup(x => x.Count())
-            .ReturnsAsync(shows.Length);
-        _showRepositoryMock
-            .Setup(x => x.GetTotalRunTimeTicks())
-            .ReturnsAsync(shows.Sum(x => x.CumulativeRunTimeTicks ?? 0));
-        _showRepositoryMock
-            .Setup(x => x.GetEpisodeCount(LocationType.Disk))
-            .ReturnsAsync(shows.SelectMany(x => x.Seasons).SelectMany(x => x.Episodes).Count(x => x.LocationType == LocationType.Disk));
-        _showRepositoryMock
-            .Setup(x => x.GetEpisodeCount(LocationType.Virtual))
-            .ReturnsAsync(shows.SelectMany(x => x.Seasons).SelectMany(x => x.Episodes).Count(x => x.LocationType == LocationType.Virtual));
-        _showRepositoryMock
-            .Setup(x => x.GetTotalDiskSpaceUsed())
-            .ReturnsAsync(shows
-                .SelectMany(x => x.Seasons)
-                .SelectMany(x => x.Episodes).Where(x => x.LocationType == LocationType.Disk)
-                .Sum(x => x.MediaSources.Any() ? x.MediaSources.First().SizeInMb : 0d));
-        _showRepositoryMock
-            .Setup(x => x.GetCommunityRatings())
-            .ReturnsAsync(shows.Select(x => x.CommunityRating).ToList());
-        _showRepositoryMock
-            .Setup(x => x.GetShowByIdWithEpisodes(It.IsAny<string>()))
-            .ReturnsAsync(_showOne);
         _showRepositoryMock
             .Setup(x => x.GetShowPage(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(),
                 It.IsAny<Filter[]>()))
@@ -165,46 +87,20 @@ public class ShowServiceTests
             .Setup(x => x.Count(It.IsAny<Filter[]>()))
             .ReturnsAsync(11);
         _showRepositoryMock
-            .Setup(x => x.GetCurrentWatchingCount())
-            .ReturnsAsync(5);
-        _showRepositoryMock
-            .Setup(x => x.GetMostWatchedShows(5))
-            .ReturnsAsync(shows.ToDictionary(x => x, x => x.Genres.Count));
-        _showRepositoryMock
-            .Setup(x => x.GetWatchedPerDayOfWeekChartValues())
-            .ReturnsAsync(new[]
-            {
-                new BarValue<string, int> { Serie = "user1", X = "2", Y = 2},
-                new BarValue<string, int> { Serie = "user1", X = "3", Y = 1},
-                new BarValue<string, int> { Serie = "user2", X = "3", Y = 2},
-            });
-        _showRepositoryMock
-            .Setup(x => x.GetWatchedPerHourOfDayChartValues())
-            .ReturnsAsync(new[]
-            {
-                new BarValue<string, int> { Serie = "user1", X = "10", Y = 2},
-                new BarValue<string, int> { Serie = "user1", X = "11", Y = 1},
-                new BarValue<string, int> { Serie = "user2", X = "10", Y = 2},
-            });
-            
+            .Setup(x => x.GetShowByIdWithEpisodes(It.IsAny<string>()))
+            .ReturnsAsync(_showOne);
+        
         _mediaServerRepositoryMock.Setup(x => x.GetAllLibraries(It.IsAny<LibraryType>()))
             .ReturnsAsync(new List<Library>
             {
                 new LibraryBuilder(0, LibraryType.TvShow).Build(),
                 new LibraryBuilder(1, LibraryType.TvShow).Build(),
             });
-
-        var statisticsServiceMock = new Mock<IStatisticsService>();
-        var configurationServiceMock = new Mock<IConfigurationService>();
-        configurationServiceMock
-            .Setup(x => x.GetLocalTimeZoneInfo())
-            .Returns(TimeZoneInfo.FindSystemTimeZoneById("Europe/Brussels"));
         
+        var statisticsServiceMock = new Mock<IStatisticsService>();
         return new ShowService(_showRepositoryMock.Object, _mediaServerRepositoryMock.Object, statisticsServiceMock.Object);
                 
     }
-
-    #region General
 
     [Fact]
     public async Task GetCollectionsFromDatabase()
@@ -281,430 +177,7 @@ public class ShowServiceTests
             
         _mediaServerRepositoryMock.VerifyNoOtherCalls();
     }
-
-    [Fact]
-    public async Task GetShowCountStat()
-    {
-        var stat = await _subject.GetStatistics();
-
-        stat.Should().NotBeNull();
-        stat.Cards.Should().NotBeNull();
-        stat.Cards.Count(x => x.Title == Constants.Shows.TotalShows).Should().Be(1);
-
-        var card = stat.Cards.First(x => x.Title == Constants.Shows.TotalShows);
-        card.Title.Should().Be(Constants.Shows.TotalShows);
-        card.Value.Should().Be("3");
-    }
-
-    [Fact]
-    public async Task GetTotalEpisodeCount()
-    {
-        var stat = await _subject.GetStatistics();
-
-        stat.Should().NotBeNull();
-        stat.Cards.Should().NotBeNull();
-        stat.Cards.Count(x => x.Title == Constants.Shows.TotalEpisodes).Should().Be(1);
-
-        var card = stat.Cards.First(x => x.Title == Constants.Shows.TotalEpisodes);
-        card.Title.Should().Be(Constants.Shows.TotalEpisodes);
-        card.Value.Should().Be("19");
-    }
-
-    [Fact]
-    public async Task GetTotalMissingEpisodeCount()
-    {
-        var stat = await _subject.GetStatistics();
-
-        stat.Should().NotBeNull();
-        stat.Cards.Should().NotBeNull();
-        stat.Cards.Count(x => x.Title == Constants.Shows.TotalMissingEpisodes).Should().Be(1);
-
-        var card = stat.Cards.First(x => x.Title == Constants.Shows.TotalMissingEpisodes);
-        card.Title.Should().Be(Constants.Shows.TotalMissingEpisodes);
-        card.Value.Should().Be("12");
-    }
-
-    [Fact]
-    public async Task GetCalculatePlayableTime()
-    {
-        var stat = await _subject.GetStatistics();
-
-        stat.Should().NotBeNull();
-        stat.Cards.Should().NotBeNull();
-        stat.Cards.Count(x => x.Title == Constants.Shows.TotalPlayLength).Should().Be(1);
-
-        var card = stat.Cards.First(x => x.Title == Constants.Shows.TotalPlayLength);
-        card.Title.Should().Be(Constants.Shows.TotalPlayLength);
-        card.Value.Should().Be("67|8|41");
-    }
     
-    [Fact]
-    public async Task Get_CurrentWatchingCount()
-    {
-        var stat = await _subject.GetStatistics();
-
-        stat.Should().NotBeNull();
-        stat.Cards.Count(x => x.Title == Constants.Movies.CurrentPlayingCount).Should().Be(1);
-
-        var card = stat.Cards.First(x => x.Title == Constants.Movies.CurrentPlayingCount);
-        card.Should().NotBeNull();
-        card.Title.Should().Be(Constants.Movies.CurrentPlayingCount);
-        card.Value.Should().Be("5");
-    }
-    
-    [Fact]
-    public async Task GetCalculateMostWatchedShows()
-    {
-        var stat = await _subject.GetStatistics();
-
-        stat.Should().NotBeNull();
-        stat.TopCards.Count(x => x.Title == Constants.Shows.MostWatchedShows).Should().Be(1);
-
-        var card = stat.TopCards.First(x => x.Title == Constants.Shows.MostWatchedShows);
-        card.Should().NotBeNull();
-        card.Title.Should().Be(Constants.Shows.MostWatchedShows);
-        card.Unit.Should().Be("#");
-        card.Values[0].Value.Should().Be(_showOne.Genres.Count.ToString());
-        card.Values[0].Label.Should().Be(_showOne.Name);
-        card.UnitNeedsTranslation.Should().Be(false);
-        card.ValueType.Should().Be(ValueType.None);
-    }
-
-    [Fact]
-    public async Task GetHighestRatedShow()
-    {
-        var stat = await _subject.GetStatistics();
-
-        stat.Should().NotBeNull();
-        stat.TopCards.Count(x => x.Title == Constants.Shows.HighestRatedShow).Should().Be(1);
-
-        var card = stat.TopCards.First(x => x.Title == Constants.Shows.HighestRatedShow);
-        card.Should().NotBeNull();
-        card.Title.Should().Be(Constants.Shows.HighestRatedShow);
-        card.Unit.Should().Be("/10");
-        card.Values[0].Value.Should().Be(_showThree.CommunityRating.ToString());
-        card.Values[0].Label.Should().Be(_showThree.Name);
-        card.UnitNeedsTranslation.Should().Be(false);
-        card.ValueType.Should().Be(ValueType.None);
-    }
-
-    [Fact]
-    public async Task GetLowestRatedShow()
-    {
-        var stat = await _subject.GetStatistics();
-
-        stat.Should().NotBeNull();
-        stat.TopCards.Count(x => x.Title == Constants.Shows.LowestRatedShow).Should().Be(1);
-
-        var card = stat.TopCards.First(x => x.Title == Constants.Shows.LowestRatedShow);
-        card.Should().NotBeNull();
-        card.Title.Should().Be(Constants.Shows.LowestRatedShow);
-        card.Unit.Should().Be("/10");
-        card.Values[0].Value.Should().Be(_showTwo.CommunityRating.ToString());
-        card.Values[0].Label.Should().Be(_showTwo.Name);
-        card.UnitNeedsTranslation.Should().Be(false);
-        card.ValueType.Should().Be(ValueType.None);
-    }
-
-    [Fact]
-    public async Task GetOldestPremieredShow()
-    {
-        var stat = await _subject.GetStatistics();
-
-        stat.Should().NotBeNull();
-        stat.TopCards.Count(x => x.Title == Constants.Shows.OldestPremiered).Should().Be(1);
-
-        var card = stat.TopCards.First(x => x.Title == Constants.Shows.OldestPremiered);
-        card.Should().NotBeNull();
-        card.Title.Should().Be(Constants.Shows.OldestPremiered);
-        card.Unit.Should().Be("COMMON.DATE");
-        card.Values[0].Value.Should().Be(_showTwo.PremiereDate?.ToString("s"));
-        card.Values[0].Label.Should().Be(_showTwo.Name);
-        card.UnitNeedsTranslation.Should().Be(true);
-        card.ValueType.Should().Be(ValueType.Date);
-    }
-
-    [Fact]
-    public async Task GetShowWithMostEpisodes()
-    {
-        var stat = await _subject.GetStatistics();
-
-        stat.Should().NotBeNull();
-        stat.TopCards.Count(x => x.Title == Constants.Shows.MostEpisodes).Should().Be(1);
-
-        var card = stat.TopCards.First(x => x.Title == Constants.Shows.MostEpisodes);
-        card.Should().NotBeNull();
-        card.Title.Should().Be(Constants.Shows.MostEpisodes);
-        card.Unit.Should().Be("#");
-        card.Values[0].Value.Should().Be(_showTwo.Seasons.SelectMany(x => x.Episodes).Count().ToString());
-        card.Values[0].Label.Should().Be(_showTwo.Name);
-        card.UnitNeedsTranslation.Should().Be(false);
-        card.ValueType.Should().Be(ValueType.None);
-    }
-
-    [Fact]
-    public async Task GetLatestAddedShow()
-    {
-        var stat = await _subject.GetStatistics();
-
-        stat.Should().NotBeNull();
-        stat.TopCards.Count(x => x.Title == Constants.Shows.LatestAdded).Should().Be(1);
-
-        var card = stat.TopCards.First(x => x.Title == Constants.Shows.LatestAdded);
-        card.Should().NotBeNull();
-        card.Title.Should().Be(Constants.Shows.LatestAdded);
-        card.Unit.Should().Be("COMMON.DATE");
-        card.Values[0].Value.Should().Be(_showThree.DateCreated?.ToString("s"));
-        card.Values[0].Label.Should().Be(_showThree.Name);
-        card.UnitNeedsTranslation.Should().Be(true);
-        card.ValueType.Should().Be(ValueType.Date);
-    }
-
-    [Fact]
-    public async Task GetNewestPremieredShow()
-    {
-        var stat = await _subject.GetStatistics();
-
-        stat.Should().NotBeNull();
-        stat.TopCards.Count(x => x.Title == Constants.Shows.NewestPremiered).Should().Be(1);
-
-        var card = stat.TopCards.First(x => x.Title == Constants.Shows.NewestPremiered);
-        card.Should().NotBeNull();
-        card.Title.Should().Be(Constants.Shows.NewestPremiered);
-        card.Unit.Should().Be("COMMON.DATE");
-        card.Values[0].Value.Should().Be(_showThree.PremiereDate?.ToString("s"));
-        card.Values[0].Label.Should().Be(_showThree.Name);
-        card.UnitNeedsTranslation.Should().Be(true);
-        card.ValueType.Should().Be(ValueType.Date);
-    }
-
-    [Fact]
-    public async Task GetTotalDiskSize()
-    {
-        var stat = await _subject.GetStatistics();
-
-        stat.Should().NotBeNull();
-        stat.Cards.Count(x => x.Title == Constants.Common.TotalDiskSpace).Should().Be(1);
-
-        var card = stat.Cards.First(x => x.Title == Constants.Common.TotalDiskSpace);
-        card.Should().NotBeNull();
-        card.Title.Should().Be(Constants.Common.TotalDiskSpace);
-        card.Value.Should().Be("1919");
-    }
-
-    #endregion
-
-    #region Charts
-
-    [Fact]
-    public async Task GetGenreChart()
-    {
-        var stat = await _subject.GetStatistics();
-
-        stat.Should().NotBeNull();
-        stat.BarCharts.Should().NotBeNull();
-        stat.BarCharts.Count().Should().Be(5);
-        stat.BarCharts.Any(x => x.Title == Constants.CountPerGenre).Should().BeTrue();
-
-        var graph = stat.BarCharts.Single(x => x.Title == Constants.CountPerGenre);
-        graph.Should().NotBeNull();
-        graph.SeriesCount.Should().Be(1);
-        graph.DataSets.Length.Should().Be(4);
-        TestDataSets(graph.DataSets[0], "Action", 3);
-        TestDataSets(graph.DataSets[1], "Comedy", 2);
-        TestDataSets(graph.DataSets[2], "Drama", 1);
-        TestDataSets(graph.DataSets[3], "War", 1);
-    }
-
-    [Fact]
-    public async Task GetRatingChart()
-    {
-        var showFour = new ShowBuilder(Guid.NewGuid().ToString()).AddCommunityRating(9.3M)
-            .Build();
-        var subject = CreateShowService(_showOne, _showTwo, _showThree, showFour);
-
-        var stat = await subject.GetStatistics();
-
-        stat.Should().NotBeNull();
-        stat.Should().NotBeNull();
-        stat.BarCharts.Count().Should().Be(5);
-        stat.BarCharts.Any(x => x.Title == Constants.CountPerCommunityRating).Should().BeTrue();
-
-        var graph = stat.BarCharts.Single(x => x.Title == Constants.CountPerCommunityRating);
-        graph.Should().NotBeNull();
-        graph.SeriesCount.Should().Be(1);
-        graph.DataSets.Length.Should().Be(21);
-        TestDataSets(graph.DataSets[0], "0", 0);
-        TestDataSets(graph.DataSets[1], 0.5.ToString(CultureInfo.CurrentCulture), 0);
-        TestDataSets(graph.DataSets[2], "1", 0);
-        TestDataSets(graph.DataSets[3], 1.5.ToString(CultureInfo.CurrentCulture), 0);
-        TestDataSets(graph.DataSets[4], "2", 0);
-        TestDataSets(graph.DataSets[5], 2.5.ToString(CultureInfo.CurrentCulture), 0);
-        TestDataSets(graph.DataSets[6], "3", 0);
-        TestDataSets(graph.DataSets[7], 3.5.ToString(CultureInfo.CurrentCulture), 0);
-        TestDataSets(graph.DataSets[8], "4", 0);
-        TestDataSets(graph.DataSets[9], 4.5.ToString(CultureInfo.CurrentCulture), 0);
-        TestDataSets(graph.DataSets[10], "5", 0);
-        TestDataSets(graph.DataSets[11], 5.5.ToString(CultureInfo.CurrentCulture), 0);
-        TestDataSets(graph.DataSets[12], "6", 0);
-        TestDataSets(graph.DataSets[13], 6.5.ToString(CultureInfo.CurrentCulture), 0);
-        TestDataSets(graph.DataSets[14], "7", 0);
-        TestDataSets(graph.DataSets[15], 7.5.ToString(CultureInfo.CurrentCulture), 0);
-        TestDataSets(graph.DataSets[16], "8", 0);
-        TestDataSets(graph.DataSets[17], 8.5.ToString(CultureInfo.CurrentCulture), 2);
-        TestDataSets(graph.DataSets[18], "9", 0);
-        TestDataSets(graph.DataSets[19], 9.5.ToString(CultureInfo.CurrentCulture), 1);
-        TestDataSets(graph.DataSets[20], "UNKNOWN", 1);
-    }
-
-    [Fact]
-    public async Task GetPremiereYearChart()
-    {
-        var showFour = new ShowBuilder(Guid.NewGuid().ToString())
-            .AddPremiereDate(new DateTime(2002, 1, 10)).Build();
-        var subject = CreateShowService(_showOne, _showTwo, _showThree, showFour);
-
-        var stat = await subject.GetStatistics();
-
-        stat.Should().NotBeNull();
-        stat.Should().NotBeNull();
-        stat.BarCharts.Count().Should().Be(5);
-        stat.BarCharts.Any(x => x.Title == Constants.CountPerPremiereYear).Should().BeTrue();
-
-        var graph = stat.BarCharts.Single(x => x.Title == Constants.CountPerPremiereYear);
-        graph.Should().NotBeNull();
-        graph.SeriesCount.Should().Be(1);
-        graph.DataSets.Length.Should().Be(6);
-        TestDataSets(graph.DataSets[0], "1990 - 1994", 1);
-        TestDataSets(graph.DataSets[1], "1995 - 1999", 0);
-        TestDataSets(graph.DataSets[2], "2000 - 2004", 2);
-        TestDataSets(graph.DataSets[3], "2005 - 2009", 0);
-        TestDataSets(graph.DataSets[4], "2010 - 2014", 0);
-        TestDataSets(graph.DataSets[5], "2015 - 2019", 1);
-    }
-
-    [Fact]
-    public async Task GetCollectedRateChart()
-    {
-        var showFour = new ShowBuilder(Guid.NewGuid().ToString()).ClearEpisodes().Build();
-        var subject = CreateShowService(_showOne, _showTwo, _showThree, showFour);
-        var stat = await subject.GetStatistics();
-
-        stat.Should().NotBeNull();
-        stat.Should().NotBeNull();
-        stat.BarCharts.Count().Should().Be(5);
-        stat.BarCharts.Any(x => x.Title == Constants.CountPerCollectedPercentage).Should().BeTrue();
-
-        var graph = stat.BarCharts.Single(x => x.Title == Constants.CountPerCollectedPercentage);
-        graph.Should().NotBeNull();
-        graph.SeriesCount.Should().Be(1);
-        graph.DataSets.Length.Should().Be(20);
-        TestDataSets(graph.DataSets[0], "0% - 4%", 1);
-        TestDataSets(graph.DataSets[1], "5% - 9%", 0);
-        TestDataSets(graph.DataSets[2], "10% - 14%", 0);
-        TestDataSets(graph.DataSets[3], "15% - 19%", 0);
-        TestDataSets(graph.DataSets[4], "20% - 24%", 0);
-        TestDataSets(graph.DataSets[5], "25% - 29%", 1);
-        TestDataSets(graph.DataSets[6], "30% - 34%", 0);
-        TestDataSets(graph.DataSets[7], "35% - 39%", 0);
-        TestDataSets(graph.DataSets[8], "40% - 44%", 0);
-        TestDataSets(graph.DataSets[9], "45% - 49%", 0);
-        TestDataSets(graph.DataSets[10], "50% - 54%", 0);
-        TestDataSets(graph.DataSets[11], "55% - 59%", 0);
-        TestDataSets(graph.DataSets[12], "60% - 64%", 1);
-        TestDataSets(graph.DataSets[13], "65% - 69%", 0);
-        TestDataSets(graph.DataSets[14], "70% - 74%", 0);
-        TestDataSets(graph.DataSets[15], "75% - 79%", 0);
-        TestDataSets(graph.DataSets[16], "80% - 84%", 0);
-        TestDataSets(graph.DataSets[17], "85% - 89%", 0);
-        TestDataSets(graph.DataSets[18], "90% - 94%", 0);
-        TestDataSets(graph.DataSets[19], "95% - 99%", 0);
-    }
-
-    private static void TestDataSets(SimpleChartData set, string label, int value)
-    {
-        set.Label.Should().Be(label);
-        set.Value.Should().Be(value);
-    }
-
-    [Fact]
-    public async Task GetOfficialRatingChart()
-    {
-        var stat = await _subject.GetStatistics();
-
-        stat.Should().NotBeNull();
-        stat.Should().NotBeNull();
-        stat.BarCharts.Count().Should().Be(5);
-        stat.BarCharts.Any(x => x.Title == Constants.CountPerOfficialRating).Should().BeTrue();
-
-        var graph = stat.BarCharts.Single(x => x.Title == Constants.CountPerOfficialRating);
-        graph.Should().NotBeNull();
-        graph.SeriesCount.Should().Be(1);
-        graph.DataSets.Length.Should().Be(2);
-        TestDataSets(graph.DataSets[0], "R", 2);
-        TestDataSets(graph.DataSets[1], "TV-16", 1);
-    }
-
-    [Fact]
-    public async Task GetShowStateChart()
-    {
-        var stat = await _subject.GetStatistics();
-
-        stat.Should().NotBeNull();
-        stat.Should().NotBeNull();
-        stat.PieCharts.Count().Should().Be(1);
-        stat.PieCharts.Any(x => x.Title == Constants.Shows.ShowStatusChart).Should().BeTrue();
-
-        var graph = stat.PieCharts.Single(x => x.Title == Constants.Shows.ShowStatusChart);
-        graph.Should().NotBeNull();
-        graph.SeriesCount.Should().Be(1);
-        graph.DataSets.Length.Should().Be(2);
-        TestDataSets(graph.DataSets[0], "Continuing", 2);
-        TestDataSets(graph.DataSets[1], "Ended", 1);
-    }
-
-    #endregion
-    
-    #region ComplexCarts
-
-    [Fact]
-    public async Task GetWatchedPerHourOfDayChartValues()
-    {
-        var stat = await _subject.GetStatistics();
-
-        stat.Should().NotBeNull();
-        stat.ComplexCharts.Should().NotBeNull();
-        stat.ComplexCharts.Count().Should().Be(2);
-        stat.ComplexCharts.Any(x => x.Title == Constants.Shows.WatchedPerHour).Should().BeTrue();
-
-        var graph = stat.ComplexCharts.Single(x => x.Title == Constants.Shows.WatchedPerHour);
-        graph.Should().NotBeNull();
-        graph.Series.Length.Should().Be(2);
-        graph.Series[0].Should().Be("user1");
-        graph.Series[1].Should().Be("user2");
-        graph.DataSets.Should().Be("[{\"label\":\"0001-01-01T00:00:00\"},{\"label\":\"0001-01-01T01:00:00\"},{\"label\":\"0001-01-01T02:00:00\"},{\"label\":\"0001-01-01T03:00:00\"},{\"label\":\"0001-01-01T04:00:00\"},{\"label\":\"0001-01-01T05:00:00\"},{\"label\":\"0001-01-01T06:00:00\"},{\"label\":\"0001-01-01T07:00:00\"},{\"label\":\"0001-01-01T08:00:00\"},{\"label\":\"0001-01-01T09:00:00\"},{\"label\":\"0001-01-01T10:00:00\"},{\"label\":\"0001-01-01T11:00:00\",\"user1\":2,\"user2\":2},{\"label\":\"0001-01-01T12:00:00\",\"user1\":1},{\"label\":\"0001-01-01T13:00:00\"},{\"label\":\"0001-01-01T14:00:00\"},{\"label\":\"0001-01-01T15:00:00\"},{\"label\":\"0001-01-01T16:00:00\"},{\"label\":\"0001-01-01T17:00:00\"},{\"label\":\"0001-01-01T18:00:00\"},{\"label\":\"0001-01-01T19:00:00\"},{\"label\":\"0001-01-01T20:00:00\"},{\"label\":\"0001-01-01T21:00:00\"},{\"label\":\"0001-01-01T22:00:00\"},{\"label\":\"0001-01-01T23:00:00\"}]");
-    }
-    
-    [Fact]
-    public async Task GetWatchedPerDayOfWeekChartValues()
-    {
-        var stat = await _subject.GetStatistics();
-
-        stat.Should().NotBeNull();
-        stat.ComplexCharts.Should().NotBeNull();
-        stat.ComplexCharts.Count().Should().Be(2);
-        stat.ComplexCharts.Any(x => x.Title == Constants.Shows.DaysOfTheWeek).Should().BeTrue();
-
-        var graph = stat.ComplexCharts.Single(x => x.Title == Constants.Shows.DaysOfTheWeek);
-        graph.Should().NotBeNull();
-        graph.Series.Length.Should().Be(2);
-        graph.Series[0].Should().Be("user1");
-        graph.Series[1].Should().Be("user2");
-        graph.DataSets.Should().Be("[{\"label\":\"1\"},{\"label\":\"2\",\"user1\":2},{\"label\":\"3\",\"user1\":1,\"user2\":2},{\"label\":\"4\"},{\"label\":\"5\"},{\"label\":\"6\"},{\"label\":\"0\"}]");
-    }
-    
-    #endregion
-
     [Fact]
     public void TypeIsPresent_Should_Return_True()
     {
