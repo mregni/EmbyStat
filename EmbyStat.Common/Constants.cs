@@ -159,6 +159,7 @@ public static class Constants
         public static Guid ShowTotalWatchedEpisodeCount => new("87d8ff0b-55a1-46b2-b6f9-b632d7121961");
         public static Guid ShowTotalWatchedTime => new("1f33ccfe-1658-4679-9cf2-b4b689d3f381");
         public static Guid ShowTotalActorCount => new("58cbdff6-2444-41ca-9fbb-a82e18f447a9");
+        public static Guid ShowCurrentWatchingCount => new("2444dff6-58cb-41ca-9fbb-a82e18f447a9");
         public static Guid ShowNewestPremieredList => new("663b55b4-f83e-40ec-bc15-a025d72b730d");
         public static Guid ShowOldestPremieredList => new("03620638-bb90-416b-a232-f2e0608befc6");
         public static Guid ShowLatestAddedList => new("b6068b78-bdf2-47be-a154-b88b4ce04fc3");

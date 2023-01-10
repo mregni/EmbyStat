@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Cards;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Movies;
@@ -41,7 +42,8 @@ public class MovieControllerTests
             new() {Title = "The lord of the rings"}
         };
 
-        var movieStatistics = new MovieStatistics
+        var page = new StatisticPageBuilder().Build();
+        var movieStatistics = new MovieStatistics(page)
         {
             TopCards = _movieCards
         };

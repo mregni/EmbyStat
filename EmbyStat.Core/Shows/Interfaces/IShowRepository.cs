@@ -11,7 +11,6 @@ public interface IShowRepository : IMediaRepository
 {
     #region Shows
     Task UpsertShows(IEnumerable<Show> shows);
-    Task<IEnumerable<Show>> GetAllShowsWithEpisodes();
     Task<Show> GetShowByIdWithEpisodes(string showId);
     Task<Dictionary<Show, int>> GetShowsWithMostEpisodes(int count);
     Task<IEnumerable<Show>> GetShowPage(int skip, int take, string sortField, string sortOrder, IEnumerable<Filter> filters);
@@ -40,6 +39,6 @@ public interface IShowRepository : IMediaRepository
     IEnumerable<LabelValuePair> CalculateGenreFilterValues();
     Task<int> GetTotalWatchedEpisodeCount();
     Task<long> GetPlayedRuntime();
-    Task<int> GetCurrentWatchingCount();
     Task<List<Show>> GetLatestAddedShows(int count);
+    Task<int> GetCurrentWatchingCount();
 }

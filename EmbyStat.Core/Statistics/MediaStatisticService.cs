@@ -165,7 +165,7 @@ public abstract class MediaStatisticService : StatisticHelper
                 .OrderBy(x => x["label"].Value<DateTime>())
                 .ToArray();
 
-            return new MultiChart
+            return new ComplexChart
             {
                 Title = title,
                 DataSets = JsonConvert.SerializeObject(chartData),
@@ -220,7 +220,7 @@ public abstract class MediaStatisticService : StatisticHelper
                 chartData.Add(tempSerie);
             }
 
-            return new MultiChart
+            return new ComplexChart
                 {
                     Title = title,
                     DataSets = JsonConvert.SerializeObject(chartData),

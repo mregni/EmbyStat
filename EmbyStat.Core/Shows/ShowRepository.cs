@@ -53,11 +53,6 @@ public class ShowRepository : IShowRepository
         return await ExecuteListQueryWithLibraryIds<Show>(query);
     }
 
-    public Task<List<Show>> GetLatestAddedMedia(int count)
-    {
-        return _context.Shows.GetLatestAddedMedia(count);
-    }
-
     public async Task<Dictionary<string, int>> GetGenreChartValues()
     {
         var query = $@"SELECT g.Name G, COUNT(*) Count
@@ -254,15 +249,6 @@ LIMIT {count}";
             .SumAsync(x => x.EndPositionTicks - x.StartPositionTicks);
     }
 
-    public Task<int> GetCurrentWatchingCount()
-    {
-        return _context
-            .MediaPlays
-            .AsNoTracking()
-            .Where(x => x.Type == "Episode" && x.Stop == null)
-            .CountAsync();
-    }
-
     public Task<List<Show>> GetLatestAddedShows(int count)
     {
         return _context.Shows.GetLatestAddedMedia(count);
@@ -378,27 +364,6 @@ VALUES (@Id,@Codec,@DisplayTitle,@IsDefault,@Language,@EpisodeId)";
                 await transaction.CommitAsync();
             }
         }
-    }
-
-    public async Task<IEnumerable<Show>> GetAllShowsWithEpisodes()
-    {
-        var query = ShowExtensions.GenerateFullShowQuery();
-        
-        _logger.LogDebug("{Query}", query);
-        await using var connection = _sqliteBootstrap.CreateConnection();
-        await connection.OpenAsync();
-
-        var list = await connection.QueryAsync<Show, Season, Episode, Show>(query, (s, se, e) =>
-        {
-            s.Seasons ??= new List<Season>();
-            se.Episodes ??= new List<Episode>();
-
-            se.Episodes.AddIfNotNull(e);
-            s.Seasons.AddIfNotNull(se);
-            return s;
-        });
-
-        return MapShows(list);
     }
 
     public async Task<Show> GetShowByIdWithEpisodes(string showId)
@@ -603,6 +568,15 @@ GROUP BY mp.UserId, msu.Name, STRFTIME('%w',mp.Start)
         await using var connection = _sqliteBootstrap.CreateConnection();
         await connection.OpenAsync();
         return await connection.QueryAsync<BarValue<string,int>>(query);
+    }
+    
+    public Task<int> GetCurrentWatchingCount()
+    {
+        return _context
+            .MediaPlays
+            .AsNoTracking()
+            .Where(x => x.Type == "Episode" && x.Stop == null)
+            .CountAsync();
     }
 
     #endregion

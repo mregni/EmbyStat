@@ -1,6 +1,6 @@
 ﻿namespace EmbyStat.Common.Models.Charts;
 
-public class MultiChart
+public class ComplexChart
 {
     public string Title { get; set; }
     public string DataSets { get; set; }

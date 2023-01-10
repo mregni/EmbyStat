@@ -45,30 +45,13 @@ public class MovieService : IMovieService
 
         if (page != null)
         {
-            return new MovieStatistics
+            var currentWatchingCard = page.PageCards
+                .SingleOrDefault(x => x.StatisticCard.UniqueType == Statistic.MovieTotalCurrentWatchingCount);
+            if (currentWatchingCard != null)
             {
-                Cards = page.PageCards
-                    .Where(x => x.StatisticCard.CardType == StatisticCardType.Card)
-                    .OrderBy(x => x.Order)
-                    .Select(x => JsonConvert.DeserializeObject<Card>(x.StatisticCard.Data))
-                    .Where(x => x != null)!,
-                TopCards = page.PageCards
-                    .Where(x => x.StatisticCard.CardType == StatisticCardType.TopCard)
-                    .OrderBy(x => x.Order)
-                    .Select(x => JsonConvert.DeserializeObject<TopCard>(x.StatisticCard.Data))
-                    .Where(x => x != null)!,
-                Charts = page.PageCards
-                    .Where(x => x.StatisticCard.CardType == StatisticCardType.BarChart)
-                    .OrderBy(x => x.Order)
-                    .Select(x => JsonConvert.DeserializeObject<Chart>(x.StatisticCard.Data))
-                    .Where(x => x != null)!,
-                ComplexCharts = page.PageCards
-                    .Where(x => x.StatisticCard.CardType == StatisticCardType.ComplexChart)
-                    .OrderBy(x => x.Order)
-                    .Select(x => JsonConvert.DeserializeObject<MultiChart>(x.StatisticCard.Data))
-                    .Where(x => x != null)!
-            };
-            //TODO => Current watching count moet nog worden opgehaald terug.
+                await _statisticsService.CalculateCard(currentWatchingCard.StatisticCard);
+            }
+            return new MovieStatistics(page);
         }
 
         throw new NotFoundException($"Page {Constants.StatisticPageIds.MoviePage} is not found");

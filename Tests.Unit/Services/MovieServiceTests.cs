@@ -4,10 +4,13 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Exceptions;
+using EmbyStat.Common.Extensions;
 using EmbyStat.Common.Models.Charts;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Helpers;
 using EmbyStat.Common.Models.Entities.Movies;
+using EmbyStat.Common.Models.Entities.Statistics;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Configuration.Interfaces;
 using EmbyStat.Core.MediaServers.Interfaces;
@@ -30,6 +33,7 @@ public class MovieServiceTests
     private readonly Movie _movieOne;
     private readonly Mock<IMovieRepository> _movieRepositoryMock;
     private readonly Mock<IMediaServerRepository> _mediaServerRepositoryMock;
+    private readonly Mock<IStatisticsService> _statisticsService;
 
     public MovieServiceTests()
     {
@@ -37,7 +41,8 @@ public class MovieServiceTests
 
         _movieRepositoryMock = new Mock<IMovieRepository>();
         _mediaServerRepositoryMock = new Mock<IMediaServerRepository>();
-
+        _statisticsService = new Mock<IStatisticsService>();
+        
         _movieOne = new MovieBuilder(Guid.NewGuid().ToString())
             .AddCommunityRating(1.7M)
             .AddOfficialRating("R")
@@ -91,6 +96,9 @@ public class MovieServiceTests
         _movieRepositoryMock
             .Setup(x => x.GetById(It.IsAny<string>()))
             .ReturnsAsync(_movieOne);
+        _movieRepositoryMock
+            .Setup(x => x.Any())
+            .Returns(true);
         _mediaServerRepositoryMock.Setup(x => x.GetAllLibraries(It.IsAny<LibraryType>()))
             .ReturnsAsync(new List<Library>
             {
@@ -98,9 +106,8 @@ public class MovieServiceTests
                 new LibraryBuilder(1, LibraryType.Movies).Build(),
             });
             
-        var statisticServiceMock = new Mock<IStatisticsService>();
         return new MovieService(_movieRepositoryMock.Object, configurationService.Object, 
-            _mediaServerRepositoryMock.Object, statisticServiceMock.Object);
+            _mediaServerRepositoryMock.Object, _statisticsService.Object);
     }
 
     [Fact]
@@ -179,5 +186,113 @@ public class MovieServiceTests
         _mediaServerRepositoryMock.VerifyNoOtherCalls();
             
         _movieRepositoryMock.VerifyNoOtherCalls();
+    }
+    
+    [Fact]
+    public void TypeIsPresent_Should_Return_True()
+    {
+        var result = _subject.TypeIsPresent();
+        result.Should().BeTrue();
+
+        _movieRepositoryMock.Verify(x => x.Any(), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetStatistics_Should_Find_Statistics()
+    {
+        var configurationServiceMock = new Mock<IConfigurationService>();
+
+        var id = Constants.StatisticPageIds.MoviePage;
+        _statisticsService
+            .Setup(x => x.GetPage(id))
+            .ReturnsAsync(new StatisticPageBuilder().UseMovieCard(false).Build());
+        
+        var service = CreateMovieService(configurationServiceMock);
+
+        var stats = await service.GetStatistics();
+        stats.Should().NotBeNull();
+        stats.Cards.Count().Should().Be(4);
+        stats.TopCards.Count().Should().Be(2);
+        stats.Charts.Count().Should().Be(2);
+        stats.ComplexCharts.Count().Should().Be(2);
+        
+        _statisticsService.Verify(x => x.GetPage(id), Times.Once());
+        _statisticsService.VerifyNoOtherCalls();
+    }
+    
+    [Fact]
+    public async Task GetStatistics_Should_Find_Statistics_And_Calculate_Live_Stats()
+    {
+        var configurationServiceMock = new Mock<IConfigurationService>();
+
+        var id = Constants.StatisticPageIds.MoviePage;
+        _statisticsService
+            .Setup(x => x.GetPage(id))
+            .ReturnsAsync(new StatisticPageBuilder().UseMovieCard(true).Build());
+        
+        var service = CreateMovieService(configurationServiceMock);
+
+        var stats = await service.GetStatistics();
+        stats.Should().NotBeNull();
+        stats.Cards.Count().Should().Be(5);
+        stats.TopCards.Count().Should().Be(2);
+        stats.Charts.Count().Should().Be(2);
+        stats.ComplexCharts.Count().Should().Be(2);
+        
+        _statisticsService.Verify(x => x.GetPage(id), Times.Once());
+        _statisticsService.Verify(x => x.CalculateCard(It.IsAny<StatisticCard>()), Times.Once());
+        _statisticsService.VerifyNoOtherCalls();
+    }
+    
+    [Fact]
+    public async Task GetStatistics_Should_Calculate_New_Statistics()
+    {
+        var configurationServiceMock = new Mock<IConfigurationService>();
+
+        var id = Constants.StatisticPageIds.MoviePage;
+        _statisticsService
+            .Setup(x => x.GetPage(id))
+            .ReturnsAsync((StatisticPage)null);
+        _statisticsService
+            .Setup(x => x.CalculatePage(id))
+            .ReturnsAsync(new StatisticPageBuilder().UseMovieCard(false).Build());
+        
+        var service = CreateMovieService(configurationServiceMock);
+
+        var stats = await service.GetStatistics();
+        stats.Should().NotBeNull();
+        stats.Cards.Count().Should().Be(4);
+        stats.TopCards.Count().Should().Be(2);
+        stats.Charts.Count().Should().Be(2);
+        stats.ComplexCharts.Count().Should().Be(2);
+        
+        _statisticsService.Verify(x => x.GetPage(id), Times.Once());
+        _statisticsService.Verify(x => x.CalculatePage(id), Times.Once());
+        _statisticsService.VerifyNoOtherCalls();
+    }
+    
+    [Fact]
+    public async Task GetStatistics_Should_Throw_Error()
+    {
+        var configurationServiceMock = new Mock<IConfigurationService>();
+
+        var id = Constants.StatisticPageIds.MoviePage;
+        _statisticsService
+            .Setup(x => x.GetPage(id))
+            .ReturnsAsync((StatisticPage)null);
+        _statisticsService
+            .Setup(x => x.CalculatePage(id))
+            .ReturnsAsync((StatisticPage)null);
+        
+        var service = CreateMovieService(configurationServiceMock);
+
+        await service.Invoking(async y => await service.GetStatistics())
+            .Should()
+            .ThrowAsync<NotFoundException>()
+            .WithMessage($"Page {id} is not found");
+        
+        _statisticsService.Verify(x => x.GetPage(id), Times.Once());
+        _statisticsService.Verify(x => x.CalculatePage(id), Times.Once());
+        _statisticsService.VerifyNoOtherCalls();
     }
 }

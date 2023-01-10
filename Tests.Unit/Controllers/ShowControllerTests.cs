@@ -38,7 +38,8 @@ public class ShowControllerTests
             new LibraryBuilder(2, LibraryType.TvShow).Build()
         };
 
-        var statistics = new ShowStatistics();
+        var page = new StatisticPageBuilder().Build();
+        var statistics = new ShowStatistics(page);
         var showPage = new Page<Show>(new[]
         {
             new ShowBuilder("1").Build()

@@ -5,9 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmbyStat.Common;
 using EmbyStat.Common.Enums;
+using EmbyStat.Common.Exceptions;
 using EmbyStat.Common.Models.Charts;
 using EmbyStat.Common.Models.Entities;
 using EmbyStat.Common.Models.Entities.Shows;
+using EmbyStat.Common.Models.Entities.Statistics;
 using EmbyStat.Common.Models.Query;
 using EmbyStat.Configuration.Interfaces;
 using EmbyStat.Core.Jobs.Interfaces;
@@ -32,11 +34,13 @@ public class ShowServiceTests
 
     private readonly Mock<IShowRepository> _showRepositoryMock;
     private readonly Mock<IMediaServerRepository> _mediaServerRepositoryMock;
+    private readonly Mock<IStatisticsService> _statisticsService;
 
     public ShowServiceTests()
     {
         _showRepositoryMock = new Mock<IShowRepository>();
         _mediaServerRepositoryMock = new Mock<IMediaServerRepository>();
+        _statisticsService = new Mock<IStatisticsService>();
 
         var showOneId = Guid.NewGuid().ToString();
         var showTwoId = Guid.NewGuid().ToString();
@@ -97,8 +101,7 @@ public class ShowServiceTests
                 new LibraryBuilder(1, LibraryType.TvShow).Build(),
             });
         
-        var statisticsServiceMock = new Mock<IStatisticsService>();
-        return new ShowService(_showRepositoryMock.Object, _mediaServerRepositoryMock.Object, statisticsServiceMock.Object);
+        return new ShowService(_showRepositoryMock.Object, _mediaServerRepositoryMock.Object, _statisticsService.Object);
                 
     }
 
@@ -186,23 +189,95 @@ public class ShowServiceTests
 
         _showRepositoryMock.Verify(x => x.Any(), Times.Once);
     }
+    
+        [Fact]
+    public async Task GetStatistics_Should_Find_Statistics()
+    {
+        var id = Constants.StatisticPageIds.ShowPage;
+        _statisticsService
+            .Setup(x => x.GetPage(id))
+            .ReturnsAsync(new StatisticPageBuilder().UseShowCard(false).Build());
+        
+        var service = CreateShowService();
+        var stats = await service.GetStatistics();
+        stats.Should().NotBeNull();
+        stats.Cards.Count().Should().Be(4);
+        stats.TopCards.Count().Should().Be(2);
+        stats.BarCharts.Count().Should().Be(2);
+        stats.PieCharts.Count().Should().Be(1);
+        stats.ComplexCharts.Count().Should().Be(2);
+        
+        _statisticsService.Verify(x => x.GetPage(id), Times.Once());
+        _statisticsService.VerifyNoOtherCalls();
+    }
+    
+    [Fact]
+    public async Task GetStatistics_Should_Find_Statistics_And_Calculate_Live_Stats()
+    {
+        var id = Constants.StatisticPageIds.ShowPage;
+        _statisticsService
+            .Setup(x => x.GetPage(id))
+            .ReturnsAsync(new StatisticPageBuilder().UseShowCard(true).Build());
+        
+        var service = CreateShowService();
 
-    #region People
-
-    //TODO re-enable after show migration
-    //[Fact]
-    //public void GetMostFeaturedActorsPerGenre()
-    //{
-    //    var stat = await _subject.GetStatistics();
-
-    //    stat.People.Should().NotBeNull();
-    //    stat.People.MostFeaturedActorsPerGenreCards.Should().NotBeNull();
-    //    stat.People.MostFeaturedActorsPerGenreCards.Count.Should().Be(4);
-    //    stat.People.MostFeaturedActorsPerGenreCards[0].Title.Should().Be("Action");
-    //    stat.People.MostFeaturedActorsPerGenreCards[1].Title.Should().Be("Comedy");
-    //    stat.People.MostFeaturedActorsPerGenreCards[2].Title.Should().Be("Drama");
-    //    stat.People.MostFeaturedActorsPerGenreCards[3].Title.Should().Be("War");
-    //}
-
-    #endregion
+        var stats = await service.GetStatistics();
+        stats.Should().NotBeNull();
+        stats.Cards.Count().Should().Be(5);
+        stats.TopCards.Count().Should().Be(2);
+        stats.BarCharts.Count().Should().Be(2);
+        stats.PieCharts.Count().Should().Be(1);
+        stats.ComplexCharts.Count().Should().Be(2);
+        
+        _statisticsService.Verify(x => x.GetPage(id), Times.Once());
+        _statisticsService.Verify(x => x.CalculateCard(It.IsAny<StatisticCard>()), Times.Once());
+        _statisticsService.VerifyNoOtherCalls();
+    }
+    
+    [Fact]
+    public async Task GetStatistics_Should_Calculate_New_Statistics()
+    {
+        var id = Constants.StatisticPageIds.ShowPage;
+        _statisticsService
+            .Setup(x => x.GetPage(id))
+            .ReturnsAsync((StatisticPage)null);
+        _statisticsService
+            .Setup(x => x.CalculatePage(id))
+            .ReturnsAsync(new StatisticPageBuilder().UseShowCard(false).Build());
+        
+        var service = CreateShowService();
+        var stats = await service.GetStatistics();
+        stats.Should().NotBeNull();
+        stats.Cards.Count().Should().Be(4);
+        stats.TopCards.Count().Should().Be(2);
+        stats.BarCharts.Count().Should().Be(2);
+        stats.PieCharts.Count().Should().Be(1);
+        stats.ComplexCharts.Count().Should().Be(2);
+        
+        _statisticsService.Verify(x => x.GetPage(id), Times.Once());
+        _statisticsService.Verify(x => x.CalculatePage(id), Times.Once());
+        _statisticsService.VerifyNoOtherCalls();
+    }
+    
+    [Fact]
+    public async Task GetStatistics_Should_Throw_Error()
+    {
+        var id = Constants.StatisticPageIds.ShowPage;
+        _statisticsService
+            .Setup(x => x.GetPage(id))
+            .ReturnsAsync((StatisticPage)null);
+        _statisticsService
+            .Setup(x => x.CalculatePage(id))
+            .ReturnsAsync((StatisticPage)null);
+        
+        var service = CreateShowService();
+        await service.Invoking(async y => await service.GetStatistics())
+            .Should()
+            .ThrowAsync<NotFoundException>()
+            .WithMessage($"Page {id} is not found");
+        
+        _statisticsService.Verify(x => x.GetPage(id), Times.Once());
+        _statisticsService.Verify(x => x.CalculatePage(id), Times.Once());
+        _statisticsService.VerifyNoOtherCalls();
+    }
 }

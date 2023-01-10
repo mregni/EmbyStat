@@ -797,7 +797,7 @@ public class MovieStatisticServiceTests
         var result = await service.CalculateStatistic(StatisticCardType.ComplexChart, Statistic.MovieWatchedPerDayOfWeekChart);
 
         result.Should().NotBeNullOrWhiteSpace();
-        var graph = JsonConvert.DeserializeObject<MultiChart>(result);
+        var graph = JsonConvert.DeserializeObject<ComplexChart>(result);
         graph.Should().NotBeNull();
         graph.Title.Should().Be(Constants.Movies.DaysOfTheWeek);
         graph.Series.Length.Should().Be(2);
@@ -835,7 +835,7 @@ public class MovieStatisticServiceTests
         var result = await service.CalculateStatistic(StatisticCardType.ComplexChart, Statistic.MovieWatchedPerHourOfDayChart);
 
         result.Should().NotBeNullOrWhiteSpace();
-        var graph = JsonConvert.DeserializeObject<MultiChart>(result);
+        var graph = JsonConvert.DeserializeObject<ComplexChart>(result);
         graph.Should().NotBeNull();
         graph.Title.Should().Be(Constants.Movies.WatchedPerHour);
         graph.Series.Length.Should().Be(2);

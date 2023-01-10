@@ -28,7 +28,7 @@ public class MediaServerRepository : IMediaServerRepository
 
     #region MediaServer Status
 
-    public Task<MediaServerStatus> GetEmbyStatus()
+    public Task<MediaServerStatus?> GetEmbyStatus()
     {
         return _context.MediaServerStatus
             .AsNoTracking()
@@ -80,7 +80,7 @@ public class MediaServerRepository : IMediaServerRepository
 
     #region MediaServer Server Info
 
-    public Task<MediaServerInfo> GetServerInfo()
+    public Task<MediaServerInfo?> GetServerInfo()
     {
         return _context.MediaServerInfo
             .AsNoTracking()

@@ -59,5 +59,6 @@ public enum Statistic
     EpisodeWatchedPerHourOfDayChart = 47,
     EpisodeWatchedPerDayOfWeekChart = 48,
     
-    ShowStateChart = 49
+    ShowStateChart = 49,
+    ShowTotalCurrentWatchingCount = 50
 }

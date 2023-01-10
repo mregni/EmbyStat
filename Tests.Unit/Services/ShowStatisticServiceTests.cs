@@ -365,6 +365,33 @@ public class ShowStatisticServiceTests
 
         _configurationServiceMock.VerifyNoOtherCalls();
     }
+    
+    [Fact]
+    public async Task CalculateTotalCurrentWatchingCount_Should_Calculate()
+    {
+        void Registrations()
+        {
+            _showRepositoryMock
+                .Setup(x => x.GetCurrentWatchingCount())
+                .ReturnsAsync(2);
+        }
+
+        var service = CreateService(Registrations);
+        var result = await service.CalculateStatistic(StatisticCardType.Card, Statistic.ShowTotalCurrentWatchingCount);
+
+        result.Should().NotBeNullOrWhiteSpace();
+        var obj = JsonConvert.DeserializeObject<Card>(result);
+        obj.Should().NotBeNull();
+        obj.Icon.Should().Be(Constants.Icons.PlayRoundedIcon);
+        obj.Title.Should().Be(Constants.Shows.CurrentPlayingCount);
+        obj.Type.Should().Be(CardType.Text);
+        obj.Value.Should().Be("2");
+
+        _showRepositoryMock.Verify(x => x.GetCurrentWatchingCount(), Times.Once);
+        _showRepositoryMock.VerifyNoOtherCalls();
+
+        _configurationServiceMock.VerifyNoOtherCalls();
+    }
 
     [Fact]
     public async Task CalculateNewestPremieredShow_Should_Calculate()
@@ -863,7 +890,7 @@ public class ShowStatisticServiceTests
         var result = await service.CalculateStatistic(StatisticCardType.ComplexChart, Statistic.EpisodeWatchedPerDayOfWeekChart);
 
         result.Should().NotBeNullOrWhiteSpace();
-        var graph = JsonConvert.DeserializeObject<MultiChart>(result);
+        var graph = JsonConvert.DeserializeObject<ComplexChart>(result);
         graph.Should().NotBeNull();
         graph.Title.Should().Be(Constants.Shows.DaysOfTheWeek);
         graph.Series.Length.Should().Be(2);
@@ -901,7 +928,7 @@ public class ShowStatisticServiceTests
         var result = await service.CalculateStatistic(StatisticCardType.ComplexChart, Statistic.EpisodeWatchedPerHourOfDayChart);
 
         result.Should().NotBeNullOrWhiteSpace();
-        var graph = JsonConvert.DeserializeObject<MultiChart>(result);
+        var graph = JsonConvert.DeserializeObject<ComplexChart>(result);
         graph.Should().NotBeNull();
         graph.Title.Should().Be(Constants.Shows.WatchedPerHour);
         graph.Series.Length.Should().Be(2);

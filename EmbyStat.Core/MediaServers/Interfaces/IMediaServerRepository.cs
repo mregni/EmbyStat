@@ -8,7 +8,7 @@ namespace EmbyStat.Core.MediaServers.Interfaces;
 public interface IMediaServerRepository
 {
     #region MediaServer Status
-    Task<MediaServerStatus> GetEmbyStatus();
+    Task<MediaServerStatus?> GetEmbyStatus();
     Task IncreaseMissedPings();
     Task ResetMissedPings();
     #endregion
@@ -20,7 +20,7 @@ public interface IMediaServerRepository
     #endregion
 
     #region MediaServer Server Info
-    Task<MediaServerInfo> GetServerInfo();
+    Task<MediaServerInfo?> GetServerInfo();
     Task DeleteAndInsertServerInfo(MediaServerInfo entity);
     Task DeleteServerInfo();
     #endregion

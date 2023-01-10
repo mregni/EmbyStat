@@ -60,6 +60,7 @@ public class ShowStatisticService : MediaStatisticService, IShowStatisticsServic
             Statistic.ShowTotalWatchedEpisodeCount => CalculateWatchedEpisodeCount(),
             Statistic.ShowTotalWatchedTime => CalculateTotalWatchedTime(),
             Statistic.ShowTotalActorCount => TotalPersonTypeCount(PersonType.Actor, Constants.Common.TotalActors),
+            Statistic.ShowTotalCurrentWatchingCount => CalculateTotalCurrentWatchingCount(),
             _ => Task.FromResult((string) null!)
         };
     }
@@ -220,6 +221,12 @@ public class ShowStatisticService : MediaStatisticService, IShowStatisticsServic
                 Type = CardType.Text
             }.BuildJson();
         }, $"Calculate total {type} count failed::");
+    }
+    
+    private Task<string> CalculateTotalCurrentWatchingCount()
+    {
+        var watchingValues = _showRepository.GetCurrentWatchingCount;
+        return GetCurrentWatchingCount(watchingValues, Constants.Shows.CurrentPlayingCount);
     }
 
     #endregion

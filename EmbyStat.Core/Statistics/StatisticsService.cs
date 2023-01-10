@@ -49,6 +49,11 @@ public class StatisticsService : IStatisticsService
         return _statisticsRepository.GetPage(id);
     }
 
+    public Task CalculateCard(StatisticCard card)
+    {
+        return CalculateStatistic(card);
+    }
+
     private async Task CalculateStatistic(StatisticCard card)
     {
         string? data = null;
