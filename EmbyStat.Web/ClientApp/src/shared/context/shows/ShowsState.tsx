@@ -9,16 +9,21 @@ export const ShowsContext = createContext<LibraryContextProps<ShowStatistics>>(n
 
 export const useShowsContext = (): LibraryContextProps<ShowStatistics> => {
   const [loaded, setLoaded] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [statistics, setStatistics] = useState<ShowStatistics>(null!);
   const [activeFilters, setActiveFilters] = useState<ActiveFilter[]>([]);
   const [mediaPresent, setMediaPresent] = useState(false);
 
 
   const load = async (): Promise<void> => {
-    const stats = await getStatistics();
-    setStatistics(stats);
-    const present = await areShowsPresent();
-    setMediaPresent(present);
+    if (!loading && !loaded) {
+      setLoading(true);
+      const stats = await getStatistics();
+      setStatistics(stats);
+      const present = await areShowsPresent();
+      setMediaPresent(present);
+      setLoading(false);
+    }
   };
 
   const addFilter = (filter: ActiveFilter) => {
