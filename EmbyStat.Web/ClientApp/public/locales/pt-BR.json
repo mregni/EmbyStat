@@ -21,7 +21,7 @@
     "BITDEPTH": "Profundidade de bits",
     "CANCEL": "Cancelar",
     "CODEC": "Codec",
-    "COLLECTEDPERCENTAGE": "Amount collected",
+    "COLLECTEDPERCENTAGE": "Valores Coletados",
     "COMMUNITYRATING": "Avaliações da Comunidade",
     "CONTAINER": "Formato",
     "COUNT": "Quantidade",
@@ -48,7 +48,7 @@
     "HTTPPORT": "Porta HTTP",
     "HTTPSPORT": "Porta HTTPS",
     "ID": "ID",
-    "ISDEFAULT": "is default",
+    "ISDEFAULT": "é padrão",
     "LINKS": "Links",
     "LIST": "Lista",
     "MIN": "mínimo",
@@ -59,8 +59,8 @@
     "NUMBERS": "Estatísticas",
     "OFFICIALRATING": "Avaliação oficial",
     "OS": "Sistema operacional",
-    "OTHER": "Other",
-    "PATHS": "Paths",
+    "OTHER": "Outro",
+    "PATHS": "Caminhos",
     "PIXELS": "px",
     "PREMIEREDATE": "Data de estreia",
     "PROTOCOL": "Protocolo",
@@ -90,7 +90,7 @@
     "VERSION": "Versão",
     "VIDEORANGE": "Intervalo de vídeo",
     "WIDTH": "Largura",
-    "NEVER": "Never"
+    "NEVER": "Nunca"
   },
   "DIALOGS": {
     "EDIT_TRIGGER": {
@@ -98,8 +98,8 @@
       "FORMAT_ERROR": "Dado o cron string está em um formato errado. Verifique <a href=\"https://crontab.guru/\" target=\"_blank\">aqui</a> para regras de formatação. Apenas números, espaços, *, / e - são permitidos."
     },
     "MOVIEJOBRUNNING": {
-      "BODY": "Movie job is running, please wait until it is finished",
-      "TITLE": "Movie job running"
+      "BODY": "A Sincronização de filmes está em execução, aguarde até que seja concluída",
+      "TITLE": "Sincronização em progresso"
     },
     "NOMOVIETYPEFOUND": {
       "BODY": "Não conseguimos encontrar nenhum filme no banco de dados do EmbyStat. Se você tiver filmes no {{type}}, tente iniciar uma nova tarefa de sincronização de mídia.",
