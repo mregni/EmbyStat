@@ -110,8 +110,8 @@
       "TITLE": "Nenhum grupo encontrado"
     },
     "SHOWJOBRUNNING": {
-      "BODY": "Show job is running, please wait until it is finished",
-      "TITLE": "Show job running"
+      "BODY": "A Sincronização de Séries está em execução, aguarde até que seja concluída",
+      "TITLE": "Sincronização de Séries em progresso"
     }
   },
   "FILTERS": {
@@ -126,13 +126,13 @@
       "EQUAL": "é igual a",
       "HAS": "tem",
       "HASNO": "não tem",
-      "HASNONE": "has none",
-      "IS": "is",
-      "ISNOT": "is not",
-      "ISNULL": "is null",
+      "HASNONE": "não tem nenhum",
+      "IS": "é",
+      "ISNOT": "não é",
+      "ISNULL": "é nulo",
       "ISZERO": "é 0",
       "LARGER": "é maior que",
-      "LONGER": "is longer then",
+      "LONGER": "é maior que",
       "NOTCONTAINS": "does not contain",
       "SHORTER": "is shorter then",
       "SMALLER": "is smaller then",
