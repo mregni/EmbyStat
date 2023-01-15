@@ -8,8 +8,8 @@
     "REQUESTFEATURE": "请求功能",
     "SERVERINFO": "服务器信息",
     "THANKS": {
-      "MISSINGNAME": "If your name is missing from this list, send me a message on Crowdin!",
-      "TEXT": "A big thanks to the following people for translating the app in their native language or helping to test the application:",
+      "MISSINGNAME": "如果此列表中没有您的名字，请在 Crowdin 上给我发消息！",
+      "TEXT": "非常感谢以下人员翻译本应用或帮助测试应用程序：",
       "TITLE": "谢谢"
     }
   },
@@ -132,11 +132,11 @@
       "ISNULL": "空的",
       "ISZERO": "是 0",
       "LARGER": "比",
-      "LONGER": "is longer then",
-      "NOTCONTAINS": "does not contain",
-      "SHORTER": "is shorter then",
-      "SMALLER": "is smaller then",
-      "STARTSWITH": "starts with"
+      "LONGER": "如果长于就",
+      "NOTCONTAINS": "不包含",
+      "SHORTER": "如果短于就",
+      "SMALLER": "如果小于就",
+      "STARTSWITH": "以...为开头"
     },
     "TITLES": {
       "CONTAINER": "容器",
@@ -150,8 +150,8 @@
   },
   "FORMLABELS": {
     "CRON": "Cron 字符串",
-    "FIELD": "Field",
-    "OPERATION": "Operation"
+    "FIELD": "字段",
+    "OPERATION": "操作"
   },
   "JOB": {
     "BUTFAILED": "但之后失败了",
@@ -204,16 +204,16 @@
     "HIGHESTRATED": "评分最高",
     "LATESTADDED": "最近添加",
     "LOADER": "加载电影统计",
-    "LOADINGLIST": "Loading movie list",
+    "LOADINGLIST": "加载电影列表中",
     "LONGEST": "最长的",
     "LOWESTRATED": "评分最低",
-    "MOSTWATCHED": "Most watched",
+    "MOSTWATCHED": "最多播放",
     "NEWESTPREMIERED": "最新首映",
     "OLDESTPREMIERED": "最早首映",
     "SHORTEST": "最短",
     "TOTALMOVIES": "电影总数",
     "TOTALPLAYLENGTH": "总可观看时间",
-    "TOTALWATCHED": "Total watched movies"
+    "TOTALWATCHED": "观看电影总数"
   },
   "PAGINATION": {
     "NEXTPAGE": "下一页",
@@ -221,7 +221,7 @@
     "ROWSPERPAGE": "每页行数"
   },
   "SERVER": {
-    "ACTIVEDEVICES": "ACtive devices",
+    "ACTIVEDEVICES": "活动设备",
     "AUTORUNSUPPORT": "Supports auto run at startup",
     "CACHEPATH": "Cache path",
     "CANLAUNCHBROWSER": "Can launch browser",
@@ -279,7 +279,7 @@
       "TITLE": "{{type}} settings"
     },
     "MOVIES": {
-      "TITLE": "Movie settings"
+      "TITLE": "电影设置"
     },
     "PASSWORD": {
       "CONTENT": "要更改您的密码，请填写当前密码和新密码两次。",
