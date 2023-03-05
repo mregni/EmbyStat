@@ -16,7 +16,7 @@
   "COMMON": {
     "AND": "和",
     "AUDIO": "音频",
-    "BACK": "后退",
+    "BACK": "返回",
     "BIT": "比特",
     "BITDEPTH": "位深",
     "CANCEL": "取消",
@@ -70,7 +70,7 @@
     "SEASONS": "季数",
     "SELECTVALUE": "选择数值",
     "SHOW": "节目",
-    "SHOWS": "演出",
+    "SHOWS": "节目",
     "SIZE": "文件大小",
     "SIZEINMB": "容量（MB）",
     "STATUS": "状态",
@@ -111,7 +111,7 @@
     },
     "SHOWJOBRUNNING": {
       "BODY": "正在载入剧集信息，请稍候，直到完成",
-      "TITLE": "正在导入剧集信息"
+      "TITLE": "节目库同步任务正在进行中"
     }
   },
   "FILTERS": {
@@ -231,52 +231,52 @@
     "HTTPSSUPPORT": "支持 HTTPS",
     "IDLEDEVICES": "空闲设备",
     "INFO": "服务器信息",
-    "ITEMSBYNAMEPATH": "Items by name path",
-    "LANADDRESS": "LAN",
-    "LOGPATH": "Log path",
-    "METADATAPATH": "Internal metadata path",
-    "MONITORSUPPORT": "Supports library monitoring",
-    "OPENSERVER": "Open server page",
-    "PENDINGRESTART": "Has pending restart",
-    "PLUGINS": "Plugins",
-    "PROGRAMDATAPATH": "Program data path",
-    "TRANSCODINGPATH": "Transcoding path",
-    "UPDATEAVAILABLE": "Has update available",
-    "WANADDRESS": "WAN",
-    "WEBSOCKETPORT": "Websocket port"
+    "ITEMSBYNAMEPATH": "按名称路径的项目",
+    "LANADDRESS": "局域网",
+    "LOGPATH": "日志路径",
+    "METADATAPATH": "内部元数据路径",
+    "MONITORSUPPORT": "支持媒体库监控",
+    "OPENSERVER": "打开服务器页面",
+    "PENDINGRESTART": "有待重启",
+    "PLUGINS": "插件",
+    "PROGRAMDATAPATH": "程序路径",
+    "TRANSCODINGPATH": "转码文件路径",
+    "UPDATEAVAILABLE": "有可用更新",
+    "WANADDRESS": "广域网",
+    "WEBSOCKETPORT": "Websocket 端口"
   },
   "SETTINGS": {
     "ACCOUNT": {
-      "CONTENT": "Change your admin username here. New username will be required on next login.",
+      "CONTENT": "在此处更改您的管理员用户名。下次登录时需要使用新用户名。",
       "NOUSERNAME": "需要用户名",
       "USERNAME": "用户名",
       "USERNAMEUPDATED": "用户名更新成功",
-      "USERNAMEUPDATEFAILED": "Username update failed, check the logs for more info"
+      "USERNAMEUPDATEFAILED": "用户名修改失败，请检查日志获取更多信息"
     },
     "LANGUAGE": {
-      "LABEL": "Select language",
-      "LANGUAGEUPDATED": "Updating language to {{lang}}",
-      "SAMPLES": "Localisation examples",
+      "LABEL": "选择语言",
+      "LANGUAGEUPDATED": "正在更新语言到 {{lang}}",
+      "SAMPLES": "本地化示例",
       "TITLE": "语言"
     },
     "LIBRARIES": {
-      "CONTENT": "Select here all {{type}} libraries that should be synced with EmbyStat ",
-      "TITLE": "Libraries"
+      "CONTENT": "在此处选择应与 EmbyStat 同步的所有 {{type}} 库 ",
+      "TITLE": "库"
     },
     "MEDIASERVER": {
-      "ADDRESS": "Full server URL",
-      "ADDRESSHINT": "Example: https://example.com:8096/base",
+      "ADDRESS": "完整的服务器网址",
+      "ADDRESSHINT": "示例：https://example.com:8096/base",
       "APIKEY": "API密钥",
       "APIKEYHINT": "转到你的 {{type}} 服务器上的高级-> 安全以生成一个新的 API 令牌。",
       "DIALOG": {
-        "CONTENT": "Because you are changing the server configuration it might be a good idea to also reset the EmbyStat statistics. Do this only when you are connecting to a new server with different media/users/... If you are still connecting to the same server you don't need to reset the EmbyStat statistics.",
-        "RESET": "Save and reset",
-        "TITLE": "Reset database?"
+        "CONTENT": "因为您正要更改服务器配置，所以最好也重置 EmbyStat 统计信息。仅当您连接到具有不同媒体/用户/的新服务器时才这样做... 如果您仍在连接到同一服务器，则不需要重置 EmbyStat 统计信息。",
+        "RESET": "保存并重启",
+        "TITLE": "重置数据库？"
       },
-      "NOADDRESS": "Server URL is required",
+      "NOADDRESS": "服务器网址是必需的",
       "NOAPIKEY": "需要API密钥",
-      "RESETINFO": "Starting the EmbyStat reset process. This can take some time depending on the size of the database. Please wait until it is finished.",
-      "TITLE": "{{type}} settings"
+      "RESETINFO": "启动 EmbyStat 重置进程。这可能需要一些时间，具体取决于数据库的大小。请等到它完成。",
+      "TITLE": "{{type}} 设置"
     },
     "MOVIES": {
       "TITLE": "电影设置"
