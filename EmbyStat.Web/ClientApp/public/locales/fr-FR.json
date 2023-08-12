@@ -290,10 +290,10 @@
       "PASSWORD": "Password",
       "PASSWORDMINLENGTH": "Password length must be minimal 6 characters",
       "PASSWORDNOTEQUAL": "Passwords are not equal",
-      "PASSWORDUPDATED": "Password updated succesfully",
-      "PASSWORDUPDATEFAILED": "Password update failed",
-      "REPEATNEWPASSWORD": "Repeat new password",
-      "TITLE": "Password"
+      "PASSWORDUPDATED": "Mot de passe modifié avec succès",
+      "PASSWORDUPDATEFAILED": "Échec de la mise à jour du mot de passe",
+      "REPEATNEWPASSWORD": "Saisissez à nouveau le nouveau mot de passe",
+      "TITLE": "Mot de passe"
     },
     "ROLLBAR": {
       "ENABLEROLLBAR": "Activer la journalisation des erreurs",
@@ -301,69 +301,69 @@
       "TITLE": "Rollbar"
     },
     "SAVED": "Paramètres enregistrés",
-    "SAVEFAILED": "Updating settings failed",
+    "SAVEFAILED": "Échec de la mise à jour des paramètres",
     "SERVER": {
-      "CONNECTIONS": "Connection settings",
-      "USER": "User settings"
+      "CONNECTIONS": "Paramètres de connexion",
+      "USER": "Paramètres utilisateur"
     },
     "SHOWS": {
-      "TITLE": "Show settings"
+      "TITLE": "Afficher les paramètres"
     },
     "TMDB": {
       "APIKEYWARNING": "If you want you can supply EmbyStat with your own TMDb API key here. Make sure you supply a working API key! If the key is incorrect the synchronization task will fail.",
-      "LABEL": "TMDb API key",
-      "NOAPIKEY": "API key can not be empty",
-      "TITLE": "TMDb connection",
+      "LABEL": "Clé API TMDb",
+      "NOAPIKEY": "La clé API est requise",
+      "TITLE": "Connexion TMDb",
       "FALLBACK": "If you don't want to use TMDB as a fallback indexer you can uncheck this box. Some shows are not found in TvMaze and a fallback is always usefull to have but TMDB can return wrong results."
     }
   },
   "SHOWS": {
     "COMPLETECOLLECTEDSHOWS": "Full collected shows",
     "HIGHESTRATED": "Les mieux notés",
-    "LATESTADDED": "Latest added",
+    "LATESTADDED": "Derniers ajouts",
     "LOADER": "Chargement des statistiques sur les séries",
-    "LOADINGLIST": "Loading show list",
+    "LOADINGLIST": "Chargement de la liste des séries",
     "LOWESTRATED": "Les moins bien notés",
     "MISSINGEPISODES": "Épisodes manquants",
-    "MOSTDISKSPACE": "Most used disk space",
+    "MOSTDISKSPACE": "Espace disque le plus utilisé",
     "MOSTWATCHED": "Les plus visionnés",
     "NEWESTPREMIERED": "La plus récente sortie",
     "NOMISSINGEPS": "No missing episodes",
     "OLDESTPREMIERED": "La plus ancienne sortie",
     "SHOWSTATUS": "Show status",
-    "TOTALEPISODES": "Total episodes",
-    "TOTALEPISODESWATCHED": "Total watched episodes",
-    "TOTALMISSINGEPISODES": "Total missing episodes",
-    "TOTALPLAYLENGTH": "Total play length",
-    "TOTALSHOWS": "Total shows",
-    "WITHMOESTEPISODES": "With most episodes"
+    "TOTALEPISODES": "Nombre total d'épisodes",
+    "TOTALEPISODESWATCHED": "Total des épisodes visionnés",
+    "TOTALMISSINGEPISODES": "Total des épisodes manquants",
+    "TOTALPLAYLENGTH": "Durée totale de visionnage",
+    "TOTALSHOWS": "Nombre total de séries",
+    "WITHMOESTEPISODES": "Avec le plus d'épisodes"
   },
   "USERS": {
-    "ACTIVEUSERS": "Active users",
-    "ADMIN": "Admin",
-    "DISABLED": "Disabled",
-    "HIDDEN": "Hidden",
-    "IDLEUSERS": "Idle users",
+    "ACTIVEUSERS": "Utilisateurs actifs",
+    "ADMIN": "Administrateur",
+    "DISABLED": "Désactivé",
+    "HIDDEN": "Masqué",
+    "IDLEUSERS": "Utilisateurs inactifs",
     "LASTACTIVE": "Dernière activité",
-    "LASTLOGIN": "Last login",
+    "LASTLOGIN": "Dernière connexion",
     "LOADER": "Loading user info",
     "USERS": "Utilisateurs",
     "WATCHED": {
-      "EPISODES": "Episodes watched",
-      "MOVIES": "Movies watched",
-      "TOTAL": "Total watched"
+      "EPISODES": "Épisodes visionnés",
+      "MOVIES": "Films visionnés",
+      "TOTAL": "Total visionné"
     }
   },
   "WIZARD": {
-    "ACCOUNT": "User details",
-    "ADDRESSUSED": "Address: {{address}}",
+    "ACCOUNT": "Informations de l'utilisateur",
+    "ADDRESSUSED": "Adresse : {{address}}",
     "APIKEYFAILED": "Nous avons essayé de contacter votre serveur {{type}} mais cela semble échouer. Veuillez revenir en arrière, corriger la configuration et réessayer.",
-    "APIKEYUSED": "API key: {{api}}",
+    "APIKEYUSED": "Clé API : {{api}}",
     "CROWDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
-    "EXCEPTIONLOGGING": "Exception logging",
+    "EXCEPTIONLOGGING": "Activer la journalisation des erreurs",
     "FINALTITLE": "Final",
-    "FINISH": "Finish",
-    "FINISHED": "All settings are saved and you can start using your EmbyStat server now. Enjoy your new statistics!",
+    "FINISH": "Terminer",
+    "FINISHED": "Tous les paramètres sont enregistrés, vous pouvez maintenant commencer à utiliser votre serveur EmbyStat. Profitez de vos nouvelles statistiques !",
     "FINISHEXPLANATION": "Best thing to do first is start a movie and show synchronization job. EmbyStat will start downloading all data from your {{type}} server. Keep in mind that these tasks can take a long time depending on your collection size. You can start the jobs manually by navigating to the Jobs page after login.",
     "FOUNDTEXT": "We found the following servers in your network. Select the one you want to connect to. If your server is not displayed you can create a server connection manually.",
     "INTROTEXT": "Bienvenue dans l'assistant de configuration du serveur EmbyStat.<br/><br/>Avec cet assistant, nous allons configurer les paramètres de base afin que vous puissiez commencer à travailler avec EmbyStat sans problème. Lorsque l'assistance sera terminée, vous pourrez profiter de toutes les fonctionnalités du serveur. Si vous voulez modifier le serveur, vous pouvez vous rendre dans les paramètres.<br/><br/>Pour l'instant, nous avons juste besoin de savoir comment vous vous appeler et dans quel langage vous voulez que l'interface utilisateur soit.",
@@ -373,16 +373,16 @@
     "LANGUAGE": "Langue",
     "LANWANCHOISE": "Choisissez la bonne adresse à utiliser pour votre connexion au serveur {{type}}.",
     "LIBRARIES": {
-      "TITLE": "Select {{type}} libraries"
+      "TITLE": "Sélection du {{type}} de bibliothèques"
     },
-    "NEXT": "Next",
+    "NEXT": "Suivant",
     "NOTFOUNDTEXT": "Nous allons maintenant configurer votre connexion {{type}}. Nous avons essayé de détecter automatiquement votre serveur {{type}} sur le réseau, mais nous avons échoué. Remplissez tous les champs pour qu'EmbyStat puisse trouver votre serveur {{type}}.",
-    "SEARCHSERVERS": "Searching media servers",
-    "SELECTLANGUAGE": "Select your prefered language",
+    "SEARCHSERVERS": "Recherche de serveurs multimédias",
+    "SELECTLANGUAGE": "Sélectionnez votre langue préférée",
     "SELECTLIBRARIES": "Sélectionnez toutes les bibliothèques que vous souhaitez inclure dans les statistiques des {{type}}. Toutes les bibliothèques de {{type}} sont sélectionnées par défaut. Si vous le souhaitez, vous pourrez le modifier plus tard dans la page des paramètres.",
     "SERVERCONFIGURATION": "Configuration du serveur",
     "SERVERCONFIGURATIONTEST": "Test de configuration du serveur",
-    "SERVERTYPEGHELPER": "Select the correct server type (Emby/Jellyfin).",
+    "SERVERTYPEGHELPER": "Sélectionnez le bon type de serveur (Emby/Jellyfin).",
     "SERVERTYPELABEL": "Type de serveur",
     "STEPFOUR": "Récupération des bibliothèques du serveur ({{step}}/{{total}})",
     "STEPONE": "Vérification de la validité de la clé API ({{step}}/{{total}})",
