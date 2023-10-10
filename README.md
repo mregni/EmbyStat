@@ -1,3 +1,9 @@
+# Project is in sleep mode!!!
+Because I don't have a lot of time anymore and I keep getting blocked with the Emby media sync I desited to put this message online to let you all know I will put the project in sleep mode for now.
+There is also a new project on GitHub that might interest you [JellyStat](https://github.com/CyferShepard/Jellystat). Not sure if it works for Emby but it already looks better and has more features implemented as well it seems. I might pick up this project in the future but I would have to find a better way to get all the data I needed.
+
+Thanks everyone for the support in the past couple of years! It was very nice to work on the project and see how many people wanted to test this.
+
 <img src="https://raw.githubusercontent.com/mregni/EmbyStat/develop/branding/logo-color.png" width="350">
 
 [![Gitter](https://img.shields.io/gitter/room/embystat/EmbyStat.js.svg)](https://gitter.im/EmbyStat/Lobby)
