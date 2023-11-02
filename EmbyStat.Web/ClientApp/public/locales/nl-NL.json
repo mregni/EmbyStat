@@ -26,7 +26,7 @@
     "CONTAINER": "Container",
     "COUNT": "Hoeveelheid",
     "CREATE": "Toevoegen",
-    "CREATEDDATE": "Media added",
+    "CREATEDDATE": "Media toegevoegd",
     "CRON": "Cron-tekenreeks",
     "DATE": "Datum",
     "DAYSABBR": "d",
@@ -90,7 +90,7 @@
     "VERSION": "Versie",
     "VIDEORANGE": "Videobereik",
     "WIDTH": "Breedte",
-    "NEVER": "Never"
+    "NEVER": "Nooit"
   },
   "DIALOGS": {
     "EDIT_TRIGGER": {

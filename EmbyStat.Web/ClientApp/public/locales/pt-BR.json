@@ -1,6 +1,6 @@
 {
   "ABOUT": {
-    "ACTIONS": "Ações.",
+    "ACTIONS": "Ações",
     "GITHUBRELEASE": "Lançamentos no Github",
     "HELPTRANSLATE": "Ajude a traduzir o aplicativo",
     "LOGBUG": "Erro de log no Github",
@@ -8,36 +8,36 @@
     "REQUESTFEATURE": "Requisitar recurso",
     "SERVERINFO": "Informações do Servidor",
     "THANKS": {
-      "MISSINGNAME": "If your name is missing from this list, send me a message on Crowdin!",
-      "TEXT": "A big thanks to the following people for translating the app in their native language or helping to test the application:",
+      "MISSINGNAME": "Se o seu nome não está incluso nessa lista, me envie uma mensagem no Crowdin!",
+      "TEXT": "Um muito obrigado às seguintes pessoas por traduzirem o aplicativo para sua linguagem nativa ou por ajudarem a testar o aplicativo:",
       "TITLE": "Obrigado"
     }
   },
   "COMMON": {
     "AND": "e",
     "AUDIO": "Áudio",
-    "BACK": "Back",
+    "BACK": "Voltar",
     "BIT": "bit",
     "BITDEPTH": "Profundidade de bits",
     "CANCEL": "Cancelar",
     "CODEC": "Codec",
-    "COLLECTEDPERCENTAGE": "Amount collected",
+    "COLLECTEDPERCENTAGE": "Valores Coletados",
     "COMMUNITYRATING": "Avaliações da Comunidade",
-    "CONTAINER": "Contêiner",
+    "CONTAINER": "Formato",
     "COUNT": "Quantidade",
-    "CREATE": "Create",
-    "CREATEDDATE": "Media added",
+    "CREATE": "Criar",
+    "CREATEDDATE": "Mídia adicionada",
     "CRON": "Corda Cron",
-    "DATE": "Date",
+    "DATE": "Data",
     "DAYSABBR": "d",
-    "DESCRIPTION": "Description",
+    "DESCRIPTION": "Descrição",
     "DISCARD": "Descartar",
-    "DISKSPACE": "Disk space",
-    "DOWNLOAD": "Download",
-    "DOWNLOADCSV": "Download list as CSV",
-    "EPISODE": "Episode",
+    "DISKSPACE": "Espaço em disco",
+    "DOWNLOAD": "Baixar",
+    "DOWNLOADCSV": "Baixar lista como CSV",
+    "EPISODE": "Episódio",
     "EPISODES": "Episódios",
-    "FILTER": "Filter",
+    "FILTER": "Filtro",
     "FILTERS": "Filtros",
     "FPS": "fps",
     "GB": "Gb",
@@ -45,52 +45,52 @@
     "GRAPHS": "Gráficos",
     "HEIGHT": "Altura",
     "HOURSABBR": "h",
-    "HTTPPORT": "HTTP port",
-    "HTTPSPORT": "HTTPS port",
+    "HTTPPORT": "Porta HTTP",
+    "HTTPSPORT": "Porta HTTPS",
     "ID": "ID",
-    "ISDEFAULT": "is default",
+    "ISDEFAULT": "é padrão",
     "LINKS": "Links",
-    "LIST": "List",
+    "LIST": "Lista",
     "MIN": "mínimo",
     "MINUTESABBR": "m",
-    "MOVIE": "Filmes",
+    "MOVIE": "filmes",
     "MOVIES": "Filmes",
     "NAME": "Nome",
-    "NUMBERS": "Numbers",
+    "NUMBERS": "Estatísticas",
     "OFFICIALRATING": "Avaliação oficial",
     "OS": "Sistema operacional",
-    "OTHER": "Other",
-    "PATHS": "Paths",
+    "OTHER": "Outro",
+    "PATHS": "Caminhos",
     "PIXELS": "px",
     "PREMIEREDATE": "Data de estreia",
     "PROTOCOL": "Protocolo",
-    "RUNTIME": "Tempo de execução",
+    "RUNTIME": "Duração",
     "SAVE": "Salve",
-    "SEASON": "Season",
-    "SEASONS": "Seasons",
+    "SEASON": "Temporada",
+    "SEASONS": "Temporadas",
     "SELECTVALUE": "Selecionar valor",
     "SHOW": "exibir",
     "SHOWS": "Séries",
     "SIZE": "Tamanho",
-    "SIZEINMB": "Size in Mb",
-    "STATUS": "posição",
-    "STREAMS": "Streams",
+    "SIZEINMB": "Tamanho em Mb",
+    "STATUS": "Estado",
+    "STREAMS": "Reproduções",
     "SUBTITLES": "Legendas",
-    "TIME": "Time",
+    "TIME": "Hora",
     "TITLE": "Título",
     "TOTAL": "Total",
     "TOTALACTORS": "Atores totais",
     "TOTALDIRECTORS": "Diretores totais",
     "TOTALDISKSIZE": "Tamanho total do disco",
     "TOTALGENRES": "Total de gêneros",
-    "TOTALRUNTIME": "Tempo total de execução",
+    "TOTALRUNTIME": "Tempo total de duração",
     "TOTALWRITERS": "Escritores totais",
-    "UNKNOWN": "Unknown",
-    "UPDATELEVEL": "NÍVEL DE ATUALIZAÇÃO",
+    "UNKNOWN": "Desconhecido",
+    "UPDATELEVEL": "Nível de atualização",
     "VERSION": "Versão",
     "VIDEORANGE": "Intervalo de vídeo",
     "WIDTH": "Largura",
-    "NEVER": "Never"
+    "NEVER": "Nunca"
   },
   "DIALOGS": {
     "EDIT_TRIGGER": {
@@ -98,52 +98,52 @@
       "FORMAT_ERROR": "Dado o cron string está em um formato errado. Verifique <a href=\"https://crontab.guru/\" target=\"_blank\">aqui</a> para regras de formatação. Apenas números, espaços, *, / e - são permitidos."
     },
     "MOVIEJOBRUNNING": {
-      "BODY": "Movie job is running, please wait until it is finished",
-      "TITLE": "Movie job running"
+      "BODY": "A Sincronização de filmes está em execução, aguarde até que seja concluída",
+      "TITLE": "Sincronização em progresso"
     },
     "NOMOVIETYPEFOUND": {
-      "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in {{type}} you should try starting a new movie syncronisation task.",
+      "BODY": "Não conseguimos encontrar nenhum filme no banco de dados do EmbyStat. Se você tiver filmes no {{type}}, tente iniciar uma nova tarefa de sincronização de mídia.",
       "TITLE": "Nenhum filme encontrado"
     },
     "NOSHOWTYPEFOUND": {
-      "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in {{type}} you should try starting a new show syncronisation task.",
+      "BODY": "Não conseguimos encontar nenhuma série no banco de dados do EmbyStat. Se você tem séries no {{type}} você deve tentar executar uma nova tarefa de sincronização de séries.",
       "TITLE": "Nenhum grupo encontrado"
     },
     "SHOWJOBRUNNING": {
-      "BODY": "Show job is running, please wait until it is finished",
-      "TITLE": "Show job running"
+      "BODY": "A Sincronização de Séries está em execução, aguarde até que seja concluída",
+      "TITLE": "Sincronização de Séries em progresso"
     }
   },
   "FILTERS": {
     "DIALOG": {
-      "CONTENT": "Select field on which you want to add a new filter",
-      "TITLE": "Add new filter"
+      "CONTENT": "Selecione o campo em que você deseja adicionar um novo filtro",
+      "TITLE": "Adicionar novo filtro"
     },
     "OPERATIONS": {
-      "BETWEEN": "is between",
-      "CONTAINS": "contains",
-      "ENDSWITH": "ends with",
-      "EQUAL": "equals",
-      "HAS": "has",
-      "HASNO": "has no",
-      "HASNONE": "has none",
-      "IS": "is",
-      "ISNOT": "is not",
-      "ISNULL": "is null",
-      "ISZERO": "is 0",
-      "LARGER": "is larger then",
-      "LONGER": "is longer then",
+      "BETWEEN": "está entre",
+      "CONTAINS": "contém",
+      "ENDSWITH": "termina com",
+      "EQUAL": "é igual a",
+      "HAS": "tem",
+      "HASNO": "não tem",
+      "HASNONE": "não tem nenhum",
+      "IS": "é",
+      "ISNOT": "não é",
+      "ISNULL": "é nulo",
+      "ISZERO": "é 0",
+      "LARGER": "é maior que",
+      "LONGER": "é maior que",
       "NOTCONTAINS": "does not contain",
       "SHORTER": "is shorter then",
       "SMALLER": "is smaller then",
       "STARTSWITH": "starts with"
     },
     "TITLES": {
-      "CONTAINER": "Contêiner",
+      "CONTAINER": "Formato",
       "FRAMERATE": "Taxa de quadros",
       "GENRES": "Gêneros",
       "IMAGES": "Imagens",
-      "IMDB": "IMDB",
+      "IMDB": "Imdb",
       "TITLE": "Título",
       "TMDB": "Tmdb"
     }
@@ -157,7 +157,7 @@
     "BUTFAILED": "mas falhou depois",
     "CRONUPDATED": "Valor do Cron atualizado",
     "INFO": {
-      "DATABASE-CLEANUP": "Limpeza de banco de dados",
+      "DATABASE-CLEANUP": "Limpeza do banco de dados",
       "DATABASE-CLEANUPDESCRIPTION": "Limpar banco de dados com dados desnecessários.",
       "MOVIE-SYNC": "Sincronização de filmes",
       "MOVIE-SYNCDESCRIPTION": "Execute uma sincronização incremental para sua coleção de filmes. Isso pode levar algum tempo para ser executado!",
@@ -165,10 +165,10 @@
       "PINGDESCRIPTION": "Ping the Emby server to check if he is still online.",
       "SHOW-SYNC": "Mostrar sincronização",
       "SHOW-SYNCDESCRIPTION": "Perform an incremental sync for your show collection. This can take some time to run!",
-      "SYSTEM-SYNC": "Sync {{type}} info",
+      "SYSTEM-SYNC": "Sincronizar informações do {{type}}",
       "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
       "UPDATE-CHECKER": "Verificar se há atualizações",
-      "UPDATE-CHECKERDESCRIPTION": "Verifica se há novas atualizações no tempo de atualização selecionado."
+      "UPDATE-CHECKERDESCRIPTION": "Verifica se há novas atualizações no meio de atualização selecionado."
     },
     "JOBLOGS": "Registros de trabalho",
     "LASTRUN": "Última execução",
@@ -178,16 +178,16 @@
     "STARTMEDIASYNC": "Start media sync"
   },
   "LOGIN": {
-    "ERROR": "Username or password unknown",
-    "LOGIN": "Login",
-    "LOGOUT": "Log out",
-    "RECOVERPASSWORD": "Recover password",
+    "ERROR": "Nome de usuário ou senha incorretos",
+    "LOGIN": "Entrar",
+    "LOGOUT": "Sair",
+    "RECOVERPASSWORD": "Recuperar senha",
     "RESETCOMPLETED": "Check logs for new password",
     "RESETFAILED": "Username reset failed"
   },
   "LOGS": {
-    "ACTIONS": "Ações.",
-    "ANONYMISED": "Anônimo"
+    "ACTIONS": "Ações",
+    "ANONYMISED": "Anonimizado"
   },
   "MENU": {
     "ABOUT": "Sobre",
@@ -204,31 +204,31 @@
     "HIGHESTRATED": "Melhor avaliado",
     "LATESTADDED": "Adicionado recentemente",
     "LOADER": "Carregando estatísticas de filmes",
-    "LOADINGLIST": "Loading movie list",
+    "LOADINGLIST": "Carregando lista de filmes",
     "LONGEST": "Mais longo",
     "LOWESTRATED": "Classificação mais baixa",
-    "MOSTWATCHED": "Most watched",
+    "MOSTWATCHED": "Mais assistidos",
     "NEWESTPREMIERED": "Lançado mais recentemente",
     "OLDESTPREMIERED": "Estreou primeiro",
     "SHORTEST": "Mais curto",
     "TOTALMOVIES": "Total de filmes",
     "TOTALPLAYLENGTH": "Tempo total de assistibilidade",
-    "TOTALWATCHED": "Total watched movies"
+    "TOTALWATCHED": "Total de filmes assistidos"
   },
   "PAGINATION": {
     "NEXTPAGE": "Próxima página",
-    "PREVIOUSPAGE": "Página Anterior ",
+    "PREVIOUSPAGE": "Página Anterior",
     "ROWSPERPAGE": "Linhas por página"
   },
   "SERVER": {
-    "ACTIVEDEVICES": "ACtive devices",
+    "ACTIVEDEVICES": "Dispositivos ativos",
     "AUTORUNSUPPORT": "Supports auto run at startup",
     "CACHEPATH": "Cache path",
     "CANLAUNCHBROWSER": "Can launch browser",
     "CANSELFRESTART": "Can self restart",
     "CANSELFUPDATE": "Can self update",
     "FEATURES": "Features",
-    "HTTPSSUPPORT": "HTTPS support",
+    "HTTPSSUPPORT": "Suporte HTTPS",
     "IDLEDEVICES": "Idle devices",
     "INFO": "Informações do Servidor",
     "ITEMSBYNAMEPATH": "Items by name path",
@@ -247,34 +247,34 @@
   },
   "SETTINGS": {
     "ACCOUNT": {
-      "CONTENT": "Change your admin username here. New username will be required on next login.",
+      "CONTENT": "Altere seu o nome do seu usuário administrador aqui. O novo nome de usuário será solicitado na próxima vez que entrar.",
       "NOUSERNAME": "Username is required",
       "USERNAME": "Nome de Usuário",
-      "USERNAMEUPDATED": "Username updated succesfully",
-      "USERNAMEUPDATEFAILED": "Username update failed, check the logs for more info"
+      "USERNAMEUPDATED": "Nome de usuário atualizado com sucesso",
+      "USERNAMEUPDATEFAILED": "Falha ao atualizar o nome de usuário, verifique os registros para mais informações"
     },
     "LANGUAGE": {
-      "LABEL": "Select language",
-      "LANGUAGEUPDATED": "Updating language to {{lang}}",
-      "SAMPLES": "Localisation examples",
-      "TITLE": "Linguagem"
+      "LABEL": "Selecionar idioma",
+      "LANGUAGEUPDATED": "Atualizando o idioma para {{lang}}",
+      "SAMPLES": "Exemplos de localização",
+      "TITLE": "Idioma"
     },
     "LIBRARIES": {
-      "CONTENT": "Select here all {{type}} libraries that should be synced with EmbyStat ",
-      "TITLE": "Libraries"
+      "CONTENT": "Selecione aqui todas as bibliotecas do {{type}} que devem ser sincronizadas com o EmbyStat ",
+      "TITLE": "Bibliotecas"
     },
     "MEDIASERVER": {
-      "ADDRESS": "Full server URL",
-      "ADDRESSHINT": "Example: https://example.com:8096/base",
-      "APIKEY": "API key",
-      "APIKEYHINT": "Go to advanced -> security on your {{type}} server to generate a new API token.",
+      "ADDRESS": "URL completo do servidor",
+      "ADDRESSHINT": "Exemplo: https://exemplo.com:8096/base",
+      "APIKEY": "Chave de API",
+      "APIKEYHINT": "Vá para avançado -> segurança no seu servidor {{type}} para gerar uma nova chave de API.",
       "DIALOG": {
-        "CONTENT": "Because you are changing the server configuration it might be a good idea to also reset the EmbyStat statistics. Do this only when you are connecting to a new server with different media/users/... If you are still connecting to the same server you don't need to reset the EmbyStat statistics.",
-        "RESET": "Save and reset",
-        "TITLE": "Reset database?"
+        "CONTENT": "Devido a você estar alterando a configuração de servidor, também pode ser uma boa ideia resetar as estatísticas do EmbyStat. Faça isso somente quando você estiver conectando a um novo servidor com mídia/usuarios/... diferentes. Se você ainda estiver se conectando ao mesmo servidor você não precisa resetar as estatíticas do EmbyStat.",
+        "RESET": "Salvar e resetar",
+        "TITLE": "Resetar banco de dados?"
       },
-      "NOADDRESS": "Server URL is required",
-      "NOAPIKEY": "API key is required",
+      "NOADDRESS": "A URL do servidor é necessária",
+      "NOAPIKEY": "A chave de API é necessária",
       "RESETINFO": "Starting the EmbyStat reset process. This can take some time depending on the size of the database. Please wait until it is finished.",
       "TITLE": "{{type}} settings"
     },
@@ -296,8 +296,8 @@
       "TITLE": "Password"
     },
     "ROLLBAR": {
-      "ENABLEROLLBAR": "Habilitar o registo de excepções",
-      "EXCEPTIONLOGGING": "Ativar / desativar o log de exceções para o serviço on-line Rollbar. Com esse registro, posso depurar e corrigir o aplicativo mais rapidamente. Nenhum dado pessoal é registrado, apenas mensagens de exceção, stacktrace, nome do sistema operacional e número da versão.",
+      "ENABLEROLLBAR": "Habilitar o registo de exceções",
+      "EXCEPTIONLOGGING": "Ativar/desativar o registro de exceções para o serviço on-line Rollbar. Com esse registro, posso depurar e corrigir o aplicativo mais rapidamente. Nenhum dado pessoal é registrado, apenas mensagens de exceção, stacktrace, nome do sistema operacional e número da versão.",
       "TITLE": "Barra de rolagem"
     },
     "SAVED": "Configurações salvas",
@@ -326,7 +326,7 @@
     "LOWESTRATED": "Classificação mais baixa",
     "MISSINGEPISODES": "Episódios ausentes",
     "MOSTDISKSPACE": "Most used disk space",
-    "MOSTWATCHED": "Most watched",
+    "MOSTWATCHED": "Mais assistidos",
     "NEWESTPREMIERED": "Lançado mais recentemente",
     "NOMISSINGEPS": "No missing episodes",
     "OLDESTPREMIERED": "Estreou primeiro",
@@ -364,13 +364,13 @@
     "FINALTITLE": "Final",
     "FINISH": "Finish",
     "FINISHED": "Todas as configurações são salvas e você pode começar a usar o servidor EmbyStat agora. Aproveite suas novas estatísticas!",
-    "FINISHEXPLANATION": "A melhor coisa a fazer primeiro é iniciar um filme e mostrar a tarefa de sincronização. O EmbyStat começará a baixar todos os dados do seu servidor {{type}} . Tenha em mente que estas tarefas podem levar um longo tempo dependendo do tamanho da sua coleção. Você pode iniciar as tarefas manualmente, navegando na página de Tarefas após o login.",
+    "FINISHEXPLANATION": "A melhor coisa a se fazer primeiro é iniciar uma tarefa de sincronização de filmes e séries. O EmbyStat começará a baixar todos os dados do seu servidor {{type}}. Tenha em mente que estas tarefas podem levar um longo tempo dependendo do tamanho da sua coleção. Você pode iniciar as tarefas manualmente navegando para a página de Tarefas após o login.",
     "FOUNDTEXT": "Encontramos os seguintes servidores em sua rede. Selecione aquele ao qual você deseja se conectar. Se seu servidor não for exibido, você poderá criar uma conexão de servidor manualmente.",
     "INTROTEXT": "Bem-vindo ao assistente EmbyStat.<br/><br/>Com este assistente vamos processar as configurações básicas para que você possa começar a trabalhar. Quando o assistente estiver concluído, você poderá aproveitar todos os recursos do servidor. Se você quiser ajustar o servidor um pouco mais, pode sempre ir para a página de configurações.<br/><br/>Por enquanto, só precisamos saber como podemos chamá-lo e em qual idioma você deseja visualizar a interface do usuário.",
     "JELLYFIN": {
       "ADMINTEXT": "Como você está usando o Jellyfin, é necessário fornecer uma conta de administrador que você deseja usar para buscar dados do servidor. Selecione o administrador desejado na lista suspensa."
     },
-    "LANGUAGE": "Linguagem",
+    "LANGUAGE": "Idioma",
     "LANWANCHOISE": "Escolha o endereço correto a ser usado para sua conexão com o servidor {{type}}.",
     "LIBRARIES": {
       "TITLE": "Select {{type}} libraries"

@@ -1,22 +1,22 @@
 {
   "ABOUT": {
-    "ACTIONS": "Actions",
+    "ACTIONS": "Ações",
     "GITHUBRELEASE": "Releases on Github",
     "HELPTRANSLATE": "Help translate the app",
     "LOGBUG": "Log bug on Github",
-    "OS": "Operating system",
+    "OS": "Sistema Operativo",
     "REQUESTFEATURE": "Request feature",
     "SERVERINFO": "Server info",
     "THANKS": {
-      "MISSINGNAME": "If your name is missing from this list, send me a message on Crowdin!",
-      "TEXT": "A big thanks to the following people for translating the app in their native language or helping to test the application:",
+      "MISSINGNAME": "Se o teu nome está a faltar nesta lista, manda-me mensagem polo Crowdin!",
+      "TEXT": "Um grande obrigado as seguintes pessoas, por traduzirem a aplicação para as suas línguas nativas, ou por terem ajudado a testar a aplicação:",
       "TITLE": "Thanks"
     }
   },
   "COMMON": {
-    "AND": "and",
-    "AUDIO": "Audio",
-    "BACK": "Back",
+    "AND": "e",
+    "AUDIO": "Áudio",
+    "BACK": "Voltar",
     "BIT": "bit",
     "BITDEPTH": "Bit depth",
     "CANCEL": "cancel",
@@ -71,7 +71,7 @@
     "SELECTVALUE": "Select value",
     "SHOW": "show",
     "SHOWS": "Shows",
-    "SIZE": "Size",
+    "SIZE": "Tamanho",
     "SIZEINMB": "Size in Mb",
     "STATUS": "Status",
     "STREAMS": "Streams",
@@ -121,7 +121,7 @@
     },
     "OPERATIONS": {
       "BETWEEN": "is between",
-      "CONTAINS": "contains",
+      "CONTAINS": "contém",
       "ENDSWITH": "ends with",
       "EQUAL": "equals",
       "HAS": "has",
@@ -130,7 +130,7 @@
       "IS": "is",
       "ISNOT": "is not",
       "ISNULL": "is null",
-      "ISZERO": "is 0",
+      "ISZERO": "é 0",
       "LARGER": "is larger then",
       "LONGER": "is longer then",
       "NOTCONTAINS": "does not contain",

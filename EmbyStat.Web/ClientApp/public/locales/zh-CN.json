@@ -8,36 +8,36 @@
     "REQUESTFEATURE": "请求功能",
     "SERVERINFO": "服务器信息",
     "THANKS": {
-      "MISSINGNAME": "If your name is missing from this list, send me a message on Crowdin!",
-      "TEXT": "A big thanks to the following people for translating the app in their native language or helping to test the application:",
+      "MISSINGNAME": "如果此列表中没有您的名字，请在 Crowdin 上给我发消息！",
+      "TEXT": "非常感谢以下人员翻译本应用或帮助测试应用程序：",
       "TITLE": "谢谢"
     }
   },
   "COMMON": {
     "AND": "和",
     "AUDIO": "音频",
-    "BACK": "Back",
+    "BACK": "返回",
     "BIT": "比特",
     "BITDEPTH": "位深",
     "CANCEL": "取消",
     "CODEC": "编码器",
-    "COLLECTEDPERCENTAGE": "Amount collected",
+    "COLLECTEDPERCENTAGE": "已收集的数量",
     "COMMUNITYRATING": "社区评分",
     "CONTAINER": "容器",
     "COUNT": "总计",
-    "CREATE": "Create",
-    "CREATEDDATE": "Media added",
+    "CREATE": "创建",
+    "CREATEDDATE": "添加的媒体",
     "CRON": "Cron 字符串",
-    "DATE": "Date",
+    "DATE": "日期",
     "DAYSABBR": "日",
-    "DESCRIPTION": "Description",
+    "DESCRIPTION": "插件描述",
     "DISCARD": "放弃",
-    "DISKSPACE": "Disk space",
-    "DOWNLOAD": "Download",
-    "DOWNLOADCSV": "Download list as CSV",
-    "EPISODE": "Episode",
+    "DISKSPACE": "磁盘空间",
+    "DOWNLOAD": "下载",
+    "DOWNLOADCSV": "将列表下载为CSV",
+    "EPISODE": "剧集",
     "EPISODES": "集",
-    "FILTER": "Filter",
+    "FILTER": "筛选器",
     "FILTERS": "筛选器",
     "FPS": "帧/秒",
     "GB": "Gb",
@@ -45,52 +45,52 @@
     "GRAPHS": "图表",
     "HEIGHT": "高",
     "HOURSABBR": "时",
-    "HTTPPORT": "HTTP port",
-    "HTTPSPORT": "HTTPS port",
+    "HTTPPORT": "http 端口",
+    "HTTPSPORT": "https 端口",
     "ID": "ID",
-    "ISDEFAULT": "is default",
+    "ISDEFAULT": "默认值",
     "LINKS": "链接",
-    "LIST": "List",
+    "LIST": "列表视图",
     "MIN": "分",
     "MINUTESABBR": "分",
     "MOVIE": "电影",
     "MOVIES": "*电影*",
     "NAME": "名称",
-    "NUMBERS": "Numbers",
+    "NUMBERS": "数据统计",
     "OFFICIALRATING": "官方评分",
     "OS": "操作系统",
-    "OTHER": "Other",
-    "PATHS": "Paths",
+    "OTHER": "其它",
+    "PATHS": "路径说明",
     "PIXELS": "像素",
     "PREMIEREDATE": "首播日期",
     "PROTOCOL": "协议",
     "RUNTIME": "时长",
     "SAVE": "保存",
-    "SEASON": "Season",
-    "SEASONS": "Seasons",
+    "SEASON": "季数",
+    "SEASONS": "季数",
     "SELECTVALUE": "选择数值",
     "SHOW": "节目",
-    "SHOWS": "演出",
+    "SHOWS": "节目",
     "SIZE": "文件大小",
-    "SIZEINMB": "Size in Mb",
+    "SIZEINMB": "容量（MB）",
     "STATUS": "状态",
-    "STREAMS": "Streams",
+    "STREAMS": "视频格式串流",
     "SUBTITLES": "字幕",
-    "TIME": "Time",
+    "TIME": "时间",
     "TITLE": "标题",
-    "TOTAL": "Total",
+    "TOTAL": "总计",
     "TOTALACTORS": "演员总数",
     "TOTALDIRECTORS": "导演总数",
     "TOTALDISKSIZE": "总磁盘空间",
     "TOTALGENRES": "所有类型",
-    "TOTALRUNTIME": "总运行时间",
+    "TOTALRUNTIME": "总播放时间",
     "TOTALWRITERS": "编剧总数",
-    "UNKNOWN": "Unknown",
+    "UNKNOWN": "未知的",
     "UPDATELEVEL": "更新等级",
     "VERSION": "版本",
     "VIDEORANGE": "视频范围",
     "WIDTH": "宽",
-    "NEVER": "Never"
+    "NEVER": "从不"
   },
   "DIALOGS": {
     "EDIT_TRIGGER": {
@@ -98,45 +98,45 @@
       "FORMAT_ERROR": "提交的CRON字符串格式错误。在<a href=\"https://crontab.guru/\" target=\"_blank\">此处</a>查看详细格式规则。仅允许使用数字，空格，\"*\"，\"/\"和\"-\"。"
     },
     "MOVIEJOBRUNNING": {
-      "BODY": "Movie job is running, please wait until it is finished",
-      "TITLE": "Movie job running"
+      "BODY": "正在载入电影信息，请稍候，直到完成",
+      "TITLE": "正在导入电影信息"
     },
     "NOMOVIETYPEFOUND": {
-      "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in {{type}} you should try starting a new movie syncronisation task.",
+      "BODY": "我们在 EmbyStat 数据库中找不到任何电影。如果您在 Emby 中有电影，请尝试启动新的媒体同步任务。",
       "TITLE": "未找到电影"
     },
     "NOSHOWTYPEFOUND": {
-      "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in {{type}} you should try starting a new show syncronisation task.",
+      "BODY": "我们在 EmbyStat 数据库中找不到任何剧集。如果您在 Emby 中有剧集的话，请尝试启动一个新的媒体同步任务。",
       "TITLE": "找不到演出节目"
     },
     "SHOWJOBRUNNING": {
-      "BODY": "Show job is running, please wait until it is finished",
-      "TITLE": "Show job running"
+      "BODY": "正在载入剧集信息，请稍候，直到完成",
+      "TITLE": "节目库同步任务正在进行中"
     }
   },
   "FILTERS": {
     "DIALOG": {
-      "CONTENT": "Select field on which you want to add a new filter",
-      "TITLE": "Add new filter"
+      "CONTENT": "选择字段,添加一个新的过滤器",
+      "TITLE": "添加新的筛选器"
     },
     "OPERATIONS": {
-      "BETWEEN": "is between",
-      "CONTAINS": "contains",
-      "ENDSWITH": "ends with",
-      "EQUAL": "equals",
-      "HAS": "has",
-      "HASNO": "has no",
-      "HASNONE": "has none",
-      "IS": "is",
-      "ISNOT": "is not",
-      "ISNULL": "is null",
-      "ISZERO": "is 0",
-      "LARGER": "is larger then",
-      "LONGER": "is longer then",
-      "NOTCONTAINS": "does not contain",
-      "SHORTER": "is shorter then",
-      "SMALLER": "is smaller then",
-      "STARTSWITH": "starts with"
+      "BETWEEN": "介于两者之间",
+      "CONTAINS": "包含",
+      "ENDSWITH": "结束于",
+      "EQUAL": "等于",
+      "HAS": "包含",
+      "HASNO": "不包含",
+      "HASNONE": "不包含",
+      "IS": "是的",
+      "ISNOT": "不是",
+      "ISNULL": "空的",
+      "ISZERO": "是 0",
+      "LARGER": "比",
+      "LONGER": "如果长于就",
+      "NOTCONTAINS": "不包含",
+      "SHORTER": "如果短于就",
+      "SMALLER": "如果小于就",
+      "STARTSWITH": "以...为开头"
     },
     "TITLES": {
       "CONTAINER": "容器",
@@ -150,8 +150,8 @@
   },
   "FORMLABELS": {
     "CRON": "Cron 字符串",
-    "FIELD": "Field",
-    "OPERATION": "Operation"
+    "FIELD": "字段",
+    "OPERATION": "操作"
   },
   "JOB": {
     "BUTFAILED": "但之后失败了",
@@ -204,16 +204,16 @@
     "HIGHESTRATED": "评分最高",
     "LATESTADDED": "最近添加",
     "LOADER": "加载电影统计",
-    "LOADINGLIST": "Loading movie list",
+    "LOADINGLIST": "加载电影列表中",
     "LONGEST": "最长的",
     "LOWESTRATED": "评分最低",
-    "MOSTWATCHED": "Most watched",
+    "MOSTWATCHED": "最多播放",
     "NEWESTPREMIERED": "最新首映",
     "OLDESTPREMIERED": "最早首映",
     "SHORTEST": "最短",
     "TOTALMOVIES": "电影总数",
     "TOTALPLAYLENGTH": "总可观看时间",
-    "TOTALWATCHED": "Total watched movies"
+    "TOTALWATCHED": "观看电影总数"
   },
   "PAGINATION": {
     "NEXTPAGE": "下一页",
@@ -221,79 +221,79 @@
     "ROWSPERPAGE": "每页行数"
   },
   "SERVER": {
-    "ACTIVEDEVICES": "ACtive devices",
-    "AUTORUNSUPPORT": "Supports auto run at startup",
-    "CACHEPATH": "Cache path",
-    "CANLAUNCHBROWSER": "Can launch browser",
-    "CANSELFRESTART": "Can self restart",
-    "CANSELFUPDATE": "Can self update",
-    "FEATURES": "Features",
-    "HTTPSSUPPORT": "HTTPS support",
-    "IDLEDEVICES": "Idle devices",
+    "ACTIVEDEVICES": "活动设备",
+    "AUTORUNSUPPORT": "支持开机自动运行",
+    "CACHEPATH": "缓存路径",
+    "CANLAUNCHBROWSER": "可以启动浏览器",
+    "CANSELFRESTART": "可以自重启",
+    "CANSELFUPDATE": "可以自更新",
+    "FEATURES": "功能介绍",
+    "HTTPSSUPPORT": "支持 HTTPS",
+    "IDLEDEVICES": "空闲设备",
     "INFO": "服务器信息",
-    "ITEMSBYNAMEPATH": "Items by name path",
-    "LANADDRESS": "LAN",
-    "LOGPATH": "Log path",
-    "METADATAPATH": "Internal metadata path",
-    "MONITORSUPPORT": "Supports library monitoring",
-    "OPENSERVER": "Open server page",
-    "PENDINGRESTART": "Has pending restart",
-    "PLUGINS": "Plugins",
-    "PROGRAMDATAPATH": "Program data path",
-    "TRANSCODINGPATH": "Transcoding path",
-    "UPDATEAVAILABLE": "Has update available",
-    "WANADDRESS": "WAN",
-    "WEBSOCKETPORT": "Websocket port"
+    "ITEMSBYNAMEPATH": "按名称路径的项目",
+    "LANADDRESS": "局域网",
+    "LOGPATH": "日志路径",
+    "METADATAPATH": "内部元数据路径",
+    "MONITORSUPPORT": "支持媒体库监控",
+    "OPENSERVER": "打开服务器页面",
+    "PENDINGRESTART": "有待重启",
+    "PLUGINS": "插件",
+    "PROGRAMDATAPATH": "程序路径",
+    "TRANSCODINGPATH": "转码文件路径",
+    "UPDATEAVAILABLE": "有可用更新",
+    "WANADDRESS": "广域网",
+    "WEBSOCKETPORT": "Websocket 端口"
   },
   "SETTINGS": {
     "ACCOUNT": {
-      "CONTENT": "Change your admin username here. New username will be required on next login.",
+      "CONTENT": "在此处更改您的管理员用户名。下次登录时需要使用新用户名。",
       "NOUSERNAME": "需要用户名",
       "USERNAME": "用户名",
       "USERNAMEUPDATED": "用户名更新成功",
-      "USERNAMEUPDATEFAILED": "Username update failed, check the logs for more info"
+      "USERNAMEUPDATEFAILED": "用户名修改失败，请检查日志获取更多信息"
     },
     "LANGUAGE": {
-      "LABEL": "Select language",
-      "LANGUAGEUPDATED": "Updating language to {{lang}}",
-      "SAMPLES": "Localisation examples",
+      "LABEL": "选择语言",
+      "LANGUAGEUPDATED": "正在更新语言到 {{lang}}",
+      "SAMPLES": "本地化示例",
       "TITLE": "语言"
     },
     "LIBRARIES": {
-      "CONTENT": "Select here all {{type}} libraries that should be synced with EmbyStat ",
-      "TITLE": "Libraries"
+      "CONTENT": "在此处选择应与 EmbyStat 同步的所有 {{type}} 库 ",
+      "TITLE": "库"
     },
     "MEDIASERVER": {
-      "ADDRESS": "Full server URL",
-      "ADDRESSHINT": "Example: https://example.com:8096/base",
+      "ADDRESS": "完整的服务器网址",
+      "ADDRESSHINT": "示例：https://example.com:8096/base",
       "APIKEY": "API密钥",
       "APIKEYHINT": "转到你的 {{type}} 服务器上的高级-> 安全以生成一个新的 API 令牌。",
       "DIALOG": {
-        "CONTENT": "Because you are changing the server configuration it might be a good idea to also reset the EmbyStat statistics. Do this only when you are connecting to a new server with different media/users/... If you are still connecting to the same server you don't need to reset the EmbyStat statistics.",
-        "RESET": "Save and reset",
-        "TITLE": "Reset database?"
+        "CONTENT": "因为您正要更改服务器配置，所以最好也重置 EmbyStat 统计信息。仅当您连接到具有不同媒体/用户/的新服务器时才这样做... 如果您仍在连接到同一服务器，则不需要重置 EmbyStat 统计信息。",
+        "RESET": "保存并重启",
+        "TITLE": "重置数据库？"
       },
-      "NOADDRESS": "Server URL is required",
+      "NOADDRESS": "服务器网址是必需的",
       "NOAPIKEY": "需要API密钥",
-      "RESETINFO": "Starting the EmbyStat reset process. This can take some time depending on the size of the database. Please wait until it is finished.",
-      "TITLE": "{{type}} settings"
+      "RESETINFO": "启动 EmbyStat 重置进程。这可能需要一些时间，具体取决于数据库的大小。请等到它完成。",
+      "TITLE": "{{type}} 设置"
     },
     "MOVIES": {
-      "TITLE": "Movie settings"
+      "TITLE": "电影设置"
     },
     "PASSWORD": {
-      "CONTENT": "For changing your password, fill in the current one and your new one twice.",
-      "CURRENTPASSWORD": "Current password",
-      "NEWPASSWORD": "New password",
-      "NOCURRENTPASSWORD": "Current password is required",
-      "NOPASSWORD": "Password is required",
-      "PASSWORD": "Password",
-      "PASSWORDMINLENGTH": "Password length must be minimal 6 characters",
-      "PASSWORDNOTEQUAL": "Passwords are not equal",
-      "PASSWORDUPDATED": "Password updated succesfully",
-      "PASSWORDUPDATEFAILED": "Password update failed",
-      "REPEATNEWPASSWORD": "Repeat new password",
-      "TITLE": "Password"
+      "CONTENT": "要更改您的密码，请填写当前密码和新密码两次。",
+      "CURRENTPASSWORD": "当前密码",
+      "NEWPASSWORD": "输入新密码",
+      "NOCURRENTPASSWORD": "请输入当前密码",
+      "NOPASSWORD": "密码（必填）",
+      "PASSWORD": "密码",
+      "PASSWORDMINLENGTH": "密码长度不能少于 6 位！",
+      "PASSWORDNOTEQUAL": "密码不一致",
+      "PASSWORDUPDATED": "密码更新成功",
+      "PASSWORDUPDATEFAILED": "密码更新失败：",
+      "REPEATNEWPASSWORD": "重复新密码",
+      "TITLE": "密码"
     },
     "ROLLBAR": {
       "ENABLEROLLBAR": "启用异常日志",
@@ -301,68 +301,68 @@
       "TITLE": "Rollbar 日志"
     },
     "SAVED": "设置已保存",
-    "SAVEFAILED": "Updating settings failed",
+    "SAVEFAILED": "设置更新失败",
     "SERVER": {
-      "CONNECTIONS": "Connection settings",
-      "USER": "User settings"
+      "CONNECTIONS": "基础设置",
+      "USER": "用户设置"
     },
     "SHOWS": {
-      "TITLE": "Show settings"
+      "TITLE": "服务器设置"
     },
     "TMDB": {
       "APIKEYWARNING": "你可以在此处填入自己的 TheTVDB API 密钥。确保你提供的API密钥有效，如果密钥失效，同步任务也将失败。",
-      "LABEL": "TMDb API key",
+      "LABEL": "TMDb API 密钥",
       "NOAPIKEY": "API 密钥不能为空",
       "TITLE": "TMDb 连接",
-      "FALLBACK": "If you don't want to use TMDB as a fallback indexer you can uncheck this box. Some shows are not found in TvMaze and a fallback is always usefull to have but TMDB can return wrong results."
+      "FALLBACK": "如果不想将TMDB用作回退索引器，可以取消选中此框。有些节目在TvMaze中找不到，因此可以使用回退，但TMDB可能会返回错误的结果"
     }
   },
   "SHOWS": {
-    "COMPLETECOLLECTEDSHOWS": "Full collected shows",
+    "COMPLETECOLLECTEDSHOWS": "完整收集的剧集",
     "HIGHESTRATED": "评分最高",
-    "LATESTADDED": "Latest added",
+    "LATESTADDED": "最新添加",
     "LOADER": "加载节目统计",
-    "LOADINGLIST": "Loading show list",
+    "LOADINGLIST": "正在加载剧集列表",
     "LOWESTRATED": "评分最低",
     "MISSINGEPISODES": "缺少剧集",
-    "MOSTDISKSPACE": "Most used disk space",
-    "MOSTWATCHED": "Most watched",
+    "MOSTDISKSPACE": "使用磁盘空间最多",
+    "MOSTWATCHED": "播放次数最多",
     "NEWESTPREMIERED": "最新首映",
-    "NOMISSINGEPS": "No missing episodes",
+    "NOMISSINGEPS": "缺少剧集总数",
     "OLDESTPREMIERED": "最早首映",
-    "SHOWSTATUS": "Show status",
+    "SHOWSTATUS": "显示状态：",
     "TOTALEPISODES": "总剧集数",
-    "TOTALEPISODESWATCHED": "Total watched episodes",
+    "TOTALEPISODESWATCHED": "已观看的剧集",
     "TOTALMISSINGEPISODES": "缺少剧集总数",
-    "TOTALPLAYLENGTH": "Total play length",
-    "TOTALSHOWS": "Total shows",
-    "WITHMOESTEPISODES": "With most episodes"
+    "TOTALPLAYLENGTH": "总播放时间",
+    "TOTALSHOWS": "全部剧集",
+    "WITHMOESTEPISODES": "剧集最多"
   },
   "USERS": {
-    "ACTIVEUSERS": "Active users",
-    "ADMIN": "Admin",
-    "DISABLED": "Disabled",
-    "HIDDEN": "Hidden",
-    "IDLEUSERS": "Idle users",
+    "ACTIVEUSERS": "活跃用户",
+    "ADMIN": "管理员",
+    "DISABLED": "禁用",
+    "HIDDEN": "隐藏",
+    "IDLEUSERS": "空闲用户",
     "LASTACTIVE": "上次登录:",
-    "LASTLOGIN": "Last login",
-    "LOADER": "Loading user info",
+    "LASTLOGIN": "上次登录",
+    "LOADER": "正在加载用户信息...",
     "USERS": "用户",
     "WATCHED": {
-      "EPISODES": "Episodes watched",
-      "MOVIES": "Movies watched",
-      "TOTAL": "Total watched"
+      "EPISODES": "已观看的剧集",
+      "MOVIES": "已观看电影 ",
+      "TOTAL": "已观看总数"
     }
   },
   "WIZARD": {
-    "ACCOUNT": "User details",
+    "ACCOUNT": "用户详情",
     "ADDRESSUSED": "地址： {{address}}",
     "APIKEYFAILED": "访问 {{type}} 服务器失败，请检查配置并重试。",
     "APIKEYUSED": "API密钥： {{api}}",
     "CROWDINHELP": "如果您的语言未提及或不完整，请随时帮助我在 <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
-    "EXCEPTIONLOGGING": "Exception logging",
-    "FINALTITLE": "Final",
-    "FINISH": "Finish",
+    "EXCEPTIONLOGGING": "异常日志",
+    "FINALTITLE": "最后",
+    "FINISH": "已完成",
     "FINISHED": "所有设置都已保存，您现在可以开始使用 Emby 服务器。享受您的新统计！",
     "FINISHEXPLANATION": "首先做的事情是开始电影和节目的同步任务。EmbyStat将开始从您的 {{type}} 服务器下载所有数据。 请记住，这些任务可能需要很长时间，取决于您的媒体库大小。 您可以在登录后通过导航到任务页面手动启动任务。",
     "FOUNDTEXT": "我们在您的网络中找到了以下服务器。请选择您想要连接的服务器。 如果您的服务器未显示，您可以手动创建服务器连接。",
@@ -373,12 +373,12 @@
     "LANGUAGE": "语言",
     "LANWANCHOISE": "选择用于连接到 {{type}} 服务器的正确地址。",
     "LIBRARIES": {
-      "TITLE": "Select {{type}} libraries"
+      "TITLE": "选择 {{type}} 库"
     },
-    "NEXT": "Next",
+    "NEXT": "下一步",
     "NOTFOUNDTEXT": "现在，我们将设置您的 {{type}} 连接。我们尝试自动检测网络中的Emby服务器，但失败了。填写所有字段，以便EmbyStat可以找到您的Emby服务器。",
-    "SEARCHSERVERS": "Searching media servers",
-    "SELECTLANGUAGE": "Select your prefered language",
+    "SEARCHSERVERS": "正在搜索媒体服务器",
+    "SELECTLANGUAGE": "设置您的语言选项",
     "SELECTLIBRARIES": "选择您想要在 {{type}} 统计计算中包含的所有库。 所有 {{type}} 库是默认选择的。如果您想要在设置页面稍后更改它。",
     "SERVERCONFIGURATION": "服务器参数设置",
     "SERVERCONFIGURATIONTEST": "服务器配置测试",
@@ -388,7 +388,7 @@
     "STEPONE": "检查API密钥是否有效 ({{step}}/{{total}})",
     "STEPTHREE": "获取管理员账户 ({{step}}/{{total}})",
     "STEPTWO": "获取服务器信息 ({{step}}/{{total}})",
-    "TITLE": "Wizard",
+    "TITLE": "向导",
     "USERDETAILTEXT": "提供您的管理员用户名和密码"
   }
 }
