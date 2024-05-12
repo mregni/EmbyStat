@@ -9,7 +9,7 @@
     "SERVERINFO": "Server info",
     "THANKS": {
       "MISSINGNAME": "Als je naam in deze lijst ontbreekt, stuur me dan een bericht op Crowdin!",
-      "TEXT": "A big thanks to the following people for translating the app in their native language or helping to test the application:",
+      "TEXT": "Grote dank aan de volgende personen voor het vertalen van de app in hun moedertaal: of helpen met de applicatie te testen:",
       "TITLE": "Bedankt"
     }
   },
@@ -18,7 +18,7 @@
     "AUDIO": "Audio",
     "BACK": "Vorige",
     "BIT": "bit",
-    "BITDEPTH": "Bit depth",
+    "BITDEPTH": "Bitdiepte",
     "CANCEL": "annuleren",
     "CODEC": "Codec",
     "COLLECTEDPERCENTAGE": "Percentage verzameld",
@@ -98,25 +98,25 @@
       "FORMAT_ERROR": "De cron string is in een verkeerd formaat. Controleer <a href=\"https://crontab.guru/\" target=\"_blank\">hier</a> voor opmaakregels. Alleen cijfers, spaties, *, / en - zijn toegestaan."
     },
     "MOVIEJOBRUNNING": {
-      "BODY": "Movie job is running, please wait until it is finished",
-      "TITLE": "Movie job running"
+      "BODY": "De filmtaak wordt uitgevoerd. Wacht tot deze klaar is",
+      "TITLE": "Filmtaak actief"
     },
     "NOMOVIETYPEFOUND": {
-      "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in {{type}} you should try starting a new movie syncronisation task.",
+      "BODY": "We konden geen films vinden in de EmbyStat database. Als je films in Emby hebt, moet je proberen een nieuwe media synchronisatie taak te starten.",
       "TITLE": "Geen films gevonden"
     },
     "NOSHOWTYPEFOUND": {
-      "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in {{type}} you should try starting a new show syncronisation task.",
+      "BODY": "We konden geen series vinden in de EmbyStat database. Als je series hebt in Emby, probeer dan een nieuwe media synchronisatie taak te starten.",
       "TITLE": "Geen series gevonden"
     },
     "SHOWJOBRUNNING": {
-      "BODY": "Show job is running, please wait until it is finished",
-      "TITLE": "Show job running"
+      "BODY": "De filmtaak wordt uitgevoerd. Wacht tot deze klaar is",
+      "TITLE": "Filmtaak actief"
     }
   },
   "FILTERS": {
     "DIALOG": {
-      "CONTENT": "Select field on which you want to add a new filter",
+      "CONTENT": "Selecteer het veld waaraan u een nieuw filter wilt toevoegen",
       "TITLE": "Nieuw filter toevoegen"
     },
     "OPERATIONS": {
@@ -131,12 +131,12 @@
       "ISNOT": "is niet",
       "ISNULL": "is null",
       "ISZERO": "is 0",
-      "LARGER": "is larger then",
-      "LONGER": "is longer then",
-      "NOTCONTAINS": "does not contain",
-      "SHORTER": "is shorter then",
-      "SMALLER": "is smaller then",
-      "STARTSWITH": "starts with"
+      "LARGER": "is groter dan",
+      "LONGER": "is langer dan",
+      "NOTCONTAINS": "bevat niet",
+      "SHORTER": "is korter dan",
+      "SMALLER": "is kleiner dan",
+      "STARTSWITH": "begint met"
     },
     "TITLES": {
       "CONTAINER": "Container",
@@ -150,8 +150,8 @@
   },
   "FORMLABELS": {
     "CRON": "Cron-tekenreeks",
-    "FIELD": "Field",
-    "OPERATION": "Operation"
+    "FIELD": "Veld",
+    "OPERATION": "Uitvoering"
   },
   "JOB": {
     "BUTFAILED": "maar is gefaald na",
@@ -159,12 +159,12 @@
     "INFO": {
       "DATABASE-CLEANUP": "Database opschonen",
       "DATABASE-CLEANUPDESCRIPTION": "Database opschonen met onnodige gegevens.",
-      "MOVIE-SYNC": "Movie synchronization",
-      "MOVIE-SYNCDESCRIPTION": "Perform an incremental sync for your movie collection. This can take some time to run!",
+      "MOVIE-SYNC": "Media synchronisatie",
+      "MOVIE-SYNCDESCRIPTION": "Voor een incrementele syncronisatie uit op uw film collectie. Dit kan enige tijd in beslag nemen!",
       "PING": "Controleer {{type}} verbinding",
       "PINGDESCRIPTION": "Ping de Emby-server om te controleren of hij nog online is.",
-      "SHOW-SYNC": "Show synchronization",
-      "SHOW-SYNCDESCRIPTION": "Perform an incremental sync for your show collection. This can take some time to run!",
+      "SHOW-SYNC": "Bekijk synchronisatie",
+      "SHOW-SYNCDESCRIPTION": "Voor een incrementele syncronisatie uit op uw film collectie. Dit kan enige tijd in beslag nemen!",
       "SYSTEM-SYNC": "Synchroniseer {{type}} info",
       "SYSTEM-SYNCDESCRIPTION": "Voer een kleine synchronisatie uit met de Emby-server. Dit is alleen een snelle en kleine systeemupdate.",
       "UPDATE-CHECKER": "Controleer op nieuwe updates",
@@ -204,50 +204,50 @@
     "HIGHESTRATED": "Hoogste Score",
     "LATESTADDED": "Onlangs Toegevoegd",
     "LOADER": "Filmstatistieken laden",
-    "LOADINGLIST": "Loading movie list",
+    "LOADINGLIST": "Filmlijst laden",
     "LONGEST": "Langste",
     "LOWESTRATED": "Laagste Score",
-    "MOSTWATCHED": "Most watched",
+    "MOSTWATCHED": "Meest bekeken",
     "NEWESTPREMIERED": "Nieuwste in Première",
     "OLDESTPREMIERED": "Oudste in Première",
     "SHORTEST": "Kortste",
     "TOTALMOVIES": "Totale Films",
     "TOTALPLAYLENGTH": "Totale Kijk Duur",
-    "TOTALWATCHED": "Total watched movies"
+    "TOTALWATCHED": "Totaal bekeken films"
   },
   "PAGINATION": {
-    "NEXTPAGE": "Next page",
-    "PREVIOUSPAGE": "Previous page",
-    "ROWSPERPAGE": "Rows per page"
+    "NEXTPAGE": "Volgende pagina",
+    "PREVIOUSPAGE": "Vorige Pagina",
+    "ROWSPERPAGE": "Rijen per pagina"
   },
   "SERVER": {
-    "ACTIVEDEVICES": "ACtive devices",
-    "AUTORUNSUPPORT": "Supports auto run at startup",
-    "CACHEPATH": "Cache path",
-    "CANLAUNCHBROWSER": "Can launch browser",
-    "CANSELFRESTART": "Can self restart",
-    "CANSELFUPDATE": "Can self update",
-    "FEATURES": "Features",
-    "HTTPSSUPPORT": "HTTPS support",
-    "IDLEDEVICES": "Idle devices",
+    "ACTIVEDEVICES": "Actieve apparaten",
+    "AUTORUNSUPPORT": "Ondersteunt automatisch uitvoeren bij het opstarten",
+    "CACHEPATH": "Cache pad",
+    "CANLAUNCHBROWSER": "Kan browser starten",
+    "CANSELFRESTART": "Kan zichzelf opnieuw opstarten",
+    "CANSELFUPDATE": "Kan zelf bijwerken",
+    "FEATURES": "Functies",
+    "HTTPSSUPPORT": "HTTPS ondersteuning",
+    "IDLEDEVICES": "Inactieve apparaten",
     "INFO": "Server info",
-    "ITEMSBYNAMEPATH": "Items by name path",
+    "ITEMSBYNAMEPATH": "Items op naam pad",
     "LANADDRESS": "LAN",
-    "LOGPATH": "Log path",
-    "METADATAPATH": "Internal metadata path",
-    "MONITORSUPPORT": "Supports library monitoring",
-    "OPENSERVER": "Open server page",
-    "PENDINGRESTART": "Has pending restart",
+    "LOGPATH": "Logpad",
+    "METADATAPATH": "Intern metagegevenspad",
+    "MONITORSUPPORT": "Ondersteunt bibliotheekmonitoring",
+    "OPENSERVER": "Open de serverpagina",
+    "PENDINGRESTART": "Heeft een herstart in behandeling",
     "PLUGINS": "Plugins",
-    "PROGRAMDATAPATH": "Program data path",
-    "TRANSCODINGPATH": "Transcoding path",
-    "UPDATEAVAILABLE": "Has update available",
+    "PROGRAMDATAPATH": "Programmagegevenspad",
+    "TRANSCODINGPATH": "Transcoderingspad",
+    "UPDATEAVAILABLE": "Heeft update beschikbaar",
     "WANADDRESS": "WAN",
-    "WEBSOCKETPORT": "Websocket port"
+    "WEBSOCKETPORT": "Websocket-poort"
   },
   "SETTINGS": {
     "ACCOUNT": {
-      "CONTENT": "Change your admin username here. New username will be required on next login.",
+      "CONTENT": "Wijzig hier uw beheerdersgebruikersnaam. Bij de volgende aanmelding is een nieuwe gebruikersnaam vereist.",
       "NOUSERNAME": "gebruikersnaam is vereist",
       "USERNAME": "Gebruikersnaam",
       "USERNAMEUPDATED": "Gebruikersnaam succesvol bijgewerkt",
@@ -326,7 +326,7 @@
     "LOWESTRATED": "Laagste Score",
     "MISSINGEPISODES": "Missende afleveringen",
     "MOSTDISKSPACE": "Most used disk space",
-    "MOSTWATCHED": "Most watched",
+    "MOSTWATCHED": "Meest bekeken",
     "NEWESTPREMIERED": "Nieuwste in Première",
     "NOMISSINGEPS": "No missing episodes",
     "OLDESTPREMIERED": "Oudste in Première",
@@ -361,11 +361,11 @@
     "APIKEYUSED": "API key: {{api}}",
     "CROWDINHELP": "If your language is not mentioned or not complete, feel free to help me translate the app in your langauge on <a class=\"hint-link\" href=\"https://crowdin.com/project/embystat\" target=\"_blank\">Crowdin</a>",
     "EXCEPTIONLOGGING": "Exception logging",
-    "FINALTITLE": "Final",
-    "FINISH": "Finish",
-    "FINISHED": "All settings are saved and you can start using your EmbyStat server now. Enjoy your new statistics!",
-    "FINISHEXPLANATION": "Best thing to do first is start a movie and show synchronization job. EmbyStat will start downloading all data from your {{type}} server. Keep in mind that these tasks can take a long time depending on your collection size. You can start the jobs manually by navigating to the Jobs page after login.",
-    "FOUNDTEXT": "We found the following servers in your network. Select the one you want to connect to. If your server is not displayed you can create a server connection manually.",
+    "FINALTITLE": "Laatste",
+    "FINISH": "Voltooien",
+    "FINISHED": "Alle instellingen zijn opgeslagen en u kan EmbyStat beginnen gebruiken. Veel plezier met uw statistieken!",
+    "FINISHEXPLANATION": "Het beste is eerst een film te starten en synchronisatie te doen. EmbyStat zal beginnen met het downloaden van alle gegevens van uw {{type}} server. Houd er rekening mee dat deze taken lang kunnen duren, afhankelijk van de grootte van je collectie. Na het inloggen kunt u de taken handmatig starten door naar de Jobs pagina te navigeren.",
+    "FOUNDTEXT": "We hebben de volgende servers in je netwerk gevonden. Selecteer de servers waarmee je verbinding wilt maken. Als uw server niet wordt weergegeven, kunt u handmatig een serververbinding aanmaken.",
     "INTROTEXT": "Welkom op de EmbyStat server wizard.<br/><br/>Met deze wizard gaan we de basic instellingen klaar zetten voor gebruik zodat u EmbyStat kunt beginnen gebruiken zonder koppijn. Wanneer de wizard klaar is kan u alle features van de server in gebruik nemen. Als u later de server verder wilt instellen kan u altijd naar de instellingen pagina gaan.<br/><br/>Voor nu is het genoeg om te weten hoe we u kunnen noemen en wat uw gewenste UI taal is.",
     "JELLYFIN": {
       "ADMINTEXT": "Because you are using Jellyfin you have to provide an administrator account that you want to use to fetch data from the server. Please select the wanted administrator from the dropdown list."
@@ -373,11 +373,11 @@
     "LANGUAGE": "Taal",
     "LANWANCHOISE": "Kies het juiste adres voor uw verbinding met {{type}} server.",
     "LIBRARIES": {
-      "TITLE": "Select {{type}} libraries"
+      "TITLE": "Selecteer {{type}} bibliotheken"
     },
-    "NEXT": "Next",
+    "NEXT": "Volgende",
     "NOTFOUNDTEXT": "Now we will setup your {{type}} connection. We tried to auto detect your Emby server in the network but failed. Fill in all fields so EmbyStat can find your Emby server.",
-    "SEARCHSERVERS": "Searching media servers",
+    "SEARCHSERVERS": "Mediaservers zoeken",
     "SELECTLANGUAGE": "Select your prefered language",
     "SELECTLIBRARIES": "Selecteer alle bibliotheken die u wilt opnemen in de berekeningen met {{type}} statistieken. Alle {{type}} bibliotheken zijn standaard geselecteerd. Als je wilt, kun je dit later op de instellingenpagina wijzigen.",
     "SERVERCONFIGURATION": "Server configuratie",
