@@ -164,7 +164,7 @@
       "PING": "Check {{type}} connection",
       "PINGDESCRIPTION": "Ping the Emby server to check if he is still online.",
       "SHOW-SYNC": "Mostrar sincronização",
-      "SHOW-SYNCDESCRIPTION": "Perform an incremental sync for your show collection. This can take some time to run!",
+      "SHOW-SYNCDESCRIPTION": "Execute uma sincronização incremental para sua coleção de filmes. Isso pode levar algum tempo para ser executado!",
       "SYSTEM-SYNC": "Sincronizar informações do {{type}}",
       "SYSTEM-SYNCDESCRIPTION": "Perform a small sync with Emby server. This is a fast and small system update only.",
       "UPDATE-CHECKER": "Verificar se há atualizações",
