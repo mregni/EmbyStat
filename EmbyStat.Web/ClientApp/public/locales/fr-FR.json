@@ -106,7 +106,7 @@
       "TITLE": "Aucun film trouvé"
     },
     "NOSHOWTYPEFOUND": {
-      "BODY": ".",
+      "BODY": "Nous n'avons trouvé aucune série dans la base de données EmbyStat. Si vous avez des séries dans {{type}}, vous devriez essayer de démarrer une nouvelle tâche de synchronisation des émissions.",
       "TITLE": "Aucune série trouvée"
     },
     "SHOWJOBRUNNING": {
