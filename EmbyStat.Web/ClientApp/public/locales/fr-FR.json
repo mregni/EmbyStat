@@ -102,11 +102,11 @@
       "TITLE": "Movie job running"
     },
     "NOMOVIETYPEFOUND": {
-      "BODY": "We couldn't find any movies in the EmbyStat database. If you have movies in {{type}} you should try starting a new movie syncronisation task.",
+      "BODY": ".",
       "TITLE": "Aucun film trouvé"
     },
     "NOSHOWTYPEFOUND": {
-      "BODY": "We couldn't find any shows in the EmbyStat database. If you have shows in {{type}} you should try starting a new show syncronisation task.",
+      "BODY": ".",
       "TITLE": "Aucune série trouvée"
     },
     "SHOWJOBRUNNING": {
